@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Firebase = () => (
-    <div></div>
-  );
+		<div></div>
+	);
   
 export default Firebase;
