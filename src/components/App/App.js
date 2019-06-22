@@ -1,10 +1,14 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import Navigation from  "../Navigation/Navigation";
+
 import './App.css';
 
 const App = () => (
-  <div>
-    <h1>App</h1>
-  </div>
+  <Router>
+    <Navigation />
+  </Router>
 );
 
 export default App;
