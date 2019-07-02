@@ -12,12 +12,11 @@ import AccountPage from '../Account/Account';
 import * as ROUTES from '../../constants/routes';
 
 import './App.css';
+import './../../styles.css';
 
 const App = () => (
   <Router>
-    <Navigation />
-
-    <div>
+    <div className="App">
       <Navigation />
 
       <hr />

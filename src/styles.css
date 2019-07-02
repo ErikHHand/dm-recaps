@@ -1,0 +1,14 @@
+div#root {
+	background-image: url("./images/smaller_sword.jpeg"); 
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.App {
+	/*background-color: #2f3338; */
+}
+
+
+.center {
+    text-align: center;
+}
