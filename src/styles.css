@@ -15,6 +15,11 @@ body  {
     text-align: center;
 }
 
+.container {
+	opacity: 0.95;
+	border-radius: 8px;
+}
+
 #sign-in-box {
 	opacity: 0.95;
 }
