@@ -10,7 +10,7 @@ const withAuthentication = Component => {
 			super(props);
 	  
 			this.state = {
-			  	authUser: null,
+			  	authUser: "WAITING",
 			};
 		}
 

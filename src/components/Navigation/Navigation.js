@@ -1,36 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Route, Redirect, Switch } from "react-router-dom";
 
-import SignOutButton from '../SignOut/SignOut';
+import AuthUser from '../AuthUser/AuthUser';
+import Landing from '../Landing/Landing';
+import SignUp from '../SignUp/SignUp';
+import NotFound from '../NotFound/NotFound';
+
 import { AuthUserContext } from '../Session/Session';
 
-import * as ROUTES from '../../constants/routes';
+
 
 const Navigation = () => (
 	<div>
-		<AuthUserContext.Consumer>
-			{authUser => authUser ? <NavigationAuth /> : <NavigationNonAuth />}
-		</AuthUserContext.Consumer>
-	</div>
+        <AuthUserContext.Consumer>{
+            authUser => {
+                // Wait for login response before rendering any components
+                switch(authUser){
+                    case "WAITING":
+                        break;
+                    case null:
+                        return <NonAuthUser/>;
+                    default:
+                        return <AuthUser/>;
+                }
+            }
+        }
+        </AuthUserContext.Consumer>
+    </div>
 );
   
-const NavigationAuth = () => (
-	<ul>
-		<li>
-			<Link to={ROUTES.HOME}>Home</Link>
-		</li>
-		<li>
-			<SignOutButton />
-		</li>
-	</ul>
-);
-  
-const NavigationNonAuth = () => (
-	<ul>
-		<li>
-			<Link to={ROUTES.LANDING}>Landing</Link>
-		</li>
-	</ul>
+const NonAuthUser = () => (
+
+	<div>
+        <Switch>
+            <Route
+                exact path="/"
+                render={ () => (
+                    <Redirect to="/signin"/>
+                    )}
+                    />
+            <Route
+                path="/signin"
+                component={Landing}
+                />
+            <Route
+                path="/signup"
+                component={SignUp}
+                />
+            <Route 
+                path='*' 
+                component={NotFound} 
+            />                        
+        </Switch>
+    </div>
 );
 
 export default Navigation;
