@@ -10,7 +10,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import { Form, Button } from 'react-bootstrap';
 
 const SignIn = () => (
-  	<Jumbotron>
+  	<Jumbotron id="sign-in-box">
     	<h1>Sign in</h1>
     	<SignInForm />
     	<SignUpLink />
@@ -34,14 +34,14 @@ class SignInFormBase extends Component {
     	const { email, password } = this.state;
 
     	this.props.firebase
-      	.doSignInWithEmailAndPassword(email, password)
-      	.then(() => {
-        	this.setState({ ...INITIAL_STATE });
-        	this.props.history.push(ROUTES.HOME);
-      	})
-      	.catch(error => {
-        	this.setState({ error });
-      	});
+		.doSignInWithEmailAndPassword(email, password)
+		.then(() => {
+			this.setState({ ...INITIAL_STATE });
+			this.props.history.push(ROUTES.HOME);
+		})
+		.catch(error => {
+			this.setState({ error });
+		});
 
     	event.preventDefault();
   	};
@@ -56,7 +56,7 @@ class SignInFormBase extends Component {
     	const isInvalid = password === '' || email === '';
 
     	return (
-			<Form>
+			<Form onSubmit={this.onSubmit}>
 				<Form.Group controlId="formBasicEmail">
 					<Form.Label>Email address</Form.Label>
 					<Form.Control 

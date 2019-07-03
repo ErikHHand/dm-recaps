@@ -1,7 +1,9 @@
-div#root {
+body {
 	background-image: url("./images/smaller_sword.jpeg"); 
-    background-size: cover;
-    background-attachment: fixed;
+    -webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
 }
 
 .App {
@@ -11,4 +13,8 @@ div#root {
 
 .center {
     text-align: center;
+}
+
+#sign-in-box {
+	opacity: 0.95;
 }
