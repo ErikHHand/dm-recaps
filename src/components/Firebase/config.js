@@ -4,6 +4,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/firestore';
 
 
 // Your web app's Firebase configuration
@@ -21,7 +22,7 @@ class Firebase {
 		app.initializeApp(config);
 
 		this.auth = app.auth();
-		this.db = app.database();
+		this.db = app.firestore();
 	}
 
 	  // *** Auth API ***

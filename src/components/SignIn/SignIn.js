@@ -35,15 +35,6 @@ class SignInFormBase extends Component {
 
     	this.props.firebase
 		.doSignInWithEmailAndPassword(email, password)
-		.then(authUser => {
-			// Create a user in your Firebase realtime database
-			return this.props.firebase
-			  	.user(authUser.user.uid)
-			  	.set({
-					username,
-					email,
-			  	});
-		})
 		.then(() => {
 			this.setState({ ...INITIAL_STATE });
 			this.props.history.push(ROUTES.HOME);

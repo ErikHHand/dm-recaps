@@ -33,6 +33,19 @@ class SignUpFormBase extends Component {
 		this.props.firebase
 		.doCreateUserWithEmailAndPassword(email, passwordOne)
 		.then(authUser => {
+
+			this.props.firebase.db.collection("users").doc(authUser.user.uid).set({
+				username: username,
+				email: email,
+			})
+			.then(
+				console.log("Document written with ID: ", authUser.user.uid)
+			)
+			.catch(function(error) {
+				console.error("Error adding document: ", error);
+			});
+		})
+		.then(authUser => {
 			this.setState({ ...INITIAL_STATE });
 			this.props.history.push(ROUTES.HOME);
 		})
