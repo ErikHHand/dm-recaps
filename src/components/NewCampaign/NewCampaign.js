@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button } from 'react-bootstrap';
 
+import { withFirebase } from '../Firebase/Firebase';
+
 class NewCampaign extends Component {
 
 	constructor(props) {
@@ -19,10 +21,29 @@ class NewCampaign extends Component {
 	onSubmit = event => {
 		this.props.onHide();
 
-		// TODO
-		// Add the new campaign to Firestore and locally
-
 		event.preventDefault();
+
+		let campaign = {
+			name: this.state.name,
+			world: this.state.world,
+			setting: this.state.setting,
+		};
+
+		// Add locally
+		let campaigns = this.props.campaigns;
+		
+
+		// Add to Firestore and then add locally
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").add(campaign)
+		.then((docRef) => {
+			console.log("Document successfully written! DocRef: ", docRef);
+			campaigns[docRef.id] = campaign;
+			this.props.handleCampaigns(campaigns);
+		})
+		.catch(error => {
+			console.error("Error writing document: ", error);
+		});
 	};
 	  
 
@@ -108,4 +129,4 @@ class NewCampaign extends Component {
 	}
 }
 
-export default NewCampaign;
+export default withFirebase(NewCampaign);

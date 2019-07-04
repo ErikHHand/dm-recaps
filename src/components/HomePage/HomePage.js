@@ -12,11 +12,38 @@ class HomePage extends Component {
 		super(props);
 
 		this.state = {
-			campaigns: ["Stuff", "More Stuff"],
+			campaigns: [],
 			showAddWindow: false,
 		}
 
 		this.handleCampaigns = this.handleCampaigns.bind(this);
+	}
+
+	componentDidMount() {
+
+		let home = this;
+
+        // Query for getting the wishlist collection from firestore
+        let campaignsRef = this.props.firebase.db.collection("users")
+        .doc(this.props.firebase.auth.currentUser.uid).collection("campaigns");
+
+        campaignsRef.get().then((querySnapshot) => {
+            let campaigns = {};
+
+            // Get all entries in the wishlist collection
+            querySnapshot.forEach((doc) => {
+                campaigns[doc.id] = doc.data();
+            });
+
+            home.setState({
+                campaigns: campaigns,
+			});
+			
+			console.log("Campagins: ", campaigns);
+			
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
 	}
 
 	handleCampaigns(campaigns) {
@@ -26,13 +53,15 @@ class HomePage extends Component {
 	}
 
 	render() {
-
-		let campaigns = <div></div>
+		
+		let campaigns = Array.from(Object.keys(this.state.campaigns)).map((campaignID)=>
+			<li key={campaignID}>{this.state.campaigns[campaignID].name}</li>
+		);
 
 		return (
 			<Jumbotron fluid className="container">
 				<h1 className="center">Campaigns</h1>
-				{campaigns}
+				<ul>{campaigns}</ul>
 				<div className="center">
 					<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>Create a new campaign!</Button>
 				</div>
