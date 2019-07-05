@@ -3,8 +3,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import NotFound from '../NotFound/NotFound';
 import HomePage from '../HomePage/HomePage';
-import SessionsPage from '../SessionsPage/SessionsPage';
-import TagsPage from '../TagsPage/TagsPage';
+import CampaignRecaps from '../CampaignRecaps/CampaignRecaps';
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -53,21 +52,15 @@ class AuthUser extends Component {
                                     )}
 							/>
                             <Route
-                                path="/campaigns"
+                                exact path="/campaigns"
                                 render = { (props) =>
                                     <HomePage {...props}/>
                                 }
 							/>
                             <Route
-                                path = "/sessions"
+                                path = "/campaigns/:id"
                                 render = { (props) =>
-                                    <SessionsPage {...props}/>
-                                }
-                            />
-                            <Route
-                                path = "/tags"
-                                render = {(props) =>
-                                    <TagsPage {...props}/>
+                                    <CampaignRecaps {...props}/>
                                 }
                             />
                             <Route path='*' component={NotFound} />                        

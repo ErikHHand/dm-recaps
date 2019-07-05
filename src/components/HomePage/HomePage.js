@@ -3,8 +3,11 @@ import { withAuthorization } from '../Session/Session';
 
 import NewCampaign from '../NewCampaign/NewCampaign';
 
+import { Link } from "react-router-dom";
+
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
+
 
 class HomePage extends Component {
 
@@ -38,9 +41,7 @@ class HomePage extends Component {
             home.setState({
                 campaigns: campaigns,
 			});
-			
-			console.log("Campagins: ", campaigns);
-			
+						
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
@@ -55,7 +56,9 @@ class HomePage extends Component {
 	render() {
 		
 		let campaigns = Array.from(Object.keys(this.state.campaigns)).map((campaignID)=>
-			<li key={campaignID}>{this.state.campaigns[campaignID].name}</li>
+			<Link key={campaignID} to={"/campaigns/"+campaignID}>
+				<li>{this.state.campaigns[campaignID].name}</li>
+			</Link>
 		);
 
 		return (

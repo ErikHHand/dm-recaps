@@ -23,3 +23,8 @@ body  {
 #sign-in-box {
 	opacity: 0.95;
 }
+
+#tab-navigation {
+	display: flex;
+  	justify-content: center;
+}
