@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 import SignIn from "./../SignIn/SignIn";
-import SignUp from "./../SignUp/SignUp";
 
 import './../../styles.css';
 

@@ -38,7 +38,6 @@ class CampaignRecaps extends Component {
 				campaign.setState({
 					campaign: doc.data(),
 				})
-				console.log("Document data:", doc.data());
 			} else {
 				// doc.data() will be undefined in this case
 				console.log("No such document!");

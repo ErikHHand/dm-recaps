@@ -20,6 +20,10 @@ body  {
 	border-radius: 8px;
 }
 
+.right-align {
+	text-align: right;
+}
+
 #sign-in-box {
 	opacity: 0.95;
 }

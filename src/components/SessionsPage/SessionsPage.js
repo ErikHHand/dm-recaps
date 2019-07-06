@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import NewSession from '../NewSession/NewSession';
 import SessionItem from '../SessionItem/SessionItem';
+import RecapItem from '../RecapItem/RecapItem';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button';
 
 class SessionsPage extends Component {
@@ -13,22 +13,38 @@ class SessionsPage extends Component {
 	constructor(props) {
 		super(props);
 
-		console.log(this.props.sessions);
-
 		this.state = {
 			showAddWindow: false,
 			id: this.props.id,
+			currentSession: null,
 		};
 	}
 
 	render() {
 
+		let sessionsPage = this;
+
 		let sessions = Array.from(Object.keys(this.props.sessions)).map((sessionID)=>
 			<SessionItem 
 				key = {sessionID}
 				session = {this.props.sessions[sessionID]}
+				click = {() => sessionsPage.setState({currentSession: sessionID})}
 			/>
 		);
+
+		let recapItems;
+
+		if(this.state.currentSession === null) {
+			recapItems = <div></div>;
+		} else {
+			let recapList = this.props.sessions[this.state.currentSession].recaps;
+			recapItems = recapList.map((recapItem)=>
+				<RecapItem 
+					key = {recapList.indexOf(recapItem)}
+					recapItem = {recapItem}
+				/>
+			);
+		}
 
 		return (
 			<Row>
@@ -46,14 +62,7 @@ class SessionsPage extends Component {
 					/>
 				</Col>
 				<Col md={9}>
-					<Card body>This is some text within a card body.</Card>
-					<Card body>This is some text within a card body.</Card>
-					<Card body>This is some text within a card body.</Card>
-					<Card body>This is some text within a card body.</Card>
-					<Card body>This is some text within a card body.</Card>
-					<Card body>This is some text within a card body.</Card>
-					<Card body>This is some text within a card body.</Card>
-					<Card body>This is some text within a card body.</Card>
+					{recapItems}
 				</Col>
 			</Row>
 		)
