@@ -4,7 +4,6 @@ import SessionsPage from '../SessionsPage/SessionsPage';
 import TagsPage from '../TagsPage/TagsPage';
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -17,10 +16,24 @@ class CampaignRecaps extends Component {
 
 		this.state = {
 			key: 'sessions',
+			campaign: this.props.location.state.campaign,
+			id: this.props.location.state.id,
 		};
+
+		this.handleSessions = this.handleSessions.bind(this);
+	}
+
+	handleSessions(sessions) {
+		let campaign = this.state.campaign;
+		campaign.sessions = sessions;
+		console.log(campaign);
+		this.setState({
+			campaign: campaign,
+		})
 	}
 
 	render() {
+		console.log(this.state.campaign);
 		return (
 			<Jumbotron fluid className="container">
 				<Tab.Container defaultActiveKey="sessions">
@@ -39,10 +52,18 @@ class CampaignRecaps extends Component {
 						
 					<Tab.Content>
 						<Tab.Pane eventKey="sessions">
-							<SessionsPage />
+							<SessionsPage
+								sessions = {this.state.campaign.sessions}
+								handleSessions = {this.handleSessions}
+								id = {this.state.id}
+							/>
 						</Tab.Pane>
 						<Tab.Pane eventKey="tags">
-							<TagsPage />
+							<TagsPage
+								sessions = {this.state.campaign.sessions}
+								handleSessions = {this.handleSessions}
+								id = {this.state.id}
+							/>
 						</Tab.Pane>
 					</Tab.Content>
 						

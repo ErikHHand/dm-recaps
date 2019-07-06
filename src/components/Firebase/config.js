@@ -3,8 +3,8 @@
 
 import app from 'firebase/app';
 import 'firebase/auth';
-import 'firebase/database';
 import 'firebase/firestore';
+import 'firebase';
 
 
 // Your web app's Firebase configuration
@@ -19,10 +19,10 @@ const config = {
 
 class Firebase {
 	constructor() {
-		app.initializeApp(config);
+		let firebaseApp = app.initializeApp(config);
 
 		this.auth = app.auth();
-		this.db = app.firestore();
+		this.db = app.firestore(firebaseApp);
 	}
 
 	  // *** Auth API ***

@@ -17,7 +17,7 @@ class HomePage extends Component {
 		this.state = {
 			campaigns: [],
 			showAddWindow: false,
-		}
+		};
 
 		this.handleCampaigns = this.handleCampaigns.bind(this);
 	}
@@ -56,7 +56,13 @@ class HomePage extends Component {
 	render() {
 		
 		let campaigns = Array.from(Object.keys(this.state.campaigns)).map((campaignID)=>
-			<Link key={campaignID} to={"/campaigns/"+campaignID}>
+			<Link key={campaignID} to={{
+				pathname: "/campaigns/"+campaignID,
+				state: {
+					campaign: this.state.campaigns[campaignID],
+					id: campaignID,
+				}
+			}}>
 				<li>{this.state.campaigns[campaignID].name}</li>
 			</Link>
 		);
