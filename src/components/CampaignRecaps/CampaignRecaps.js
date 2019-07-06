@@ -9,6 +9,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
 
+import { withFirebase } from '../Firebase/Firebase';
+
 class CampaignRecaps extends Component {
 
 	constructor(props) {
@@ -21,6 +23,29 @@ class CampaignRecaps extends Component {
 		};
 
 		this.handleSessions = this.handleSessions.bind(this);
+	}
+
+	componentDidMount() {
+
+		let campaign = this;
+
+        // Query for getting the wishlist collection from firestore
+        let campaignRef = this.props.firebase.db.collection("users")
+        .doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(this.state.id);
+
+        campaignRef.get().then(function(doc) {
+			if (doc.exists) {
+				campaign.setState({
+					campaign: doc.data(),
+				})
+				console.log("Document data:", doc.data());
+			} else {
+				// doc.data() will be undefined in this case
+				console.log("No such document!");
+			}
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
 	}
 
 	handleSessions(sessions) {
@@ -75,4 +100,4 @@ class CampaignRecaps extends Component {
 	}
 }
 
-export default CampaignRecaps
+export default withFirebase(CampaignRecaps)

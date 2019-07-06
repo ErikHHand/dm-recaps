@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
 
+
 class NewSession extends Component {
 
 	constructor(props) {
@@ -27,7 +28,7 @@ class NewSession extends Component {
 		event.preventDefault();
 
 		let session = {
-			date: this.state.date,
+			date: firebase.firestore.Timestamp.fromDate(this.state.date),
 			description: this.state.description,
 		};
 

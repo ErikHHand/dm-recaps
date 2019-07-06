@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import NewSession from '../NewSession/NewSession';
+import SessionItem from '../SessionItem/SessionItem';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -21,18 +22,18 @@ class SessionsPage extends Component {
 	}
 
 	render() {
+
+		let sessions = Array.from(Object.keys(this.props.sessions)).map((sessionID)=>
+			<SessionItem 
+				key = {sessionID}
+				session = {this.props.sessions[sessionID]}
+			/>
+		);
+
 		return (
 			<Row>
 				<Col md={3}>
-					<Card border="primary" style={{ width: "18rem"}}>
-						<Card.Body>
-							<Card.Title>Primary Card Title</Card.Title>
-							<Card.Text>
-								Some quick example text to build on the card title and make up the bulk
-								of the card's content.
-							</Card.Text>
-						</Card.Body>
-					</Card>
+					{sessions}
 					<div className="center">
 						<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>New Session</Button>
 					</div>
