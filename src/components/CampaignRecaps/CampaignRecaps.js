@@ -24,6 +24,7 @@ class CampaignRecaps extends Component {
 		};
 
 		this.handleSessions = this.handleSessions.bind(this);
+		this.handleCampaign = this.handleCampaign.bind(this);
 	}
 
 	componentDidMount() {
@@ -60,6 +61,13 @@ class CampaignRecaps extends Component {
 		})
 	}
 
+	handleCampaign(campaign) {
+		console.log(campaign);
+		this.setState({
+			campaign: campaign,
+		})
+	}
+
 	render() {
 		console.log(this.state.campaign);
 		return (
@@ -90,7 +98,7 @@ class CampaignRecaps extends Component {
 						<Tab.Pane eventKey="tags">
 							<TagsPage
 								sessions = {this.state.sessions}
-								handleSessions = {this.handleSessions}
+								handleCampaign = {this.handleCampaign}
 								id = {this.state.id}
 								campaign = {this.state.campaign}
 							/>

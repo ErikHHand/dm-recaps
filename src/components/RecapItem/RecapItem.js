@@ -7,12 +7,33 @@ import Badge from 'react-bootstrap/Badge'
 
 class RecapItem extends Component {
 
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			tags: [],
+		}
+	}
+
+	componentDidMount() {
+		this.setState({
+			tags: this.props.recapItem.tags
+		})
+	}
+
+
+
 	render() {
 
 		console.log(this.props.recapItem);
 
 		let tags = this.props.recapItem.tags.map((tag) =>
-			<Badge pill variant={this.props.tags[tag].colour} key={this.props.recapItem.tags.indexOf(tag)}>
+			<Badge 
+				pill 
+				style={{ backgroundColor: this.props.tags[tag].colour}} 
+				key={this.props.recapItem.tags.indexOf(tag)}
+				className="text-white"
+			>
 				{tag}
 			</Badge>
 		);
