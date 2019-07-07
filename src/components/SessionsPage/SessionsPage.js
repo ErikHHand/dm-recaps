@@ -7,6 +7,10 @@ import RecapItem from '../RecapItem/RecapItem';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form'
+
+import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase';
 
 class SessionsPage extends Component {
 
@@ -17,8 +21,76 @@ class SessionsPage extends Component {
 			showAddWindow: false,
 			id: this.props.id,
 			currentSession: null,
+			recap: "",
+			error: "",
 		};
 	}
+
+	onChangeRecap = event => {		
+    	this.setState({ recap: event.target.value });
+	};
+	
+	onSubmit = event => {
+		event.preventDefault();
+
+		let recap = {
+			tags: [],
+			text: this.state.recap,
+		};
+
+		this.setState({
+			recap: "",
+		});
+
+		// Add locally
+		let session = this.props.sessions[this.state.currentSession];
+		session.recaps.push(recap);
+
+		let sessions = this.props.sessions;
+		sessions[this.state.currentSession] = session;
+		this.props.handleSessions(sessions);
+		
+		// Add to Firestore and then add locally
+		
+		let dbSessions = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id);
+		
+		console.log(dbSessions);
+
+		dbSessions.get().then((doc) => {
+			if (doc.exists) {
+				let campaignSessions = doc.data().sessions;
+				campaignSessions[this.state.currentSession].recaps.push(recap);
+				dbSessions.update({
+					sessions: campaignSessions
+				})
+				.then(function() {
+					console.log("Document successfully updated!");
+				})
+				.catch(function(error) {
+					// The document probably doesn't exist.
+					console.error("Error updating document: ", error);
+				});
+				
+
+				
+			} else {
+				// doc.data() will be undefined in this case
+				console.log("No such document!");
+			}
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
+		
+		/*
+		dbSessions.update({
+			"sessions[this.state.currentSession].recaps": firebase.firestore.FieldValue.arrayUnion(session)
+		})
+		.catch(error => {
+			console.error("Error writing document: ", error);
+		});
+		*/
+	};
 
 	render() {
 
@@ -46,6 +118,10 @@ class SessionsPage extends Component {
 			);
 		}
 
+		const { recap, error} = this.state;
+
+		const isInvalid = recap === "";
+
 		return (
 			<Row>
 				<Col md={3}>
@@ -63,10 +139,27 @@ class SessionsPage extends Component {
 				</Col>
 				<Col md={9}>
 					{recapItems}
+					<Form onSubmit={this.onSubmit}>
+						<Form.Group controlId="formRecap">
+							<Form.Control 
+								name="recap"
+								value={recap}
+								onChange={this.onChangeRecap}
+								type="text"
+								placeholder="Write something that happened..."
+							/>
+						</Form.Group>
+						
+						<Button variant="success" type="submit" disabled={isInvalid}>
+							Submit
+						</Button>
+
+						{error && <p>{error.message}</p>}
+					</Form>
 				</Col>
 			</Row>
 		)
 	}
 }
 
-export default SessionsPage
+export default withFirebase(SessionsPage)
