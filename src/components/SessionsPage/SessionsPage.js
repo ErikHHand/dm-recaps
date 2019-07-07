@@ -106,7 +106,12 @@ class SessionsPage extends Component {
 
 		let recapItems;
 
-		if(this.state.currentSession === null) {
+		
+		
+
+		if(!this.state.currentSession) {
+			recapItems = <div></div>;
+		} else if(!this.props.sessions[this.state.currentSession].recaps) {
 			recapItems = <div></div>;
 		} else {
 			let recapList = this.props.sessions[this.state.currentSession].recaps;
