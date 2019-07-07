@@ -19,6 +19,7 @@ class CampaignRecaps extends Component {
 		this.state = {
 			key: 'sessions',
 			campaign: this.props.location.state.campaign,
+			sessions: {},
 			id: this.props.location.state.id,
 		};
 
@@ -30,29 +31,32 @@ class CampaignRecaps extends Component {
 		let campaign = this;
 
         // Query for getting the wishlist collection from firestore
-        let campaignRef = this.props.firebase.db.collection("users")
-        .doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(this.state.id);
+        let sessionsRef = this.props.firebase.db.collection("users")
+		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(this.state.id)
+		.collection("sessions");
+		
+		sessionsRef.get().then((querySnapshot) => {
+            let sessions = {};
 
-        campaignRef.get().then(function(doc) {
-			if (doc.exists) {
-				campaign.setState({
-					campaign: doc.data(),
-				})
-			} else {
-				// doc.data() will be undefined in this case
-				console.log("No such document!");
-			}
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
+            // Get all entries in the sessions collection
+            querySnapshot.forEach((doc) => {
+                sessions[doc.id] = doc.data();
+            });
+
+            campaign.setState({
+                sessions: sessions,
+			});
+			console.log(this.state.sessions);
+						
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
 	}
 
 	handleSessions(sessions) {
-		let campaign = this.state.campaign;
-		campaign.sessions = sessions;
-		console.log(campaign);
+		console.log(sessions);
 		this.setState({
-			campaign: campaign,
+			sessions: sessions,
 		})
 	}
 
@@ -77,16 +81,18 @@ class CampaignRecaps extends Component {
 					<Tab.Content>
 						<Tab.Pane eventKey="sessions">
 							<SessionsPage
-								sessions = {this.state.campaign.sessions}
+								sessions = {this.state.sessions}
 								handleSessions = {this.handleSessions}
 								id = {this.state.id}
+								campaign = {this.state.campaign}
 							/>
 						</Tab.Pane>
 						<Tab.Pane eventKey="tags">
 							<TagsPage
-								sessions = {this.state.campaign.sessions}
+								sessions = {this.state.sessions}
 								handleSessions = {this.handleSessions}
 								id = {this.state.id}
+								campaign = {this.state.campaign}
 							/>
 						</Tab.Pane>
 					</Tab.Content>

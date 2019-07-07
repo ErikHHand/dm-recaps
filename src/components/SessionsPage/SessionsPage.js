@@ -43,85 +43,66 @@ class SessionsPage extends Component {
 		});
 
 		// Add locally
-		let session = this.props.sessions[this.state.currentSession];
-		session.recaps.push(recap);
-
 		let sessions = this.props.sessions;
+		let session = sessions[this.state.currentSession];
+		let id = session.recapCounter;
+
+		session.recaps[id] = recap;
+		session.recapCounter ++;
+
 		sessions[this.state.currentSession] = session;
 		this.props.handleSessions(sessions);
 		
 		// Add to Firestore and then add locally
 		
-		let dbSessions = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id);
-		
-		console.log(dbSessions);
-
-		dbSessions.get().then((doc) => {
-			if (doc.exists) {
-				let campaignSessions = doc.data().sessions;
-				campaignSessions[this.state.currentSession].recaps.push(recap);
-				dbSessions.update({
-					sessions: campaignSessions
-				})
-				.then(function() {
-					console.log("Document successfully updated!");
-				})
-				.catch(function(error) {
-					// The document probably doesn't exist.
-					console.error("Error updating document: ", error);
-				});
-				
-
-				
-			} else {
-				// doc.data() will be undefined in this case
-				console.log("No such document!");
-			}
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id).collection("sessions")
+		.doc(this.state.currentSession).update({
+			['recaps.' + id]: recap,
+			recapCounter: firebase.firestore.FieldValue.increment(1)
+		})
+		.then(function() {
+			console.log("Document successfully updated!");
 		}).catch(function(error) {
 			console.log("Error getting document:", error);
 		});
-		
-		/*
-		dbSessions.update({
-			"sessions[this.state.currentSession].recaps": firebase.firestore.FieldValue.arrayUnion(session)
-		})
-		.catch(error => {
-			console.error("Error writing document: ", error);
-		});
-		*/
 	};
 
 	render() {
 
 		let sessionsPage = this;
 
-		let sessions = Array.from(Object.keys(this.props.sessions)).map((sessionID)=>
-			<SessionItem 
-				key = {sessionID}
-				session = {this.props.sessions[sessionID]}
-				click = {() => sessionsPage.setState({currentSession: sessionID})}
-			/>
-		);
+		let sessions;
+
+		if(!this.props.sessions) {
+			sessions = <div></div>;
+		} else {
+			sessions = Array.from(Object.keys(this.props.sessions)).map((sessionID)=>
+				<SessionItem 
+					key = {sessionID}
+					session = {this.props.sessions[sessionID]}
+					click = {() => sessionsPage.setState({currentSession: sessionID})}
+				/>
+			);
+		}
 
 		let recapItems;
 
-		
-		
 
 		if(!this.state.currentSession) {
 			recapItems = <div></div>;
 		} else if(!this.props.sessions[this.state.currentSession].recaps) {
 			recapItems = <div></div>;
-		} else if(this.props.sessions[this.state.currentSession].recaps.length == 0) {
+		} else if(this.props.sessions[this.state.currentSession].recaps.length === 0) {
 			recapItems = <div></div>;	 
 		} else {
-			console.log(this.props.sessions[this.state.currentSession].recaps.length);
+			console.log(this.props.sessions[this.state.currentSession]);
 			let recapList = this.props.sessions[this.state.currentSession].recaps;
-			recapItems = recapList.map((recapItem)=>
+			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
 				<RecapItem 
-					key = {recapList.indexOf(recapItem)}
-					recapItem = {recapItem}
+					key = {recapID}
+					recapItem = {recapList[recapID]}
+					tags = {this.props.campaign.tags}
 				/>
 			);
 		}

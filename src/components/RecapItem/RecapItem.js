@@ -12,8 +12,8 @@ class RecapItem extends Component {
 		console.log(this.props.recapItem);
 
 		let tags = this.props.recapItem.tags.map((tag) =>
-			<Badge pill variant={tag.colour} key={this.props.recapItem.tags.indexOf(tag)}>
-				{tag.tag}
+			<Badge pill variant={this.props.tags[tag].colour} key={this.props.recapItem.tags.indexOf(tag)}>
+				{tag}
 			</Badge>
 		);
 		
@@ -24,7 +24,10 @@ class RecapItem extends Component {
 				</Row>
 				<Row>
 					<Col>
-						<div className="right-align">{tags}</div>
+						<div className="right-align">
+							{tags}
+							<Badge pill variant="light" className="add-tag">+</Badge>
+						</div>
 					</Col>
 				</Row>
 			</Card>

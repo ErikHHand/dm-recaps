@@ -33,7 +33,7 @@ class HomePage extends Component {
         campaignsRef.get().then((querySnapshot) => {
             let campaigns = {};
 
-            // Get all entries in the wishlist collection
+            // Get all entries in the campaign collection
             querySnapshot.forEach((doc) => {
                 campaigns[doc.id] = doc.data();
             });

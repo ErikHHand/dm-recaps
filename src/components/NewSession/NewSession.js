@@ -30,28 +30,25 @@ class NewSession extends Component {
 		let session = {
 			date: firebase.firestore.Timestamp.fromDate(this.state.date),
 			description: this.state.description,
-			recaps: []
+			recaps: {},
+			recapCounter: 0
 		};
 
-		// Add locally
 		let sessions = this.props.sessions;
-		sessions.push(session);
-		this.props.handleSessions(sessions);
 		
 		// Add to Firestore and then add locally
 		
 		let dbSessions = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id);
-		
-		console.log(dbSessions);
-
-		dbSessions.update({
-			sessions: firebase.firestore.FieldValue.arrayUnion(session)
+		.collection("campaigns").doc(this.props.id).collection("sessions").add(session)
+		.then((docRef) => {
+			console.log("Document successfully written! DocRef: ", docRef);
+			sessions[docRef.id] = session;
+			this.props.handleSessions(sessions);
 		})
 		.catch(error => {
 			console.error("Error writing document: ", error);
 		});
-		
+		console.log(dbSessions);
 	};
 	
 	onChangeDate = date => {		

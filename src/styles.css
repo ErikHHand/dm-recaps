@@ -10,6 +10,24 @@ body  {
 	/*background-color: #2f3338; */
 }
 
+.add-tag {
+	font-weight: 900 !important;
+	border-style: dashed;
+	border-width: 2px !important;
+	border-color: #30A64A;
+}
+
+.add-tag {
+	font-weight: 900 !important;
+	border-style: dashed;
+	border-width: 2px !important;
+	border-color: #30A64A;
+}
+
+.add-tag:hover {
+	background-color: #30A64A;
+	color: white;
+}
 
 .center {
     text-align: center;
