@@ -27,6 +27,7 @@ class NewCampaign extends Component {
 			name: this.state.name,
 			world: this.state.world,
 			setting: this.state.setting,
+			tags: {},
 		};
 
 		// Add locally

@@ -128,7 +128,7 @@ class SessionsPage extends Component {
 
 		const { recap, error} = this.state;
 
-		const isInvalid = recap === "";
+		const isInvalid = recap === "" || !this.state.currentSession;
 
 		return (
 			<Row>
@@ -166,7 +166,7 @@ class SessionsPage extends Component {
 					</Form>
 				</Col>
 			</Row>
-		)
+		);
 	}
 }
 

@@ -16,12 +16,17 @@ body  {
 }
 
 .container {
-	opacity: 0.95;
+	opacity: 0.97;
 	border-radius: 8px;
 }
 
 .right-align {
 	text-align: right;
+}
+
+.tag-text {
+	font-size: 1.5em;
+	font-weight: 500;
 }
 
 #sign-in-box {
