@@ -30,6 +30,7 @@ class NewSession extends Component {
 		let session = {
 			date: firebase.firestore.Timestamp.fromDate(this.state.date),
 			description: this.state.description,
+			recaps: []
 		};
 
 		// Add locally

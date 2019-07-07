@@ -113,7 +113,10 @@ class SessionsPage extends Component {
 			recapItems = <div></div>;
 		} else if(!this.props.sessions[this.state.currentSession].recaps) {
 			recapItems = <div></div>;
+		} else if(this.props.sessions[this.state.currentSession].recaps.length == 0) {
+			recapItems = <div></div>;	 
 		} else {
+			console.log(this.props.sessions[this.state.currentSession].recaps.length);
 			let recapList = this.props.sessions[this.state.currentSession].recaps;
 			recapItems = recapList.map((recapItem)=>
 				<RecapItem 
