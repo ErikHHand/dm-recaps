@@ -12,10 +12,7 @@ class TagItem extends Component {
 		
 	}
 
-	render() {
-
-		console.log(this.props);
-		
+	render() {		
 
 		return (
 			<Card body className="tag-text text-white" style={{ backgroundColor: this.props.tag.colour}}>{this.props.name}</Card>

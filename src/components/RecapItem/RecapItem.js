@@ -4,6 +4,11 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Popover from 'react-bootstrap/Popover'
+import { Form, Button } from 'react-bootstrap';
+
+import { withFirebase } from '../Firebase/Firebase';
 
 class RecapItem extends Component {
 
@@ -11,21 +16,95 @@ class RecapItem extends Component {
 		super(props);
 
 		this.state = {
-			tags: [],
+			tags: {},
 		}
 	}
 
 	componentDidMount() {
+		
+		let tags = {};
+		for (let tag in this.props.tags) {
+			tags[tag] = this.props.recapItem.tags.includes(tag);			
+		}
+
 		this.setState({
-			tags: this.props.recapItem.tags
-		})
+			tags: tags,
+		});		
 	}
 
+	onSubmit = event => {
 
+		event.preventDefault();
+
+		
+		let tags = [];
+		for (let tag in this.state.tags) {
+			if(this.state.tags[tag]){
+				tags.push(tag)
+			}	
+		}
+		console.log(tags);
+		
+		
+		// Add locally
+		let recapItem = this.props.recapItem;
+		let sessions = this.props.sessions;
+
+		sessions[this.props.currentSession].recaps[this.props.recapID].tags = tags
+		this.props.handleSessions(sessions);
+		
+		// Add to Firestore 
+		
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id).collection("sessions")
+		.doc(this.props.currentSession).update({
+			['recaps.' + this.props.recapID + '.tags']: tags,
+		})
+		.then(function() {
+			console.log("Document successfully updated!");
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
+		
+	};
+
+	onChange = event => {
+    	let tags = this.state.tags;
+		tags[event.target.name] = event.target.checked;
+		console.log(event.target.checked);
+
+		this.setState({
+			tags: tags,
+		});
+  	};
 
 	render() {
 
-		console.log(this.props.recapItem);
+		let tagValues = this.state.tags;
+
+
+		let selectTags = Array.from(Object.keys(this.props.tags)).map((tagID) => {
+
+			return (
+				<Form.Group id="formCheckbox" key={tagID} name={tagID}>
+					<Form.Check 
+						type="checkbox" 
+						label={tagID} 
+						name={tagID} 
+						checked={this.state.tags[tagID]} 
+						onChange={this.onChange}/>
+				</Form.Group>
+			)
+		});
+
+		const popover = (
+			<Popover id="popover-basic" title="Choose tags">
+				<Form onSubmit={this.onSubmit}>
+					{selectTags}
+					<Button variant="secondary" type="submit">Done</Button>
+				</Form>
+			</Popover>
+		);
 
 		let tags = this.props.recapItem.tags.map((tag) =>
 			<Badge 
@@ -47,7 +126,10 @@ class RecapItem extends Component {
 					<Col>
 						<div className="right-align">
 							{tags}
-							<Badge pill variant="light" className="add-tag">+</Badge>
+							<OverlayTrigger trigger="click" placement="right" overlay={popover}>
+								<Badge pill variant="light" className="add-tag">+</Badge>
+							</OverlayTrigger>
+							
 						</div>
 					</Col>
 				</Row>
@@ -56,4 +138,4 @@ class RecapItem extends Component {
 	}
 }
 
-export default RecapItem
+export default withFirebase(RecapItem)
