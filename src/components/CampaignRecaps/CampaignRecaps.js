@@ -99,6 +99,7 @@ class CampaignRecaps extends Component {
 							<TagsPage
 								sessions = {this.state.sessions}
 								handleCampaign = {this.handleCampaign}
+								handleSessions = {this.handleSessions}
 								id = {this.state.id}
 								campaign = {this.state.campaign}
 							/>

@@ -10,6 +10,9 @@ import Button from 'react-bootstrap/Button';
 //import Form from 'react-bootstrap/Form'
 import Badge from 'react-bootstrap/Badge'
 
+import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase'; // Ta inte bort
+
 class TagsPage extends Component {
 
 	constructor(props) {
@@ -24,7 +27,42 @@ class TagsPage extends Component {
 
 	render() {
 
-		let recapItems = <div></div>;
+		let recapItems;
+		let recapID = 1;
+
+		if(!this.state.currentTag) {
+			recapItems = <div></div>;	 
+		} else {
+
+			let sessionsRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+			.collection("campaigns").doc(this.props.id).collection("sessions");
+			
+			sessionsRef.where("recaps.0.session", "==", "7YyvD6keHo3efXkQjEcC").get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					// doc.data() is never undefined for query doc snapshots
+					console.log(doc.id, " => ", doc.data());
+				});
+			})
+			.catch(function(error) {
+				console.log("Error getting documents: ", error);
+			});
+			
+
+			//console.log(recapList);
+			/*
+			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
+				<RecapItem 
+					key = {recapID}
+					recapItem = {recapList[recapID]}
+					tags = {this.props.campaign.tags}
+					sessions = {this.props.sessions}
+					handleSessions = {this.props.handleSessions}
+					recapID = {recapID}
+					id = {this.props.id}
+				/>
+			);*/
+		}
 
 		let tagItems;
 
@@ -33,17 +71,19 @@ class TagsPage extends Component {
 		if(!this.props.campaign.tags) {
 			tagItems = <div></div>;
 		} else {
-			console.log(this.props.campaign.tags);
 			
 			tagItems = Array.from(Object.keys(this.props.campaign.tags)).map((tag)=>
 				<TagItem 
 					key = {tag}
 					name = {tag}
 					tag = {this.props.campaign.tags[tag]}
-					click = {() => tagsPage.setState({currentTag: tag})}
+					handleClick = {() => tagsPage.setState({currentTag: tag})}
 				/>
 			);
 		}
+
+		console.log(this.state.currentTag);
+		
 
 		return (
 			<Row>
@@ -68,4 +108,4 @@ class TagsPage extends Component {
 	}
 }
 
-export default TagsPage
+export default withFirebase(TagsPage)

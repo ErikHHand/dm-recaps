@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase'; // Ta inte bort
 
 class SessionsPage extends Component {
 
@@ -36,6 +36,7 @@ class SessionsPage extends Component {
 		let recap = {
 			tags: [],
 			text: this.state.recap,
+			session: this.state.currentSession,
 		};
 
 		this.setState({
@@ -53,7 +54,7 @@ class SessionsPage extends Component {
 		sessions[this.state.currentSession] = session;
 		this.props.handleSessions(sessions);
 		
-		// Add to Firestore and then add locally
+		// Add to Firestore Sessions
 		
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
 		.collection("campaigns").doc(this.props.id).collection("sessions")
@@ -88,7 +89,6 @@ class SessionsPage extends Component {
 
 		let recapItems;
 
-
 		if(!this.state.currentSession) {
 			recapItems = <div></div>;
 		} else if(!this.props.sessions[this.state.currentSession].recaps) {
@@ -105,7 +105,6 @@ class SessionsPage extends Component {
 					tags = {this.props.campaign.tags}
 					sessions = {this.props.sessions}
 					handleSessions = {this.props.handleSessions}
-					currentSession = {this.state.currentSession}
 					recapID = {recapID}
 					id = {this.state.id}
 				/>
