@@ -12,6 +12,17 @@ import Form from 'react-bootstrap/Form'
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
+String.prototype.hashCode = function() {
+	var hash = 0, i, chr;
+	if (this.length === 0) return hash;
+	for (i = 0; i < this.length; i++) {
+		chr   = this.charCodeAt(i);
+		hash  = ((hash << 5) - hash) + chr;
+		hash |= 0; // Convert to 32bit integer
+	}
+	return hash;
+};
+
 class SessionsPage extends Component {
 
 	constructor(props) {
@@ -24,19 +35,6 @@ class SessionsPage extends Component {
 			error: "",
 		};
 	}
-
-	/*
-	generateID(string) {
-		let hash = 0, i, chr;
-		if (this.length === 0) return hash;
-		for (i = 0; i < this.length; i++) {
-		  chr   = this.charCodeAt(i);
-		  hash  = ((hash << 5) - hash) + chr;
-		  hash |= 0; // Convert to 32bit integer
-		}
-		return hash;
-	}
-	*/
 
 	onChangeRecap = event => {		
     	this.setState({ recap: event.target.value });
@@ -58,10 +56,10 @@ class SessionsPage extends Component {
 		// Add locally
 		let sessions = this.props.sessions;
 		let session = sessions[this.state.currentSession];
-		let id = session.recapCounter;
+		let id = recap.text.hashCode();
 
 		session.recaps[id] = recap;
-		session.recapCounter ++;
+		//session.recapCounter ++;
 
 		sessions[this.state.currentSession] = session;
 		this.props.handleSessions(sessions);
@@ -72,7 +70,6 @@ class SessionsPage extends Component {
 		.collection("campaigns").doc(this.props.id).collection("sessions")
 		.doc(this.state.currentSession).update({
 			['recaps.' + id]: recap,
-			recapCounter: firebase.firestore.FieldValue.increment(1)
 		})
 		.then(function() {
 			console.log("Document successfully updated!");

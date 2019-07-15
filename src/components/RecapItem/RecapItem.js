@@ -79,9 +79,9 @@ class RecapItem extends Component {
 		
 		for (let tag in this.state.tags) {
 			if(this.state.tags[tag]){
-				let id = tagsCollection[tag].recapCounter;
+				let id = this.props.recapID;
 				tagsCollection[tag].recaps[id] = recapItem;
-				tagsCollection[tag].recapCounter++;
+				//tagsCollection[tag].recapCounter++;
 
 				this.props.handleTags(tagsCollection);
 				
@@ -91,7 +91,6 @@ class RecapItem extends Component {
 				.collection("campaigns").doc(this.props.id).collection("tags")
 				.doc(tag).update({
 					['recaps.' + id]: recapItem,
-					recapCounter: firebase.firestore.FieldValue.increment(1)
 				})
 				.then(function() {
 					console.log("Document successfully updated!");
