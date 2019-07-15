@@ -6,11 +6,6 @@ import Card from 'react-bootstrap/Card'
 
 class TagItem extends Component {
 
-	constructor(props) {
-		super(props);
-
-		
-	}
 
 	render() {		
 
@@ -21,7 +16,7 @@ class TagItem extends Component {
 				style={{ backgroundColor: this.props.tag.colour}}
 				onClick = {this.props.handleClick}
 			>
-				{this.props.name}
+				{this.props.tag.name}
 			</Card>
 		);
 	}

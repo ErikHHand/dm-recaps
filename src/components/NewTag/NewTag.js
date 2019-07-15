@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button } from 'react-bootstrap';
-import Select from 'react-select'
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase';
-
 
 class NewSession extends Component {
 
@@ -27,26 +24,45 @@ class NewSession extends Component {
 		event.preventDefault();
 
 		let tag = {
+			recaps: {},
+			recapCounter: 0,
+		}
+
+		let tagInfo = {
 			name: this.state.name,
 			type: this.state.type,
 			colour: this.state.colour,
 		};
-
-		// Add locally
-		let campaign = this.props.campaign;
-		campaign.tags[this.state.name] = tag;
-		this.props.handleCampaign(campaign);
 		
 		// Add to Firestore and then add locally
-		
+
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).update({
-			['tags.' + this.state.name]: tag,
-		})
-		.then(function() {
+		.collection("campaigns").doc(this.props.id).collection("tags").add(tag)
+		.then((docRef) => {
+			console.log("Document successfully written! DocRef: ", docRef);
+
+			// Add tag in campaign document
+
+			this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+			.collection("campaigns").doc(this.props.id).update({
+				['tags.' + docRef.id]: tagInfo,
+			}).then(function() {
 			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
+			}).catch(function(error) {
+				console.log("Error getting document:", error);
+			});
+
+			// Add tag locally
+			let tags = this.props.tags;
+			tags[docRef.id] = tag;
+			this.props.handleTags(tags);
+
+			let campaign = this.props.campaign;
+			campaign.tags[docRef.id] = tagInfo;
+			this.props.handleCampaign(campaign);
+		})
+		.catch(error => {
+			console.error("Error writing document: ", error);
 		});
 	};
 	
@@ -57,17 +73,11 @@ class NewSession extends Component {
 
 	render() {
 
-		const { campaign, handleCampaign, ...rest} = this.props;
+		const { campaign, handleCampaign, tags, handleTags, ...rest} = this.props;
 
 		const { name, type, colour, error } = this.state;
 
 		const isInvalid = name === "";
-
-		const options = [
-			{ value: 'chocolate', label: 'Chocolate' },
-			{ value: 'strawberry', label: 'Strawberry' },
-			{ value: 'vanilla', label: 'Vanilla' }
-		  ];
 
 		return (
 			<Modal

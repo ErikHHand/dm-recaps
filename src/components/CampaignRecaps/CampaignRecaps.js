@@ -18,20 +18,31 @@ class CampaignRecaps extends Component {
 
 		this.state = {
 			key: 'sessions',
-			campaign: this.props.location.state.campaign,
+			campaign: {},
 			sessions: {},
+			tags: {},
 			id: this.props.location.state.id,
 		};
 
 		this.handleSessions = this.handleSessions.bind(this);
 		this.handleCampaign = this.handleCampaign.bind(this);
+		this.handleTags = this.handleTags.bind(this);
 	}
 
 	componentDidMount() {
 
 		let campaign = this;
 
-        // Query for getting the wishlist collection from firestore
+		let campaignRef = this.props.firebase.db.collection("users")
+		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns")
+		.doc(this.state.id).get()
+		.then((doc) => {
+			campaign.setState({
+				campaign: doc.data(),
+			});
+		});
+
+        // Query for getting the sessions collection from firestore
         let sessionsRef = this.props.firebase.db.collection("users")
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(this.state.id)
 		.collection("sessions");
@@ -47,7 +58,27 @@ class CampaignRecaps extends Component {
             campaign.setState({
                 sessions: sessions,
 			});
-			console.log(this.state.sessions);
+						
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+		});
+		
+		// Query for getting the tags collection from firestore
+        let tagsRef = this.props.firebase.db.collection("users")
+		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(this.state.id)
+		.collection("tags");
+		
+		tagsRef.get().then((querySnapshot) => {
+            let tags = {};
+
+            // Get all entries in the sessions collection
+            querySnapshot.forEach((doc) => {
+                tags[doc.id] = doc.data();
+            });
+
+            campaign.setState({
+                tags: tags,
+			});
 						
         }).catch((error) => {
             console.log("Error getting document:", error);
@@ -65,6 +96,13 @@ class CampaignRecaps extends Component {
 		console.log(campaign);
 		this.setState({
 			campaign: campaign,
+		})
+	}
+
+	handleTags(tags) {
+		console.log(tags);
+		this.setState({
+			tags: tags,
 		})
 	}
 
@@ -90,7 +128,10 @@ class CampaignRecaps extends Component {
 						<Tab.Pane eventKey="sessions">
 							<SessionsPage
 								sessions = {this.state.sessions}
+								tags = {this.state.tags}
 								handleSessions = {this.handleSessions}
+								handleCampaign = {this.handleCampaign}
+								handleTags = {this.handleTags}
 								id = {this.state.id}
 								campaign = {this.state.campaign}
 							/>
@@ -98,8 +139,10 @@ class CampaignRecaps extends Component {
 						<Tab.Pane eventKey="tags">
 							<TagsPage
 								sessions = {this.state.sessions}
+								tags = {this.state.tags}
 								handleCampaign = {this.handleCampaign}
 								handleSessions = {this.handleSessions}
+								handleTags = {this.handleTags}
 								id = {this.state.id}
 								campaign = {this.state.campaign}
 							/>

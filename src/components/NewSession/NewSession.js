@@ -28,27 +28,46 @@ class NewSession extends Component {
 		event.preventDefault();
 
 		let session = {
-			date: firebase.firestore.Timestamp.fromDate(this.state.date),
-			description: this.state.description,
 			recaps: {},
 			recapCounter: 0
 		};
 
-		let sessions = this.props.sessions;
+		let sessionInfo = {
+			date: firebase.firestore.Timestamp.fromDate(this.state.date),
+			description: this.state.description,
+		}
 		
 		// Add to Firestore and then add locally
 		
-		let dbSessions = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
 		.collection("campaigns").doc(this.props.id).collection("sessions").add(session)
 		.then((docRef) => {
 			console.log("Document successfully written! DocRef: ", docRef);
+
+			// Add session in campaign document
+
+			this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+			.collection("campaigns").doc(this.props.id).update({
+				['sessions.' + docRef.id]: sessionInfo,
+			}).then(function() {
+			console.log("Document successfully updated!");
+			}).catch(function(error) {
+				console.log("Error getting document:", error);
+			});
+
+			// Add session locally
+
+			let sessions = this.props.sessions;
 			sessions[docRef.id] = session;
 			this.props.handleSessions(sessions);
+
+			let campaign = this.props.campaign;
+			campaign.sessions[docRef.id] = sessionInfo;
+			this.props.handleCampaign(campaign);
 		})
 		.catch(error => {
 			console.error("Error writing document: ", error);
 		});
-		console.log(dbSessions);
 	};
 	
 	onChangeDate = date => {		
@@ -62,7 +81,7 @@ class NewSession extends Component {
 
 	render() {
 
-		const { sessions, handleSessions, ...rest} = this.props;
+		const { sessions, handleSessions, campaign, handleCampaign, ...rest} = this.props;
 
 		const { date, description, error } = this.state;
 

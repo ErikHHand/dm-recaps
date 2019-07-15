@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Ta inte bort
+import * as firebase from 'firebase'; // Do not remove
 
 class SessionsPage extends Component {
 
@@ -19,12 +19,24 @@ class SessionsPage extends Component {
 
 		this.state = {
 			showAddWindow: false,
-			id: this.props.id,
 			currentSession: null,
 			recap: "",
 			error: "",
 		};
 	}
+
+	/*
+	generateID(string) {
+		let hash = 0, i, chr;
+		if (this.length === 0) return hash;
+		for (i = 0; i < this.length; i++) {
+		  chr   = this.charCodeAt(i);
+		  hash  = ((hash << 5) - hash) + chr;
+		  hash |= 0; // Convert to 32bit integer
+		}
+		return hash;
+	}
+	*/
 
 	onChangeRecap = event => {		
     	this.setState({ recap: event.target.value });
@@ -75,13 +87,13 @@ class SessionsPage extends Component {
 
 		let sessions;
 
-		if(!this.props.sessions) {
+		if(!this.props.campaign.sessions) {
 			sessions = <div></div>;
 		} else {
-			sessions = Array.from(Object.keys(this.props.sessions)).map((sessionID)=>
+			sessions = Array.from(Object.keys(this.props.campaign.sessions)).map((sessionID)=>
 				<SessionItem 
 					key = {sessionID}
-					session = {this.props.sessions[sessionID]}
+					session = {this.props.campaign.sessions[sessionID]}
 					click = {() => sessionsPage.setState({currentSession: sessionID})}
 				/>
 			);
@@ -101,12 +113,14 @@ class SessionsPage extends Component {
 			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
 				<RecapItem 
 					key = {recapID}
+					recapID = {recapID}
 					recapItem = {recapList[recapID]}
-					tags = {this.props.campaign.tags}
+					tags = {this.props.tags}
 					sessions = {this.props.sessions}
 					handleSessions = {this.props.handleSessions}
-					recapID = {recapID}
-					id = {this.state.id}
+					handleTags = {this.props.handleTags}
+					id = {this.props.id}
+					campaign = {this.props.campaign}
 				/>
 			);
 		}
@@ -127,7 +141,9 @@ class SessionsPage extends Component {
 						onHide = {() => this.setState({ showAddWindow: false })}
 						sessions = {this.props.sessions}
 						handleSessions = {this.props.handleSessions}
-						id = {this.state.id}
+						campaign = {this.props.campaign}
+						handleCampaign = {this.props.handleCampaign}
+						id = {this.props.id}
 					/>
 				</Col>
 				<Col md={9}>

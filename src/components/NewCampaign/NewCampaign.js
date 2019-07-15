@@ -27,12 +27,11 @@ class NewCampaign extends Component {
 			name: this.state.name,
 			world: this.state.world,
 			setting: this.state.setting,
+			sessions: {},
 			tags: {},
 		};
 
-		// Add locally
-		let campaigns = this.props.campaigns;
-		
+		let campaigns = this.props.campaigns;		
 
 		// Add to Firestore and then add locally
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)

@@ -75,7 +75,6 @@ class TagsPage extends Component {
 			tagItems = Array.from(Object.keys(this.props.campaign.tags)).map((tag)=>
 				<TagItem 
 					key = {tag}
-					name = {tag}
 					tag = {this.props.campaign.tags[tag]}
 					handleClick = {() => tagsPage.setState({currentTag: tag})}
 				/>
@@ -83,7 +82,6 @@ class TagsPage extends Component {
 		}
 
 		console.log(this.state.currentTag);
-		
 
 		return (
 			<Row>
@@ -95,7 +93,9 @@ class TagsPage extends Component {
 					<NewTag 
 						show = {this.state.showAddWindow}
 						onHide = {() => this.setState({ showAddWindow: false })}
+						tags = {this.props.tags}
 						campaign = {this.props.campaign}
+						handleTags = {this.props.handleTags}
 						handleCampaign = {this.props.handleCampaign}
 						id = {this.state.id}
 					/>

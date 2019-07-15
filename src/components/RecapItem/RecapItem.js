@@ -9,6 +9,8 @@ import Popover from 'react-bootstrap/Popover'
 import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase'; // Ta inte bort
+
 
 class RecapItem extends Component {
 
@@ -26,7 +28,7 @@ class RecapItem extends Component {
 	componentDidMount() {
 		
 		let tags = {};
-		for (let tag in this.props.tags) {
+		for (let tag in this.props.campaign.tags) {
 			tags[tag] = this.props.recapItem.tags.includes(tag);			
 		}
 
@@ -51,13 +53,13 @@ class RecapItem extends Component {
 			}	
 		}		
 		
-		// Add locally
+		// Add locally to sessions
 		let recapItem = this.props.recapItem;
 		let sessions = this.props.sessions;
 
 		sessions[recapItem.session].recaps[this.props.recapID].tags = tags
 		this.props.handleSessions(sessions);
-		
+
 		// Add to Firestore 
 		
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
@@ -70,7 +72,34 @@ class RecapItem extends Component {
 		}).catch(function(error) {
 			console.log("Error getting document:", error);
 		});
+
+		// Add locally to tags and to Firestore
+		let tagsCollection = this.props.tags;
+		recapItem.tags = tags;
 		
+		for (let tag in this.state.tags) {
+			if(this.state.tags[tag]){
+				let id = tagsCollection[tag].recapCounter;
+				tagsCollection[tag].recaps[id] = recapItem;
+				tagsCollection[tag].recapCounter++;
+
+				this.props.handleTags(tagsCollection);
+				
+				// Add to Firestore Tags
+				
+				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+				.collection("campaigns").doc(this.props.id).collection("tags")
+				.doc(tag).update({
+					['recaps.' + id]: recapItem,
+					recapCounter: firebase.firestore.FieldValue.increment(1)
+				})
+				.then(function() {
+					console.log("Document successfully updated!");
+				}).catch(function(error) {
+					console.log("Error getting document:", error);
+				});
+			}	
+		}
 	};
 
 	onChange = event => {
@@ -84,17 +113,14 @@ class RecapItem extends Component {
 
 	render() {
 
-		let tagValues = this.state.tags;
-
 		const { showTagOverlay, target } = this.state;
 
-		let selectTags = Array.from(Object.keys(this.props.tags)).map((tagID) => {
-
+		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
 			return (
 				<Form.Group id="formCheckbox" key={tagID} name={tagID}>
 					<Form.Check 
 						type="checkbox" 
-						label={tagID} 
+						label={this.props.campaign.tags[tagID].name} 
 						name={tagID} 
 						checked={this.state.tags[tagID]} 
 						onChange={this.onChange}/>
@@ -102,23 +128,14 @@ class RecapItem extends Component {
 			)
 		});
 
-		const popover = (
-			<Popover id="popover-basic" title="Choose tags">
-				<Form onSubmit={this.onSubmit}>
-					{selectTags}
-					<Button variant="secondary" type="submit">Done</Button>
-				</Form>
-			</Popover>
-		);
-
-		let tags = this.props.recapItem.tags.map((tag) =>
+		let tags = this.props.recapItem.tags.map((tagID) =>
 			<Badge 
 				pill 
-				style={{ backgroundColor: this.props.tags[tag].colour}} 
-				key={this.props.recapItem.tags.indexOf(tag)}
+				style={{ backgroundColor: this.props.campaign.tags[tagID].colour}} 
+				key={this.props.recapItem.tags.indexOf(tagID)}
 				className="text-white"
 			>
-				{tag}
+				{this.props.campaign.tags[tagID].name}
 			</Badge>
 		);
 		
