@@ -90,7 +90,15 @@ class SessionsPage extends Component {
 		if(!this.props.campaign.sessions) {
 			sessions = <div></div>;
 		} else {
-			sessions = Array.from(Object.keys(this.props.campaign.sessions)).map((sessionID)=>
+
+			// Sort keys in date order
+			let sortedKeys = Object.keys(this.props.campaign.sessions).sort((a, b) => {				
+				return this.props.campaign.sessions[b].date.toDate() - this.props.campaign.sessions[a].date.toDate();
+			});
+
+			console.log(sortedKeys);
+
+			sessions = sortedKeys.map((sessionID)=>
 				<SessionItem 
 					key = {sessionID}
 					session = {this.props.campaign.sessions[sessionID]}
