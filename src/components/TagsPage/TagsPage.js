@@ -28,40 +28,25 @@ class TagsPage extends Component {
 	render() {
 
 		let recapItems;
-		let recapID = 1;
 
 		if(!this.state.currentTag) {
 			recapItems = <div></div>;	 
 		} else {
-
-			let sessionsRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-			.collection("campaigns").doc(this.props.id).collection("sessions");
-			
-			sessionsRef.where("recaps.0.session", "==", "7YyvD6keHo3efXkQjEcC").get()
-			.then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					// doc.data() is never undefined for query doc snapshots
-					console.log(doc.id, " => ", doc.data());
-				});
-			})
-			.catch(function(error) {
-				console.log("Error getting documents: ", error);
-			});
-			
-
-			//console.log(recapList);
-			/*
+			//console.log(this.props.sessions[this.state.currentSession]);
+			let recapList = this.props.tags[this.state.currentTag].recaps;
 			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
 				<RecapItem 
 					key = {recapID}
+					recapID = {recapID}
 					recapItem = {recapList[recapID]}
-					tags = {this.props.campaign.tags}
+					tags = {this.props.tags}
 					sessions = {this.props.sessions}
 					handleSessions = {this.props.handleSessions}
-					recapID = {recapID}
+					handleTags = {this.props.handleTags}
 					id = {this.props.id}
+					campaign = {this.props.campaign}
 				/>
-			);*/
+			);
 		}
 
 		let tagItems;
