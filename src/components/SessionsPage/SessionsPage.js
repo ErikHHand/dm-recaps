@@ -96,8 +96,6 @@ class SessionsPage extends Component {
 				return this.props.campaign.sessions[b].date.toDate() - this.props.campaign.sessions[a].date.toDate();
 			});
 
-			console.log(sortedKeys);
-
 			sessions = sortedKeys.map((sessionID)=>
 				<SessionItem 
 					key = {sessionID}
