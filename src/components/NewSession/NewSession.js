@@ -29,7 +29,6 @@ class NewSession extends Component {
 
 		let session = {
 			recaps: {},
-			recapCounter: 0
 		};
 
 		let sessionInfo = {

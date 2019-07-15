@@ -25,7 +25,6 @@ class NewSession extends Component {
 
 		let tag = {
 			recaps: {},
-			recapCounter: 0,
 		}
 
 		let tagInfo = {
