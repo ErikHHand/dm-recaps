@@ -71,8 +71,12 @@ class TagsPage extends Component {
 		if(!this.props.campaign.tags) {
 			tagItems = <div></div>;
 		} else {
+			// Sort keys in date order
+			let sortedKeys = Object.keys(this.props.campaign.tags).sort((a, b) => {				
+				return this.props.campaign.tags[b].created.toDate() - this.props.campaign.tags[a].created.toDate();
+			});
 			
-			tagItems = Array.from(Object.keys(this.props.campaign.tags)).map((tag)=>
+			tagItems = sortedKeys.map((tag)=>
 				<TagItem 
 					key = {tag}
 					tag = {this.props.campaign.tags[tag]}

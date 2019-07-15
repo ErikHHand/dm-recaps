@@ -32,6 +32,7 @@ class NewSession extends Component {
 			name: this.state.name,
 			type: this.state.type,
 			colour: this.state.colour,
+			created: new Date(),
 		};
 		
 		// Add to Firestore and then add locally
