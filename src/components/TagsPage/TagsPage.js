@@ -32,7 +32,6 @@ class TagsPage extends Component {
 		if(!this.state.currentTag) {
 			recapItems = <div></div>;	 
 		} else {
-			//console.log(this.props.sessions[this.state.currentSession]);
 			let recapList = this.props.tags[this.state.currentTag].recaps;
 			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
 				<RecapItem 
