@@ -17,7 +17,6 @@ class App extends Component {
 	
 	
   	render() {
-		console.log(process.env.REACT_APP_DATABASE_URL);
 		return (
 			<div className="App">
 				<Navbar variant="dark">
