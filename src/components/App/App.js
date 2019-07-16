@@ -10,9 +10,14 @@ import { Navbar, Col } from 'react-bootstrap';
 import './App.css';
 import './../../styles.css';
 
+require('dotenv').config()
+
 class App extends Component {
 
+	
+	
   	render() {
+		console.log(process.env.REACT_APP_DATABASE_URL);
 		return (
 			<div className="App">
 				<Navbar variant="dark">
