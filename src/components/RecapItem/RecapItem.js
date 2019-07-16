@@ -156,8 +156,15 @@ class RecapItem extends Component {
 							>
 								+
 							</Badge>
-							<Overlay target={target} show={showTagOverlay} placement="right">
-								{props => (
+							<Overlay target={target} show={showTagOverlay ? true : false} placement="right">
+								{({
+									placement,
+									scheduleUpdate,
+									arrowProps,
+									outOfBoundaries,
+									show: _show,
+									...props
+								}) => (
 									<Popover id="popover-basic" title="Choose tags" {...props}>
 										<Form onSubmit={this.onSubmit}>
 											{selectTags}
