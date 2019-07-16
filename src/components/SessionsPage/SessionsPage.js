@@ -111,7 +111,7 @@ class SessionsPage extends Component {
 		} else if(this.props.sessions[this.state.currentSession].recaps.length === 0) {
 			recapItems = <div></div>;	 
 		} else {
-			//console.log(this.props.sessions[this.state.currentSession]);
+			console.log(this.props.sessions[this.state.currentSession]);
 			let recapList = this.props.sessions[this.state.currentSession].recaps;
 			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
 				<RecapItem 

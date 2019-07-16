@@ -11,6 +11,8 @@ import App from './components/App/App';
 import Firebase, { FirebaseContext } from './components/Firebase/Firebase';
 
 
+require('dotenv').config()
+
 ReactDOM.render(
 	<FirebaseContext.Provider value={new Firebase()}>
 		<BrowserRouter>
