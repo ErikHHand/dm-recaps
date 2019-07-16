@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase'; // Do not remove
 
 class NewSession extends Component {
 
@@ -31,7 +32,7 @@ class NewSession extends Component {
 			name: this.state.name,
 			type: this.state.type,
 			colour: this.state.colour,
-			created: new Date(),
+			created: firebase.firestore.Timestamp.fromDate(new Date()),
 		};
 		
 		// Add to Firestore and then add locally
