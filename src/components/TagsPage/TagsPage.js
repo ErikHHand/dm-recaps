@@ -73,7 +73,7 @@ class TagsPage extends Component {
 
 		return (
 			<Row>
-				<Col md={3}>
+				<Col md={3} className="overflow-scroll">
 					{tagItems}
 					<div className="center">
 						<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>New Tag</Button>
@@ -88,7 +88,7 @@ class TagsPage extends Component {
 						id = {this.state.id}
 					/>
 				</Col>
-				<Col md={9}>
+				<Col md={9} className="overflow-scroll">
 					{recapItems}
 				</Col>
 			</Row>

@@ -134,7 +134,7 @@ class SessionsPage extends Component {
 
 		return (
 			<Row>
-				<Col md={3}>
+				<Col md={3} className="overflow-scroll">
 					{sessions}
 					<div className="center">
 						<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>New Session</Button>
@@ -149,7 +149,7 @@ class SessionsPage extends Component {
 						id = {this.props.id}
 					/>
 				</Col>
-				<Col md={9}>
+				<Col md={9} className="overflow-scroll">
 					{recapItems}
 					<Form onSubmit={this.onSubmit}>
 						<Form.Group controlId="formRecap">

@@ -36,8 +36,8 @@ body  {
 .container {
 	opacity: 0.97;
 	border-radius: 8px;
+	height: 90vh;
 }
-
 
 .item-menu {
 	font-size: 18pt;
@@ -48,6 +48,11 @@ body  {
 
 .item-menu:hover {
 	color: rgba(151, 146, 146, 0.835);
+}
+
+.overflow-scroll {
+	overflow: scroll;
+	max-height: 75vh;
 }
 
 .recap-body {
