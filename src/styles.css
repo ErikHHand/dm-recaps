@@ -38,8 +38,32 @@ body  {
 	border-radius: 8px;
 }
 
+
+.item-menu {
+	font-size: 18pt;
+	color: rgba(151, 146, 146, 0.424);
+	cursor: pointer;
+	line-height: 0.5em;
+}
+
+.item-menu:hover {
+	color: rgba(151, 146, 146, 0.835);
+}
+
+.recap-body {
+	padding: 0.6em 1em 0.6em 1em !important;
+}
+
 .right-align {
 	text-align: right;
+}
+
+.session-info {
+	
+}
+
+.tag {
+	padding: 0.2rem !important;
 }
 
 .tag-text {

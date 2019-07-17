@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import ItemMenu from '../ItemMenu/ItemMenu';
+
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -62,7 +64,7 @@ class RecapItem extends Component {
 		sessions[recapItem.session].recaps[this.props.recapID].tags = tags
 		this.props.handleSessions(sessions);
 
-		// Add to Firestore 
+		// Add to Firestore Sessions
 		
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
 		.collection("campaigns").doc(this.props.id).collection("sessions")
@@ -157,43 +159,55 @@ class RecapItem extends Component {
 		);
 		
 		return (
-			<Card body onClick = {this.props.click}>
-				<Row>
-					<Col>{this.props.recapItem.text}</Col>
-				</Row>
-				<Row>
-					<Col>
-						<div className="right-align">
-							{tags}
-							<Badge 
-								pill 
-								variant="light" 
-								className="add-tag" 
-								onClick={() => this.setState({ showTagOverlay: !showTagOverlay })}
-								ref={this.attachRef}
-							>
-								+
-							</Badge>
-							<Overlay target={target} show={showTagOverlay ? true : false} placement="right">
-								{({
-									placement,
-									scheduleUpdate,
-									arrowProps,
-									outOfBoundaries,
-									show: _show,
-									...props
-								}) => (
-									<Popover id="popover-basic" title="Choose tags" {...props}>
-										<Form onSubmit={this.onSubmit}>
-											{selectTags}
-											<Button variant="secondary" type="submit">Done</Button>
-										</Form>
-									</Popover>
-								)}
-							</Overlay>
-						</div>
-					</Col>
-				</Row>
+			<Card onClick = {this.props.click}>
+				<Card.Body className="recap-body">
+					<Row>
+						<Col>
+						</Col>
+						<Col xs="auto" className="session-info">
+							
+						</Col>
+						<Col xs="1">
+							<ItemMenu/>
+						</Col>
+					</Row>
+					<Row>
+						<Col>{this.props.recapItem.text}</Col>
+					</Row>
+					<Row>
+						<Col>
+							<div className="right-align">
+								{tags}
+								<Badge 
+									pill 
+									variant="light" 
+									className="add-tag" 
+									onClick={() => this.setState({ showTagOverlay: !showTagOverlay })}
+									ref={this.attachRef}
+								>
+									+
+								</Badge>
+								<Overlay target={target} show={showTagOverlay ? true : false} placement="right">
+									{({
+										placement,
+										scheduleUpdate,
+										arrowProps,
+										outOfBoundaries,
+										show: _show,
+										...props
+									}) => (
+										<Popover id="popover-basic" title="Choose tags" {...props}>
+											<Form onSubmit={this.onSubmit}>
+												{selectTags}
+												<Button variant="secondary" type="submit">Done</Button>
+											</Form>
+										</Popover>
+									)}
+								</Overlay>
+							</div>
+						</Col>
+					</Row>
+				</Card.Body>
 			</Card>
 		)
 	}
