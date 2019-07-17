@@ -53,6 +53,8 @@ class RecapItem extends Component {
 			}	
 		}		
 		
+		let previousTags = this.props.recapItem.tags;
+		
 		// Add locally to sessions
 		let recapItem = this.props.recapItem;
 		let sessions = this.props.sessions;
@@ -76,13 +78,13 @@ class RecapItem extends Component {
 		// Add locally to tags and to Firestore
 		let tagsCollection = this.props.tags;
 		recapItem.tags = tags;
+		let id = this.props.recapID;
 		
 		for (let tag in this.state.tags) {
-			if(this.state.tags[tag]){
-				let id = this.props.recapID;
-				tagsCollection[tag].recaps[id] = recapItem;
-				//tagsCollection[tag].recapCounter++;
 
+			if(this.state.tags[tag] && !previousTags.includes(tag)){
+				
+				tagsCollection[tag].recaps[id] = recapItem;
 				this.props.handleTags(tagsCollection);
 				
 				// Add to Firestore Tags
@@ -96,6 +98,22 @@ class RecapItem extends Component {
 					console.log("Document successfully updated!");
 				}).catch(function(error) {
 					console.log("Error getting document:", error);
+				});
+			}
+			else if(!this.state.tags[tag] && previousTags.includes(tag)) {
+
+				delete tagsCollection[tag].recaps[id];
+				this.props.handleTags(tagsCollection);
+
+				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+				.collection("campaigns").doc(this.props.id).collection("tags")
+				.doc(tag).update({
+					['recaps.' + id]: firebase.firestore.FieldValue.delete(),
+				})
+				.then(function() {
+					console.log("Document successfully deleted!");
+				}).catch(function(error) {
+					console.log("Error deleting field:", error);
 				});
 			}	
 		}
