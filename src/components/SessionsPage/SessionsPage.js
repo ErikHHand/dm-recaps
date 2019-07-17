@@ -165,7 +165,7 @@ class SessionsPage extends Component {
 						<Button variant="success" type="submit" disabled={isInvalid}>
 							Submit
 						</Button>
-
+						<p hidden={this.state.currentSession}>Click a session before writing a recap!</p>
 						{error && <p>{error.message}</p>}
 					</Form>
 				</Col>
