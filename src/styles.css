@@ -59,7 +59,9 @@ body  {
 }
 
 .session-info {
-	
+	font-size: 0.9em;
+	color: rgba(151, 146, 146, 0.835);
+	font-style: italic;
 }
 
 .tag {

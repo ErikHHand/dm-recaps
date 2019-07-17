@@ -157,6 +157,8 @@ class RecapItem extends Component {
 				{this.props.campaign.tags[tagID].name}
 			</Badge>
 		);
+
+		let date = new Date(this.props.campaign.sessions[this.props.recapItem.session].date.seconds * 1000)
 		
 		return (
 			<Card onClick = {this.props.click}>
@@ -165,7 +167,9 @@ class RecapItem extends Component {
 						<Col>
 						</Col>
 						<Col xs="auto" className="session-info">
-							
+							{date.toDateString()}
+							&emsp;
+							{this.props.campaign.sessions[this.props.recapItem.session].description}
 						</Col>
 						<Col xs="1">
 							<ItemMenu/>
