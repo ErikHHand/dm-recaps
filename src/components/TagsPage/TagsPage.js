@@ -23,6 +23,14 @@ class TagsPage extends Component {
 			id: this.props.id,
 			currentTag: null,
 		};
+
+		this.handleCurrentTag = this.handleCurrentTag.bind(this);
+	}
+
+	handleCurrentTag(tagID) {
+		this.setState({
+			currentTag: tagID,
+		})
 	}
 
 	render() {
@@ -30,6 +38,8 @@ class TagsPage extends Component {
 		let recapItems;
 
 		if(!this.state.currentTag) {
+			recapItems = <div></div>;
+		} else if(!this.props.tags[this.state.currentTag]) {
 			recapItems = <div></div>;	 
 		} else {
 			let recapList = this.props.tags[this.state.currentTag].recaps;
@@ -63,8 +73,17 @@ class TagsPage extends Component {
 			tagItems = sortedKeys.map((tag)=>
 				<TagItem 
 					key = {tag}
+					tagID = {tag}
 					tag = {this.props.campaign.tags[tag]}
+					sessions = {this.props.sessions}
+					tags = {this.props.tags}
+					campaign = {this.props.campaign}
+					handleSessions = {this.props.handleSessions}
+					handleTags = {this.props.handleTags}
+					handleCampaign = {this.props.handleCampaign}
+					handleCurrentTag = {this.handleCurrentTag}
 					handleClick = {() => tagsPage.setState({currentTag: tag})}
+					id = {this.state.id}
 				/>
 			);
 		}

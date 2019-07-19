@@ -48,6 +48,7 @@ class SessionItem extends Component {
 
 		this.props.handleTags(tags);
 
+		
 		// Delete session recaps locally
 
 		let sessions = this.props.sessions;
@@ -55,6 +56,7 @@ class SessionItem extends Component {
 		this.props.handleSessions(sessions);
 
 		// Delete session recaps on Firestore
+
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
 		.collection("campaigns").doc(this.props.id).collection("sessions")
 		.doc(this.props.sessionID).delete()
