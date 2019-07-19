@@ -25,6 +25,8 @@ class RecapItem extends Component {
 			tags: {},
 			showTagOverlay: false,
 		}
+
+		this.deleteRecap = this.deleteRecap.bind(this);
 	}
 
 	componentDidMount() {
@@ -128,7 +130,54 @@ class RecapItem extends Component {
 		this.setState({
 			tags: tags,
 		});
-  	};
+	};
+	  
+	deleteRecap() {
+
+		// Delete recap locally in session
+		let sessions = this.props.sessions;
+		delete sessions[this.props.recapItem.session].recaps[this.props.recapID];
+		this.props.handleSessions(sessions);
+
+		// Delete recap on Firestore sessions
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id).collection("sessions")
+		.doc(this.props.recapItem.session).update({
+			['recaps.' + this.props.recapID]: firebase.firestore.FieldValue.delete(),
+		})
+		.then(function() {
+			console.log("Document successfully deleted!");
+		}).catch(function(error) {
+			console.log("Error deleting document:", error);
+		});
+
+
+		// Delete recaps from tags locally and on firestore
+
+		let tags = this.props.tags;
+		this.props.recapItem.tags.forEach(tag => {
+			
+			// Delete locally
+			delete tags[tag].recaps[this.props.recapID];
+
+			// Delete on firestore
+
+			this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+			.collection("campaigns").doc(this.props.id).collection("tags")
+			.doc(tag).update({
+				["recaps." + this.props.recapID]: firebase.firestore.FieldValue.delete(),
+			})
+			.then(function() {
+				console.log("Document successfully deleted!");
+			}).catch(function(error) {
+				console.log("Error deleting document:", error);
+			});
+		});
+		
+
+		this.props.handleTags(tags);
+
+	}
 
 	render() {
 
@@ -178,6 +227,7 @@ class RecapItem extends Component {
 						</Col>
 						<Col xs="1">
 							<ItemMenu
+								delete = {this.deleteRecap}
 								deleteText = {deleteText}
 							/>
 						</Col>
