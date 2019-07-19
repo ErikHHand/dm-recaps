@@ -86,7 +86,7 @@ class RecapItem extends Component {
 		
 		for (let tag in this.state.tags) {
 
-			if(this.state.tags[tag] && !previousTags.includes(tag)){
+			if(this.state.tags[tag]){
 				
 				tagsCollection[tag].recaps[id] = recapItem;
 				this.props.handleTags(tagsCollection);
