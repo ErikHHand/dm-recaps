@@ -97,7 +97,9 @@ class SessionsPage extends Component {
 				<SessionItem 
 					key = {sessionID}
 					session = {this.props.campaign.sessions[sessionID]}
+					campaign = {this.props.campaign}
 					click = {() => sessionsPage.setState({currentSession: sessionID})}
+					handleCampaign = {this.props.handleCampaign}
 				/>
 			);
 		}

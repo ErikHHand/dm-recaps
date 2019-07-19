@@ -132,6 +132,11 @@ class RecapItem extends Component {
 
 	render() {
 
+		const deleteText = {
+			title: "Delete Recap",
+			text: "Are you sure you want to delete this recap?"
+		}
+
 		const { showTagOverlay, target } = this.state;
 
 		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
@@ -172,7 +177,9 @@ class RecapItem extends Component {
 							{this.props.campaign.sessions[this.props.recapItem.session].description}
 						</Col>
 						<Col xs="1">
-							<ItemMenu/>
+							<ItemMenu
+								deleteText = {deleteText}
+							/>
 						</Col>
 					</Row>
 					<Row>

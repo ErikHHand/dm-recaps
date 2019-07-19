@@ -8,7 +8,25 @@ import Col from 'react-bootstrap/Col'
 
 class SessionItem extends Component {
 
+	constructor(props) {
+		super(props);
+
+		this.deleteSession = this.deleteSession.bind(this);
+	}
+
+	deleteSession() {
+
+		console.log("Deleting...");
+		
+		// Delete locally
+	}
+
 	render() {
+
+		const deleteText = {
+			title: "Delete Session",
+			text: "Are you sure you want to delete this session and all recaps written for it?"
+		}
 
 		let date = this.props.session.date;
 		date = new Date(date.seconds * 1000);		
@@ -22,7 +40,10 @@ class SessionItem extends Component {
 								{date.toDateString()} 
 							</Col>
 							<Col md="3" className="center">
-								<ItemMenu/>
+								<ItemMenu
+									delete = {this.deleteSession}
+									deleteText = {deleteText}
+								/>
 							</Col>
 						</Row>
 					</Card.Title>

@@ -8,7 +8,12 @@ import Col from 'react-bootstrap/Col'
 
 class TagItem extends Component {
 
-	render() {		
+	render() {	
+		
+		const deleteText = {
+			title: "Delete Tag",
+			text: "Are you sure you want to delete this session and remove it from all recaps?"
+		}
 
 		return (
 			<Card 
@@ -22,7 +27,9 @@ class TagItem extends Component {
 							<Col xs="9">
 							</Col>
 							<Col xs="3" className="center">
-								<ItemMenu/>
+								<ItemMenu
+									deleteText = {deleteText}
+								/>
 							</Col>
 						</Row>
 					</Card.Subtitle>
