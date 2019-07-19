@@ -6,6 +6,9 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase'; // Do not remove
+
 class SessionItem extends Component {
 
 	constructor(props) {
@@ -15,10 +18,24 @@ class SessionItem extends Component {
 	}
 
 	deleteSession() {
-
-		console.log("Deleting...");
 		
-		// Delete locally
+		// Delete session info locally
+
+		let campaign = this.props.campaign;
+		delete campaign.sessions[this.props.sessionID];
+		this.props.handleCampaign(campaign);
+
+		// Delete session info on Firestore
+
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id).update({
+			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
+		})
+		.then(function() {
+			console.log("Document successfully deleted!");
+		}).catch(function(error) {
+			console.log("Error deleting document:", error);
+		});
 	}
 
 	render() {
@@ -54,4 +71,4 @@ class SessionItem extends Component {
 	}
 }
 
-export default SessionItem
+export default withFirebase(SessionItem)

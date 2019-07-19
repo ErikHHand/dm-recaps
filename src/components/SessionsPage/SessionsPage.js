@@ -80,6 +80,9 @@ class SessionsPage extends Component {
 
 	render() {
 
+		console.log(this.props.campaign);
+		
+
 		let sessionsPage = this;
 
 		let sessions;
@@ -96,10 +99,16 @@ class SessionsPage extends Component {
 			sessions = sortedKeys.map((sessionID)=>
 				<SessionItem 
 					key = {sessionID}
+					sessionID = {sessionID}
 					session = {this.props.campaign.sessions[sessionID]}
+					sessions = {this.props.sessions}
+					tags = {this.props.tags}
 					campaign = {this.props.campaign}
-					click = {() => sessionsPage.setState({currentSession: sessionID})}
+					handleSessions = {this.props.handleSessions}
+					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
+					id = {this.props.id}
+					click = {() => sessionsPage.setState({currentSession: sessionID})}
 				/>
 			);
 		}
