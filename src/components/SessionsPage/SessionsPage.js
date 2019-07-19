@@ -34,6 +34,8 @@ class SessionsPage extends Component {
 			recap: "",
 			error: "",
 		};
+
+		this.handleCurrentSession = this.handleCurrentSession.bind(this);
 	}
 
 	onChangeRecap = event => {		
@@ -78,10 +80,13 @@ class SessionsPage extends Component {
 		});
 	};
 
-	render() {
+	handleCurrentSession(sessionID) {
+		this.setState({
+			currentSession: sessionID,
+		})
+	}
 
-		console.log(this.props.campaign);
-		
+	render() {		
 
 		let sessionsPage = this;
 
@@ -107,22 +112,26 @@ class SessionsPage extends Component {
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
+					handleCurrentSession = {this.handleCurrentSession}
 					id = {this.props.id}
-					click = {() => sessionsPage.setState({currentSession: sessionID})}
+					click = {() => this.setState({currentSession: sessionID})}
 				/>
 			);
 		}
 
 		let recapItems;
 
+		console.log(this.state.currentSession);
+		console.log(this.props.sessions);
+		console.log(this.props.campaign.tags);
+
 		if(!this.state.currentSession) {
 			recapItems = <div></div>;
-		} else if(!this.props.sessions[this.state.currentSession].recaps) {
+		} else if(!this.props.sessions[this.state.currentSession]) {
 			recapItems = <div></div>;
 		} else if(this.props.sessions[this.state.currentSession].recaps.length === 0) {
 			recapItems = <div></div>;	 
 		} else {
-			console.log(this.props.sessions[this.state.currentSession]);
 			let recapList = this.props.sessions[this.state.currentSession].recaps;
 			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
 				<RecapItem 

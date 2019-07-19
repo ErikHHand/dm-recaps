@@ -107,7 +107,7 @@ class CampaignRecaps extends Component {
 	}
 
 	render() {
-		console.log(this.state.campaign);
+		//console.log(this.state.campaign);
 		return (
 			<Jumbotron fluid className="container">
 				<Tab.Container defaultActiveKey="sessions">

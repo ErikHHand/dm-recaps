@@ -69,8 +69,6 @@ class TagsPage extends Component {
 			);
 		}
 
-		console.log(this.state.currentTag);
-
 		return (
 			<Row>
 				<Col md={3} className="overflow-scroll">

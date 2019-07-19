@@ -18,7 +18,53 @@ class SessionItem extends Component {
 	}
 
 	deleteSession() {
-		
+
+		// Set current session to null
+		this.props.handleCurrentSession(null);
+
+		// Delete recaps from tags locally and on firestore
+
+		let tags = this.props.tags;
+		for(let recap in this.props.sessions[this.props.sessionID].recaps) {
+			this.props.sessions[this.props.sessionID].recaps[recap].tags.forEach(tag => {
+				
+				// Delete locally
+				delete tags[tag].recaps[recap];
+
+				// Delete on firestore
+
+				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+				.collection("campaigns").doc(this.props.id).collection("tags")
+				.doc(tag).update({
+					["recaps." + recap]: firebase.firestore.FieldValue.delete(),
+				})
+				.then(function() {
+					console.log("Document successfully deleted!");
+				}).catch(function(error) {
+					console.log("Error deleting document:", error);
+				});
+			});
+		}
+
+		this.props.handleTags(tags);
+
+		// Delete session recaps locally
+
+		let sessions = this.props.sessions;
+		delete sessions[this.props.sessionID];
+		this.props.handleSessions(sessions);
+
+		// Delete session recaps on Firestore
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id).collection("sessions")
+		.doc(this.props.sessionID).delete()
+		.then(function() {
+			console.log("Document successfully deleted!");
+		}).catch(function(error) {
+			console.log("Error deleting document:", error);
+		});
+
+
 		// Delete session info locally
 
 		let campaign = this.props.campaign;
