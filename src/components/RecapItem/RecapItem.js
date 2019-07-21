@@ -133,8 +133,8 @@ class RecapItem extends Component {
 		}
 	};
 
-	onChangeText = event => {		
-    	this.setState({ text: event.target.value });
+	onChangeText = event => {
+		this.setState({ text: event.target.value });
 	};
 
 	onChange = event => {
@@ -210,13 +210,16 @@ class RecapItem extends Component {
 		let recapItem = this;
 
 		let editField = (
-			<Form onSubmit={this.onSubmit}>
+			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
 				<Form.Group controlId="formEditRecap">
 					<Form.Control 
 						name="text"
 						value={this.state.text}
+						onKeyDown={(event) => {if(event.keyCode === 13) recapItem.form.dispatchEvent(new Event('submit'))}}
 						onChange={this.onChangeText}
 						type="text"
+						as="textarea"
+						autoFocus
 					/>
 				</Form.Group>
 			</Form>
