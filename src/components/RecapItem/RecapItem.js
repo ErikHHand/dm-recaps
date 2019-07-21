@@ -24,9 +24,11 @@ class RecapItem extends Component {
 		this.state = {
 			tags: {},
 			showTagOverlay: false,
+			edit: false,
 		}
 
 		this.deleteRecap = this.deleteRecap.bind(this);
+		this.editRecap = this.editRecap.bind(this);
 	}
 
 	componentDidMount() {
@@ -39,6 +41,7 @@ class RecapItem extends Component {
 		this.setState({
 			tags: tags,
 			showTagOverlay: false,
+			text: this.props.recapItem.text,
 		});		
 	}
 
@@ -48,22 +51,31 @@ class RecapItem extends Component {
 
 		this.setState({
 			showTagOverlay: false,
+			edit: false,
 		});
+
+		let previousTags = this.props.recapItem.tags;
+		let id = this.props.recapID;
 		
 		let tags = [];
 		for (let tag in this.state.tags) {
 			if(this.state.tags[tag]){
 				tags.push(tag)
 			}	
-		}		
+		}	
+		let text = this.state.text;
 		
-		let previousTags = this.props.recapItem.tags;
+		// Update recap Item
+
+		let recapItem = this.props.recapItem;
+		recapItem.tags = tags;
+		recapItem.text = text;
+		
 		
 		// Add locally to sessions
-		let recapItem = this.props.recapItem;
+		
 		let sessions = this.props.sessions;
-
-		sessions[recapItem.session].recaps[this.props.recapID].tags = tags
+		sessions[recapItem.session].recaps[this.props.recapID] = recapItem
 		this.props.handleSessions(sessions);
 
 		// Add to Firestore Sessions
@@ -71,7 +83,7 @@ class RecapItem extends Component {
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
 		.collection("campaigns").doc(this.props.id).collection("sessions")
 		.doc(recapItem.session).update({
-			['recaps.' + this.props.recapID + '.tags']: tags,
+			['recaps.' + id]: recapItem,
 		})
 		.then(function() {
 			console.log("Document successfully updated!");
@@ -81,8 +93,6 @@ class RecapItem extends Component {
 
 		// Add locally to tags and to Firestore
 		let tagsCollection = this.props.tags;
-		recapItem.tags = tags;
-		let id = this.props.recapID;
 		
 		for (let tag in this.state.tags) {
 
@@ -123,6 +133,10 @@ class RecapItem extends Component {
 		}
 	};
 
+	onChangeText = event => {		
+    	this.setState({ text: event.target.value });
+	};
+
 	onChange = event => {
     	let tags = this.state.tags;
 		tags[event.target.name] = event.target.checked;
@@ -131,6 +145,12 @@ class RecapItem extends Component {
 			tags: tags,
 		});
 	};
+
+	editRecap() {
+		this.setState({
+			edit: true,
+		});
+	}
 	  
 	deleteRecap() {
 
@@ -189,6 +209,19 @@ class RecapItem extends Component {
 
 		let recapItem = this;
 
+		let editField = (
+			<Form onSubmit={this.onSubmit}>
+				<Form.Group controlId="formEditRecap">
+					<Form.Control 
+						name="text"
+						value={this.state.text}
+						onChange={this.onChangeText}
+						type="text"
+					/>
+				</Form.Group>
+			</Form>
+		);
+
 		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
 			return (
 				<Form.Group id="formCheckbox" key={tagID} name={tagID}>
@@ -229,13 +262,14 @@ class RecapItem extends Component {
 						</Col>
 						<Col xs="1">
 							<ItemMenu
+								edit = {this.editRecap}
 								delete = {this.deleteRecap}
 								deleteText = {deleteText}
 							/>
 						</Col>
 					</Row>
 					<Row>
-						<Col>{this.props.recapItem.text}</Col>
+						<Col>{this.state.edit ? editField : this.props.recapItem.text}</Col>
 					</Row>
 					<Row>
 						<Col>

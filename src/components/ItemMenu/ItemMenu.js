@@ -56,7 +56,7 @@ class ItemMenu extends Component {
 				<Dropdown>
 					<Dropdown.Toggle as={CustomToggle} />
 					<Dropdown.Menu>
-						<Dropdown.Item >Edit</Dropdown.Item>
+						<Dropdown.Item onClick={this.props.edit}>Edit</Dropdown.Item>
 						<Dropdown.Item onClick={this.showDeleteWindow}>Delete</Dropdown.Item>
 					</Dropdown.Menu>
 				</Dropdown>
