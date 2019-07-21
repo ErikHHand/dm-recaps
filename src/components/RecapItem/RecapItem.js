@@ -173,7 +173,6 @@ class RecapItem extends Component {
 				console.log("Error deleting document:", error);
 			});
 		});
-		
 
 		this.props.handleTags(tags);
 
@@ -188,6 +187,8 @@ class RecapItem extends Component {
 
 		const { showTagOverlay, target } = this.state;
 
+		let recapItem = this;
+
 		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
 			return (
 				<Form.Group id="formCheckbox" key={tagID} name={tagID}>
@@ -196,7 +197,8 @@ class RecapItem extends Component {
 						label={this.props.campaign.tags[tagID].name} 
 						name={tagID} 
 						checked={this.state.tags[tagID]} 
-						onChange={this.onChange}/>
+						onChange={this.onChange}
+					/>
 				</Form.Group>
 			)
 		});
@@ -248,12 +250,14 @@ class RecapItem extends Component {
 								>
 									+
 								</Badge>
-								<Overlay target={target} show={showTagOverlay ? true : false} placement="right">
+								<Overlay 
+									target={target} 
+									show={showTagOverlay ? true : false} 
+									placement="left" 
+									rootClose={true}
+									onHide={() => recapItem.setState({showTagOverlay: false})}
+								>
 									{({
-										placement,
-										scheduleUpdate,
-										arrowProps,
-										outOfBoundaries,
 										show: _show,
 										...props
 									}) => (
