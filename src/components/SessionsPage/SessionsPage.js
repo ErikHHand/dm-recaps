@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import NewSession from '../NewSession/NewSession';
+import SessionInfo from '../SessionInfo/SessionInfo';
 import SessionItem from '../SessionItem/SessionItem';
 import RecapItem from '../RecapItem/RecapItem';
 
@@ -159,7 +159,7 @@ class SessionsPage extends Component {
 					<div className="center">
 						<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>New Session</Button>
 					</div>
-					<NewSession 
+					<SessionInfo 
 						show = {this.state.showAddWindow}
 						onHide = {() => this.setState({ showAddWindow: false })}
 						sessions = {this.props.sessions}

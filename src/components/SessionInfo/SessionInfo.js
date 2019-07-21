@@ -22,19 +22,33 @@ class NewSession extends Component {
 		}
 	}
 
-	onSubmit = event => {
-		this.props.onHide();
+	componentDidMount() {
 
+		if(this.props.edit) {
+			this.setState({
+				description: this.props.description,
+				date: this.props.date,
+			});
+		}
+	}
+
+	onSubmit = event => {
+
+		this.props.onHide();
 		event.preventDefault();
+
+		if(this.props.edit) {
+			this.editSessionInfo(this.props.sessionID);
+		} else {
+			this.addNewSession();
+		}
+	}
+	
+	addNewSession() {
 
 		let session = {
 			recaps: {},
 		};
-
-		let sessionInfo = {
-			date: firebase.firestore.Timestamp.fromDate(this.state.date),
-			description: this.state.description,
-		}
 		
 		// Add to Firestore and then add locally
 		
@@ -43,31 +57,45 @@ class NewSession extends Component {
 		.then((docRef) => {
 			console.log("Document successfully written! DocRef: ", docRef);
 
-			// Add session in campaign document
-
-			this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-			.collection("campaigns").doc(this.props.id).update({
-				['sessions.' + docRef.id]: sessionInfo,
-			}).then(function() {
-			console.log("Document successfully updated!");
-			}).catch(function(error) {
-				console.log("Error getting document:", error);
-			});
-
 			// Add session locally
 
 			let sessions = this.props.sessions;
 			sessions[docRef.id] = session;
 			this.props.handleSessions(sessions);
 
-			let campaign = this.props.campaign;
-			campaign.sessions[docRef.id] = sessionInfo;
-			this.props.handleCampaign(campaign);
+			// Write session info
+
+			this.editSessionInfo(docRef.id);
 		})
 		.catch(error => {
 			console.error("Error writing document: ", error);
 		});
 	};
+
+	editSessionInfo(sessionID) {
+
+		let sessionInfo = {
+			date: firebase.firestore.Timestamp.fromDate(this.state.date),
+			description: this.state.description,
+		}
+
+		// Add session in campaign document
+
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id).update({
+			['sessions.' + sessionID]: sessionInfo,
+		}).then(function() {
+		console.log("Document successfully updated!");
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
+
+		// Add session locally
+
+		let campaign = this.props.campaign;
+		campaign.sessions[sessionID] = sessionInfo;
+		this.props.handleCampaign(campaign);
+	}
 	
 	onChangeDate = date => {		
     	this.setState({ date: date });
@@ -80,7 +108,15 @@ class NewSession extends Component {
 
 	render() {
 
-		const { sessions, handleSessions, campaign, handleCampaign, ...rest} = this.props;
+		let title, submit;
+
+		if(this.props.edit) {
+			title = "Edit Session";
+			submit = "Submit changes";
+		} else {
+			title = "Add a new session";
+			submit = "Add new session";
+		}
 
 		const { date, description, error } = this.state;
 
@@ -88,14 +124,15 @@ class NewSession extends Component {
 
 		return (
 			<Modal
-				{...rest}
+				show={this.props.show}
+				onHide={this.props.onHide}
 				size="lg"
 				aria-labelledby="contained-modal-title-vcenter"
 				centered
 			>
 				<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
-					Add a new session
+					{title}
 				</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
@@ -126,7 +163,7 @@ class NewSession extends Component {
 						</Form.Group>
 						
 						<Button variant="success" type="submit" disabled={isInvalid}>
-							Add new session
+							{submit}
 						</Button>
 
 						{error && <p>{error.message}</p>}
