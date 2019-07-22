@@ -55,6 +55,19 @@ class TagItem extends Component {
 				console.log("Error deleting document:", error);
 			});
 
+			recapItem.tags.forEach( tagID => {
+				console.log(tagID);
+				
+				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+				.collection("campaigns").doc(this.props.id).collection("tags")
+				.doc(tagID).update({
+					["recaps." + recapID]: recapItem,
+				}).then(function() {
+					console.log("Document successfully deleted!");
+				}).catch(function(error) {
+					console.log("Error deleting document:", error);
+				});
+			});
 		}
 
 		this.props.handleSessions(sessions);
