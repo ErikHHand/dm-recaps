@@ -10,7 +10,7 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
 
 
-class NewSession extends Component {
+class SessionInfo extends Component {
 
 	constructor(props) {
 		super(props);
@@ -174,4 +174,4 @@ class NewSession extends Component {
 	}
 }
 
-export default withFirebase(NewSession);
+export default withFirebase(SessionInfo);

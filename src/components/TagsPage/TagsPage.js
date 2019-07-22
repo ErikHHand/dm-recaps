@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import RecapItem from '../RecapItem/RecapItem';
 import TagItem from '../TagItem/TagItem';
-import NewTag from '../NewTag/NewTag';
+import TagInfo from '../TagInfo/TagInfo';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -95,7 +95,7 @@ class TagsPage extends Component {
 					<div className="center">
 						<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>New Tag</Button>
 					</div>
-					<NewTag 
+					<TagInfo 
 						show = {this.state.showAddWindow}
 						onHide = {() => this.setState({ showAddWindow: false })}
 						tags = {this.props.tags}

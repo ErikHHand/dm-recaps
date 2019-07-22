@@ -6,7 +6,7 @@ import { Form, Button } from 'react-bootstrap';
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
-class NewSession extends Component {
+class TagInfo extends Component {
 
 	constructor(props) {
 		super(props);
@@ -153,4 +153,4 @@ class NewSession extends Component {
 	}
 }
 
-export default withFirebase(NewSession);
+export default withFirebase(TagInfo);
