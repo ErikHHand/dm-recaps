@@ -98,11 +98,8 @@ class SessionInfo extends Component {
 		
 
 		// Sort session in date order
-
 		
 		let session;
-
-		console.log(campaign.sessionOrder);
 
 		if(campaign.sessionOrder.length === 0 
 			|| campaign.sessions[campaign.sessionOrder[campaign.sessionOrder.length - 1]].date.toDate() > sessionInfo.date.toDate()) {
@@ -111,8 +108,6 @@ class SessionInfo extends Component {
 		} else {
 			for(let i = 0; i < campaign.sessionOrder.length; i++) {
 				session = campaign.sessions[campaign.sessionOrder[i]];
-				console.log(session.date.toDate().getTime());
-				console.log(sessionInfo.date.toDate().getTime());
 				
 				if(session.date.toDate().getTime() <= sessionInfo.date.toDate().getTime()) {
 					campaign.sessionOrder.splice(i, 0, sessionID);
@@ -120,7 +115,6 @@ class SessionInfo extends Component {
 				}
 			}
 		}
-
 		
 
 		// Add session locally

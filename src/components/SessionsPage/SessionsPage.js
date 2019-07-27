@@ -112,12 +112,6 @@ class SessionsPage extends Component {
 		if(!this.props.campaign.sessions) {
 			sessions = <div></div>;
 		} else {
-
-			// Sort keys in date order
-			let sortedKeys = Object.keys(this.props.campaign.sessions).sort((a, b) => {				
-				return this.props.campaign.sessions[b].date.toDate() - this.props.campaign.sessions[a].date.toDate();
-			});
-
 			sessions = this.props.campaign.sessionOrder.map((sessionID)=>
 				<SessionItem 
 					key = {sessionID}
