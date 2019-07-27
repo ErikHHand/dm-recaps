@@ -55,13 +55,12 @@ class SessionsPage extends Component {
 			recap: "",
 		});
 
-		// Add locally
+		// Add locally to sessions
 		let sessions = this.props.sessions;
 		let session = sessions[this.state.currentSession];
 		let id = recap.text.hashCode();
 
 		session.recaps[id] = recap;
-		//session.recapCounter ++;
 
 		sessions[this.state.currentSession] = session;
 		this.props.handleSessions(sessions);
@@ -72,6 +71,24 @@ class SessionsPage extends Component {
 		.collection("campaigns").doc(this.props.id).collection("sessions")
 		.doc(this.state.currentSession).update({
 			['recaps.' + id]: recap,
+		})
+		.then(function() {
+			console.log("Document successfully updated!");
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
+
+		// Add locally to recap order
+
+		let campaign = this.props.campaign;
+		campaign.sessions[this.state.currentSession].recapOrder.push(id);
+		this.props.handleCampaign(campaign);
+
+		// Add to Firestore Recap order
+		
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id).update({
+			['sessions.' + this.state.currentSession + '.recapOrder']: campaign.sessions[this.state.currentSession].recapOrder,
 		})
 		.then(function() {
 			console.log("Document successfully updated!");
@@ -101,7 +118,7 @@ class SessionsPage extends Component {
 				return this.props.campaign.sessions[b].date.toDate() - this.props.campaign.sessions[a].date.toDate();
 			});
 
-			sessions = sortedKeys.map((sessionID)=>
+			sessions = this.props.campaign.sessionOrder.map((sessionID)=>
 				<SessionItem 
 					key = {sessionID}
 					sessionID = {sessionID}
@@ -121,9 +138,9 @@ class SessionsPage extends Component {
 
 		let recapItems;
 
-		console.log(this.state.currentSession);
-		console.log(this.props.sessions);
-		console.log(this.props.campaign.tags);
+		//console.log(this.state.currentSession);
+		//console.log(this.props.sessions);
+		//console.log(this.props.campaign.tags);
 
 		if(!this.state.currentSession) {
 			recapItems = <div></div>;
@@ -133,7 +150,7 @@ class SessionsPage extends Component {
 			recapItems = <div></div>;	 
 		} else {
 			let recapList = this.props.sessions[this.state.currentSession].recaps;
-			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
+			recapItems = this.props.campaign.sessions[this.state.currentSession].recapOrder.map((recapID)=>
 				<RecapItem 
 					key = {recapID}
 					recapID = {recapID}
@@ -142,6 +159,7 @@ class SessionsPage extends Component {
 					sessions = {this.props.sessions}
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
+					handleCampaign = {this.props.handleCampaign}
 					id = {this.props.id}
 					campaign = {this.props.campaign}
 				/>

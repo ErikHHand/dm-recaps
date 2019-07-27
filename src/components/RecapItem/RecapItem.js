@@ -154,6 +154,30 @@ class RecapItem extends Component {
 	  
 	deleteRecap() {
 
+		// Delete recap in Recap order
+
+		let campaign = this.props.campaign;
+		console.log(campaign.sessions[this.props.recapItem.session].recapOrder);
+		console.log(this.props.recapID);
+		
+		let index = campaign.sessions[this.props.recapItem.session].recapOrder.indexOf(this.props.recapID);
+		console.log(index);
+		if (index !== -1) campaign.sessions[this.props.recapItem.session].recapOrder.splice(index, 1);
+		console.log(campaign.sessions[this.props.recapItem.session].recapOrder);
+		this.props.handleCampaign(campaign);
+
+		// Delete from Firestore Recap order
+		
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.collection("campaigns").doc(this.props.id).update({
+			['sessions.' + this.props.recapItem.session + '.recapOrder']: campaign.sessions[this.props.recapItem.session].recapOrder,
+		})
+		.then(function() {
+			console.log("Document successfully updated!");
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
+
 		// Delete recap locally in session
 		let sessions = this.props.sessions;
 		delete sessions[this.props.recapItem.session].recaps[this.props.recapID];

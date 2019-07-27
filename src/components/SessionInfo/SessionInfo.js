@@ -74,27 +74,71 @@ class SessionInfo extends Component {
 
 	editSessionInfo(sessionID) {
 
-		let sessionInfo = {
-			date: firebase.firestore.Timestamp.fromDate(this.state.date),
-			description: this.state.description,
+		let campaign = this.props.campaign;
+		let sessionInfo;
+
+		if(campaign.sessions[sessionID]) {
+			sessionInfo = {
+				created: campaign.sessions[sessionID].created,
+				date: firebase.firestore.Timestamp.fromDate(this.state.date),
+				description: this.state.description,
+				recapOrder: campaign.sessions[sessionID].recapOrder,
+			}
+
+			let sessionIndex = campaign.sessionOrder.indexOf(sessionID);
+			if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
+		} else {
+			sessionInfo = {
+				created: firebase.firestore.Timestamp.fromDate(new Date()),
+				date: firebase.firestore.Timestamp.fromDate(this.state.date),
+				description: this.state.description,
+				recapOrder: [],
+			}
 		}
+		
+
+		// Sort session in date order
+
+		
+		let session;
+
+		console.log(campaign.sessionOrder);
+
+		if(campaign.sessionOrder.length === 0 
+			|| campaign.sessions[campaign.sessionOrder[campaign.sessionOrder.length - 1]].date.toDate() > sessionInfo.date.toDate()) {
+
+			campaign.sessionOrder.splice(campaign.sessionOrder.length, 0, sessionID);
+		} else {
+			for(let i = 0; i < campaign.sessionOrder.length; i++) {
+				session = campaign.sessions[campaign.sessionOrder[i]];
+				console.log(session.date.toDate().getTime());
+				console.log(sessionInfo.date.toDate().getTime());
+				
+				if(session.date.toDate().getTime() <= sessionInfo.date.toDate().getTime()) {
+					campaign.sessionOrder.splice(i, 0, sessionID);
+					break;
+				}
+			}
+		}
+
+		
+
+		// Add session locally
+
+		campaign.sessions[sessionID] = sessionInfo;
+		this.props.handleCampaign(campaign);
 
 		// Add session in campaign document
 
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
 		.collection("campaigns").doc(this.props.id).update({
 			['sessions.' + sessionID]: sessionInfo,
+			sessionOrder: campaign.sessionOrder,
 		}).then(function() {
 		console.log("Document successfully updated!");
 		}).catch(function(error) {
 			console.log("Error getting document:", error);
 		});
-
-		// Add session locally
-
-		let campaign = this.props.campaign;
-		campaign.sessions[sessionID] = sessionInfo;
-		this.props.handleCampaign(campaign);
 	}
 	
 	onChangeDate = date => {		

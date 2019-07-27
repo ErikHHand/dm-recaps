@@ -43,6 +43,18 @@ class TagsPage extends Component {
 			recapItems = <div></div>;	 
 		} else {
 			let recapList = this.props.tags[this.state.currentTag].recaps;
+
+			// Order recap items chronologically
+
+			let recapKeys = {};
+			for(let recapItem in recapList) {
+				let session = this.props.campaign.sessions[recapList[recapItem].session];
+				recapKeys[recapItem] = session.date.seconds + session.recapOrder.indexOf(recapItem);
+			}
+
+			// Sort keys in date order
+			
+
 			recapItems = Array.from(Object.keys(recapList)).map((recapID)=>
 				<RecapItem 
 					key = {recapID}
@@ -52,6 +64,7 @@ class TagsPage extends Component {
 					sessions = {this.props.sessions}
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
+					handleCampaign = {this.props.handleCampaign}
 					id = {this.props.id}
 					campaign = {this.props.campaign}
 				/>

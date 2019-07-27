@@ -83,6 +83,10 @@ class SessionItem extends Component {
 
 		let campaign = this.props.campaign;
 		delete campaign.sessions[this.props.sessionID];
+
+		let sessionIndex = campaign.sessionOrder.indexOf(this.props.sessionID);
+		if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
+
 		this.props.handleCampaign(campaign);
 
 		// Delete session info on Firestore
@@ -90,6 +94,7 @@ class SessionItem extends Component {
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
 		.collection("campaigns").doc(this.props.id).update({
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
+			sessionOrder: campaign.sessionOrder,
 		})
 		.then(function() {
 			console.log("Document successfully deleted!");
@@ -110,7 +115,7 @@ class SessionItem extends Component {
 		
 		return (
 			<>
-				<Card border="primary" style={{ width: "18rem"}} onClick = {this.props.click}>
+				<Card border="primary" style={{ width: "17rem"}} onClick = {this.props.click}>
 					<Card.Body>
 						<Card.Title>
 							<Row>
