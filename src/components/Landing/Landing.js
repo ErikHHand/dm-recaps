@@ -16,6 +16,11 @@ class Landing extends Component {
 		}
 	}
 
+	/* 	This function switches between the sign in and the sign up windows.
+
+		Currently not in use.
+		TODO: Style sign up window and utalize this function
+	*/
 	changeSignIn() {
 		this.setState({
 			signIn: !this.state.signIn,

@@ -11,6 +11,13 @@ import Nav from 'react-bootstrap/Nav'
 
 import { withFirebase } from '../Firebase/Firebase';
 
+
+/*
+	This class holds the global state for this App.
+	Here is where campaign, tag and session data is stored 
+	and managed. This class also handles the switching between tabs
+	and renders the tags page and the session page components.
+*/
 class CampaignRecaps extends Component {
 
 	constructor(props) {
@@ -24,30 +31,42 @@ class CampaignRecaps extends Component {
 			id: this.props.location.state.id,
 		};
 
+		// Set the context for "this" for the following functions
 		this.handleSessions = this.handleSessions.bind(this);
 		this.handleCampaign = this.handleCampaign.bind(this);
 		this.handleTags = this.handleTags.bind(this);
 	}
 
+	/*
+		When component mounts, get the Firestore refernece for this campaign.
+		Then get the campaign, the sessions and the tags and save in the state
+	*/
 	componentDidMount() {
 
 		let campaign = this;
 
+		// The id for this campaign
+		let id = this.props.location.state.id;
+
+		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("users")
-		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns")
-		.doc(this.state.id).get()
+		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
+
+		// Save the reference for this campaign in the state
+		this.setState({
+			campaignRef: campaignRef,
+		});
+
+		// Get the campaign for Firestore and save in the state
+		campaignRef.get()
 		.then((doc) => {
 			campaign.setState({
 				campaign: doc.data(),
 			});
 		});
 
-        // Query for getting the sessions collection from firestore
-        let sessionsRef = this.props.firebase.db.collection("users")
-		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(this.state.id)
-		.collection("sessions");
-		
-		sessionsRef.get().then((querySnapshot) => {
+        // Query for getting the sessions collection from Firestore
+		campaignRef.collection("sessions").get().then((querySnapshot) => {
             let sessions = {};
 
             // Get all entries in the sessions collection
@@ -55,59 +74,54 @@ class CampaignRecaps extends Component {
                 sessions[doc.id] = doc.data();
             });
 
+			// Save the sessions in the state
             campaign.setState({
                 sessions: sessions,
-			});
-						
+			});			
         }).catch((error) => {
             console.log("Error getting document:", error);
 		});
 		
 		// Query for getting the tags collection from firestore
-        let tagsRef = this.props.firebase.db.collection("users")
-		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(this.state.id)
-		.collection("tags");
-		
-		tagsRef.get().then((querySnapshot) => {
+		campaignRef.collection("tags").get().then((querySnapshot) => {
             let tags = {};
 
-            // Get all entries in the sessions collection
+            // Get all entries in the tags collection
             querySnapshot.forEach((doc) => {
                 tags[doc.id] = doc.data();
             });
 
+			// Save the tags in the state
             campaign.setState({
                 tags: tags,
-			});
-						
+			});		
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
 	}
 
-	handleSessions(sessions) {
-		console.log(sessions);
-		this.setState({
-			sessions: sessions,
-		})
-	}
-
+	// Handles changes to campaign data
 	handleCampaign(campaign) {
-		console.log(campaign);
 		this.setState({
 			campaign: campaign,
 		})
 	}
 
+	// Handles changes to session recap data
+	handleSessions(sessions) {
+		this.setState({
+			sessions: sessions,
+		})
+	}
+
+	// Handles changes to session recap data
 	handleTags(tags) {
-		console.log(tags);
 		this.setState({
 			tags: tags,
 		})
 	}
 
 	render() {
-		//console.log(this.state.campaign);
 		return (
 			<Jumbotron fluid className="container">
 				<Tab.Container defaultActiveKey="sessions">
@@ -148,10 +162,7 @@ class CampaignRecaps extends Component {
 							/>
 						</Tab.Pane>
 					</Tab.Content>
-						
-					
 				</Tab.Container>
-				
 			</Jumbotron>
 		)
 	}

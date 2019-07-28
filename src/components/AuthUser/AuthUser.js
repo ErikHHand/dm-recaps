@@ -14,9 +14,6 @@ class AuthUser extends Component {
         this.state = {
             status: "LOADING",
         };
-
-        // This is need for callbacks that will be passed to lower level components
-        //this.handleSearchStringChange = this.handleSearchStringChange.bind(this);
 	}
 	
 	componentDidMount() {
@@ -24,14 +21,13 @@ class AuthUser extends Component {
         let auth = this;
 
 		// TODO
-		// Get necessary data from Firestore and add to global state
+        // Get necessary data from Firestore and add to global state
+        // Is this still relevant?
 		auth.setState({
 			status: "LOADED",
 		});
 	}
 	
-	// Add functions for changing the global state here
-
 	render() {
 
         let navigation = null;
