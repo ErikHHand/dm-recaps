@@ -27,22 +27,24 @@ class NewRecap extends Component {
 	onSubmitRecap = event => {
 		event.preventDefault();
 
-		// Recap data froms this state
+		// Recap data from this state
 		let recap = {
 			tags: [],
 			text: this.state.recap,
 			session: this.props.currentSession,
 		};
 
+		// Empty the form field
 		this.setState({
 			recap: "",
 		});
 
-		// Add locally to sessions
+		// Generate a hash code from the recap text
+		// and then add locally
 		let sessions = this.props.sessions;
 		let session = sessions[this.props.currentSession];
+		
 		let id = recap.text.hashCode();
-
 		session.recaps[id] = recap;
 
 		sessions[this.props.currentSession] = session;
@@ -60,13 +62,13 @@ class NewRecap extends Component {
 			console.log("Error getting document:", error);
 		});
 
-		// Add locally to recap order
+		// Add locally to recap order array
 
 		let campaign = this.props.campaign;
 		campaign.sessions[this.props.currentSession].recapOrder.push(id);
 		this.props.handleCampaign(campaign);
 
-		// Add to Firestore Recap order
+		// Add to Firestore recap order array
 		
 		this.props.campaignRef.update({
 			['sessions.' + this.props.currentSession + '.recapOrder']: campaign.sessions[this.props.currentSession].recapOrder,
