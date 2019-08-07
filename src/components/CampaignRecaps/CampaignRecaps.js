@@ -25,6 +25,7 @@ class CampaignRecaps extends Component {
 
 		this.state = {
 			key: 'sessions',
+			campaignRef: null,
 			campaign: {},
 			sessions: {},
 			tags: {},
@@ -141,24 +142,26 @@ class CampaignRecaps extends Component {
 					<Tab.Content>
 						<Tab.Pane eventKey="sessions">
 							<SessionsPage
+								campaign = {this.state.campaign}
 								sessions = {this.state.sessions}
 								tags = {this.state.tags}
 								handleSessions = {this.handleSessions}
 								handleCampaign = {this.handleCampaign}
 								handleTags = {this.handleTags}
-								id = {this.state.id}
-								campaign = {this.state.campaign}
+								campaignID = {this.props.location.state.id}
+								campaignRef = {this.state.campaignRef}
 							/>
 						</Tab.Pane>
 						<Tab.Pane eventKey="tags">
 							<TagsPage
+								campaign = {this.state.campaign}
 								sessions = {this.state.sessions}
 								tags = {this.state.tags}
 								handleCampaign = {this.handleCampaign}
 								handleSessions = {this.handleSessions}
 								handleTags = {this.handleTags}
-								id = {this.state.id}
-								campaign = {this.state.campaign}
+								campaignID = {this.props.location.state.id}
+								campaignRef = {this.state.campaignRef}
 							/>
 						</Tab.Pane>
 					</Tab.Content>

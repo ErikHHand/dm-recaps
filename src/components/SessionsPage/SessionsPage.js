@@ -3,15 +3,17 @@ import React, { Component } from 'react';
 import SessionInfo from '../SessionInfo/SessionInfo';
 import SessionItem from '../SessionItem/SessionItem';
 import RecapItem from '../RecapItem/RecapItem';
+import NewRecap from '../NewRecap/NewRecap';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form'
 
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
+// Function for hashing strings.
+// Used to create ID:s for the recap Items
 String.prototype.hashCode = function() {
 	var hash = 0, i, chr;
 	if (this.length === 0) return hash;
@@ -23,6 +25,9 @@ String.prototype.hashCode = function() {
 	return hash;
 };
 
+/*
+	This component holds the session tab of the App.
+*/
 class SessionsPage extends Component {
 
 	constructor(props) {
@@ -31,81 +36,20 @@ class SessionsPage extends Component {
 		this.state = {
 			showAddWindow: false,
 			currentSession: null,
-			recap: "",
-			error: "",
 		};
 
+		// Set the context for "this" for the following function
 		this.handleCurrentSession = this.handleCurrentSession.bind(this);
 	}
 
-	onChangeRecap = event => {		
-    	this.setState({ recap: event.target.value });
-	};
-	
-	onSubmit = event => {
-		event.preventDefault();
-
-		let recap = {
-			tags: [],
-			text: this.state.recap,
-			session: this.state.currentSession,
-		};
-
-		this.setState({
-			recap: "",
-		});
-
-		// Add locally to sessions
-		let sessions = this.props.sessions;
-		let session = sessions[this.state.currentSession];
-		let id = recap.text.hashCode();
-
-		session.recaps[id] = recap;
-
-		sessions[this.state.currentSession] = session;
-		this.props.handleSessions(sessions);
-		
-		// Add to Firestore Sessions
-		
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).collection("sessions")
-		.doc(this.state.currentSession).update({
-			['recaps.' + id]: recap,
-		})
-		.then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
-
-		// Add locally to recap order
-
-		let campaign = this.props.campaign;
-		campaign.sessions[this.state.currentSession].recapOrder.push(id);
-		this.props.handleCampaign(campaign);
-
-		// Add to Firestore Recap order
-		
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).update({
-			['sessions.' + this.state.currentSession + '.recapOrder']: campaign.sessions[this.state.currentSession].recapOrder,
-		})
-		.then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
-	};
-
+	// Handles when changing which session is the current session
 	handleCurrentSession(sessionID) {
 		this.setState({
 			currentSession: sessionID,
 		})
 	}
 
-	render() {		
-
-		let sessionsPage = this;
+	render() {	
 
 		let sessions;
 
@@ -124,7 +68,7 @@ class SessionsPage extends Component {
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
 					handleCurrentSession = {this.handleCurrentSession}
-					id = {this.props.id}
+					id = {this.props.campaignID}
 					click = {() => this.setState({currentSession: sessionID})}
 				/>
 			);
@@ -154,15 +98,11 @@ class SessionsPage extends Component {
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
-					id = {this.props.id}
+					id = {this.props.campaignID}
 					campaign = {this.props.campaign}
 				/>
 			);
 		}
-
-		const { recap, error} = this.state;
-
-		const isInvalid = recap === "" || !this.state.currentSession;
 
 		return (
 			<Row>
@@ -178,28 +118,19 @@ class SessionsPage extends Component {
 						handleSessions = {this.props.handleSessions}
 						campaign = {this.props.campaign}
 						handleCampaign = {this.props.handleCampaign}
-						id = {this.props.id}
+						id = {this.props.campaignID}
 					/>
 				</Col>
 				<Col md={9} className="overflow-scroll">
 					{recapItems}
-					<Form onSubmit={this.onSubmit}>
-						<Form.Group controlId="formRecap">
-							<Form.Control 
-								name="recap"
-								value={recap}
-								onChange={this.onChangeRecap}
-								type="text"
-								placeholder="Write something that happened..."
-							/>
-						</Form.Group>
-						
-						<Button variant="success" type="submit" disabled={isInvalid}>
-							Submit
-						</Button>
-						<p hidden={this.state.currentSession}>Click a session before writing a recap!</p>
-						{error && <p>{error.message}</p>}
-					</Form>
+					<NewRecap 
+						currentSession = {this.state.currentSession}
+						sessions = {this.props.sessions}
+						campaign = {this.props.campaign}
+						handleSessions = {this.props.handleSessions}
+						handleCampaign = {this.props.handleCampaign}
+						campaignRef = {this.props.campaignRef}
+					/>
 				</Col>
 			</Row>
 		);
