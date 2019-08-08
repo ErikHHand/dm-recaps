@@ -9,7 +9,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
 
-
+/*
+	This component holds the pop-up window for when creating a new
+	and editing a session.
+*/
 class SessionInfo extends Component {
 
 	constructor(props) {
@@ -24,6 +27,8 @@ class SessionInfo extends Component {
 
 	componentDidMount() {
 
+		// If editing, put the current information about the session in
+		// the state and also the input fields
 		if(this.props.edit) {
 			this.setState({
 				description: this.props.description,
@@ -32,11 +37,15 @@ class SessionInfo extends Component {
 		}
 	}
 
+	// Triggers when submitting session info
 	onSubmit = event => {
 
+		// Hide the session info window
 		this.props.onHide();
 		event.preventDefault();
 
+		// If editing, only writing to the session field in the campaign object
+		// is neccessary and a new session is not needed
 		if(this.props.edit) {
 			this.editSessionInfo(this.props.sessionID);
 		} else {
@@ -44,27 +53,28 @@ class SessionInfo extends Component {
 		}
 	}
 	
+	// Triggers when adding an entirely new session,
+	// as opposed to editing an existing one.
+	// This function saves the session locally and on Firestore
 	addNewSession() {
 
 		let session = {
 			recaps: {},
 		};
 		
-		// Add to Firestore and then add locally
-		
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).collection("sessions").add(session)
+		// First add to Firestore then add locally,
+		// because adding to Firestore will generate the
+		// id needed to store locally
+		this.props.campaignRef.collection("sessions").add(session)
 		.then((docRef) => {
 			console.log("Document successfully written! DocRef: ", docRef);
 
 			// Add session locally
-
 			let sessions = this.props.sessions;
 			sessions[docRef.id] = session;
 			this.props.handleSessions(sessions);
 
 			// Write session info
-
 			this.editSessionInfo(docRef.id);
 		})
 		.catch(error => {
@@ -75,35 +85,38 @@ class SessionInfo extends Component {
 	editSessionInfo(sessionID) {
 
 		let campaign = this.props.campaign;
-		let sessionInfo;
+		let sessionInfo = {
+			date: firebase.firestore.Timestamp.fromDate(this.state.date),
+			description: this.state.description,
+		};
 
+		// Write data depending on whether or not this a new 
+		// session or an old session being edited
 		if(campaign.sessions[sessionID]) {
-			sessionInfo = {
-				created: campaign.sessions[sessionID].created,
-				date: firebase.firestore.Timestamp.fromDate(this.state.date),
-				description: this.state.description,
-				recapOrder: campaign.sessions[sessionID].recapOrder,
-			}
 
+			// Session being edited
+			sessionInfo.created = campaign.sessions[sessionID].created;
+			sessionInfo.recapOrder = campaign.sessions[sessionID].recapOrder;
+
+			// Remove the session from the session order array
 			let sessionIndex = campaign.sessionOrder.indexOf(sessionID);
 			if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
 		} else {
-			sessionInfo = {
-				created: firebase.firestore.Timestamp.fromDate(new Date()),
-				date: firebase.firestore.Timestamp.fromDate(this.state.date),
-				description: this.state.description,
-				recapOrder: [],
-			}
-		}
-		
 
-		// Sort session in date order
+			// New session being added
+			sessionInfo.created = firebase.firestore.Timestamp.fromDate(new Date());
+			sessionInfo.recapOrder = [];
+		}
+
+
+		// Sort session in chronological order and add it to the session order array
 		
 		let session;
 
 		if(campaign.sessionOrder.length === 0 
 			|| campaign.sessions[campaign.sessionOrder[campaign.sessionOrder.length - 1]].date.toDate() > sessionInfo.date.toDate()) {
 
+			// Session is the first session chronologically
 			campaign.sessionOrder.splice(campaign.sessionOrder.length, 0, sessionID);
 		} else {
 			for(let i = 0; i < campaign.sessionOrder.length; i++) {
@@ -124,21 +137,22 @@ class SessionInfo extends Component {
 
 		// Add session in campaign document
 
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).update({
+		this.props.campaignRef.update({
 			['sessions.' + sessionID]: sessionInfo,
 			sessionOrder: campaign.sessionOrder,
 		}).then(function() {
-		console.log("Document successfully updated!");
+			console.log("Document successfully updated!");
 		}).catch(function(error) {
 			console.log("Error getting document:", error);
 		});
 	}
 	
+	// Triggers when changing the date
 	onChangeDate = date => {		
     	this.setState({ date: date });
   	};
 
+	// Triggers when changign the description
 	onChangeDescription = event => {		
     	this.setState({ description: event.target.value });
   	};

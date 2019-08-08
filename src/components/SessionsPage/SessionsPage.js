@@ -27,6 +27,8 @@ String.prototype.hashCode = function() {
 
 /*
 	This component holds the session tab of the App.
+	This component also keeps track of the current session selected,
+	controlling where recaps are currently written
 */
 class SessionsPage extends Component {
 
@@ -42,7 +44,7 @@ class SessionsPage extends Component {
 		this.handleCurrentSession = this.handleCurrentSession.bind(this);
 	}
 
-	// Handles when changing which session is the current session
+	// Handles changing which session is the current session
 	handleCurrentSession(sessionID) {
 		this.setState({
 			currentSession: sessionID,
@@ -115,10 +117,11 @@ class SessionsPage extends Component {
 						show = {this.state.showAddWindow}
 						onHide = {() => this.setState({ showAddWindow: false })}
 						sessions = {this.props.sessions}
-						handleSessions = {this.props.handleSessions}
 						campaign = {this.props.campaign}
+						handleSessions = {this.props.handleSessions}
 						handleCampaign = {this.props.handleCampaign}
-						id = {this.props.campaignID}
+						campaignID = {this.props.campaignID}
+						campaignRef = {this.props.campaignRef}
 					/>
 				</Col>
 				<Col md={9} className="overflow-scroll">
