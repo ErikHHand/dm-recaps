@@ -82,6 +82,9 @@ class SessionInfo extends Component {
 		});
 	};
 
+	// Triggers when editing a session or just after a new
+	// session has been added.
+	// This function saves the session info locally and on Firestore
 	editSessionInfo(sessionID) {
 
 		let campaign = this.props.campaign;
@@ -183,9 +186,9 @@ class SessionInfo extends Component {
 				centered
 			>
 				<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
-					{title}
-				</Modal.Title>
+					<Modal.Title id="contained-modal-title-vcenter">
+						{title}
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<h4>Hope you had a great adventure!</h4>
