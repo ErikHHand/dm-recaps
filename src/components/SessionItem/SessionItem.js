@@ -15,12 +15,13 @@ class SessionItem extends Component {
 	constructor(props) {
 		super(props);
 
-		this.deleteSession = this.deleteSession.bind(this);
-		this.editSession = this.editSession.bind(this);
-
 		this.state = {
 			showEditWindow: false,
 		}
+
+		// Set the context for "this" for the following functions
+		this.deleteSession = this.deleteSession.bind(this);
+		this.editSession = this.editSession.bind(this);
 	}
 
 	editSession() {
@@ -34,8 +35,7 @@ class SessionItem extends Component {
 		// Set current session to null
 		this.props.handleCurrentSession(null);
 
-		// Delete recaps from tags locally and on firestore
-
+		// Delete recaps from tags locally and on Firestore
 		let tags = this.props.tags;
 		for(let recap in this.props.sessions[this.props.sessionID].recaps) {
 			this.props.sessions[this.props.sessionID].recaps[recap].tags.forEach(tag => {
@@ -43,11 +43,8 @@ class SessionItem extends Component {
 				// Delete locally
 				delete tags[tag].recaps[recap];
 
-				// Delete on firestore
-
-				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-				.collection("campaigns").doc(this.props.id).collection("tags")
-				.doc(tag).update({
+				// Delete on Firestore
+				this.props.campaignRef.collection("tags").doc(tag).update({
 					["recaps." + recap]: firebase.firestore.FieldValue.delete(),
 				})
 				.then(function() {
@@ -62,16 +59,12 @@ class SessionItem extends Component {
 
 
 		// Delete session recaps locally
-
 		let sessions = this.props.sessions;
 		delete sessions[this.props.sessionID];
 		this.props.handleSessions(sessions);
 
 		// Delete session recaps on Firestore
-
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).collection("sessions")
-		.doc(this.props.sessionID).delete()
+		this.props.campaignRef.collection("sessions").doc(this.props.sessionID).delete()
 		.then(function() {
 			console.log("Document successfully deleted!");
 		}).catch(function(error) {
@@ -80,7 +73,6 @@ class SessionItem extends Component {
 
 
 		// Delete session info locally
-
 		let campaign = this.props.campaign;
 		delete campaign.sessions[this.props.sessionID];
 
@@ -89,10 +81,9 @@ class SessionItem extends Component {
 
 		this.props.handleCampaign(campaign);
 
-		// Delete session info on Firestore
 
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).update({
+		// Delete session info on Firestore
+		this.props.campaignRef.update({
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
 			sessionOrder: campaign.sessionOrder,
 		})
@@ -110,7 +101,7 @@ class SessionItem extends Component {
 			text: "Are you sure you want to delete this session and all recaps written for it?"
 		}
 
-		let date = this.props.session.date;
+		let date = this.props.sessionInfo.date;
 		date = new Date(date.seconds * 1000);		
 		
 		return (
@@ -131,7 +122,7 @@ class SessionItem extends Component {
 								</Col>
 							</Row>
 						</Card.Title>
-						<Card.Text>{this.props.session.description}</Card.Text>
+						<Card.Text>{this.props.sessionInfo.description}</Card.Text>
 					</Card.Body>
 				</Card>
 				<SessionInfo
@@ -141,9 +132,9 @@ class SessionItem extends Component {
 					handleSessions = {this.props.handleSessions}
 					campaign = {this.props.campaign}
 					handleCampaign = {this.props.handleCampaign}
-					id = {this.props.id}
+					campaignRef = {this.props.campaignRef}
 					edit = {true}
-					description = {this.props.session.description}
+					description = {this.props.sessionInfo.description}
 					date = {date}
 					sessionID = {this.props.sessionID}
 				/>

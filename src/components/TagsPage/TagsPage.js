@@ -20,7 +20,6 @@ class TagsPage extends Component {
 
 		this.state = {
 			showAddWindow: false,
-			id: this.props.id,
 			currentTag: null,
 		};
 
@@ -70,7 +69,7 @@ class TagsPage extends Component {
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
-					id = {this.props.id}
+					id = {this.props.campaignID}
 					campaign = {this.props.campaign}
 				/>
 			);
@@ -101,7 +100,7 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					handleCurrentTag = {this.handleCurrentTag}
 					handleClick = {() => tagsPage.setState({currentTag: tag})}
-					id = {this.state.id}
+					id = {this.props.campaignID}
 				/>
 			);
 		}
@@ -120,7 +119,7 @@ class TagsPage extends Component {
 						campaign = {this.props.campaign}
 						handleTags = {this.props.handleTags}
 						handleCampaign = {this.props.handleCampaign}
-						id = {this.state.id}
+						id = {this.props.campaignID}
 					/>
 				</Col>
 				<Col md={9} className="overflow-scroll">

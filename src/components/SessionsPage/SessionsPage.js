@@ -55,6 +55,7 @@ class SessionsPage extends Component {
 
 		let sessions;
 
+		// Render session items
 		if(!this.props.campaign.sessions) {
 			sessions = <div></div>;
 		} else {
@@ -62,7 +63,7 @@ class SessionsPage extends Component {
 				<SessionItem 
 					key = {sessionID}
 					sessionID = {sessionID}
-					session = {this.props.campaign.sessions[sessionID]}
+					sessionInfo = {this.props.campaign.sessions[sessionID]}
 					sessions = {this.props.sessions}
 					tags = {this.props.tags}
 					campaign = {this.props.campaign}
@@ -70,18 +71,19 @@ class SessionsPage extends Component {
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
 					handleCurrentSession = {this.handleCurrentSession}
-					id = {this.props.campaignID}
+					campaignRef = {this.props.campaignRef}
 					click = {() => this.setState({currentSession: sessionID})}
 				/>
 			);
 		}
 
-		let recapItems;
-
 		//console.log(this.state.currentSession);
 		//console.log(this.props.sessions);
 		//console.log(this.props.campaign.tags);
 
+		let recapItems;
+
+		// Render recapItems
 		if(!this.state.currentSession) {
 			recapItems = <div></div>;
 		} else if(!this.props.sessions[this.state.currentSession]) {
@@ -120,7 +122,6 @@ class SessionsPage extends Component {
 						campaign = {this.props.campaign}
 						handleSessions = {this.props.handleSessions}
 						handleCampaign = {this.props.handleCampaign}
-						campaignID = {this.props.campaignID}
 						campaignRef = {this.props.campaignRef}
 					/>
 				</Col>
