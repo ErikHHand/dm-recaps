@@ -15,6 +15,7 @@ class TagItem extends Component {
 	constructor(props) {
 		super(props);
 
+		// Set the context for "this" for the following functions
 		this.deleteTag = this.deleteTag.bind(this);
 		this.editTag = this.editTag.bind(this);
 
@@ -42,12 +43,11 @@ class TagItem extends Component {
 			let recapItem = this.props.tags[this.props.tagID].recaps[recapID];
 			let tagIndex = recapItem.tags.indexOf(this.props.tagID);
 
-			if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1);
-			sessions[recapItem.session].recaps[recapID] = recapItem;
+			if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1); // Remove tag from recap item?
+			sessions[recapItem.session].recaps[recapID] = recapItem; // Re-add the recap item without the tag
 
-			this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-			.collection("campaigns").doc(this.props.id).collection("sessions")
-			.doc(recapItem.session).update({
+			// Add recap in sessions on Firestore
+			this.props.campaignRef.collection("sessions").doc(recapItem.session).update({
 				["recaps." + recapID]: recapItem,
 			}).then(function() {
 				console.log("Document successfully deleted!");
@@ -55,12 +55,11 @@ class TagItem extends Component {
 				console.log("Error deleting document:", error);
 			});
 
+			// Add recap in tags (for each tag) on Firestore
 			recapItem.tags.forEach( tagID => {
 				console.log(tagID);
 				
-				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-				.collection("campaigns").doc(this.props.id).collection("tags")
-				.doc(tagID).update({
+				this.props.campaignRef.collection("tags").doc(tagID).update({
 					["recaps." + recapID]: recapItem,
 				}).then(function() {
 					console.log("Document successfully deleted!");
@@ -78,10 +77,7 @@ class TagItem extends Component {
 		this.props.handleTags(tags);
 		
 		// Delete tag recaps on Firestore
-
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).collection("tags")
-		.doc(this.props.tagID).delete()
+		this.props.campaignRef.collection("tags").doc(this.props.tagID).delete()
 		.then(function() {
 			console.log("Document successfully deleted!");
 		}).catch(function(error) {
@@ -94,9 +90,7 @@ class TagItem extends Component {
 		this.props.handleCampaign(campaign);
 
 		// Delete tag info on Firestore
-
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).update({
+		this.props.campaignRef.update({
 			["tags." + this.props.tagID]: firebase.firestore.FieldValue.delete(),
 		})
 		.then(function() {
@@ -110,14 +104,14 @@ class TagItem extends Component {
 		
 		const deleteText = {
 			title: "Delete Tag",
-			text: "Are you sure you want to delete this session and remove it from all recaps?"
+			text: "Are you sure you want to delete this tag and remove it from all recaps?"
 		}
 
 		return (
 			<>
 				<Card 
 					className="tag" 
-					style={{ backgroundColor: this.props.tag.colour}}
+					style={{ backgroundColor: this.props.tagInfo.colour}}
 					onClick = {this.props.handleClick}
 				>
 					<Card.Body>
@@ -135,7 +129,7 @@ class TagItem extends Component {
 							</Row>
 						</Card.Subtitle>
 						<Card.Text className="tag-text text-white">
-							{this.props.tag.name}
+							{this.props.tagInfo.name}
 						</Card.Text>
 					</Card.Body>
 				</Card>
@@ -146,9 +140,9 @@ class TagItem extends Component {
 					handleSessions = {this.props.handleSessions}
 					campaign = {this.props.campaign}
 					handleCampaign = {this.props.handleCampaign}
-					id = {this.props.id}
+					id = {this.props.campaignID}
 					edit = {true}
-					tag = {this.props.tag}
+					tag = {this.props.tagInfo}
 					tagID = {this.props.tagID}
 				/>
 			</>

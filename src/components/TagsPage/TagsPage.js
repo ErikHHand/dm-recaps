@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Ta inte bort
+import * as firebase from 'firebase'; // Do not remove
 
 /*
 	This component holds the tags tab of the App.
@@ -55,16 +55,17 @@ class TagsPage extends Component {
 				<TagItem 
 					key = {tag}
 					tagID = {tag}
-					tag = {this.props.campaign.tags[tag]}
+					tagInfo = {this.props.campaign.tags[tag]}
+					campaign = {this.props.campaign}
 					sessions = {this.props.sessions}
 					tags = {this.props.tags}
-					campaign = {this.props.campaign}
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
 					handleCurrentTag = {this.handleCurrentTag}
 					handleClick = {() => tagsPage.setState({currentTag: tag})}
-					id = {this.props.campaignID}
+					campaignID = {this.props.campaignID} // TODO Can probably be deleted when TagInfo is cleaned
+					campaignRef = {this.props.campaignRef}
 				/>
 			);
 		}
