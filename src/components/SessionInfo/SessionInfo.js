@@ -53,8 +53,7 @@ class SessionInfo extends Component {
 		}
 	}
 	
-	// Triggers when adding an entirely new session,
-	// as opposed to editing an existing one.
+	// Triggers when adding an entirely new session, as opposed to editing an existing one.
 	// This function saves the session locally and on Firestore
 	addNewSession() {
 
@@ -62,9 +61,8 @@ class SessionInfo extends Component {
 			recaps: {},
 		};
 		
-		// First add to Firestore then add locally,
-		// because adding to Firestore will generate the
-		// id needed to store locally
+		// First add to Firestore then add locally, because adding to Firestore 
+		// will generate the id needed to store locally
 		this.props.campaignRef.collection("sessions").add(session)
 		.then((docRef) => {
 			console.log("Document successfully written! DocRef: ", docRef);
@@ -82,8 +80,7 @@ class SessionInfo extends Component {
 		});
 	};
 
-	// Triggers when editing a session or just after a new
-	// session has been added.
+	// Triggers when editing a session or just after a new session has been added.
 	// This function saves the session info locally and on Firestore
 	editSessionInfo(sessionID) {
 
@@ -113,7 +110,6 @@ class SessionInfo extends Component {
 
 
 		// Sort session in chronological order and add it to the session order array
-		
 		let session;
 
 		if(campaign.sessionOrder.length === 0 
@@ -132,17 +128,13 @@ class SessionInfo extends Component {
 			}
 		}
 		
-
 		// Add session locally
-
 		campaign.sessions[sessionID] = sessionInfo;
 		this.props.handleCampaign(campaign);
 
 		// Add session in campaign document
-
 		this.props.campaignRef.update({
-			['sessions.' + sessionID]: sessionInfo,
-			sessionOrder: campaign.sessionOrder,
+			['sessions.' + sessionID]: sessionInfo, sessionOrder: campaign.sessionOrder,
 		}).then(function() {
 			console.log("Document successfully updated!");
 		}).catch(function(error) {
