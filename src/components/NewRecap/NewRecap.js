@@ -6,6 +6,10 @@ import Form from 'react-bootstrap/Form'
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
+/*
+	This class holds the field where new recaps are entered and
+	handles adding new recaps.
+*/
 class NewRecap extends Component {
 	constructor(props) {
 		super(props);
