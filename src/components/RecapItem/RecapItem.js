@@ -217,6 +217,7 @@ class RecapItem extends Component {
 
 	render() {
 
+		// Text for recap item deletion
 		const deleteText = {
 			title: "Delete Recap",
 			text: "Are you sure you want to delete this recap?"
@@ -226,6 +227,8 @@ class RecapItem extends Component {
 
 		let recapItem = this;
 
+		// The edit field shown when editing a recap text
+		// TODO: Is it possible to merge this into NewRecap component?
 		let editField = (
 			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
 				<Form.Group controlId="formEditRecap">
@@ -242,6 +245,7 @@ class RecapItem extends Component {
 			</Form>
 		);
 
+		// The tags for the overlay where you select what tags to tag the recap with
 		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
 			return (
 				<Form.Group id="formCheckbox" key={tagID} name={tagID}>
@@ -256,6 +260,7 @@ class RecapItem extends Component {
 			)
 		});
 
+		// The tags currently attached to this recap
 		let tags = this.props.recapItem.tags.map((tagID) =>
 			<Badge 
 				pill 
