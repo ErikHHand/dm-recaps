@@ -11,9 +11,12 @@ import Popover from 'react-bootstrap/Popover'
 import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Ta inte bort
+import * as firebase from 'firebase'; // Do not remove
 
-
+/*
+	This component represents a recap item, the whole card with recap text
+	and attached tags.
+*/
 class RecapItem extends Component {
 
 	constructor(props) {
@@ -27,10 +30,12 @@ class RecapItem extends Component {
 			edit: false,
 		}
 
+		// Set the context for "this" for the following functions
 		this.deleteRecap = this.deleteRecap.bind(this);
 		this.editRecap = this.editRecap.bind(this);
 	}
 
+	// Add tags attached to this recap item to the state
 	componentDidMount() {
 		
 		let tags = {};
@@ -45,10 +50,13 @@ class RecapItem extends Component {
 		});		
 	}
 
+	// Edits the recap.
+	// This function is called when changing tags or the recap text
 	onSubmit = event => {
 
 		event.preventDefault();
 
+		// Close tag overlay and remove edit text area
 		this.setState({
 			showTagOverlay: false,
 			edit: false,
@@ -57,32 +65,27 @@ class RecapItem extends Component {
 		let previousTags = this.props.recapItem.tags;
 		let id = this.props.recapID;
 		
+		// Add tags with value True
 		let tags = [];
 		for (let tag in this.state.tags) {
 			if(this.state.tags[tag]){
 				tags.push(tag)
 			}	
-		}	
+		}
 		let text = this.state.text;
 		
-		// Update recap Item
-
+		// Update recap Item with potentially new text and tags
 		let recapItem = this.props.recapItem;
 		recapItem.tags = tags;
 		recapItem.text = text;
 		
-		
 		// Add locally to sessions
-		
 		let sessions = this.props.sessions;
 		sessions[recapItem.session].recaps[this.props.recapID] = recapItem
 		this.props.handleSessions(sessions);
 
 		// Add to Firestore Sessions
-		
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).collection("sessions")
-		.doc(recapItem.session).update({
+		this.props.campaignRef.collection("sessions").doc(recapItem.session).update({
 			['recaps.' + id]: recapItem,
 		})
 		.then(function() {
@@ -91,21 +94,20 @@ class RecapItem extends Component {
 			console.log("Error getting document:", error);
 		});
 
-		// Add locally to tags and to Firestore
+		// Add or delete locally and on Firestore
 		let tagsCollection = this.props.tags;
 		
 		for (let tag in this.state.tags) {
 
+			// If tag has been added
 			if(this.state.tags[tag]){
 				
+				// Add locally to tags
 				tagsCollection[tag].recaps[id] = recapItem;
 				this.props.handleTags(tagsCollection);
 				
 				// Add to Firestore Tags
-				
-				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-				.collection("campaigns").doc(this.props.id).collection("tags")
-				.doc(tag).update({
+				this.props.campaignRef.collection("tags").doc(tag).update({
 					['recaps.' + id]: recapItem,
 				})
 				.then(function() {
@@ -114,29 +116,25 @@ class RecapItem extends Component {
 					console.log("Error getting document:", error);
 				});
 			}
+
+			// If tag has been removed
 			else if(!this.state.tags[tag] && previousTags.includes(tag)) {
 
-				delete tagsCollection[tag].recaps[id];
-				this.props.handleTags(tagsCollection);
-
-				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-				.collection("campaigns").doc(this.props.id).collection("tags")
-				.doc(tag).update({
-					['recaps.' + id]: firebase.firestore.FieldValue.delete(),
-				})
-				.then(function() {
-					console.log("Document successfully deleted!");
-				}).catch(function(error) {
-					console.log("Error deleting field:", error);
-				});
+				// Delete locally and from Firestore
+				this.deleteFromTags(tag, tagsCollection)
 			}	
 		}
+		this.props.handleTags(tagsCollection);
 	};
 
+	// Triggers when editing a recap text while writing
+	// Updates text
 	onChangeText = event => {
 		this.setState({ text: event.target.value });
 	};
 
+	// Triggers when changing tags
+	// Updates tags for this recap item
 	onChange = event => {
     	let tags = this.state.tags;
 		tags[event.target.name] = event.target.checked;
@@ -146,6 +144,23 @@ class RecapItem extends Component {
 		});
 	};
 
+	// Delete recap item from tags collection, both locally and on Firestore
+	deleteFromTags(tag, tags) {
+
+		// Delete locally from tags
+		delete tags[tag].recaps[this.props.recapID];
+
+		// Delete from Firestore Tags
+		this.props.campaignRef.collection("tags").doc(tag).update({
+			['recaps.' + this.props.recapID]: firebase.firestore.FieldValue.delete(),
+		})
+		.then(function() {
+			console.log("Document successfully deleted!");
+		}).catch(function(error) {
+			console.log("Error deleting field:", error);
+		});
+	}
+
 	editRecap() {
 		this.setState({
 			edit: true,
@@ -154,23 +169,19 @@ class RecapItem extends Component {
 	  
 	deleteRecap() {
 
-		// Delete recap in Recap order
+		let session = this.props.recapItem.session;
 
+		// Delete recap in Recap order
 		let campaign = this.props.campaign;
-		console.log(campaign.sessions[this.props.recapItem.session].recapOrder);
-		console.log(this.props.recapID);
 		
-		let index = campaign.sessions[this.props.recapItem.session].recapOrder.indexOf(this.props.recapID);
-		console.log(index);
-		if (index !== -1) campaign.sessions[this.props.recapItem.session].recapOrder.splice(index, 1);
-		console.log(campaign.sessions[this.props.recapItem.session].recapOrder);
+		let index = campaign.sessions[session].recapOrder.indexOf(this.props.recapID);
+		if (index !== -1) campaign.sessions[session].recapOrder.splice(index, 1);
+
 		this.props.handleCampaign(campaign);
 
 		// Delete from Firestore Recap order
-		
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).update({
-			['sessions.' + this.props.recapItem.session + '.recapOrder']: campaign.sessions[this.props.recapItem.session].recapOrder,
+		this.props.campaignRef.update({
+			['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
 		})
 		.then(function() {
 			console.log("Document successfully updated!");
@@ -180,13 +191,11 @@ class RecapItem extends Component {
 
 		// Delete recap locally in session
 		let sessions = this.props.sessions;
-		delete sessions[this.props.recapItem.session].recaps[this.props.recapID];
+		delete sessions[session].recaps[this.props.recapID];
 		this.props.handleSessions(sessions);
 
 		// Delete recap on Firestore sessions
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).collection("sessions")
-		.doc(this.props.recapItem.session).update({
+		this.props.campaignRef.collection("sessions").doc(session).update({
 			['recaps.' + this.props.recapID]: firebase.firestore.FieldValue.delete(),
 		})
 		.then(function() {
@@ -197,29 +206,13 @@ class RecapItem extends Component {
 
 
 		// Delete recaps from tags locally and on firestore
-
 		let tags = this.props.tags;
+
 		this.props.recapItem.tags.forEach(tag => {
-			
-			// Delete locally
-			delete tags[tag].recaps[this.props.recapID];
-
-			// Delete on firestore
-
-			this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-			.collection("campaigns").doc(this.props.id).collection("tags")
-			.doc(tag).update({
-				["recaps." + this.props.recapID]: firebase.firestore.FieldValue.delete(),
-			})
-			.then(function() {
-				console.log("Document successfully deleted!");
-			}).catch(function(error) {
-				console.log("Error deleting document:", error);
-			});
+			this.deleteFromTags(tag, tags)
 		});
 
 		this.props.handleTags(tags);
-
 	}
 
 	render() {

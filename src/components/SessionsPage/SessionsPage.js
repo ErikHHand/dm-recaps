@@ -97,13 +97,13 @@ class SessionsPage extends Component {
 					key = {recapID}
 					recapID = {recapID}
 					recapItem = {recapList[recapID]}
-					tags = {this.props.tags}
+					campaign = {this.props.campaign}
 					sessions = {this.props.sessions}
+					tags = {this.props.tags}
+					handleCampaign = {this.props.handleCampaign}
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
-					handleCampaign = {this.props.handleCampaign}
-					id = {this.props.campaignID}
-					campaign = {this.props.campaign}
+					campaignRef = {this.props.campaignRef}
 				/>
 			);
 		}
