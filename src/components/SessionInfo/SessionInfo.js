@@ -25,16 +25,14 @@ class SessionInfo extends Component {
 		}
 	}
 
-	componentDidMount() {
+	// Will be called when props change, which will update date and description accordingly
+	componentWillReceiveProps(newProps) {
 
-		// If editing, put the current information about the session in
-		// the state and also the input fields
-		if(this.props.edit) {
-			this.setState({
-				description: this.props.description,
-				date: this.props.date,
-			});
-		}
+		// Put the current information about the session in the state
+		this.setState({
+			description: newProps.description,
+			date: newProps.date,
+		});
 	}
 
 	// Triggers when submitting session info
@@ -92,22 +90,19 @@ class SessionInfo extends Component {
 
 		// Write data depending on whether or not this a new 
 		// session or an old session being edited
-		if(campaign.sessions[sessionID]) {
+		if(campaign.sessions[sessionID]) { // Session being edited
 
-			// Session being edited
 			sessionInfo.created = campaign.sessions[sessionID].created;
 			sessionInfo.recapOrder = campaign.sessions[sessionID].recapOrder;
 
 			// Remove the session from the session order array
 			let sessionIndex = campaign.sessionOrder.indexOf(sessionID);
 			if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
-		} else {
+		} else { // New session being added
 
-			// New session being added
 			sessionInfo.created = firebase.firestore.Timestamp.fromDate(new Date());
 			sessionInfo.recapOrder = [];
 		}
-
 
 		// Sort session in chronological order and add it to the session order array
 		let session;
@@ -166,7 +161,6 @@ class SessionInfo extends Component {
 		}
 
 		const { date, description, error } = this.state;
-
 		const isInvalid = date === "" || description === "";
 
 		return (

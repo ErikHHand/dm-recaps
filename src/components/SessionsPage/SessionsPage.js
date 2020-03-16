@@ -36,20 +36,40 @@ class SessionsPage extends Component {
 		super(props);
 
 		this.state = {
-			showAddWindow: false,
+			showSessionInfo: false,
 			currentSession: null,
+			edit: false,
 		};
 
 		// Set the context for "this" for the following function
 		this.handleCurrentSession = this.handleCurrentSession.bind(this);
+		this.editSession = this.editSession.bind(this);
 	}
 
 	// Handles changing which session is the current session
 	handleCurrentSession(sessionID) {
 		this.setState({
 			currentSession: sessionID,
-		})
+		});
 	}
+
+	// Triggers before editing a session
+	editSession(sessionID, description, date) {
+		this.setState({
+			sessionID: sessionID,
+			description: description,
+			date: date,
+			edit: true,
+			showSessionInfo: true,
+		});
+	}
+
+	onHideSessionInfo = event => {
+    	this.setState({ 
+			showSessionInfo: false,
+			edit: false,
+		});
+  	};
 
 	render() {	
 
@@ -71,15 +91,12 @@ class SessionsPage extends Component {
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
 					handleCurrentSession = {this.handleCurrentSession}
+					editSession = {this.editSession}
 					campaignRef = {this.props.campaignRef}
 					click = {() => this.setState({currentSession: sessionID})}
 				/>
 			);
 		}
-
-		//console.log(this.state.currentSession);
-		//console.log(this.props.sessions);
-		//console.log(this.props.campaign.tags);
 
 		let recapItems;
 
@@ -113,16 +130,20 @@ class SessionsPage extends Component {
 				<Col md={3} className="overflow-scroll">
 					{sessions}
 					<div className="center">
-						<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>New Session</Button>
+						<Button variant="success" onClick={() => this.setState({ showSessionInfo: true, edit: false, })}>New Session</Button>
 					</div>
 					<SessionInfo 
-						show = {this.state.showAddWindow}
-						onHide = {() => this.setState({ showAddWindow: false })}
+						show = {this.state.showSessionInfo}
+						onHide = {() => this.setState({ showSessionInfo: false })}
 						sessions = {this.props.sessions}
 						campaign = {this.props.campaign}
 						handleSessions = {this.props.handleSessions}
 						handleCampaign = {this.props.handleCampaign}
 						campaignRef = {this.props.campaignRef}
+						edit = {this.state.edit}
+						description = {this.state.edit ? this.state.description : ""}
+						date = {this.state.edit ? this.state.date : new Date()}
+						sessionID = {this.state.edit ? this.state.sessionID : null}
 					/>
 				</Col>
 				<Col md={9} className="overflow-scroll">

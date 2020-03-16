@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
-import SessionInfo from '../SessionInfo/SessionInfo';
 
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
@@ -115,7 +114,11 @@ class SessionItem extends Component {
 								</Col>
 								<Col md="3" className="center">
 									<ItemMenu
-										edit = {this.editSession}
+										edit = {() => this.props.editSession(
+											this.props.sessionID,
+											this.props.sessionInfo.description,
+											date
+										)}
 										delete = {this.deleteSession}
 										deleteText = {deleteText}
 									/>
@@ -125,19 +128,6 @@ class SessionItem extends Component {
 						<Card.Text>{this.props.sessionInfo.description}</Card.Text>
 					</Card.Body>
 				</Card>
-				<SessionInfo
-					show = {this.state.showEditWindow}
-					onHide = {() => this.setState({ showEditWindow: false })}
-					sessions = {this.props.sessions}
-					handleSessions = {this.props.handleSessions}
-					campaign = {this.props.campaign}
-					handleCampaign = {this.props.handleCampaign}
-					campaignRef = {this.props.campaignRef}
-					edit = {true}
-					description = {this.props.sessionInfo.description}
-					date = {date}
-					sessionID = {this.props.sessionID}
-				/>
 			</>
 		);
 	}
