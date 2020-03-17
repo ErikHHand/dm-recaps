@@ -8,7 +8,10 @@ import { Link } from "react-router-dom";
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
 
-
+/*
+	This component holds the page with the campaign list, the first page a 
+	users sees when logging in.
+*/
 class HomePage extends Component {
 
 	constructor(props) {
@@ -19,6 +22,7 @@ class HomePage extends Component {
 			showAddWindow: false,
 		};
 
+		// Set the context for "this" for the following function
 		this.handleCampaigns = this.handleCampaigns.bind(this);
 	}
 
@@ -26,10 +30,11 @@ class HomePage extends Component {
 
 		let home = this;
 
-        // Query for getting the wishlist collection from firestore
+        // Save the query reference for campaigns
         let campaignsRef = this.props.firebase.db.collection("users")
         .doc(this.props.firebase.auth.currentUser.uid).collection("campaigns");
 
+		// Query for getting the campaign collection from firestore
         campaignsRef.get().then((querySnapshot) => {
             let campaigns = {};
 
@@ -47,6 +52,7 @@ class HomePage extends Component {
         });
 	}
 
+	// Handles changes to the campaign list
 	handleCampaigns(campaigns) {
 		this.setState({
 			campaigns: campaigns,
@@ -55,6 +61,7 @@ class HomePage extends Component {
 
 	render() {
 		
+		// Fill campaign list
 		let campaigns = Array.from(Object.keys(this.state.campaigns)).map((campaignID)=>
 			<Link key={campaignID} to={{
 				pathname: "/campaigns/"+campaignID,
