@@ -55,7 +55,6 @@ class NewRecap extends Component {
 		this.props.handleSessions(sessions);
 		
 		// Add to Firestore Sessions
-		
 		this.props.campaignRef.collection("sessions").doc(this.props.currentSession)
 		.update({
 			['recaps.' + id]: recap,
@@ -67,13 +66,11 @@ class NewRecap extends Component {
 		});
 
 		// Add locally to recap order array
-
 		let campaign = this.props.campaign;
 		campaign.sessions[this.props.currentSession].recapOrder.push(id);
 		this.props.handleCampaign(campaign);
 
 		// Add to Firestore recap order array
-		
 		this.props.campaignRef.update({
 			['sessions.' + this.props.currentSession + '.recapOrder']: campaign.sessions[this.props.currentSession].recapOrder,
 		})
@@ -89,7 +86,6 @@ class NewRecap extends Component {
 		let newRecap = this;
 
 		const { recap, error} = this.state;
-
 		const isInvalid = recap === "" || !this.props.currentSession;
 
 		return (
