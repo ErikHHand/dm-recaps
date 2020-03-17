@@ -9,6 +9,10 @@ import Col from 'react-bootstrap/Col'
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
+/*
+	This class holds the Session Items on the left side of the Session Page.
+	This class holds the layout as well function for deleting
+*/
 class SessionItem extends Component {
 
 	constructor(props) {
@@ -18,15 +22,8 @@ class SessionItem extends Component {
 			showEditWindow: false,
 		}
 
-		// Set the context for "this" for the following functions
+		// Set the context for "this" for the following function
 		this.deleteSession = this.deleteSession.bind(this);
-		this.editSession = this.editSession.bind(this);
-	}
-
-	editSession() {
-		this.setState({
-			showEditWindow: true,
-		});
 	}
 
 	deleteSession() {
@@ -36,8 +33,9 @@ class SessionItem extends Component {
 
 		// Delete recaps from tags locally and on Firestore
 		let tags = this.props.tags;
-		for(let recap in this.props.sessions[this.props.sessionID].recaps) {
-			this.props.sessions[this.props.sessionID].recaps[recap].tags.forEach(tag => {
+		let recaps = this.props.sessions[this.props.sessionID].recaps
+		for(let recap in recaps) {
+			recaps[recap].tags.forEach(tag => {
 				
 				// Delete locally
 				delete tags[tag].recaps[recap];
@@ -53,7 +51,6 @@ class SessionItem extends Component {
 				});
 			});
 		}
-
 		this.props.handleTags(tags);
 
 
@@ -75,9 +72,9 @@ class SessionItem extends Component {
 		let campaign = this.props.campaign;
 		delete campaign.sessions[this.props.sessionID];
 
+		// Delete session from the session order list
 		let sessionIndex = campaign.sessionOrder.indexOf(this.props.sessionID);
 		if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
-
 		this.props.handleCampaign(campaign);
 
 
@@ -95,11 +92,13 @@ class SessionItem extends Component {
 
 	render() {
 
+		// Text for pop-up when deleting
 		const deleteText = {
 			title: "Delete Session",
 			text: "Are you sure you want to delete this session and all recaps written for it?"
 		}
 
+		// Create date
 		let date = this.props.sessionInfo.date;
 		date = new Date(date.seconds * 1000);		
 		
