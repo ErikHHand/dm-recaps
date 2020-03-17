@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withAuthorization } from '../Session/Session';
 
-import NewCampaign from '../NewCampaign/NewCampaign';
+import CampaignInfo from '../CampaignInfo/CampaignInfo';
 
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,7 @@ class HomePage extends Component {
 
 		this.state = {
 			campaigns: [],
-			showAddWindow: false,
+			showCampaignInfo: false,
 		};
 
 		// Set the context for "this" for the following function
@@ -79,11 +79,11 @@ class HomePage extends Component {
 				<h1 className="center">Campaigns</h1>
 				<ul>{campaigns}</ul>
 				<div className="center">
-					<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>Create a new campaign!</Button>
+					<Button variant="success" onClick={() => this.setState({ showCampaignInfo: true })}>Create a new campaign!</Button>
 				</div>
-				<NewCampaign 
-					show = {this.state.showAddWindow}
-					onHide = {() => this.setState({ showAddWindow: false })}
+				<CampaignInfo 
+					show = {this.state.showCampaignInfo}
+					onHide = {() => this.setState({ showCampaignInfo: false })}
 					campaigns = {this.state.campaigns}
 					handleCampaigns = {this.handleCampaigns}
 				/>

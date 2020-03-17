@@ -5,7 +5,7 @@ import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
 
-class NewCampaign extends Component {
+class CampaignInfo extends Component {
 
 	constructor(props) {
 		super(props);	
@@ -130,4 +130,4 @@ class NewCampaign extends Component {
 	}
 }
 
-export default withFirebase(NewCampaign);
+export default withFirebase(CampaignInfo);
