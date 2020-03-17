@@ -152,6 +152,7 @@ class SessionInfo extends Component {
 
 		let title, submit;
 
+		// Change texts based on whether editing or adding
 		if(this.props.edit) {
 			title = "Edit Session";
 			submit = "Submit changes";
