@@ -32,7 +32,7 @@ class AuthUser extends Component {
 
         let navigation = null;
 
-        // Switch for waiting until wishlist and list of seen movies have been loaded.
+        // Switch for waiting until stuff (what exactly?) have been loaded.
         switch (this.state.status) {
             case "LOADING":
                 navigation = <em>Loading</em>;
