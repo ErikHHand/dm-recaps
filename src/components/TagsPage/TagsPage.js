@@ -78,7 +78,7 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					handleCurrentTag = {this.handleCurrentTag}
 					handleClick = {() => tagsPage.setState({currentTag: tag})}
-					campaignID = {this.props.campaignID} // TODO Can probably be deleted when TagInfo is cleaned
+					editTag = {this.editTag}
 					campaignRef = {this.props.campaignRef}
 				/>
 			);

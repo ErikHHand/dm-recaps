@@ -11,7 +11,7 @@ import * as firebase from 'firebase'; // Do not remove
 
 /*
 	This class holds the Session Items on the left side of the Session Page.
-	This class holds the layout as well function for deleting
+	This class holds the layout as well as the function for deleting
 */
 class SessionItem extends Component {
 

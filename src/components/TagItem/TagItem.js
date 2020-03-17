@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
-import TagInfo from '../TagInfo/TagInfo';
 
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
@@ -10,26 +9,20 @@ import Col from 'react-bootstrap/Col'
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
+/*
+	This class holds the Tag Items on the left side of the Tags Page.
+	This class holds the layout as well as the function for deleting
+*/
 class TagItem extends Component {
 
 	constructor(props) {
 		super(props);
 
-		// Set the context for "this" for the following functions
+		// Set the context for "this" for the following function
 		this.deleteTag = this.deleteTag.bind(this);
-		this.editTag = this.editTag.bind(this);
-
-		this.state = {
-			showEditWindow: false,
-		}
 	}
 
-	editTag() {
-		this.setState({
-			showEditWindow: true,
-		});
-	}
-
+	// Triggers when deleting a tag
 	deleteTag() {
 
 		// Set current tag to null
@@ -43,7 +36,7 @@ class TagItem extends Component {
 			let recapItem = this.props.tags[this.props.tagID].recaps[recapID];
 			let tagIndex = recapItem.tags.indexOf(this.props.tagID);
 
-			if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1); // Remove tag from recap item?
+			if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1); // Remove tag from recap item
 			sessions[recapItem.session].recaps[recapID] = recapItem; // Re-add the recap item without the tag
 
 			// Add recap in sessions on Firestore
@@ -68,7 +61,6 @@ class TagItem extends Component {
 				});
 			});
 		}
-
 		this.props.handleSessions(sessions);
 
 		// Delete tag recaps locally
@@ -121,7 +113,12 @@ class TagItem extends Component {
 								</Col>
 								<Col xs="3" className="center">
 									<ItemMenu
-										edit = {this.editTag}
+										edit = {() => this.props.editTag(
+											this.props.tagID,
+											this.props.sessionInfo.name,
+											this.props.sessionInfo.type,
+											this.props.sessionInfo.colour
+										)}
 										delete = {this.deleteTag}
 										deleteText = {deleteText}
 									/>
@@ -133,18 +130,6 @@ class TagItem extends Component {
 						</Card.Text>
 					</Card.Body>
 				</Card>
-				<TagInfo
-					show = {this.state.showEditWindow}
-					onHide = {() => this.setState({ showEditWindow: false })}
-					sessions = {this.props.sessions}
-					handleSessions = {this.props.handleSessions}
-					campaign = {this.props.campaign}
-					handleCampaign = {this.props.handleCampaign}
-					id = {this.props.campaignID}
-					edit = {true}
-					tag = {this.props.tagInfo}
-					tagID = {this.props.tagID}
-				/>
 			</>
 		);
 	}
