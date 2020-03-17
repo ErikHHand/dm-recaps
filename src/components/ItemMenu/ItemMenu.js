@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 
-import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
 
+/*
+	This class holds the three dots the brings up the item menu when clicked
+*/
 class CustomToggle extends Component {
 	constructor(props, context) {
 	  	super(props, context);
 		
+		// Set the context for "this" for the following function
 	  	this.handleClick = this.handleClick.bind(this);
 	}
   
+	// Triggers when the three dots are clicked
 	handleClick(e) {
 	  	e.preventDefault();
-
 	  	this.props.onClick(e);
 	}
   
@@ -25,6 +28,12 @@ class CustomToggle extends Component {
 	}
 }
 
+/*
+	This class holds the menu that is shown when the three dots are clicked.
+	This menu currently has "edit" and "delete" as options
+	If edit is clicked, the parent decides what happens
+	If delete is clicked, a confirmation window is shown
+*/
 class ItemMenu extends Component {
 	constructor(props) {
 		super(props);
@@ -33,16 +42,19 @@ class ItemMenu extends Component {
 			showDeleteWindow: false,
 		};
 
+		// Set the context for "this" for the following functions
 		this.showDeleteWindow = this.showDeleteWindow.bind(this);
 		this.hideDeleteWindow = this.hideDeleteWindow.bind(this);
   	}
 
+	// Show the confirmation window for deleting
 	showDeleteWindow(){		
 		this.setState({
 			showDeleteWindow: true,
 		})
 	}
 
+	// Hide the confirmation window for deleting
 	hideDeleteWindow(){
 		this.setState({
 			showDeleteWindow: false,
@@ -50,7 +62,6 @@ class ItemMenu extends Component {
 	}
 
 	render() {		
-		
 		return (
 			<>
 				<Dropdown>

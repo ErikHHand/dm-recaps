@@ -41,7 +41,7 @@ class SessionsPage extends Component {
 			edit: false,
 		};
 
-		// Set the context for "this" for the following function
+		// Set the context for "this" for the following functions
 		this.handleCurrentSession = this.handleCurrentSession.bind(this);
 		this.editSession = this.editSession.bind(this);
 	}
