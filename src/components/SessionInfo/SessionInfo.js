@@ -42,18 +42,23 @@ class SessionInfo extends Component {
 		this.props.onHide();
 		event.preventDefault();
 
+		let sessionInfo = {
+			date: firebase.firestore.Timestamp.fromDate(this.state.date),
+			description: this.state.description,
+		};
+
 		// If editing, only writing to the session field in the campaign object
 		// is neccessary and a new session is not needed
 		if(this.props.edit) {
-			this.editSessionInfo(this.props.sessionID);
+			this.editSessionInfo(this.props.sessionID, sessionInfo);
 		} else {
-			this.addNewSession();
+			this.addNewSession(sessionInfo);
 		}
 	}
 	
 	// Triggers when adding an entirely new session, as opposed to editing an existing one.
 	// This function saves the session locally and on Firestore
-	addNewSession() {
+	addNewSession(sessionInfo) {
 
 		let session = {
 			recaps: {},
@@ -71,7 +76,7 @@ class SessionInfo extends Component {
 			this.props.handleSessions(sessions);
 
 			// Write session info
-			this.editSessionInfo(docRef.id);
+			this.editSessionInfo(docRef.id, sessionInfo);
 		})
 		.catch(error => {
 			console.error("Error writing document: ", error);
@@ -80,13 +85,9 @@ class SessionInfo extends Component {
 
 	// Triggers when editing a session or just after a new session has been added.
 	// This function saves the session info locally and on Firestore
-	editSessionInfo(sessionID) {
+	editSessionInfo(sessionID, sessionInfo) {
 
 		let campaign = this.props.campaign;
-		let sessionInfo = {
-			date: firebase.firestore.Timestamp.fromDate(this.state.date),
-			description: this.state.description,
-		};
 
 		// Write data depending on whether or not this a new 
 		// session or an old session being edited
