@@ -19,6 +19,7 @@ class HomePage extends Component {
 
 		this.state = {
 			campaigns: [],
+			campaignsRef: "",
 			showCampaignInfo: false,
 		};
 
@@ -32,7 +33,12 @@ class HomePage extends Component {
 
         // Save the query reference for campaigns
         let campaignsRef = this.props.firebase.db.collection("users")
-        .doc(this.props.firebase.auth.currentUser.uid).collection("campaigns");
+		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns");
+		
+		// Save the reference for the campaigns collection in the state
+		this.setState({
+			campaignsRef: campaignsRef,
+		});
 
 		// Query for getting the campaign collection from firestore
         campaignsRef.get().then((querySnapshot) => {
@@ -86,6 +92,7 @@ class HomePage extends Component {
 					onHide = {() => this.setState({ showCampaignInfo: false })}
 					campaigns = {this.state.campaigns}
 					handleCampaigns = {this.handleCampaigns}
+					campaignsRef = {this.state.campaignsRef}
 				/>
 			</Jumbotron>
 		)

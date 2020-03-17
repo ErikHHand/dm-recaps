@@ -5,6 +5,10 @@ import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
 
+/*
+	This component holds the pop-up window for editing campaign info,
+	when adding or editing a campaign.
+*/
 class CampaignInfo extends Component {
 
 	constructor(props) {
@@ -18,11 +22,13 @@ class CampaignInfo extends Component {
 		}
 	}
 
+	// Triggers when info is submitted
 	onSubmit = event => {
 		this.props.onHide();
 
 		event.preventDefault();
 
+		// Create campaign info
 		let campaign = {
 			name: this.state.name,
 			world: this.state.world,
@@ -34,11 +40,12 @@ class CampaignInfo extends Component {
 
 		let campaigns = this.props.campaigns;		
 
-		// Add to Firestore and then add locally
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").add(campaign)
+		// Add to Firestore, which will generate an id, then add localy using the id
+		this.props.campaignsRef.add(campaign)
 		.then((docRef) => {
 			console.log("Document successfully written! DocRef: ", docRef);
+
+			// Add locally
 			campaigns[docRef.id] = campaign;
 			this.props.handleCampaigns(campaigns);
 		})
@@ -47,7 +54,7 @@ class CampaignInfo extends Component {
 		});
 	};
 	  
-
+	// Triggers when changing campaing info
 	onChange = event => {
     	this.setState({ [event.target.name]: event.target.value });
   	};
@@ -56,9 +63,7 @@ class CampaignInfo extends Component {
 	render() {
 
 		const { campaigns, handleCampaigns, ...rest} = this.props;
-
 		const { name, world, setting, error } = this.state;
-
 		const isInvalid = name === '';
 
 		return (
