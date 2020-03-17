@@ -19,8 +19,6 @@ class SessionInfo extends Component {
 		super(props);
 
 		this.state = {
-			date: new Date(),
-			description: "",
 			error: null,
 		}
 	}
@@ -42,6 +40,7 @@ class SessionInfo extends Component {
 		this.props.onHide();
 		event.preventDefault();
 
+		// The info to be saved with the session
 		let sessionInfo = {
 			date: firebase.firestore.Timestamp.fromDate(this.state.date),
 			description: this.state.description,
@@ -143,7 +142,7 @@ class SessionInfo extends Component {
     	this.setState({ date: date });
   	};
 
-	// Triggers when changign the description
+	// Triggers when changing the description
 	onChangeDescription = event => {		
     	this.setState({ description: event.target.value });
   	};

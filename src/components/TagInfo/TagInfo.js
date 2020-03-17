@@ -6,52 +6,65 @@ import { Form, Button } from 'react-bootstrap';
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
+/*
+	This component holds the pop-up for editing and adding tags
+*/
 class TagInfo extends Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			name: "",
-			type: "Location",
-			colour: "#415b39",
 			error: "",
 		}
 	}
 
-	componentDidMount() {
+	// Will be called when props change, which will update state accordingly
+	componentWillReceiveProps(newProps) {
 
-		if(this.props.edit) {
-			this.setState({
-				name: this.props.tag.name,
-				type: this.props.tag.type,
-				colour: this.props.tag.colour,
-			});
-		}
+		// Put the current information about the tag in the state
+		this.setState({
+			name: newProps.name,
+			type: newProps.type,
+			colour: newProps.colour,
+		});
 	}
 
+	// Triggers when submitting tag info
 	onSubmit = event => {
 
+		// Hide the tag info window
 		this.props.onHide();
 		event.preventDefault();
 
+		// The info to be saved with the tag
+		let tagInfo = {
+			name: this.state.name,
+			type: this.state.type,
+			colour: this.state.colour,
+			created: firebase.firestore.Timestamp.fromDate(new Date()),
+		};
+
+		// If editing, only writing to the tag field in the campaign object
+		// is neccessary and a new tag is not needed
 		if(this.props.edit) {
-			this.editTagInfo(this.props.tagID);
+			this.editTagInfo(this.props.tagID, tagInfo);
 		} else {
-			this.addNewTag();
+			this.addNewTag(tagInfo);
 		}
 	}
 
-	addNewTag() {
+	// Triggers when adding an entirely new tag, as opposed to editing an existing one.
+	// This function saves the tag locally and on Firestore
+	addNewTag(tagInfo) {
 
 		let tag = {
 			recaps: {},
 		}
 
-		// Add to Firestore and then add locally
-
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).collection("tags").add(tag)
+		// First add to Firestore then add locally, because adding to Firestore 
+		// will generate the id needed to store locally
+		this.props.campaignRef.collection("tags").add(tag)
 		.then((docRef) => {
 			console.log("Document successfully written! DocRef: ", docRef);
 
@@ -60,29 +73,23 @@ class TagInfo extends Component {
 			tags[docRef.id] = tag;
 			this.props.handleTags(tags);
 
-			this.editTagInfo(docRef.id);
+			// Write tag info
+			this.editTagInfo(docRef.id, tagInfo);
 		})
 		.catch(error => {
 			console.error("Error writing document: ", error);
 		});
 	};
 
-	editTagInfo(tagID) {
+	// Triggers when editing a tag or just after a new tag has been added.
+	// This function saves the tag info locally and on Firestore
+	editTagInfo(tagID, tagInfo) {
 
 		// Add tag in campaign document
-
-		let tagInfo = {
-			name: this.state.name,
-			type: this.state.type,
-			colour: this.state.colour,
-			created: firebase.firestore.Timestamp.fromDate(new Date()),
-		};
-
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.collection("campaigns").doc(this.props.id).update({
+		this.props.campaignRef.update({
 			['tags.' + tagID]: tagInfo,
 		}).then(function() {
-		console.log("Document successfully updated!");
+			console.log("Document successfully updated!");
 		}).catch(function(error) {
 			console.log("Error getting document:", error);
 		});
@@ -92,10 +99,10 @@ class TagInfo extends Component {
 		this.props.handleCampaign(campaign);
 	}
 	
+	// Triggers when changing tag info
 	onChange = event => {
     	this.setState({ [event.target.name]: event.target.value });
   	};
-	
 
 	render() {
 
@@ -108,8 +115,8 @@ class TagInfo extends Component {
 			title = "Create a new tag";
 			submit = "Create new tag";
 		}
-		const { name, type, colour, error } = this.state;
 
+		const { name, type, colour, error } = this.state;
 		const isInvalid = name === "";
 
 		return (

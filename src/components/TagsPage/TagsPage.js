@@ -12,7 +12,8 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
 /*
-	This component holds the tags tab of the App.
+	This component holds the tags tab of the App. This component also
+	handles which tag item is selected.
 */
 class TagsPage extends Component {
 
@@ -20,12 +21,13 @@ class TagsPage extends Component {
 		super(props);
 
 		this.state = {
-			showAddWindow: false,
+			showTagInfo: false,
 			currentTag: null,
 		};
 
 		// Set the context for "this" for the following function
 		this.handleCurrentTag = this.handleCurrentTag.bind(this);
+		this.editTag = this.editTag.bind(this);
 	}
 
 	// Handles changing which tag is the current tag,
@@ -34,6 +36,18 @@ class TagsPage extends Component {
 		this.setState({
 			currentTag: tagID,
 		})
+	}
+
+	// Triggers before editing a tag
+	editTag(tagID, name, type, colour) {
+		this.setState({
+			tagID: tagID,
+			name: name,
+			type: type,
+			colour: colour,
+			edit: true,
+			showTagInfo: true,
+		});
 	}
 
 	render() {
@@ -119,16 +133,21 @@ class TagsPage extends Component {
 				<Col md={3} className="overflow-scroll">
 					{tagItems}
 					<div className="center">
-						<Button variant="success" onClick={() => this.setState({ showAddWindow: true })}>New Tag</Button>
+						<Button variant="success" onClick={() => this.setState({ showTagInfo: true, edit: false, })}>New Tag</Button>
 					</div>
 					<TagInfo 
-						show = {this.state.showAddWindow}
-						onHide = {() => this.setState({ showAddWindow: false })}
+						show = {this.state.showTagInfo}
+						onHide = {() => this.setState({ showTagInfo: false })}
 						tags = {this.props.tags}
 						campaign = {this.props.campaign}
 						handleTags = {this.props.handleTags}
 						handleCampaign = {this.props.handleCampaign}
-						id = {this.props.campaignID}
+						campaignRef = {this.props.campaignRef}
+						edit = {this.state.edit}
+						tagID = {this.state.edit ? this.state.tagID : null}
+						name = {this.state.edit ? this.state.name : ""}
+						type = {this.state.edit ? this.state.type : "Location"}
+						colour = {this.state.edit ? this.state.colour : "#415b39"}
 					/>
 				</Col>
 				<Col md={9} className="overflow-scroll">
