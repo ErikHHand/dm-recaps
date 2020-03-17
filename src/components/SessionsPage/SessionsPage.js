@@ -64,13 +64,6 @@ class SessionsPage extends Component {
 		});
 	}
 
-	onHideSessionInfo = event => {
-    	this.setState({ 
-			showSessionInfo: false,
-			edit: false,
-		});
-  	};
-
 	render() {	
 
 		let sessions;
