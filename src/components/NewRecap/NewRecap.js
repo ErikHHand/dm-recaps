@@ -21,10 +21,8 @@ class NewRecap extends Component {
   	}
 
 	// Saves the recap text to the state while writing
-	onChangeRecap(event, newRecap) {		
-    	newRecap.setState({ 
-			text: event.target.value 
-		});
+	onChangeRecap = event => {		
+    	this.setState({ text: event.target.value });
 	};
 	
 	// Triggers when submitting a recap
@@ -83,8 +81,6 @@ class NewRecap extends Component {
 
 	render() {
 
-		let newRecap = this;
-
 		const { text, error} = this.state;
 		const isInvalid = text === "" || !this.props.currentSession;
 
@@ -94,7 +90,7 @@ class NewRecap extends Component {
 					<Form.Control 
 						name="text"
 						value={text}
-						onChange={(event) => this.onChangeRecap(event, newRecap)}
+						onChange={this.onChangeRecap}
 						type="text"
 						placeholder="Write something that happened..."
 					/>
