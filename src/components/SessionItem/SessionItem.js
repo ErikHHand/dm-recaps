@@ -29,9 +29,6 @@ class SessionItem extends Component {
 	// Triggers when deleting a session
 	deleteSession() {
 
-		// Set current session to null
-		this.props.handleCurrentSession(null);
-
 		// Delete recaps from tags locally and on Firestore
 		let tags = this.props.tags;
 		let recaps = this.props.sessions[this.props.sessionID].recaps
@@ -89,6 +86,9 @@ class SessionItem extends Component {
 		}).catch(function(error) {
 			console.log("Error deleting document:", error);
 		});
+
+		// Set current session to null
+		this.props.handleCurrentSession(null);
 	}
 
 	render() {
@@ -101,7 +101,7 @@ class SessionItem extends Component {
 
 		// Create date
 		let date = this.props.sessionInfo.date;
-		date = new Date(date.seconds * 1000);		
+		date = new Date(date.seconds * 1000);
 		
 		return (
 			<>

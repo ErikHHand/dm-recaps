@@ -48,9 +48,12 @@ class SessionsPage extends Component {
 
 	// Handles changing which session is the current session
 	handleCurrentSession(sessionID) {
-		this.setState({
-			currentSession: sessionID,
-		});
+		if(sessionID == null || this.props.sessions[sessionID]) {
+			this.setState({
+				currentSession: sessionID,
+				FUCKINGHELL: "FUCKHELL" + sessionID,
+			});
+		}
 	}
 
 	// Triggers before editing a session
@@ -86,7 +89,7 @@ class SessionsPage extends Component {
 					handleCurrentSession = {this.handleCurrentSession}
 					editSession = {this.editSession}
 					campaignRef = {this.props.campaignRef}
-					click = {() => this.setState({currentSession: sessionID})}
+					click = {() => this.handleCurrentSession(sessionID)}
 				/>
 			);
 		}
