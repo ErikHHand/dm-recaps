@@ -22,12 +22,21 @@ class RecapItem extends Component {
 	constructor(props) {
 		super(props);
 
+		// TODO: WTF does this line do??? Something with tag pop-up...
 		this.attachRef = target => this.setState({ target });
 
+		// WARNING: This creates a derived state! In this case I think that 
+		// this is a logical solution
+		let tags = {};
+		for (let tag in this.props.campaign.tags) {
+			tags[tag] = this.props.recapItem.tags.includes(tag);			
+		}
+
 		this.state = {
-			tags: {},
+			tags: tags,
 			showTagOverlay: false,
 			edit: false,
+			text: this.props.recapItem.text,
 		}
 
 		// Set the context for "this" for the following functions
@@ -35,19 +44,22 @@ class RecapItem extends Component {
 		this.editRecap = this.editRecap.bind(this);
 	}
 
-	// Add tags attached to this recap item to the state
-	componentDidMount() {
+	// Triggers when an update to component happens
+	// This is used to handle a change in number of tags
+	// caused by deleting tags
+	componentDidUpdate() {
 		
-		let tags = {};
-		for (let tag in this.props.campaign.tags) {
-			tags[tag] = this.props.recapItem.tags.includes(tag);			
-		}
+		// Check if the number of tags has changed
+		if(Object.keys(this.state.tags).length !== Object.keys(this.props.campaign.tags).length) {
+			let tags = {};
+			for (let tag in this.props.campaign.tags) {
+				tags[tag] = this.props.recapItem.tags.includes(tag);			
+			}
 
-		this.setState({
-			tags: tags,
-			showTagOverlay: false,
-			text: this.props.recapItem.text,
-		});		
+			this.setState({
+				tags: tags,
+			});
+		}		
 	}
 
 	// Edits the recap.
@@ -55,7 +67,6 @@ class RecapItem extends Component {
 	onSubmit = event => {
 
 		event.preventDefault();
-		//console.log(this.state)
 
 		// Close tag overlay and remove edit text area
 		this.setState({
@@ -97,8 +108,6 @@ class RecapItem extends Component {
 
 		// Add or delete locally and on Firestore
 		let tagsCollection = this.props.tags;
-
-		//console.log(this.props)
 		
 		for (let tag in this.state.tags) {
 
@@ -138,7 +147,7 @@ class RecapItem extends Component {
 
 	// Triggers when changing tags
 	// Updates tags for this recap item
-	onChange = event => {
+	onChangeTags = event => {
     	let tags = this.state.tags;
 		tags[event.target.name] = event.target.checked;
 
@@ -248,13 +257,7 @@ class RecapItem extends Component {
 			</Form>
 		);
 
-		if(Object.keys(this.state.tags).length !== 0) {
-			console.log("True");
-			console.log(this.state.tags);
-		} else {
-			console.log("False");
-			console.log(this.state.tags);
-		}
+		console.log(this.state.tags);
 
 		// The tags for the overlay where you select what tags to tag the recap with
 		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
@@ -265,7 +268,7 @@ class RecapItem extends Component {
 						label={this.props.campaign.tags[tagID].name} 
 						name={tagID} 
 						checked={this.state.tags[tagID]} 
-						onChange={this.onChange}
+						onChange={this.onChangeTags}
 					/>
 				</Form.Group>
 			)
@@ -305,7 +308,7 @@ class RecapItem extends Component {
 						</Col>
 					</Row>
 					<Row>
-						<Col>{this.state.edit ? editField : this.props.recapItem.text}</Col>
+						<Col>{this.state.edit ? editField : this.state.text}</Col>
 					</Row>
 					<Row>
 						<Col>
