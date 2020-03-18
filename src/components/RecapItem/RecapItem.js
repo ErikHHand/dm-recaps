@@ -257,8 +257,6 @@ class RecapItem extends Component {
 			</Form>
 		);
 
-		console.log(this.state.tags);
-
 		// The tags for the overlay where you select what tags to tag the recap with
 		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
 			return (
