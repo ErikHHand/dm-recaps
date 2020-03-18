@@ -55,6 +55,7 @@ class RecapItem extends Component {
 	onSubmit = event => {
 
 		event.preventDefault();
+		//console.log(this.state)
 
 		// Close tag overlay and remove edit text area
 		this.setState({
@@ -96,6 +97,8 @@ class RecapItem extends Component {
 
 		// Add or delete locally and on Firestore
 		let tagsCollection = this.props.tags;
+
+		//console.log(this.props)
 		
 		for (let tag in this.state.tags) {
 
@@ -244,6 +247,14 @@ class RecapItem extends Component {
 				</Form.Group>
 			</Form>
 		);
+
+		if(Object.keys(this.state.tags).length !== 0) {
+			console.log("True");
+			console.log(this.state.tags);
+		} else {
+			console.log("False");
+			console.log(this.state.tags);
+		}
 
 		// The tags for the overlay where you select what tags to tag the recap with
 		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {

@@ -25,11 +25,9 @@ class CampaignRecaps extends Component {
 
 		this.state = {
 			key: 'sessions',
-			campaignRef: null,
 			campaign: {},
 			sessions: {},
 			tags: {},
-			id: this.props.location.state.id,
 		};
 
 		// Set the context for "this" for the following functions
@@ -52,11 +50,6 @@ class CampaignRecaps extends Component {
 		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("users")
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
-
-		// Save the reference for this campaign in the state
-		this.setState({
-			campaignRef: campaignRef,
-		});
 
 		// Get the campaign for Firestore and save in the state
 		campaignRef.get()
@@ -123,6 +116,14 @@ class CampaignRecaps extends Component {
 	}
 
 	render() {
+
+		// The id for this campaign
+		let id = this.props.location.state.id;
+
+		// The Firestore database reference for this campaign
+		let campaignRef = this.props.firebase.db.collection("users")
+		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
+
 		return (
 			<Jumbotron fluid className="container">
 				<Tab.Container defaultActiveKey="sessions">
@@ -148,8 +149,7 @@ class CampaignRecaps extends Component {
 								handleSessions = {this.handleSessions}
 								handleCampaign = {this.handleCampaign}
 								handleTags = {this.handleTags}
-								campaignID = {this.props.location.state.id}
-								campaignRef = {this.state.campaignRef}
+								campaignRef = {campaignRef}
 							/>
 						</Tab.Pane>
 						<Tab.Pane eventKey="tags">
@@ -160,8 +160,7 @@ class CampaignRecaps extends Component {
 								handleCampaign = {this.handleCampaign}
 								handleSessions = {this.handleSessions}
 								handleTags = {this.handleTags}
-								campaignID = {this.props.location.state.id}
-								campaignRef = {this.state.campaignRef}
+								campaignRef = {campaignRef}
 							/>
 						</Tab.Pane>
 					</Tab.Content>
