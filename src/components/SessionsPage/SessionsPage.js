@@ -44,6 +44,7 @@ class SessionsPage extends Component {
 		// Set the context for "this" for the following functions
 		this.handleCurrentSession = this.handleCurrentSession.bind(this);
 		this.editSession = this.editSession.bind(this);
+		this.addSession = this.addSession.bind(this);
 	}
 
 	// Handles changing which session is the current session
@@ -51,7 +52,6 @@ class SessionsPage extends Component {
 		if(sessionID == null || this.props.sessions[sessionID]) {
 			this.setState({
 				currentSession: sessionID,
-				FUCKINGHELL: "FUCKHELL" + sessionID,
 			});
 		}
 	}
@@ -63,6 +63,17 @@ class SessionsPage extends Component {
 			description: description,
 			date: date,
 			edit: true,
+			showSessionInfo: true,
+		});
+	}
+
+	// Triggers before adding a session
+	addSession() {
+		this.setState({
+			sessionID: null,
+			description: "",
+			date: new Date(),
+			edit: false,
 			showSessionInfo: true,
 		});
 	}
@@ -126,7 +137,7 @@ class SessionsPage extends Component {
 				<Col md={3} className="overflow-scroll">
 					{sessions}
 					<div className="center">
-						<Button variant="success" onClick={() => this.setState({ showSessionInfo: true, edit: false, })}>New Session</Button>
+						<Button variant="success" onClick={this.addSession}>New Session</Button>
 					</div>
 					<SessionInfo 
 						show = {this.state.showSessionInfo}
@@ -137,9 +148,9 @@ class SessionsPage extends Component {
 						handleCampaign = {this.props.handleCampaign}
 						campaignRef = {this.props.campaignRef}
 						edit = {this.state.edit}
-						description = {this.state.edit ? this.state.description : ""}
-						date = {this.state.edit ? this.state.date : new Date()}
-						sessionID = {this.state.edit ? this.state.sessionID : null}
+						description = {this.state.description}
+						date = {this.state.date}
+						sessionID = {this.state.sessionID}
 					/>
 				</Col>
 				<Col md={9} className="overflow-scroll">

@@ -18,10 +18,6 @@ class SessionItem extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			showEditWindow: false,
-		}
-
 		// Set the context for "this" for the following function
 		this.deleteSession = this.deleteSession.bind(this);
 	}

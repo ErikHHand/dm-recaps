@@ -28,6 +28,7 @@ class TagsPage extends Component {
 		// Set the context for "this" for the following function
 		this.handleCurrentTag = this.handleCurrentTag.bind(this);
 		this.editTag = this.editTag.bind(this);
+		this.addTag = this.addTag.bind(this);
 	}
 
 	// Handles changing which tag is the current tag,
@@ -46,6 +47,18 @@ class TagsPage extends Component {
 			type: type,
 			colour: colour,
 			edit: true,
+			showTagInfo: true,
+		});
+	}
+
+	// Triggers before adding a tag
+	addTag() {
+		this.setState({
+			tagID: null,
+			name: "",
+			type: "Location",
+			colour: "#415b39",
+			edit: false,
 			showTagInfo: true,
 		});
 	}
@@ -133,7 +146,7 @@ class TagsPage extends Component {
 				<Col md={3} className="overflow-scroll">
 					{tagItems}
 					<div className="center">
-						<Button variant="success" onClick={() => this.setState({ showTagInfo: true, edit: false, })}>New Tag</Button>
+						<Button variant="success" onClick={this.addTag}>New Tag</Button>
 					</div>
 					<TagInfo 
 						show = {this.state.showTagInfo}
@@ -144,10 +157,10 @@ class TagsPage extends Component {
 						handleCampaign = {this.props.handleCampaign}
 						campaignRef = {this.props.campaignRef}
 						edit = {this.state.edit}
-						tagID = {this.state.edit ? this.state.tagID : null}
-						name = {this.state.edit ? this.state.name : ""}
-						type = {this.state.edit ? this.state.type : "Location"}
-						colour = {this.state.edit ? this.state.colour : "#415b39"}
+						tagID = {this.state.tagID}
+						name = {this.state.name}
+						type = {this.state.type}
+						colour = {this.state.colour}
 					/>
 				</Col>
 				<Col md={9} className="overflow-scroll">
