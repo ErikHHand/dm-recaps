@@ -26,6 +26,7 @@ class SessionItem extends Component {
 		this.deleteSession = this.deleteSession.bind(this);
 	}
 
+	// Triggers when deleting a session
 	deleteSession() {
 
 		// Set current session to null
