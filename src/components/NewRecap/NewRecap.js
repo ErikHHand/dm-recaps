@@ -15,7 +15,7 @@ class NewRecap extends Component {
 		super(props);
 	  
 		this.state = {
-			recap: "",
+			text: "",
 			error: "",
 		};
   	}
@@ -23,7 +23,7 @@ class NewRecap extends Component {
 	// Saves the recap text to the state while writing
 	onChangeRecap(event, newRecap) {		
     	newRecap.setState({ 
-			recap: event.target.value 
+			text: event.target.value 
 		});
 	};
 	
@@ -34,13 +34,13 @@ class NewRecap extends Component {
 		// Recap data from this state
 		let recap = {
 			tags: [],
-			text: this.state.recap,
+			text: this.state.text,
 			session: this.props.currentSession,
 		};
 
 		// Empty the form field
 		this.setState({
-			recap: "",
+			text: "",
 		});
 
 		// Generate a hash code from the recap text
@@ -85,15 +85,15 @@ class NewRecap extends Component {
 
 		let newRecap = this;
 
-		const { recap, error} = this.state;
-		const isInvalid = recap === "" || !this.props.currentSession;
+		const { text, error} = this.state;
+		const isInvalid = text === "" || !this.props.currentSession;
 
 		return (
 			<Form onSubmit={this.onSubmitRecap}>
 				<Form.Group controlId="formRecap">
 					<Form.Control 
-						name="recap"
-						value={recap}
+						name="text"
+						value={text}
 						onChange={(event) => this.onChangeRecap(event, newRecap)}
 						type="text"
 						placeholder="Write something that happened..."
