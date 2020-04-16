@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import SignIn from "./../SignIn/SignIn";
+import SignUp from "./../SignUp/SignUp";
+
+import Jumbotron from 'react-bootstrap/Jumbotron';
 
 import './../../styles.css';
 
@@ -12,8 +15,9 @@ class Landing extends Component {
 
 		this.state = {
 			signIn: true,
-			signUp: false,
 		}
+
+		this.changeWindow = this.changeWindow.bind(this);
 	}
 
 	/* 	This function switches between the sign in and the sign up windows.
@@ -21,10 +25,9 @@ class Landing extends Component {
 		Currently not in use.
 		TODO: Style sign up window and utalize this function
 	*/
-	changeSignIn() {
+	changeWindow() {
 		this.setState({
 			signIn: !this.state.signIn,
-			signUp: !this.state.signUp
 		})
 	}
 	  
@@ -36,7 +39,13 @@ class Landing extends Component {
 				<Col xs={0} md={3}></Col>
 				<Col xs={12} md={6}>
 					<h1 className="center"> {title} </h1>
-					<SignIn/>
+					<Jumbotron id="sign-in-box">
+						<h1>{this.state.signIn ? "Sign in" : "Sign up"}</h1>
+						{this.state.signIn ?
+							<SignIn changeWindow = {this.changeWindow}/> : 
+							<SignUp changeWindow = {this.changeWindow}/> 
+						}
+					</Jumbotron> 
 				</Col>
 				<Col xs={0} md={3}></Col>
 			</Row>

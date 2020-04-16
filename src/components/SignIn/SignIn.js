@@ -2,20 +2,12 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
-import { SignUpLink } from '../SignUp/SignUp';
 import { withFirebase } from '../Firebase/Firebase';
 import * as ROUTES from '../../constants/routes';
 
-import Jumbotron from 'react-bootstrap/Jumbotron';
 import { Form, Button } from 'react-bootstrap';
-
-const SignIn = () => (
-  	<Jumbotron id="sign-in-box">
-    	<h1>Sign in</h1>
-    	<SignInForm />
-    	<SignUpLink />
-  	</Jumbotron>
-);
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 const INITIAL_STATE = {
   	email: '',
@@ -23,6 +15,9 @@ const INITIAL_STATE = {
   	error: null,
 };
 
+/*
+	This class holds the main sign in window
+*/
 class SignInFormBase extends Component {
   	constructor(props) {
     	super(props);
@@ -66,9 +61,6 @@ class SignInFormBase extends Component {
 						type="email"
 						placeholder="Email Address" 
 					/>
-					<Form.Text className="text-muted">
-						Your email address will never be shared with anyone else.
-					</Form.Text>
 				</Form.Group>
 
 				<Form.Group controlId="formBasicPassword">
@@ -82,21 +74,31 @@ class SignInFormBase extends Component {
 					/>
 				</Form.Group>
 				
-				<Button variant="primary" type="submit" disabled={isInvalid}>
-					Sign in
-				</Button>
-
+				<Row>
+					<Col md={2}>
+						<Button variant="success" type="submit" disabled={isInvalid}>
+							Sign in
+						</Button>
+					</Col>
+					<Col md={8}>
+					</Col>
+					<Col md={2}>
+						<Button variant="primary" onClick={this.props.changeWindow}>
+							Sign up
+						</Button>
+					</Col>
+				</Row>
 				{error && <p>{error.message}</p>}
 			</Form>
     	);
   	}
 }
 
-const SignInForm = compose(
+const SignIn = compose(
   	withRouter,
   	withFirebase,
 )(SignInFormBase);
 
 export default SignIn;
 
-export { SignInForm };
+export { SignIn };
