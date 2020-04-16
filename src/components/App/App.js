@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Navigation from  "../Navigation/Navigation";
 
@@ -9,15 +9,10 @@ import './../../styles.css';
 
 require('dotenv').config()
 
-class App extends Component {
-
-  	render() {
-		return (
-			<div className="App">
-				<Navigation/>
-			</div>
-		);
-	}
-}
+const App = () => (
+	<div className="App">
+		<Navigation/>
+	</div>
+)
 
 export default withAuthentication(App);
