@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import Landing from '../Landing/Landing';
 import NotFound from '../NotFound/NotFound';
-import HomePage from '../HomePage/HomePage';
+import CampaignPage from '../CampaignPage/CampaignPage';
 import CampaignRecaps from '../CampaignRecaps/CampaignRecaps';
 
 import { AuthUserContext } from '../Session/Session';
@@ -36,7 +36,7 @@ class Navigation extends Component {
                 />
                 <Route
                     exact path="/campaigns"
-                    render = { (props) => <HomePage {...props}/> }
+                    render = { (props) => <CampaignPage {...props}/> }
                 />
                 <Route
                     path = "/campaigns/:id"

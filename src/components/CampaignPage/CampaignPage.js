@@ -16,7 +16,7 @@ import Col from 'react-bootstrap/Col'
 	This component holds the page with the campaign list, the first page a 
 	users sees when logging in.
 */
-class HomePage extends Component {
+class CampaignPage extends Component {
 
 	constructor(props) {
 		super(props);
@@ -115,4 +115,4 @@ class HomePage extends Component {
 
 const condition = authUser => !!authUser;
 
-export default withAuthorization(condition)(HomePage);
+export default withAuthorization(condition)(CampaignPage);
