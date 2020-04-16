@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { withAuthorization } from '../Session/Session';
 
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
+import SignOutButton from '../SignOut/SignOut';
 
 import { Link } from "react-router-dom";
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
+import Navbar from 'react-bootstrap/Navbar';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 /*
 	This component holds the page with the campaign list, the first page a 
@@ -79,21 +83,33 @@ class HomePage extends Component {
 		);
 
 		return (
-			<Jumbotron fluid className="container">
-				<h1 className="center">Campaigns</h1>
-				<ul>{campaigns}</ul>
-				<div className="center">
-					<Button variant="success" onClick={() => this.setState({ showCampaignInfo: true })}>Create a new campaign!</Button>
-				</div>
-				<CampaignInfo 
-					show = {this.state.showCampaignInfo}
-					onHide = {() => this.setState({ showCampaignInfo: false })}
-					campaigns = {this.state.campaigns}
-					handleCampaigns = {this.handleCampaigns}
-					campaignsRef = {campaignsRef}
-				/>
-			</Jumbotron>
-		)
+			<div>
+				<Row>
+					<Col md={10}>
+					</Col>
+					<Col md={2}>
+						<Navbar variant="dark">
+							<SignOutButton/>	
+						</Navbar>
+					</Col>
+				</Row>
+				
+				<Jumbotron fluid className="container">
+					<h1 className="center">Campaigns</h1>
+					<ul>{campaigns}</ul>
+					<div className="center">
+						<Button variant="success" onClick={() => this.setState({ showCampaignInfo: true })}>Create a new campaign!</Button>
+					</div>
+					<CampaignInfo 
+						show = {this.state.showCampaignInfo}
+						onHide = {() => this.setState({ showCampaignInfo: false })}
+						campaigns = {this.state.campaigns}
+						handleCampaigns = {this.handleCampaigns}
+						campaignsRef = {campaignsRef}
+					/>
+				</Jumbotron>
+			</div>
+		);
 	}
 }
 

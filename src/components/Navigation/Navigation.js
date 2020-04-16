@@ -1,13 +1,11 @@
 import React from 'react';
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import AuthUser from '../AuthUser/AuthUser';
 import Landing from '../Landing/Landing';
-import SignUp from '../SignUp/SignUp';
 import NotFound from '../NotFound/NotFound';
 
 import { AuthUserContext } from '../Session/Session';
-
 
 
 const Navigation = () => (
@@ -17,10 +15,13 @@ const Navigation = () => (
                 // Wait for login response before rendering any components
                 switch(authUser){
                     case "WAITING":
+                        console.log("waiting")
                         break;
                     case null:
+                        console.log("NonAuth")
                         return <NonAuthUser/>;
                     default:
+                        console.log("Auth")
                         return <AuthUser/>;
                 }
             }
@@ -31,28 +32,16 @@ const Navigation = () => (
   
 const NonAuthUser = () => (
 
-	<div>
-        <Switch>
-            <Route
-                exact path="/"
-                render={ () => (
-                    <Redirect to="/signin"/>
-                    )}
-                    />
-            <Route
-                path="/signin"
-                component={Landing}
-                />
-            <Route
-                path="/signup"
-                component={SignUp}
-                />
-            <Route 
-                path='*' 
-                component={NotFound} 
-            />                        
-        </Switch>
-    </div>
+    <Switch>
+        <Route
+            exact path="/"
+            component={Landing}
+        />
+        <Route 
+            path='*' 
+            component={NotFound} 
+        />                        
+    </Switch>
 );
 
 export default Navigation;

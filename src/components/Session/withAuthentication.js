@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import AuthUserContext from './context';
 import { withFirebase } from '../Firebase/Firebase';
@@ -17,10 +19,15 @@ const withAuthentication = Component => {
 		componentDidMount() {
 			this.listener = this.props.firebase.auth.onAuthStateChanged(
 				authUser => {
-					authUser
-						? this.setState({ authUser })
-						: this.setState({ authUser: null });
-				},
+					if(authUser) {
+						this.setState({ authUser })
+						
+					}
+					else {
+						this.setState({ authUser: null });
+						this.props.history.push("/");
+					}
+				}
 			);
 		}
 
@@ -37,7 +44,10 @@ const withAuthentication = Component => {
 		}
 	}
 
-	return withFirebase(WithAuthentication);
+	return compose(
+		withRouter,
+		withFirebase,
+	)(WithAuthentication);
 };
 
 export default withAuthentication;
