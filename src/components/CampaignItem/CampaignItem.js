@@ -93,8 +93,8 @@ class CampaignItem extends Component {
 							<Col md="1" className="center">
 								<ItemMenu
 									edit = {() => this.props.editCampaign(
-										this.props.campaingID,
-										//TODO: Fill in the rest of the info that needs passing here
+										this.props.campaignID,
+										this.props.campaign
 									)}
 									delete = {this.deleteCampaign}
 									deleteText = {deleteText}

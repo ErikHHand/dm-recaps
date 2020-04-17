@@ -29,6 +29,15 @@ body  {
 	margin-bottom: 1rem;
 }
 
+.campaign-list  {
+	overflow: scroll;
+	max-height: 41rem;
+	margin: 1.5rem 0;
+	padding: 0.5rem 0;
+	border: inset rgba(134, 134, 134, 0.13);
+	border-width: 2px 0;
+}
+
 .center {
     text-align: center;
 }
