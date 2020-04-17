@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "bootstrap": "^4.3.1",
     "dotenv": "^8.0.0",
     "firebase": "^6.2.4",
@@ -13,7 +17,7 @@
     "react-datepicker": "^2.7.0",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.4.1",
     "react-select": "^3.0.4",
     "recompose": "^0.30.0"
   },
