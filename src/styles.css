@@ -1,20 +1,14 @@
+a {
+	color: inherit !important; 
+	text-decoration: inherit !important; 
+}
+
 body  {
 	background-image: url("./images/smaller_sword.jpeg"); 
     -webkit-background-size: cover;
   	-moz-background-size: cover;
   	-o-background-size: cover;
   	background-size: cover;
-}
-
-.App {
-	/*background-color: #2f3338; */
-}
-
-.add-tag {
-	font-weight: 900 !important;
-	border-style: dashed;
-	border-width: 2px !important;
-	border-color: #30A64A;
 }
 
 .add-tag {
@@ -29,6 +23,12 @@ body  {
 	color: white;
 }
 
+.campaign-item {
+	margin-right: 2rem;
+	margin-left: 2rem;
+	margin-bottom: 1rem;
+}
+
 .center {
     text-align: center;
 }
@@ -36,7 +36,8 @@ body  {
 .container {
 	opacity: 0.97;
 	border-radius: 8px;
-	height: 90vh;
+	height: 54rem;
+	padding-top: 2rem !important;
 }
 
 .item-menu {
@@ -52,7 +53,21 @@ body  {
 
 .overflow-scroll {
 	overflow: scroll;
-	max-height: 75vh;
+	max-height: 41rem;
+	margin: 1.5rem 0;
+	padding: 0.5rem 0;
+	border: inset rgba(134, 134, 134, 0.13);
+	border-width: 2px 0;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.overflow-scroll::-webkit-scrollbar {
+	display: none;
+}
+  
+/* Hide scrollbar for IE and Edge */
+.overflow-scroll {
+	-ms-overflow-style: none;
 }
 
 .recap-body {

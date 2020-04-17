@@ -4,6 +4,9 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+
 /*
 	This class holds the three dots the brings up the item menu when clicked
 */
@@ -15,7 +18,7 @@ class CustomToggle extends Component {
 	  	this.handleClick = this.handleClick.bind(this);
 	}
   
-	// Triggers when the three dots are clicked
+	// Triggers when the three dots are clicked <i onClick={this.handleClick} className="fas fa-ellipsis-h item-menu"></i>
 	handleClick(e) {
 	  	e.preventDefault();
 	  	this.props.onClick(e);
@@ -23,7 +26,7 @@ class CustomToggle extends Component {
   
 	render() {
 		return (
-			<i onClick={this.handleClick} className="fas fa-ellipsis-h item-menu"></i>
+			<FontAwesomeIcon onClick={this.handleClick} icon={faEllipsisH} className="item-menu"/>	
 		);
 	}
 }
@@ -61,7 +64,7 @@ class ItemMenu extends Component {
 		})
 	}
 
-	render() {		
+	render() {
 		return (
 			<>
 				<Dropdown>

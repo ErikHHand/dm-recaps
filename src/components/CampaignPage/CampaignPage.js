@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
+
 import { withAuthorization } from '../Session/Session';
-
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
+import CampaignItem from '../CampaignItem/CampaignItem';
 import SignOutButton from '../SignOut/SignOut';
-
-import { Link } from "react-router-dom";
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
@@ -26,7 +25,8 @@ class CampaignPage extends Component {
 			showCampaignInfo: false,
 		};
 
-		// Set the context for "this" for the following function
+		// Set the context for "this" for the following functions
+		this.editCampaign = this.editCampaign.bind(this);
 		this.handleCampaigns = this.handleCampaigns.bind(this);
 	}
 
@@ -56,6 +56,18 @@ class CampaignPage extends Component {
         });
 	}
 
+	// Triggers before editing a campaign
+	//TODO Fix so it has the correct attributes
+	editCampaign(campaignID, description, date) {
+		this.setState({
+			campaignID: campaignID,
+			description: description,
+			date: date,
+			edit: true,
+			showCampaignInfo: true,
+		});
+	}
+
 	// Handles changes to the campaign list
 	handleCampaigns(campaigns) {
 		this.setState({
@@ -71,15 +83,15 @@ class CampaignPage extends Component {
 		
 		// Fill campaign list
 		let campaigns = Array.from(Object.keys(this.state.campaigns)).map((campaignID)=>
-			<Link key={campaignID} to={{
-				pathname: "/campaigns/"+campaignID,
-				state: {
-					campaign: this.state.campaigns[campaignID],
-					id: campaignID,
-				}
-			}}>
-				<li>{this.state.campaigns[campaignID].name}</li>
-			</Link>
+			<CampaignItem
+				key={campaignID}
+				campaignID = {campaignID}
+				campaign = {this.state.campaigns[campaignID]}
+				editCampaign = {this.editCampaign}
+				campaigns = {this.state.campaigns}
+				handleCampaigns = {this.handleCampaigns}
+				campaignsRef = {campaignsRef}
+			/>
 		);
 
 		return (
@@ -96,7 +108,7 @@ class CampaignPage extends Component {
 				
 				<Jumbotron fluid className="container">
 					<h1 className="center">Campaigns</h1>
-					<ul>{campaigns}</ul>
+					<div className="overflow-scroll">{campaigns}</div>
 					<div className="center">
 						<Button variant="success" onClick={() => this.setState({ showCampaignInfo: true })}>Create a new campaign!</Button>
 					</div>
