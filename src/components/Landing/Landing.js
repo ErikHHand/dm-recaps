@@ -8,6 +8,10 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 
 import './../../styles.css';
 
+/*
+	This class holds the page that a user lands on when not being signed in.
+	It holds the sign in and sign up components.
+*/
 class Landing extends Component {
   
   	constructor(props) {
@@ -20,11 +24,7 @@ class Landing extends Component {
 		this.changeWindow = this.changeWindow.bind(this);
 	}
 
-	/* 	This function switches between the sign in and the sign up windows.
-
-		Currently not in use.
-		TODO: Style sign up window and utalize this function
-	*/
+	//This function switches between the sign in and the sign up windows.
 	changeWindow() {
 		this.setState({
 			signIn: !this.state.signIn,
