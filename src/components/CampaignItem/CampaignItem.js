@@ -62,20 +62,31 @@ class CampaignItem extends Component {
 
 		// Text for pop-up when deleting
 		const deleteText = {
-			title: "Delete Campaign",
+			title: "Delete campaign: " + this.props.campaign.name,
 			text: "Are you sure you want to delete this campaign and ALL THE NOTES you have written for it? There is no going back after confirming this!"
 		};
 
 		// Create date
-		//let date = this.props.sessionInfo.date;
-		//date = new Date(date.seconds * 1000);
+		let date = new Date();
+
+		let dateDifference = -1;
+
+		if(this.props.campaign.sessionOrder[0]) {
+			let lastSessionDate = this.props.campaign.sessions[this.props.campaign.sessionOrder[0]].date.toDate();
+			console.log(lastSessionDate);
+			dateDifference = Math.ceil(Math.abs(date - lastSessionDate) / (1000 * 60 * 60 * 24));
+			console.log(dateDifference);
+		}
 
 		let description = "No campaign description";
 		if(this.props.campaign.description) {
 			description = this.props.campaign.description;
 		}
 
-		let lastSession = "2 days ago"
+		let lastSession = "No sessions yet";
+		if(dateDifference > -1) {
+			lastSession = "Last session: " + dateDifference + " days ago";
+		}
 		//TODO: Add calculation for when last session took place
 		
 		return (
@@ -117,7 +128,7 @@ class CampaignItem extends Component {
 							<Card.Text>{description}</Card.Text>
 						</Card.Body>
 					</Link>
-					<Card.Footer className="text-muted">Last session: {lastSession}</Card.Footer>
+					<Card.Footer className="text-muted">{lastSession}</Card.Footer>
 				</Card>
 			</>
 		);
