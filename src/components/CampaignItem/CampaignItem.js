@@ -66,28 +66,26 @@ class CampaignItem extends Component {
 			text: "Are you sure you want to delete this campaign and ALL THE NOTES you have written for it? There is no going back after confirming this!"
 		};
 
-		// Create date
+		// Create date for comparision with the latest session date
 		let date = new Date();
-
 		let dateDifference = -1;
 
+		// Calculate time between latest session and today, if there are any sessions
 		if(this.props.campaign.sessionOrder[0]) {
 			let lastSessionDate = this.props.campaign.sessions[this.props.campaign.sessionOrder[0]].date.toDate();
-			console.log(lastSessionDate);
 			dateDifference = Math.ceil(Math.abs(date - lastSessionDate) / (1000 * 60 * 60 * 24));
-			console.log(dateDifference);
+		}
+
+		// Enter calculated date, if there are any sessions
+		let lastSession = "No sessions yet";
+		if(dateDifference > -1) {
+			lastSession = "Last session: " + dateDifference + " days ago";
 		}
 
 		let description = "No campaign description";
 		if(this.props.campaign.description) {
 			description = this.props.campaign.description;
 		}
-
-		let lastSession = "No sessions yet";
-		if(dateDifference > -1) {
-			lastSession = "Last session: " + dateDifference + " days ago";
-		}
-		//TODO: Add calculation for when last session took place
 		
 		return (
 			<>
