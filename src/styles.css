@@ -38,16 +38,6 @@ body  {
 	border-width: 2px 0;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.campaign-list::-webkit-scrollbar {
-	display: none;
-}
-  
-/* Hide scrollbar for IE and Edge */
-.campaign-list {
-	-ms-overflow-style: none;
-}
-
 .center {
     text-align: center;
 }
@@ -79,18 +69,18 @@ body  {
 	border-width: 2px 0;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.overflow-scroll::-webkit-scrollbar {
-	display: none;
-}
-  
-/* Hide scrollbar for IE and Edge */
-.overflow-scroll {
-	-ms-overflow-style: none;
-}
-
 .recap-body {
 	padding: 0.6em 1em 0.6em 1em !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.remove-scroll-bar::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.remove-scroll-bar {
+	-ms-overflow-style: none;
 }
 
 .right-align {
@@ -101,6 +91,22 @@ body  {
 	font-size: 0.9em;
 	color: rgba(151, 146, 146, 0.835);
 	font-style: italic;
+}
+
+.session-item {
+	width: inherit;
+	margin-right: 0.5rem;
+	margin-left: 0.5rem;
+	margin-bottom: 0.3rem;
+}
+
+.session-item-list {
+	overflow: scroll;
+	max-height: 41rem;
+	margin: 1.5rem 0;
+	padding: 0.5rem 0;
+	border: inset rgba(134, 134, 134, 0.13);
+	border-width: 2px 0;
 }
 
 .tag {

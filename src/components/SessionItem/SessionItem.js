@@ -95,20 +95,30 @@ class SessionItem extends Component {
 			text: "Are you sure you want to delete this session and all recaps written for it?"
 		}
 
+		// Create number for session order
+		let number = "#" + (this.props.campaign.sessionOrder.indexOf(this.props.sessionID) + 1) + " ";
+
 		// Create date
 		let date = this.props.sessionInfo.date;
 		date = new Date(date.seconds * 1000);
+
+		console.log(this.props.sessionID);
+		console.log(this.props.isCurrentSession);
 		
 		return (
 			<>
-				<Card border="primary" style={{ width: "17rem"}} onClick = {this.props.click}>
+				<Card 
+					className="session-item" 
+					border={this.props.isCurrentSession ? "info" : ""} 
+					onClick = {this.props.click}
+				>
 					<Card.Body>
 						<Card.Title>
 							<Row>
-								<Col md="9">
-									{date.toDateString()} 
+								<Col md={9}>
+									{number + this.props.sessionInfo.description}
 								</Col>
-								<Col md="3" className="center">
+								<Col md={3} className="center">
 									<ItemMenu
 										edit = {() => this.props.editSession(
 											this.props.sessionID,
@@ -121,7 +131,7 @@ class SessionItem extends Component {
 								</Col>
 							</Row>
 						</Card.Title>
-						<Card.Text>{this.props.sessionInfo.description}</Card.Text>
+						<Card.Text>{date.toDateString()} </Card.Text>
 					</Card.Body>
 				</Card>
 			</>

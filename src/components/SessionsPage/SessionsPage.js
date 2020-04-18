@@ -98,6 +98,7 @@ class SessionsPage extends Component {
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
 					handleCurrentSession = {this.handleCurrentSession}
+					isCurrentSession = {this.state.currentSession === sessionID}
 					editSession = {this.editSession}
 					campaignRef = {this.props.campaignRef}
 					click = {() => this.handleCurrentSession(sessionID)}
@@ -134,8 +135,11 @@ class SessionsPage extends Component {
 
 		return (
 			<Row>
-				<Col md={3} className="overflow-scroll">
-					{sessions}
+				<Col md={3}>
+					<div className="session-item-list remove-scroll-bar">
+						{sessions}
+					</div>
+					
 					<div className="center">
 						<Button variant="success" onClick={this.addSession}>New Session</Button>
 					</div>

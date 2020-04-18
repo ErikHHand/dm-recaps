@@ -119,7 +119,7 @@ class CampaignPage extends Component {
 				
 				<Jumbotron fluid className="container">
 					<h1 className="center">Campaigns</h1>
-					<div className="campaign-list">{campaigns}</div>
+					<div className="campaign-list remove-scroll-bar">{campaigns}</div>
 					<div className="center">
 						<Button variant="success" onClick={this.addCampaign}>Create a new campaign!</Button>
 					</div>
