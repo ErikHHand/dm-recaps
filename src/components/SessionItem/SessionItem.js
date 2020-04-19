@@ -96,14 +96,13 @@ class SessionItem extends Component {
 		}
 
 		// Create number for session order
-		let number = "#" + (this.props.campaign.sessionOrder.indexOf(this.props.sessionID) + 1) + " ";
+		let number = "#" + (this.props.campaign.sessionOrder.length - 
+			this.props.campaign.sessionOrder.indexOf(this.props.sessionID)) + " ";
 
 		// Create date
 		let date = this.props.sessionInfo.date;
 		date = new Date(date.seconds * 1000);
 
-		console.log(this.props.sessionID);
-		console.log(this.props.isCurrentSession);
 		
 		return (
 			<>
@@ -112,11 +111,11 @@ class SessionItem extends Component {
 					border={this.props.isCurrentSession ? "info" : ""} 
 					onClick = {this.props.click}
 				>
-					<Card.Body>
+					<Card.Body >
 						<Card.Title>
 							<Row>
-								<Col md={9}>
-									{number + this.props.sessionInfo.description}
+								<Col md={9} >
+									{this.props.sessionInfo.description}
 								</Col>
 								<Col md={3} className="center">
 									<ItemMenu
@@ -130,8 +129,11 @@ class SessionItem extends Component {
 									/>
 								</Col>
 							</Row>
+							
 						</Card.Title>
-						<Card.Text>{date.toDateString()} </Card.Text>
+						<Card.Text className="text-muted session-item-date-text">
+							{number + date.toDateString()}
+						</Card.Text>
 					</Card.Body>
 				</Card>
 			</>

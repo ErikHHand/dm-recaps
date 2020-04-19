@@ -9,6 +9,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
@@ -39,12 +43,14 @@ class SessionsPage extends Component {
 			showSessionInfo: false,
 			currentSession: null,
 			edit: false,
+			sessionSortDescending: true,
 		};
 
 		// Set the context for "this" for the following functions
 		this.handleCurrentSession = this.handleCurrentSession.bind(this);
 		this.editSession = this.editSession.bind(this);
 		this.addSession = this.addSession.bind(this);
+		this.changeSort = this.changeSort.bind(this);
 	}
 
 	// Handles changing which session is the current session
@@ -78,6 +84,12 @@ class SessionsPage extends Component {
 		});
 	}
 
+	changeSort() {
+		this.setState({
+			sessionSortDescending: !this.state.sessionSortDescending,
+		});
+	}
+
 	render() {	
 
 		let sessions;
@@ -86,7 +98,16 @@ class SessionsPage extends Component {
 		if(!this.props.campaign.sessions) {
 			sessions = <div></div>;
 		} else {
-			sessions = this.props.campaign.sessionOrder.map((sessionID)=>
+			let sessionOrder = [...this.props.campaign.sessionOrder];
+			console.log("session order");
+			if(!this.state.sessionSortDescending) {
+				console.log("reverse");
+				sessionOrder.reverse();
+			}
+			console.log(sessionOrder);
+			console.log(this.props.campaign.sessionOrder);
+
+			sessions = sessionOrder.map((sessionID)=>
 				<SessionItem 
 					key = {sessionID}
 					sessionID = {sessionID}
@@ -133,12 +154,26 @@ class SessionsPage extends Component {
 			);
 		}
 
+		console.log(this.state.sessionSortDescending);
+
 		return (
-			<Row>
-				<Col md={3}>
-					<div className="session-item-list remove-scroll-bar">
-						{sessions}
-					</div>
+			<Row noGutters={true}>
+				<Col md={3} className="remove-padding">
+					<Row noGutters={true}>
+						<Col xs={1} className="right-align sort-arrows-col">
+							<FontAwesomeIcon 
+								icon={faArrowUp}
+								onClick={this.state.sessionSortDescending ? this.changeSort : null}
+								className={this.state.sessionSortDescending ? "sort-arrow-inactive" : "sort-arrow-active"}/>
+							<FontAwesomeIcon 
+								icon={faArrowDown} 
+								onClick={this.state.sessionSortDescending ? null : this.changeSort}
+								className={this.state.sessionSortDescending ? "sort-arrow-active" : "sort-arrow-inactive"}/>
+						</Col>
+						<Col xs={11} className="session-item-list remove-scroll-bar">
+							{sessions}
+						</Col>
+					</Row>
 					
 					<div className="center">
 						<Button variant="success" onClick={this.addSession}>New Session</Button>
@@ -157,7 +192,7 @@ class SessionsPage extends Component {
 						sessionID = {this.state.sessionID}
 					/>
 				</Col>
-				<Col md={9} className="overflow-scroll">
+				<Col md={9} className="recap-item-list remove-scroll-bar">
 					{recapItems}
 					<NewRecap 
 						currentSession = {this.state.currentSession}

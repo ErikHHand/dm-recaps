@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import SessionsPage from '../SessionsPage/SessionsPage';
 import TagsPage from '../TagsPage/TagsPage';
+import SignOutButton from '../SignOut/SignOut';
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Tab from 'react-bootstrap/Tab'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -125,47 +129,63 @@ class CampaignRecaps extends Component {
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
 
 		return (
-			<Jumbotron fluid className="container">
-				<Tab.Container defaultActiveKey="sessions">
+			<>
+				<Row>
+					<Col md={10}>
+					</Col>
+					<Col md={2}>
+						<Navbar variant="dark">
+							<SignOutButton />	
+						</Navbar>
+					</Col>
+				</Row>
+				<Jumbotron fluid className="container">
 					<Row>
 						<Col>
-							<Nav variant="tabs" className="justify-content-center">
-								<Nav.Item>
-									<Nav.Link eventKey="sessions">Sessions</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link eventKey="tags">Tags</Nav.Link>
-								</Nav.Item>
-							</Nav>
+							<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
 						</Col>
 					</Row>
-						
-					<Tab.Content>
-						<Tab.Pane eventKey="sessions">
-							<SessionsPage
-								campaign = {this.state.campaign}
-								sessions = {this.state.sessions}
-								tags = {this.state.tags}
-								handleSessions = {this.handleSessions}
-								handleCampaign = {this.handleCampaign}
-								handleTags = {this.handleTags}
-								campaignRef = {campaignRef}
-							/>
-						</Tab.Pane>
-						<Tab.Pane eventKey="tags">
-							<TagsPage
-								campaign = {this.state.campaign}
-								sessions = {this.state.sessions}
-								tags = {this.state.tags}
-								handleCampaign = {this.handleCampaign}
-								handleSessions = {this.handleSessions}
-								handleTags = {this.handleTags}
-								campaignRef = {campaignRef}
-							/>
-						</Tab.Pane>
-					</Tab.Content>
-				</Tab.Container>
-			</Jumbotron>
+					<Tab.Container defaultActiveKey="sessions">
+						<Row>
+							<Col>
+								<Nav variant="tabs" className="justify-content-center">
+									<Nav.Item>
+										<Nav.Link eventKey="sessions">Sessions</Nav.Link>
+									</Nav.Item>
+									<Nav.Item>
+										<Nav.Link eventKey="tags">Tags</Nav.Link>
+									</Nav.Item>
+								</Nav>
+							</Col>
+						</Row>
+							
+						<Tab.Content>
+							<Tab.Pane eventKey="sessions">
+								<SessionsPage
+									campaign = {this.state.campaign}
+									sessions = {this.state.sessions}
+									tags = {this.state.tags}
+									handleSessions = {this.handleSessions}
+									handleCampaign = {this.handleCampaign}
+									handleTags = {this.handleTags}
+									campaignRef = {campaignRef}
+								/>
+							</Tab.Pane>
+							<Tab.Pane eventKey="tags">
+								<TagsPage
+									campaign = {this.state.campaign}
+									sessions = {this.state.sessions}
+									tags = {this.state.tags}
+									handleCampaign = {this.handleCampaign}
+									handleSessions = {this.handleSessions}
+									handleTags = {this.handleTags}
+									campaignRef = {campaignRef}
+								/>
+							</Tab.Pane>
+						</Tab.Content>
+					</Tab.Container>
+				</Jumbotron>
+			</>
 		)
 	}
 }

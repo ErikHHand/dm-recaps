@@ -73,6 +73,19 @@ body  {
 	padding: 0.6em 1em 0.6em 1em !important;
 }
 
+.recap-item-list {
+	overflow: scroll;
+	max-height: 41rem;
+	margin: 0 0 1.5rem 0;
+	padding: 0.5rem 0.75rem !important;
+	border: solid rgba(134, 134, 134, 0.1);
+	border-width: 0 0 1px 1px;
+}
+
+.remove-padding {
+	padding: 0 !important;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .remove-scroll-bar::-webkit-scrollbar {
 	display: none;
@@ -95,18 +108,39 @@ body  {
 
 .session-item {
 	width: inherit;
-	margin-right: 0.5rem;
-	margin-left: 0.5rem;
 	margin-bottom: 0.3rem;
+}
+
+.session-item-date-text {
+	font-size: 0.95rem !important;
 }
 
 .session-item-list {
 	overflow: scroll;
 	max-height: 41rem;
-	margin: 1.5rem 0;
-	padding: 0.5rem 0;
-	border: inset rgba(134, 134, 134, 0.13);
-	border-width: 2px 0;
+	margin: 0 0 1.5rem 0;
+	padding: 0.5rem 0.75rem !important;
+	border: inset rgba(134, 134, 134, 0.1);
+	border-width: 0 0 1px 0;
+}
+
+.sort-arrow-active {
+	color: rgba(39, 160, 180, 1);
+}
+
+.sort-arrow-inactive{
+	cursor: pointer;
+	color: rgba(151, 146, 146, 0.424);
+}
+
+.sort-arrow-inactive:hover {
+	color: rgba(151, 146, 146, 0.835);
+}
+
+.sort-arrows-col {
+	font-size: 12pt;
+	color: rgba(151, 146, 146, 0.424);
+	padding-top: 0.5rem;
 }
 
 .tag {
