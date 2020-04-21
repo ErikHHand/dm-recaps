@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 
 import { withFirebase } from '../Firebase/Firebase';
@@ -18,22 +17,26 @@ class NewRecap extends Component {
 			text: "",
 			error: "",
 		};
+
+		// Set the context for "this" for the following functions
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
   	}
 
 	// Saves the recap text to the state while writing
-	onChangeRecap = event => {		
-    	this.setState({ text: event.target.value });
-	};
-	
+	onChange(event) {
+		this.setState({ text: event.target.value });
+	}
+
 	// Triggers when submitting a recap
-	onSubmitRecap = event => {
+	onSubmit(event) {
 		event.preventDefault();
 
 		// Recap data from this state
 		let recap = {
 			tags: [],
 			text: this.state.text,
-			session: this.props.currentSession,
+			session: this.props.session,
 		};
 
 		// Empty the form field
@@ -44,16 +47,17 @@ class NewRecap extends Component {
 		// Generate a hash code from the recap text
 		// and then add locally
 		let sessions = this.props.sessions;
-		let session = sessions[this.props.currentSession];
+		let session = sessions[this.props.session];
 		
+		// TODO: Check for hashcode collisions
 		let id = recap.text.hashCode();
 		session.recaps[id] = recap;
 
-		sessions[this.props.currentSession] = session;
+		sessions[this.props.session] = session;
 		this.props.handleSessions(sessions);
 		
 		// Add to Firestore Sessions
-		this.props.campaignRef.collection("sessions").doc(this.props.currentSession)
+		this.props.campaignRef.collection("sessions").doc(this.props.session)
 		.update({
 			['recaps.' + id]: recap,
 		})
@@ -65,12 +69,12 @@ class NewRecap extends Component {
 
 		// Add locally to recap order array
 		let campaign = this.props.campaign;
-		campaign.sessions[this.props.currentSession].recapOrder.push(id);
+		campaign.sessions[this.props.session].recapOrder.push(id);
 		this.props.handleCampaign(campaign);
 
 		// Add to Firestore recap order array
 		this.props.campaignRef.update({
-			['sessions.' + this.props.currentSession + '.recapOrder']: campaign.sessions[this.props.currentSession].recapOrder,
+			['sessions.' + this.props.session + '.recapOrder']: campaign.sessions[this.props.session].recapOrder,
 		})
 		.then(function() {
 			console.log("Document successfully updated!");
@@ -82,24 +86,24 @@ class NewRecap extends Component {
 	render() {
 
 		const { text, error} = this.state;
-		const isInvalid = text === "" || !this.props.currentSession;
+
+		let newRecap = this;
 
 		return (
-			<Form onSubmit={this.onSubmitRecap}>
+			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
 				<Form.Group controlId="formRecap">
 					<Form.Control 
 						name="text"
 						value={text}
-						onChange={this.onChangeRecap}
+						onKeyDown={(event) => {if(event.keyCode === 13) newRecap.form.dispatchEvent(new Event('submit'))}}
+						onChange={this.onChange}
+						disabled={!this.props.session}
 						type="text"
+						as="textarea"
 						placeholder="Write something that happened..."
 					/>
 				</Form.Group>
-				
-				<Button variant="success" type="submit" disabled={isInvalid}>
-					Submit
-				</Button>
-				<p hidden={this.props.currentSession}>Select a session before writing a recap!</p>
+				<p hidden={this.props.session}>Select a session before writing a recap!</p>
 				{error && <p>{error.message}</p>}
 			</Form>
 		);
