@@ -50,7 +50,7 @@ class RecapNew extends Component {
 		let session = sessions[this.props.session];
 		
 		// TODO: Check for hashcode collisions
-		let id = recap.text.hashCode();
+		let id = recap.text.hashCode().toString();
 		session.recaps[id] = recap;
 
 		sessions[this.props.session] = session;
@@ -69,18 +69,32 @@ class RecapNew extends Component {
 
 		// Add locally to recap order array
 		let campaign = this.props.campaign;
+
+		// TEMPORARY LOOP - REMOVE AFTER A WHILE - IS HERE TO BUGFIX TYPE ERROR
+		for(let session in campaign.sessions) {
+			for(let i = 0; i < campaign.sessions[session].recapOrder.length; i++) {
+				let recapID = campaign.sessions[session].recapOrder[i];
+				if(!isNaN(recapID)) {
+					campaign.sessions[session].recapOrder[i] = recapID.toString();
+				}
+			}
+		}
+		
 		campaign.sessions[this.props.session].recapOrder.push(id);
 		this.props.handleCampaign(campaign);
 
-		// Add to Firestore recap order array
-		this.props.campaignRef.update({
-			['sessions.' + this.props.session + '.recapOrder']: campaign.sessions[this.props.session].recapOrder,
-		})
-		.then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
+		// TEMPORARY LOOP - REMOVE AFTER A WHILE - IS HERE TO BUGFIX TYPE ERROR
+		for(let session in campaign.sessions) {
+			// Add to Firestore recap order array
+			this.props.campaignRef.update({
+				['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
+			})
+			.then(function() {
+				console.log("Document successfully updated!");
+			}).catch(function(error) {
+				console.log("Error getting document:", error);
+			});
+		}
 	};
 
 	render() {
