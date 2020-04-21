@@ -114,7 +114,7 @@ class SessionItem extends Component {
 					<Card.Body >
 						<Card.Title>
 							<Row>
-								<Col md={9} >
+								<Col md={9} className="session-item-title">
 									{this.props.sessionInfo.description}
 								</Col>
 								<Col md={3} className="center">

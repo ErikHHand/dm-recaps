@@ -91,7 +91,7 @@ class RecapNew extends Component {
 
 		return (
 			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
-				<Form.Group controlId="formRecap">
+				<Form.Group controlId="formRecap" className="remove-margin">
 					<Form.Control 
 						name="text"
 						value={text}

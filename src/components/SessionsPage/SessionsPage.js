@@ -44,6 +44,7 @@ class SessionsPage extends Component {
 			selectedSession: null,
 			edit: false,
 			sessionSortDescending: true,
+			recapSortDescending: false,
 		};
 
 		// Set the context for "this" for the following functions
@@ -84,9 +85,9 @@ class SessionsPage extends Component {
 		});
 	}
 
-	changeSort() {
+	changeSort(list) {
 		this.setState({
-			sessionSortDescending: !this.state.sessionSortDescending,
+			[list]: !this.state[list],
 		});
 	}
 
@@ -133,8 +134,15 @@ class SessionsPage extends Component {
 		} else if(this.props.sessions[this.state.selectedSession].recaps.length === 0) {
 			recapItems = <div></div>;	 
 		} else {
+
 			let recapList = this.props.sessions[this.state.selectedSession].recaps;
-			recapItems = this.props.campaign.sessions[this.state.selectedSession].recapOrder.map((recapID)=>
+			let recapOrder = [...this.props.campaign.sessions[this.state.selectedSession].recapOrder];
+
+			if(this.state.recapSortDescending) {
+				recapOrder.reverse();
+			}
+
+			recapItems = recapOrder.map((recapID)=>
 				<RecapItem 
 					key = {recapID}
 					recapID = {recapID}
@@ -152,24 +160,26 @@ class SessionsPage extends Component {
 
 		return (
 			<Row noGutters={true}>
-				<Col md={3} className="remove-padding">
-					<Row noGutters={true}>
-						<Col xs={1} className="right-align sort-arrows-col">
+				<Col lg={3} md={4} className="remove-padding">
+					<div className="border-bottom border-right">
+						<div className="center sort-arrows-col">
 							<FontAwesomeIcon 
 								icon={faArrowUp}
-								onClick={this.state.sessionSortDescending ? this.changeSort : null}
-								className={this.state.sessionSortDescending ? "sort-arrow-inactive" : "sort-arrow-active"}/>
+								onClick={this.state.sessionSortDescending ? () => this.changeSort("sessionSortDescending") : null}
+								className={this.state.sessionSortDescending ? "sort-arrow-inactive" : "sort-arrow-active"}
+							/>
 							<FontAwesomeIcon 
 								icon={faArrowDown} 
-								onClick={this.state.sessionSortDescending ? null : this.changeSort}
-								className={this.state.sessionSortDescending ? "sort-arrow-active" : "sort-arrow-inactive"}/>
-						</Col>
-						<Col xs={11} className="session-item-list remove-scroll-bar">
+								onClick={this.state.sessionSortDescending ? null : () => this.changeSort("sessionSortDescending")}
+								className={this.state.sessionSortDescending ? "sort-arrow-active" : "sort-arrow-inactive"}
+							/>
+						</div>
+						<div className="session-item-list remove-scroll-bar">
 							{sessions}
-						</Col>
-					</Row>
+						</div>
+					</div>
 					
-					<div className="center">
+					<div className="center add-session">
 						<Button variant="success" onClick={this.addSession}>New Session</Button>
 					</div>
 					<SessionInfo 
@@ -186,16 +196,31 @@ class SessionsPage extends Component {
 						sessionID = {this.state.sessionID}
 					/>
 				</Col>
-				<Col md={9} className="recap-item-list remove-scroll-bar">
-					{recapItems}
-					<NewRecap 
-						session = {this.state.selectedSession}
-						sessions = {this.props.sessions}
-						campaign = {this.props.campaign}
-						handleSessions = {this.props.handleSessions}
-						handleCampaign = {this.props.handleCampaign}
-						campaignRef = {this.props.campaignRef}
-					/>
+				<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
+					<div className="center sort-arrows-col">
+						<FontAwesomeIcon 
+							icon={faArrowUp}
+							onClick={this.state.recapSortDescending ? () => this.changeSort("recapSortDescending") : null}
+							className={this.state.recapSortDescending ? "sort-arrow-inactive" : "sort-arrow-active"}
+						/>
+						<FontAwesomeIcon 
+							icon={faArrowDown} 
+							onClick={this.state.recapSortDescending ? null : () => this.changeSort("recapSortDescending")}
+							className={this.state.recapSortDescending ? "sort-arrow-active" : "sort-arrow-inactive"}
+						/>
+					</div>
+					<div className="recap-item-list remove-scroll-bar">
+						{this.state.recapSortDescending ? null : recapItems}
+						<NewRecap 
+							session = {this.state.selectedSession}
+							sessions = {this.props.sessions}
+							campaign = {this.props.campaign}
+							handleSessions = {this.props.handleSessions}
+							handleCampaign = {this.props.handleCampaign}
+							campaignRef = {this.props.campaignRef}
+						/>
+						{this.state.recapSortDescending ? recapItems : null}
+					</div>
 				</Col>
 			</Row>
 		);

@@ -11,6 +11,10 @@ body  {
   	background-size: cover;
 }
 
+.add-session {
+	margin-top: 1.5rem;
+}
+
 .add-tag {
 	font-weight: 900 !important;
 	border-style: dashed;
@@ -21,6 +25,16 @@ body  {
 .add-tag:hover {
 	background-color: #30A64A;
 	color: white;
+}
+
+.border-bottom{
+	border: solid rgba(134, 134, 134, 0.1);
+	border-width: 0 0 1px 0;
+}
+
+.border-right{
+	border: solid rgba(134, 134, 134, 0.1);
+	border-width: 0 1px 0 0;
 }
 
 .campaign-item {
@@ -73,13 +87,21 @@ body  {
 	padding: 0.6em 1em 0.6em 1em !important;
 }
 
-.recap-item-list {
-	overflow: scroll;
+.recap-item-column {
 	max-height: 41rem;
-	margin: 0 0 1.5rem 0;
-	padding: 0.5rem 0.75rem !important;
-	border: solid rgba(134, 134, 134, 0.1);
-	border-width: 0 0 1px 1px;
+}
+
+.recap-item-list {
+	max-height: 41rem;
+	margin: 0 0 0 30px;
+	overflow: scroll;
+	padding: 0.5rem 0.75rem 0.5rem 0 !important;
+}
+
+
+
+.remove-margin {
+	margin: 0 !important;
 }
 
 .remove-padding {
@@ -118,10 +140,12 @@ body  {
 .session-item-list {
 	overflow: scroll;
 	max-height: 41rem;
-	margin: 0 0 1.5rem 0;
-	padding: 0.5rem 0.75rem !important;
-	border: inset rgba(134, 134, 134, 0.1);
-	border-width: 0 0 1px 0;
+	margin: 0 0 0 30px;
+	padding: 0.5rem 0.75rem 0.5rem 0 !important;
+}
+
+.session-item-title {
+	font-size: 13pt;
 }
 
 .sort-arrow-active {
@@ -138,9 +162,11 @@ body  {
 }
 
 .sort-arrows-col {
-	font-size: 12pt;
+	font-size: 13pt;
 	color: rgba(151, 146, 146, 0.424);
 	padding-top: 0.5rem;
+	width: 30px;
+    float: left;
 }
 
 .tag {
