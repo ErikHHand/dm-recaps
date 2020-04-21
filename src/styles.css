@@ -102,7 +102,7 @@ body  {
 	max-height: 41rem;
 	margin: 0 0 0 30px;
 	overflow: scroll;
-	padding: 0.5rem 0.75rem 0.5rem 0 !important;
+	padding: 0.5rem 0.75rem 0.5rem 0.2rem !important;
 }
 
 .remove-margin {

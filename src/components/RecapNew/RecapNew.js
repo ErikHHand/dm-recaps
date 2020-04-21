@@ -109,7 +109,11 @@ class RecapNew extends Component {
 					<Form.Control 
 						name="text"
 						value={text}
-						onKeyDown={(event) => {if(event.keyCode === 13) recapNew.form.dispatchEvent(new Event('submit'))}}
+						onKeyDown={(event) => {
+							if(event.keyCode === 13) {
+								event.preventDefault();
+								recapNew.form.dispatchEvent(new Event('submit'))
+							}}}
 						onChange={this.onChange}
 						disabled={!this.props.session}
 						type="text"
