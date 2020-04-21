@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
+import RecapEditText from '../RecapEditText/RecapEditText';
 
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
@@ -36,12 +37,12 @@ class RecapItem extends Component {
 			tags: tags,
 			showTagOverlay: false,
 			edit: false,
-			text: this.props.recapItem.text,
 		}
 
 		// Set the context for "this" for the following functions
 		this.deleteRecap = this.deleteRecap.bind(this);
 		this.editRecap = this.editRecap.bind(this);
+		this.writeRecap = this.writeRecap.bind(this);
 	}
 
 	// Triggers when an update to component happens
@@ -62,11 +63,10 @@ class RecapItem extends Component {
 		}		
 	}
 
-	// Edits the recap.
-	// This function is called when changing tags or the recap text
-	onSubmit = event => {
-
-		event.preventDefault();
+	// Write recap
+	// This function is called when adding a new recap
+	// or editing recap data
+	writeRecap(recapItem, previousTags) {
 
 		// Close tag overlay and remove edit text area
 		this.setState({
@@ -74,22 +74,7 @@ class RecapItem extends Component {
 			edit: false,
 		});
 
-		let previousTags = this.props.recapItem.tags;
 		let id = this.props.recapID;
-		
-		// Add tags with value True
-		let tags = [];
-		for (let tag in this.state.tags) {
-			if(this.state.tags[tag]){
-				tags.push(tag)
-			}	
-		}
-		let text = this.state.text;
-		
-		// Update recap Item with potentially new text and tags
-		let recapItem = this.props.recapItem;
-		recapItem.tags = tags;
-		recapItem.text = text;
 		
 		// Add locally to sessions
 		let sessions = this.props.sessions;
@@ -137,12 +122,31 @@ class RecapItem extends Component {
 			}	
 		}
 		this.props.handleTags(tagsCollection);
-	};
+		
+	}
 
-	// Triggers when editing a recap text while writing
-	// Updates text
-	onChangeText = event => {
-		this.setState({ text: event.target.value });
+	// TODO: Remove this when a new component for editing tags has been created
+	// Edits the recap.
+	// This function is called when changing tags or the recap text
+	onSubmit = event => {
+
+		event.preventDefault();
+		
+		// Add tags with value True
+		let tags = [];
+		for (let tag in this.state.tags) {
+			if(this.state.tags[tag]){
+				tags.push(tag)
+			}	
+		}
+		
+		let previousTags = this.props.recapItem.tags;
+
+		// Update recap Item with potentially new text and tags
+		let recapItem = this.props.recapItem;
+		recapItem.tags = tags;
+		
+		this.writeRecap(recapItem, previousTags);
 	};
 
 	// Triggers when changing tags
@@ -239,24 +243,6 @@ class RecapItem extends Component {
 
 		let recapItem = this;
 
-		// The edit field shown when editing a recap text
-		// TODO: Is it possible to merge this into NewRecap component?
-		let editField = (
-			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
-				<Form.Group controlId="formEditRecap">
-					<Form.Control 
-						name="text"
-						value={this.state.text}
-						onKeyDown={(event) => {if(event.keyCode === 13) recapItem.form.dispatchEvent(new Event('submit'))}}
-						onChange={this.onChangeText}
-						type="text"
-						as="textarea"
-						autoFocus
-					/>
-				</Form.Group>
-			</Form>
-		);
-
 		// The tags for the overlay where you select what tags to tag the recap with
 		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
 			return (
@@ -290,8 +276,7 @@ class RecapItem extends Component {
 			<Card onClick = {this.props.click}>
 				<Card.Body className="recap-body">
 					<Row>
-						<Col>
-						</Col>
+						<Col></Col>
 						<Col xs="auto" className="session-info">
 							{date.toDateString()}
 							&emsp;
@@ -306,7 +291,15 @@ class RecapItem extends Component {
 						</Col>
 					</Row>
 					<Row>
-						<Col>{this.state.edit ? editField : this.state.text}</Col>
+						<Col>
+							{this.state.edit ? 
+								<RecapEditText
+									recapItem = {this.props.recapItem}
+									writeRecap = {this.writeRecap}
+								/> : 
+								<p>{this.props.recapItem.text}</p>
+							}
+						</Col>
 					</Row>
 					<Row>
 						<Col>
