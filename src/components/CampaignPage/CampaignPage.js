@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
 
 /*
 	This component holds the page with the campaign list, the first page a 
@@ -106,7 +107,7 @@ class CampaignPage extends Component {
 		);
 
 		return (
-			<div>
+			<Container>
 				<Row>
 					<Col md={10}>
 					</Col>
@@ -134,7 +135,7 @@ class CampaignPage extends Component {
 						campaign = {this.state.campaign}
 					/>
 				</Jumbotron>
-			</div>
+			</Container>
 		);
 	}
 }

@@ -7,6 +7,7 @@ import SignOutButton from '../SignOut/SignOut';
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Tab from 'react-bootstrap/Tab'
+import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
@@ -129,7 +130,7 @@ class CampaignRecaps extends Component {
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
 
 		return (
-			<>
+			<Container>
 				<Row>
 					<Col md={10}>
 					</Col>
@@ -185,7 +186,7 @@ class CampaignRecaps extends Component {
 						</Tab.Content>
 					</Tab.Container>
 				</Jumbotron>
-			</>
+			</Container>
 		)
 	}
 }
