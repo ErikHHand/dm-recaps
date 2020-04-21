@@ -41,10 +41,16 @@ body  {
 	border-width: 0 1px 0 0;
 }
 
+.border-top{
+	border: solid rgba(134, 134, 134, 0.1);
+	border-width: 1px 0 0 0;
+}
+
 .campaign-item {
 	margin-right: 2rem;
 	margin-left: 2rem;
 	margin-bottom: 1rem;
+	border-width: 2px !important;
 }
 
 .campaign-list  {
@@ -52,8 +58,6 @@ body  {
 	max-height: 41rem;
 	margin: 1.5rem 0;
 	padding: 0.5rem 0;
-	border: inset rgba(134, 134, 134, 0.13);
-	border-width: 2px 0;
 }
 
 .center {
@@ -100,8 +104,6 @@ body  {
 	overflow: scroll;
 	padding: 0.5rem 0.75rem 0.5rem 0 !important;
 }
-
-
 
 .remove-margin {
 	margin: 0 !important;
