@@ -32,7 +32,7 @@ String.prototype.hashCode = function() {
 /*
 	This component holds the session tab of the App.
 	This component also keeps track of the current session selected,
-	controlling where recaps are currently written
+	controlling where recaps are written
 */
 class SessionsPage extends Component {
 
@@ -41,23 +41,23 @@ class SessionsPage extends Component {
 
 		this.state = {
 			showSessionInfo: false,
-			currentSession: null,
+			selectedSession: null,
 			edit: false,
 			sessionSortDescending: true,
 		};
 
 		// Set the context for "this" for the following functions
-		this.handleCurrentSession = this.handleCurrentSession.bind(this);
+		this.handleSelectedSession = this.handleSelectedSession.bind(this);
 		this.editSession = this.editSession.bind(this);
 		this.addSession = this.addSession.bind(this);
 		this.changeSort = this.changeSort.bind(this);
 	}
 
-	// Handles changing which session is the current session
-	handleCurrentSession(sessionID) {
+	// Handles changing which session is the selected session
+	handleSelectedSession(sessionID) {
 		if(sessionID == null || this.props.sessions[sessionID]) {
 			this.setState({
-				currentSession: sessionID,
+				selectedSession: sessionID,
 			});
 		}
 	}
@@ -118,11 +118,11 @@ class SessionsPage extends Component {
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
-					handleCurrentSession = {this.handleCurrentSession}
-					isCurrentSession = {this.state.currentSession === sessionID}
+					handleSelectedSession = {this.handleSelectedSession}
+					isCurrentSession = {this.state.selectedSession === sessionID}
 					editSession = {this.editSession}
 					campaignRef = {this.props.campaignRef}
-					click = {() => this.handleCurrentSession(sessionID)}
+					click = {() => this.handleSelectedSession(sessionID)}
 				/>
 			);
 		}
@@ -130,15 +130,15 @@ class SessionsPage extends Component {
 		let recapItems;
 
 		// Render recapItems
-		if(!this.state.currentSession) {
+		if(!this.state.selectedSession) {
 			recapItems = <div></div>;
-		} else if(!this.props.sessions[this.state.currentSession]) {
+		} else if(!this.props.sessions[this.state.selectedSession]) {
 			recapItems = <div></div>;
-		} else if(this.props.sessions[this.state.currentSession].recaps.length === 0) {
+		} else if(this.props.sessions[this.state.selectedSession].recaps.length === 0) {
 			recapItems = <div></div>;	 
 		} else {
-			let recapList = this.props.sessions[this.state.currentSession].recaps;
-			recapItems = this.props.campaign.sessions[this.state.currentSession].recapOrder.map((recapID)=>
+			let recapList = this.props.sessions[this.state.selectedSession].recaps;
+			recapItems = this.props.campaign.sessions[this.state.selectedSession].recapOrder.map((recapID)=>
 				<RecapItem 
 					key = {recapID}
 					recapID = {recapID}
@@ -195,7 +195,7 @@ class SessionsPage extends Component {
 				<Col md={9} className="recap-item-list remove-scroll-bar">
 					{recapItems}
 					<NewRecap 
-						currentSession = {this.state.currentSession}
+						session = {this.state.selectedSession}
 						sessions = {this.props.sessions}
 						campaign = {this.props.campaign}
 						handleSessions = {this.props.handleSessions}
