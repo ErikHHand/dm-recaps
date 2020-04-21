@@ -99,13 +99,9 @@ class SessionsPage extends Component {
 			sessions = <div></div>;
 		} else {
 			let sessionOrder = [...this.props.campaign.sessionOrder];
-			console.log("session order");
 			if(!this.state.sessionSortDescending) {
-				console.log("reverse");
 				sessionOrder.reverse();
 			}
-			console.log(sessionOrder);
-			console.log(this.props.campaign.sessionOrder);
 
 			sessions = sessionOrder.map((sessionID)=>
 				<SessionItem 
@@ -153,8 +149,6 @@ class SessionsPage extends Component {
 				/>
 			);
 		}
-
-		console.log(this.state.sessionSortDescending);
 
 		return (
 			<Row noGutters={true}>
