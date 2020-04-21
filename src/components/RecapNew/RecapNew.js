@@ -9,7 +9,7 @@ import * as firebase from 'firebase'; // Do not remove
 	This class holds the field where new recaps are entered and
 	handles adding new recaps.
 */
-class NewRecap extends Component {
+class RecapNew extends Component {
 	constructor(props) {
 		super(props);
 	  
@@ -87,7 +87,7 @@ class NewRecap extends Component {
 
 		const { text, error} = this.state;
 
-		let newRecap = this;
+		let recapNew = this;
 
 		return (
 			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
@@ -95,7 +95,7 @@ class NewRecap extends Component {
 					<Form.Control 
 						name="text"
 						value={text}
-						onKeyDown={(event) => {if(event.keyCode === 13) newRecap.form.dispatchEvent(new Event('submit'))}}
+						onKeyDown={(event) => {if(event.keyCode === 13) recapNew.form.dispatchEvent(new Event('submit'))}}
 						onChange={this.onChange}
 						disabled={!this.props.session}
 						type="text"
@@ -110,4 +110,4 @@ class NewRecap extends Component {
 	}
 }
 
-export default withFirebase(NewRecap)
+export default withFirebase(RecapNew)

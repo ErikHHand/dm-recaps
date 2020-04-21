@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import SessionInfo from '../SessionInfo/SessionInfo';
 import SessionItem from '../SessionItem/SessionItem';
 import RecapItem from '../RecapItem/RecapItem';
-import NewRecap from '../NewRecap/NewRecap';
+import NewRecap from '../RecapNew/RecapNew';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
