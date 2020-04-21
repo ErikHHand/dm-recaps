@@ -270,7 +270,11 @@ class RecapItem extends Component {
 			</Badge>
 		);
 
-		let date = new Date(this.props.campaign.sessions[this.props.recapItem.session].date.seconds * 1000)
+		let date = new Date(this.props.campaign.sessions[this.props.recapItem.session].date.seconds * 1000);
+
+		// Create number for session order
+		let number = "#" + (this.props.campaign.sessionOrder.length - 
+			this.props.campaign.sessionOrder.indexOf(this.props.recapItem.session)) + " ";
 		
 		return (
 			<Card onClick = {this.props.click}>
@@ -278,7 +282,7 @@ class RecapItem extends Component {
 					<Row>
 						<Col></Col>
 						<Col xs="auto" className="session-info">
-							{date.toDateString()}
+							{number + date.toDateString()}
 							&emsp;
 							{this.props.campaign.sessions[this.props.recapItem.session].description}
 						</Col>
