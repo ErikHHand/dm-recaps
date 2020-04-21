@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import SessionInfo from '../SessionInfo/SessionInfo';
 import SessionItem from '../SessionItem/SessionItem';
 import RecapItem from '../RecapItem/RecapItem';
-import NewRecap from '../RecapNew/RecapNew';
+import RecapNew from '../RecapNew/RecapNew';
+import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
+
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -93,18 +95,18 @@ class SessionsPage extends Component {
 
 	render() {	
 
-		let sessions;
+		let sessionItems;
 
 		// Render session items
 		if(!this.props.campaign.sessions) {
-			sessions = <div></div>;
+			sessionItems = <div></div>;
 		} else {
 			let sessionOrder = [...this.props.campaign.sessionOrder];
 			if(!this.state.sessionSortDescending) {
 				sessionOrder.reverse();
 			}
 
-			sessions = sessionOrder.map((sessionID)=>
+			sessionItems = sessionOrder.map((sessionID)=>
 				<SessionItem 
 					key = {sessionID}
 					sessionID = {sessionID}
@@ -162,20 +164,12 @@ class SessionsPage extends Component {
 			<Row noGutters={true}>
 				<Col lg={3} md={4} className="remove-padding">
 					<div className="border-bottom border-right">
-						<div className="center sort-arrows-col">
-							<FontAwesomeIcon 
-								icon={faArrowUp}
-								onClick={this.state.sessionSortDescending ? () => this.changeSort("sessionSortDescending") : null}
-								className={this.state.sessionSortDescending ? "sort-arrow-inactive" : "sort-arrow-active"}
-							/>
-							<FontAwesomeIcon 
-								icon={faArrowDown} 
-								onClick={this.state.sessionSortDescending ? null : () => this.changeSort("sessionSortDescending")}
-								className={this.state.sessionSortDescending ? "sort-arrow-active" : "sort-arrow-inactive"}
-							/>
-						</div>
+						<SortArrowsColumn
+							status = {this.state.sessionSortDescending}
+							changeSort = {() => this.changeSort("sessionSortDescending")}
+						/>
 						<div className="session-item-list remove-scroll-bar">
-							{sessions}
+							{sessionItems}
 						</div>
 					</div>
 					
@@ -197,21 +191,13 @@ class SessionsPage extends Component {
 					/>
 				</Col>
 				<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
-					<div className="center sort-arrows-col">
-						<FontAwesomeIcon 
-							icon={faArrowUp}
-							onClick={this.state.recapSortDescending ? () => this.changeSort("recapSortDescending") : null}
-							className={this.state.recapSortDescending ? "sort-arrow-inactive" : "sort-arrow-active"}
-						/>
-						<FontAwesomeIcon 
-							icon={faArrowDown} 
-							onClick={this.state.recapSortDescending ? null : () => this.changeSort("recapSortDescending")}
-							className={this.state.recapSortDescending ? "sort-arrow-active" : "sort-arrow-inactive"}
-						/>
-					</div>
+					<SortArrowsColumn
+						status = {this.state.recapSortDescending}
+						changeSort = {() => this.changeSort("recapSortDescending")}
+					/>
 					<div className="recap-item-list remove-scroll-bar">
 						{this.state.recapSortDescending ? null : recapItems}
-						<NewRecap 
+						<RecapNew 
 							session = {this.state.selectedSession}
 							sessions = {this.props.sessions}
 							campaign = {this.props.campaign}
