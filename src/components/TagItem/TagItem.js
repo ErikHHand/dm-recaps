@@ -102,14 +102,16 @@ class TagItem extends Component {
 		return (
 			<>
 				<Card 
-					className="tag" 
+					className="tag-item" 
 					style={{ backgroundColor: this.props.tagInfo.colour}}
+					border={this.props.isSelected ? "info" : "light"} 
 					onClick = {this.props.handleClick}
 				>
 					<Card.Body>
-						<Card.Subtitle>
+						<Card.Title>
 							<Row>
-								<Col xs="9">
+								<Col xs="9" className="tag-item-title text-white">
+									{this.props.tagInfo.name}
 								</Col>
 								<Col xs="3" className="center">
 									<ItemMenu
@@ -124,10 +126,7 @@ class TagItem extends Component {
 									/>
 								</Col>
 							</Row>
-						</Card.Subtitle>
-						<Card.Text className="tag-text text-white">
-							{this.props.tagInfo.name}
-						</Card.Text>
+						</Card.Title>
 					</Card.Body>
 				</Card>
 			</>

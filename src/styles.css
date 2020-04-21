@@ -8,7 +8,7 @@ body  {
     -webkit-background-size: cover;
   	-moz-background-size: cover;
   	-o-background-size: cover;
-  	background-size: cover;
+	background-size: cover;
 }
 
 .add-session {
@@ -25,6 +25,10 @@ body  {
 .add-tag:hover {
 	background-color: #30A64A;
 	color: white;
+}
+
+.App {
+	max-height: 90vh;
 }
 
 .border-bottom{
@@ -60,7 +64,6 @@ body  {
 	opacity: 0.97;
 	border-radius: 8px;
 	height: 54rem;
-	padding-top: 2rem !important;
 }
 
 .item-menu {
@@ -131,6 +134,7 @@ body  {
 .session-item {
 	width: inherit;
 	margin-bottom: 0.3rem;
+	border-width: 2px !important;
 }
 
 .session-item-date-text {
@@ -169,13 +173,21 @@ body  {
     float: left;
 }
 
-.tag {
-	padding: 0.2rem !important;
+.tag-item {
+	width: inherit;
+	margin-bottom: 0.3rem;
+	border-width: 2px !important;
 }
 
-.tag-text {
-	font-size: 1.5em;
-	font-weight: 500;
+.tag-item-list {
+	overflow: scroll;
+	max-height: 41rem;
+	margin: 0 0 0 30px;
+	padding: 0.5rem 0.75rem 0.5rem 0 !important;
+}
+
+.tag-item-title {
+	font-size: 1.1rem;
 }
 
 #sign-in-box {

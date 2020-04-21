@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import RecapItem from '../RecapItem/RecapItem';
 import TagItem from '../TagItem/TagItem';
 import TagInfo from '../TagInfo/TagInfo';
+import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -22,20 +23,24 @@ class TagsPage extends Component {
 
 		this.state = {
 			showTagInfo: false,
-			currentTag: null,
+			selectedTag: null,
+			edit: false,
+			tagSortDescending: true,
+			recapSortDescending: false,
 		};
 
 		// Set the context for "this" for the following function
-		this.handleCurrentTag = this.handleCurrentTag.bind(this);
+		this.handleSelectedTag = this.handleSelectedTag.bind(this);
 		this.editTag = this.editTag.bind(this);
 		this.addTag = this.addTag.bind(this);
+		this.changeSort = this.changeSort.bind(this);
 	}
 
 	// Handles changing which tag is the current tag,
 	// which tag is currently selected
-	handleCurrentTag(tagID) {
+	handleSelectedTag(tagID) {
 		this.setState({
-			currentTag: tagID,
+			selectedTag: tagID,
 		})
 	}
 
@@ -63,6 +68,12 @@ class TagsPage extends Component {
 		});
 	}
 
+	changeSort(list) {
+		this.setState({
+			[list]: !this.state[list],
+		});
+	}
+
 	render() {
 
 		let tagsPage = this;
@@ -77,6 +88,9 @@ class TagsPage extends Component {
 			let sortedKeys = Object.keys(this.props.campaign.tags).sort((a, b) => {				
 				return this.props.campaign.tags[b].created.toDate() - this.props.campaign.tags[a].created.toDate();
 			});
+			if(!this.state.tagSortDescending) {
+				sortedKeys.reverse();
+			}
 			
 			tagItems = sortedKeys.map((tag)=>
 				<TagItem 
@@ -89,8 +103,9 @@ class TagsPage extends Component {
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
-					handleCurrentTag = {this.handleCurrentTag}
-					handleClick = {() => tagsPage.setState({currentTag: tag})}
+					handleSelectedTag = {this.handleSelectedTag}
+					isSelected = {this.state.selectedTag === tag}
+					handleClick = {() => tagsPage.setState({selectedTag: tag})}
 					editTag = {this.editTag}
 					campaignRef = {this.props.campaignRef}
 				/>
@@ -100,13 +115,13 @@ class TagsPage extends Component {
 		// Render recap items
 		let recapItems;
 
-		if(!this.state.currentTag) {
+		if(!this.state.selectedTag) {
 			recapItems = <div></div>; // No current tag
-		} else if(!this.props.tags[this.state.currentTag]) {
+		} else if(!this.props.tags[this.state.selectedTag]) {
 			recapItems = <div></div>; // // Current tag doesn't exist?
 		} else {
 
-			let recapList = this.props.tags[this.state.currentTag].recaps;
+			let recapList = this.props.tags[this.state.selectedTag].recaps;
 			let length = this.props.campaign.sessionOrder.length;
 			let recapKeys = {};
 
@@ -125,6 +140,10 @@ class TagsPage extends Component {
 				return recapKeys[a] - recapKeys[b];
 			});
 
+			if(this.state.recapSortDescending) {
+				sortedKeys.reverse();
+			}
+
 			recapItems = sortedKeys.map((recapID)=>
 				<RecapItem 
 					key = {recapID}
@@ -142,9 +161,18 @@ class TagsPage extends Component {
 		}
 
 		return (
-			<Row>
-				<Col md={3} className="overflow-scroll">
-					{tagItems}
+			<Row noGutters={true}>
+				<Col lg={3} md={4} className="remove-padding">
+					<div className="border-bottom border-right">
+						<SortArrowsColumn
+							status = {this.state.tagSortDescending}
+							changeSort = {() => this.changeSort("tagSortDescending")}
+						/>
+						<div className="tag-item-list remove-scroll-bar">
+							{tagItems}
+						</div>
+					</div>
+					
 					<div className="center">
 						<Button variant="success" onClick={this.addTag}>New Tag</Button>
 					</div>
@@ -163,8 +191,14 @@ class TagsPage extends Component {
 						colour = {this.state.colour}
 					/>
 				</Col>
-				<Col md={9} className="overflow-scroll">
-					{recapItems}
+				<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
+					<SortArrowsColumn
+						status = {this.state.recapSortDescending}
+						changeSort = {() => this.changeSort("recapSortDescending")}
+					/>
+					<div className="recap-item-list remove-scroll-bar">
+						{recapItems}
+					</div>
 				</Col>
 			</Row>
 		)
