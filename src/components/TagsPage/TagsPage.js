@@ -31,6 +31,7 @@ class TagsPage extends Component {
 			edit: false,
 			tagSortDescending: true,
 			recapSortDescending: false,
+			textFilter: "",
 		};
 
 		// Set the context for "this" for the following function
@@ -38,6 +39,8 @@ class TagsPage extends Component {
 		this.editTag = this.editTag.bind(this);
 		this.addTag = this.addTag.bind(this);
 		this.changeSort = this.changeSort.bind(this);
+		this.textFilter = this.textFilter.bind(this);
+		this.filter = this.filter.bind(this);
 	}
 
 	// Handles changing which tag is the current tag,
@@ -78,6 +81,19 @@ class TagsPage extends Component {
 		});
 	}
 
+	textFilter(value, event) {
+		event.preventDefault();
+		
+		this.setState({
+			textFilter: value.toLowerCase(),
+		})
+	}
+
+	filter(key, index, keys) {
+		let textFilter = this.props.campaign.tags[key].name.toLowerCase().startsWith(this.state.textFilter);
+		return textFilter;
+	}
+
 	render() {
 
 		let tagsPage = this;
@@ -88,8 +104,15 @@ class TagsPage extends Component {
 		if(!this.props.campaign.tags) {
 			tagItems = <div></div>; //Render nothing if there are no tags
 		} else {
+
+			let keys = Object.keys(this.props.campaign.tags);
+
+			if(this.state.textFilter) {
+				keys = keys.filter((key, index, keys) => this.filter(key, index, keys));
+			}
+
 			// Sort keys in date order, meaning tags created more recently will appear higher up
-			let sortedKeys = Object.keys(this.props.campaign.tags).sort((a, b) => {				
+			let sortedKeys = keys.sort((a, b) => {				
 				return this.props.campaign.tags[b].created.toDate() - this.props.campaign.tags[a].created.toDate();
 			});
 			if(!this.state.tagSortDescending) {
@@ -171,7 +194,7 @@ class TagsPage extends Component {
 						<Col xs={9} >
 							<SearchField
 								placeholder="Search..."
-								onChange=""
+								onChange={(value, event) => this.textFilter(value, event)}
 								searchText=""
 								classNames="search-field"
 							/>
