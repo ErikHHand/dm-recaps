@@ -139,6 +139,10 @@ body  {
 	border-width: 2px !important;
 }
 
+.session-item:hover {
+	cursor: pointer;
+}
+
 .session-item-date-text {
 	font-size: 0.95rem !important;
 }
@@ -179,6 +183,10 @@ body  {
 	width: inherit;
 	margin-bottom: 0.3rem;
 	border-width: 2px !important;
+}
+
+.tag-item:hover {
+	cursor: pointer;
 }
 
 .tag-item-list {
