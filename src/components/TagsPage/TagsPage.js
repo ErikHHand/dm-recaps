@@ -3,15 +3,12 @@ import React, { Component } from 'react';
 import RecapItem from '../RecapItem/RecapItem';
 import TagItem from '../TagItem/TagItem';
 import TagInfo from '../TagInfo/TagInfo';
+import TagFilter from '../TagFilter/TagFilter';
 import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import Dropdown from 'react-bootstrap/Dropdown'
-
-import SearchField from "react-search-field";
 
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
@@ -26,22 +23,22 @@ class TagsPage extends Component {
 		super(props);
 
 		this.state = {
-			tag: {name: "", description: "", type: "Location", colour: "#415b39"},
-			showTagInfo: false,
-			selectedTag: null,
 			edit: false,
-			tagSort: 1,
 			recapSortDescending: false,
+			selectedTag: null,
+			showTagInfo: false,
+			tag: {name: "", description: "", type: "Location", colour: "#415b39"},
+			tagKeys: [],
+			tagSort: 1,
 			textFilter: "",
 		};
 
-		// Set the context for "this" for the following function
-		this.handleSelectedTag = this.handleSelectedTag.bind(this);
-		this.editTag = this.editTag.bind(this);
+		// Set the context for "this" for the following functions
 		this.addTag = this.addTag.bind(this);
+		this.editTag = this.editTag.bind(this);
+		this.handleSelectedTag = this.handleSelectedTag.bind(this);
+		this.handleTagKeys = this. handleTagKeys.bind(this);
 		this.changeSort = this.changeSort.bind(this);
-		this.textFilter = this.textFilter.bind(this);
-		this.filter = this.filter.bind(this);
 	}
 
 	// Handles changing which tag is the current tag,
@@ -49,6 +46,12 @@ class TagsPage extends Component {
 	handleSelectedTag(tagID) {
 		this.setState({
 			selectedTag: tagID,
+		})
+	}
+
+	handleTagKeys(tagKeys) {
+		this.setState({
+			tagKeys: tagKeys,
 		})
 	}
 
@@ -84,19 +87,6 @@ class TagsPage extends Component {
 		}
 	}
 
-	textFilter(value, event) {
-		event.preventDefault();
-		
-		this.setState({
-			textFilter: value.toLowerCase(),
-		})
-	}
-
-	filter(key, index, keys) {
-		let textFilter = this.props.campaign.tags[key].name.toLowerCase().startsWith(this.state.textFilter);
-		return textFilter;
-	}
-
 	render() {
 
 		let tagsPage = this;
@@ -107,28 +97,9 @@ class TagsPage extends Component {
 		if(!this.props.campaign.tags) {
 			tagItems = <div></div>; //Render nothing if there are no tags
 		} else {
-
-			let keys = Object.keys(this.props.campaign.tags);
-			let sortedKeys;
-
-			// Filter results
-			if(this.state.textFilter) {
-				keys = keys.filter((key, index, keys) => this.filter(key, index, keys));
-			}
-
-			if(this.state.tagSort < 3) {
-				// Sort keys in date order, meaning tags created more recently will appear higher up
-				sortedKeys = keys.sort((a, b) => {				
-					return this.props.campaign.tags[b].created.toDate() - this.props.campaign.tags[a].created.toDate();
-				});
-				
-			} else {
-				// Sort keys in alphabetical order based on tag names
-				sortedKeys = keys.sort((a, b) => {				
-					return ((this.props.campaign.tags[b].name <= this.props.campaign.tags[a].name) ? 1 : -1);
-				});
-			}
 			
+			let sortedKeys = [...this.state.tagKeys];
+
 			// based on sorting, reverse keys
 			if(this.state.tagSort === 2 || this.state.tagSort === 3) {
 				sortedKeys.reverse();
@@ -205,23 +176,11 @@ class TagsPage extends Component {
 		return (
 			<Row noGutters={true}>
 				<Col lg={3} md={4} className="remove-padding tag-bar">
-					<Row noGutters={true} className="filter-and-search-bar border-bottom border-right">
-						<Col xs={9} >
-							<SearchField
-								placeholder="Search..."
-								onChange={(value, event) => this.textFilter(value, event)}
-								searchText=""
-								classNames="search-field"
-							/>
-						</Col>
-						<Col xs={3}>
-							<DropdownButton variant="outline-secondary" title="All" size="my-sm">
-								<Dropdown.Item>Action</Dropdown.Item>
-								<Dropdown.Item>Another action</Dropdown.Item>
-								<Dropdown.Item>Something else</Dropdown.Item>
-							</DropdownButton>
-						</Col>
-					</Row>
+					<TagFilter
+						campaign = {this.props.campaign}
+						handleTagKeys = {this.handleTagKeys}
+						tagSort = {this.state.tagSort}
+					/>
 					<div className="border-bottom border-right tag-bar-lower">
 						<SortArrowsColumn
 							status = {this.state.tagSort}
