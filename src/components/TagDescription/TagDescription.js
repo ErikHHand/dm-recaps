@@ -18,7 +18,6 @@ class TagDescription extends Component {
 	render() {	
 		
 		let noDescription = "This tag has no description";
-		console.log(this.props.tag)
 
 		return (
 			<>

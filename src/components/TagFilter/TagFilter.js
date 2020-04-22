@@ -30,6 +30,8 @@ class TagFilter extends Component {
 		// Handles case when site mounts and tags is still in a promise
 		if(this.props.campaign && !prevProps.campaign.tags) {
 			this.filterKeys();
+		} else if (this.props.tagSort !== prevProps.tagSort) {
+			this.filterKeys();
 		}
 	}
 	  
