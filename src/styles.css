@@ -46,6 +46,12 @@ body  {
 	border-width: 1px 0 0 0;
 }
 
+.btn-my-sm {
+	padding: 6px !important;
+	font-size: 14px !important;
+	font-weight: 400 !important;
+}
+
 .campaign-item {
 	margin-right: 2rem;
 	margin-left: 2rem;
@@ -68,6 +74,12 @@ body  {
 	opacity: 0.97;
 	border-radius: 8px;
 	height: 54rem;
+	padding-top: 2rem !important;
+}
+
+.filter-and-search-bar {
+	padding: 0.5rem 0 0.5rem 31px;
+	min-height: 8%;
 }
 
 .item-menu {
@@ -81,13 +93,12 @@ body  {
 	color: rgba(151, 146, 146, 0.835);
 }
 
-.overflow-scroll {
-	overflow: scroll;
-	max-height: 41rem;
-	margin: 1.5rem 0;
-	padding: 0.5rem 0;
-	border: inset rgba(134, 134, 134, 0.13);
-	border-width: 2px 0;
+.react-search-field {
+	
+}
+
+.react-search-field-input {
+	width: 9rem;
 }
 
 .recap-body {
@@ -179,6 +190,14 @@ body  {
     float: left;
 }
 
+.tag-bar {
+	height: 39rem;
+}
+
+.tag-bar-lower {
+	height: 92%;
+}
+
 .tag-item {
 	width: inherit;
 	margin-bottom: 0.3rem;
@@ -191,7 +210,7 @@ body  {
 
 .tag-item-list {
 	overflow: scroll;
-	max-height: 41rem;
+	max-height: 100%;
 	margin: 0 0 0 30px;
 	padding: 0.5rem 0.75rem 0.5rem 0 !important;
 }

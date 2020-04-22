@@ -8,6 +8,10 @@ import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
+
+import SearchField from "react-search-field";
 
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
@@ -162,8 +166,25 @@ class TagsPage extends Component {
 
 		return (
 			<Row noGutters={true}>
-				<Col lg={3} md={4} className="remove-padding">
-					<div className="border-bottom border-right">
+				<Col lg={3} md={4} className="remove-padding tag-bar">
+					<Row noGutters={true} className="filter-and-search-bar border-bottom border-right">
+						<Col xs={9} >
+							<SearchField
+								placeholder="Search..."
+								onChange=""
+								searchText=""
+								classNames="search-field"
+							/>
+						</Col>
+						<Col xs={3}>
+							<DropdownButton variant="outline-secondary" title="All" size="my-sm">
+								<Dropdown.Item>Action</Dropdown.Item>
+								<Dropdown.Item>Another action</Dropdown.Item>
+								<Dropdown.Item>Something else</Dropdown.Item>
+							</DropdownButton>
+						</Col>
+					</Row>
+					<div className="border-bottom border-right tag-bar-lower">
 						<SortArrowsColumn
 							status = {this.state.tagSortDescending}
 							changeSort = {() => this.changeSort("tagSortDescending")}
