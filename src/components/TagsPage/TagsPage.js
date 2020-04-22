@@ -90,14 +90,12 @@ class TagsPage extends Component {
 	render() {
 
 		let tagsPage = this;
-
-		// Render tag items
 		let tagItems;
+		let recapItems;
 
 		if(!this.props.campaign.tags) {
 			tagItems = <div></div>; //Render nothing if there are no tags
 		} else {
-			
 			let sortedKeys = [...this.state.tagKeys];
 
 			// based on sorting, reverse keys
@@ -105,6 +103,7 @@ class TagsPage extends Component {
 				sortedKeys.reverse();
 			}
 			
+			// Render tag items
 			tagItems = sortedKeys.map((tag)=>
 				<TagItem 
 					key = {tag}
@@ -125,15 +124,11 @@ class TagsPage extends Component {
 			);
 		}
 
-		// Render recap items
-		let recapItems;
-
 		if(!this.state.selectedTag) {
 			recapItems = <div></div>; // No current tag
 		} else if(!this.props.tags[this.state.selectedTag]) {
 			recapItems = <div></div>; // // Current tag doesn't exist?
 		} else {
-
 			let recapList = this.props.tags[this.state.selectedTag].recaps;
 			let length = this.props.campaign.sessionOrder.length;
 			let recapKeys = {};
@@ -157,6 +152,7 @@ class TagsPage extends Component {
 				sortedKeys.reverse();
 			}
 
+			// Render recap items
 			recapItems = sortedKeys.map((recapID)=>
 				<RecapItem 
 					key = {recapID}
