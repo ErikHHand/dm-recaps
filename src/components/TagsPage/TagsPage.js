@@ -4,6 +4,7 @@ import RecapItem from '../RecapItem/RecapItem';
 import TagItem from '../TagItem/TagItem';
 import TagInfo from '../TagInfo/TagInfo';
 import TagFilter from '../TagFilter/TagFilter';
+import TagDescription from '../TagDescription/TagDescription';
 import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
 
 import Row from 'react-bootstrap/Row'
@@ -37,7 +38,7 @@ class TagsPage extends Component {
 		this.addTag = this.addTag.bind(this);
 		this.editTag = this.editTag.bind(this);
 		this.handleSelectedTag = this.handleSelectedTag.bind(this);
-		this.handleTagKeys = this. handleTagKeys.bind(this);
+		this.handleTagKeys = this.handleTagKeys.bind(this);
 		this.changeSort = this.changeSort.bind(this);
 	}
 
@@ -170,51 +171,53 @@ class TagsPage extends Component {
 		}
 
 		return (
-			<Row noGutters={true}>
-				<Col lg={3} md={4} className="remove-padding tag-bar">
-					<TagFilter
-						campaign = {this.props.campaign}
-						handleTagKeys = {this.handleTagKeys}
-						tagSort = {this.state.tagSort}
-					/>
-					<div className="border-bottom border-right tag-bar-lower">
-						<SortArrowsColumn
-							status = {this.state.tagSort}
-							changeSort = {(value) => this.changeSort("tagSort", value)}
-							alphabetical = {true}
+			<>
+				<Row noGutters={true} className="border-bottom">
+					<Col lg={3} md={4} className="remove-padding tag-bar">
+						<TagFilter
+							campaign = {this.props.campaign}
+							handleTagKeys = {this.handleTagKeys}
+							tagSort = {this.state.tagSort}
 						/>
-						<div className="tag-item-list remove-scroll-bar">
-							{tagItems}
+						<div className=" border-right tag-bar-lower">
+							<SortArrowsColumn
+								status = {this.state.tagSort}
+								changeSort = {(value) => this.changeSort("tagSort", value)}
+								alphabetical = {true}
+							/>
+							<div className="tag-item-list remove-scroll-bar">
+								{tagItems}
+							</div>
 						</div>
-					</div>
-					
-					<div className="center">
-						<Button variant="success" onClick={this.addTag}>New Tag</Button>
-					</div>
-					<TagInfo 
-						show = {this.state.showTagInfo}
-						onHide = {() => this.setState({ showTagInfo: false })}
-						tags = {this.props.tags}
-						campaign = {this.props.campaign}
-						handleTags = {this.props.handleTags}
-						handleCampaign = {this.props.handleCampaign}
-						campaignRef = {this.props.campaignRef}
-						edit = {this.state.edit}
-						tagID = {this.state.tagID}
-						tag = {this.state.tag}
-					/>
-				</Col>
-				<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
-					<SortArrowsColumn
-						status = {this.state.recapSortDescending}
-						changeSort = {() => this.changeSort("recapSortDescending", null)}
-						alphabetical = {false}
-					/>
-					<div className="recap-item-list remove-scroll-bar">
-						{recapItems}
-					</div>
-				</Col>
-			</Row>
+					</Col>
+					<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
+						{this.state.selectedTag ? <TagDescription tag = {this.props.campaign.tags[this.state.selectedTag]}/> : null}
+						<SortArrowsColumn
+							status = {this.state.recapSortDescending}
+							changeSort = {() => this.changeSort("recapSortDescending", null)}
+							alphabetical = {false}
+						/>
+						<div className="recap-item-list remove-scroll-bar">
+							{recapItems}
+						</div>
+					</Col>
+				</Row>
+				<div>
+					<Button variant="success" onClick={this.addTag}>New Tag</Button>
+				</div>
+				<TagInfo 
+					show = {this.state.showTagInfo}
+					onHide = {() => this.setState({ showTagInfo: false })}
+					tags = {this.props.tags}
+					campaign = {this.props.campaign}
+					handleTags = {this.props.handleTags}
+					handleCampaign = {this.props.handleCampaign}
+					campaignRef = {this.props.campaignRef}
+					edit = {this.state.edit}
+					tagID = {this.state.tagID}
+					tag = {this.state.tag}
+				/>
+			</>
 		)
 	}
 }
