@@ -17,6 +17,9 @@ class TagInfo extends Component {
 		this.state = {
 			error: "",
 		}
+
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	// Will be called when props change, which will update state accordingly
@@ -24,14 +27,15 @@ class TagInfo extends Component {
 
 		// Put the current information about the tag in the state
 		this.setState({
-			name: newProps.name,
-			type: newProps.type,
-			colour: newProps.colour,
+			name: newProps.tag.name,
+			type: newProps.tag.type,
+			colour: newProps.tag.colour,
+			description: newProps.tag.description ? newProps.tag.description : "",
 		});
 	}
 
 	// Triggers when submitting tag info
-	onSubmit = event => {
+	onSubmit(event) {
 
 		// Hide the tag info window
 		this.props.onHide();
@@ -42,6 +46,7 @@ class TagInfo extends Component {
 			name: this.state.name,
 			type: this.state.type,
 			colour: this.state.colour,
+			description: this.state.description,
 			created: firebase.firestore.Timestamp.fromDate(new Date()),
 		};
 
@@ -100,7 +105,7 @@ class TagInfo extends Component {
 	}
 	
 	// Triggers when changing tag info
-	onChange = event => {
+	onChange(event){
     	this.setState({ [event.target.name]: event.target.value });
   	};
 
@@ -116,7 +121,7 @@ class TagInfo extends Component {
 			submit = "Create new tag";
 		}
 
-		const { name, type, colour, error } = this.state;
+		const { name, type, colour, description, error } = this.state;
 		const isInvalid = name === "";
 
 		return (
@@ -142,6 +147,21 @@ class TagInfo extends Component {
 								onChange={this.onChange}
 								type="text"
 								placeholder="Name...."
+							/>
+							<Form.Text className="text-muted">
+								For example "Misty Mountains".
+							</Form.Text>
+						</Form.Group>
+
+						<Form.Group controlId="formDescription">
+							<Form.Label>Description</Form.Label>
+							<Form.Control 
+								name="description"
+								value={description}
+								onChange={this.onChange}
+								type="text"
+								as="textarea"
+								placeholder="Description...."
 							/>
 							<Form.Text className="text-muted">
 								For example "Misty Mountains".

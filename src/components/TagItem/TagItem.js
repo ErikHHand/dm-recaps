@@ -117,9 +117,7 @@ class TagItem extends Component {
 									<ItemMenu
 										edit = {() => this.props.editTag(
 											this.props.tagID,
-											this.props.tagInfo.name,
-											this.props.tagInfo.type,
-											this.props.tagInfo.colour
+											this.props.tagInfo
 										)}
 										delete = {this.deleteTag}
 										deleteText = {deleteText}

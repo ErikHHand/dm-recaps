@@ -26,6 +26,7 @@ class TagsPage extends Component {
 		super(props);
 
 		this.state = {
+			tag: {name: "", description: "", type: "Location", colour: "#415b39"},
 			showTagInfo: false,
 			selectedTag: null,
 			edit: false,
@@ -52,12 +53,10 @@ class TagsPage extends Component {
 	}
 
 	// Triggers before editing a tag
-	editTag(tagID, name, type, colour) {
+	editTag(tagID, tag) {
 		this.setState({
 			tagID: tagID,
-			name: name,
-			type: type,
-			colour: colour,
+			tag: tag,
 			edit: true,
 			showTagInfo: true,
 		});
@@ -67,9 +66,7 @@ class TagsPage extends Component {
 	addTag() {
 		this.setState({
 			tagID: null,
-			name: "",
-			type: "Location",
-			colour: "#415b39",
+			tag: {name: "", description: "", type: "Location", colour: "#415b39"},
 			edit: false,
 			showTagInfo: true,
 		});
@@ -249,9 +246,7 @@ class TagsPage extends Component {
 						campaignRef = {this.props.campaignRef}
 						edit = {this.state.edit}
 						tagID = {this.state.tagID}
-						name = {this.state.name}
-						type = {this.state.type}
-						colour = {this.state.colour}
+						tag = {this.state.tag}
 					/>
 				</Col>
 				<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
