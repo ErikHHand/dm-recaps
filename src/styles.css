@@ -89,6 +89,10 @@ body  {
 	color: rgba(151, 146, 146, 0.835);
 }
 
+.my-navbar {
+	width: 100%;
+}
+
 .react-search-field {
 	
 }
@@ -102,11 +106,12 @@ body  {
 }
 
 .recap-item-column {
-	max-height: 41rem;
+	height: 44rem;
+	max-width: 100%;
 }
 
 .recap-item-list {
-	max-height: 41rem;
+	max-height: 100%;
 	margin: 0 0 0 30px;
 	overflow: scroll;
 	padding: 0.5rem 0.75rem 0.5rem 0.2rem !important;
@@ -156,7 +161,7 @@ body  {
 
 .session-item-list {
 	overflow: scroll;
-	max-height: 41rem;
+	max-height: 44rem;
 	margin: 0 0 0 30px;
 	padding: 0.5rem 0.75rem 0.5rem 0 !important;
 }
@@ -187,11 +192,15 @@ body  {
 }
 
 .tag-bar {
-	height: 39rem;
+	height: 44rem;
 }
 
 .tag-bar-lower {
 	height: 92%;
+}
+
+.tag-description {
+	width: 100%;
 }
 
 .tag-item {
@@ -213,6 +222,10 @@ body  {
 
 .tag-item-title {
 	font-size: 1.1rem;
+}
+
+.tag-row {
+	height: 44rem;
 }
 
 #sign-in-box {

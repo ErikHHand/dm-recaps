@@ -26,6 +26,8 @@ class TagsPage extends Component {
 		this.state = {
 			edit: false,
 			recapSortDescending: false,
+			recapListStyle: { height: "100%",},
+			recapListHeight: 0,
 			selectedTag: null,
 			showTagInfo: false,
 			tag: {name: "", description: "", type: "Location", colour: "#415b39"},
@@ -40,6 +42,30 @@ class TagsPage extends Component {
 		this.handleSelectedTag = this.handleSelectedTag.bind(this);
 		this.handleTagKeys = this.handleTagKeys.bind(this);
 		this.changeSort = this.changeSort.bind(this);
+	}
+
+	componentDidUpdate() {
+		if(this.state.selectedTag) {
+			console.log(this.tagDescription)
+			let div1Height = window.getComputedStyle(this.tagDescription).getPropertyValue("height");
+			let div1FontSize = window.getComputedStyle(this.tagDescription).getPropertyValue("font-size");
+			let containerHeight = window.getComputedStyle(this.recapItemColumn).getPropertyValue("height");
+			let containerFontSize = window.getComputedStyle(this.recapItemColumn).getPropertyValue("font-size");
+
+			div1Height = Number(div1Height.substring(0, div1Height.length - 2));
+			div1FontSize = Number(div1FontSize.substring(0, div1FontSize.length - 2));
+			containerHeight = Number(containerHeight.substring(0, containerHeight.length - 2));
+			containerFontSize = Number(containerFontSize.substring(0, containerFontSize.length - 2));
+
+			let recapListHeight = containerHeight / containerFontSize - div1Height / div1FontSize;
+			
+			if(this.state.recapListHeight !== recapListHeight) {
+				this.setState({
+					recapListStyle: { height: recapListHeight + "rem"},
+					recapListHeight: recapListHeight,
+				});
+			}
+		}
 	}
 
 	// Handles changing which tag is the current tag,
@@ -172,7 +198,7 @@ class TagsPage extends Component {
 
 		return (
 			<>
-				<Row noGutters={true} className="border-bottom">
+				<Row noGutters={true} className="border-bottom tag-row">
 					<Col lg={3} md={4} className="remove-padding tag-bar">
 						<TagFilter
 							campaign = {this.props.campaign}
@@ -190,14 +216,16 @@ class TagsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
-						{this.state.selectedTag ? <TagDescription tag = {this.props.campaign.tags[this.state.selectedTag]}/> : null}
+					<Col lg={9} md={8} className="remove-padding recap-item-column" ref={ref => (this.recapItemColumn = ref)}>
+						<div ref={ref => (this.tagDescription = ref)}>
+							{this.state.selectedTag ? <TagDescription tag = {this.props.campaign.tags[this.state.selectedTag]}/> : null}
+						</div>
 						<SortArrowsColumn
 							status = {this.state.recapSortDescending}
 							changeSort = {() => this.changeSort("recapSortDescending", null)}
 							alphabetical = {false}
 						/>
-						<div className="recap-item-list remove-scroll-bar">
+						<div className="recap-item-list remove-scroll-bar" style={this.state.recapListStyle}>
 							{recapItems}
 						</div>
 					</Col>
