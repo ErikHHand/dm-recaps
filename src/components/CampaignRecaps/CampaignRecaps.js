@@ -132,20 +132,18 @@ class CampaignRecaps extends Component {
 		return (
 			<Container>
 				<Row>
-					<Col md={10}>
-					</Col>
-					<Col md={2}>
-						<Navbar variant="dark">
-							<SignOutButton />	
-						</Navbar>
-					</Col>
-				</Row>
-				<Jumbotron fluid className="container-window">
-					<Row>
-						<Col>
+					<Navbar variant="dark" className="my-navbar">
+						<Col md={2}>
 							<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
 						</Col>
-					</Row>
+						<Col md={8}>
+						</Col>
+						<Col md={2} className="right-align">
+							<SignOutButton />	
+						</Col>
+					</Navbar>
+				</Row>
+				<Jumbotron fluid className="container-window">
 					<Tab.Container defaultActiveKey="sessions">
 						<Row>
 							<Col>
