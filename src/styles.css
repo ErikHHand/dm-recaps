@@ -27,10 +27,6 @@ body  {
 	color: white;
 }
 
-.App {
-	max-height: 90vh;
-}
-
 .border-bottom{
 	border: solid rgba(134, 134, 134, 0.1);
 	border-width: 0 0 1px 0;
@@ -70,11 +66,11 @@ body  {
     text-align: center;
 }
 
-.container {
+.container-window {
 	opacity: 0.97;
 	border-radius: 8px;
-	height: 54rem;
-	padding-top: 2rem !important;
+	height: 53rem;
+	padding-top: 1rem !important;
 }
 
 .filter-and-search-bar {
@@ -183,7 +179,7 @@ body  {
 }
 
 .sort-arrows-col {
-	font-size: 13pt;
+	font-size: 15pt;
 	color: rgba(151, 146, 146, 0.424);
 	padding-top: 0.5rem;
 	width: 30px;

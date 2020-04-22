@@ -29,7 +29,7 @@ class TagsPage extends Component {
 			showTagInfo: false,
 			selectedTag: null,
 			edit: false,
-			tagSortDescending: true,
+			tagSort: 1,
 			recapSortDescending: false,
 			textFilter: "",
 		};
@@ -75,10 +75,16 @@ class TagsPage extends Component {
 		});
 	}
 
-	changeSort(list) {
-		this.setState({
-			[list]: !this.state[list],
-		});
+	changeSort(list, value) {
+		if(value) {
+			this.setState({
+				[list]: value,
+			});
+		} else {
+			this.setState({
+				[list]: !this.state[list],
+			});
+		}
 	}
 
 	textFilter(value, event) {
@@ -106,16 +112,28 @@ class TagsPage extends Component {
 		} else {
 
 			let keys = Object.keys(this.props.campaign.tags);
+			let sortedKeys;
 
+			// Filter results
 			if(this.state.textFilter) {
 				keys = keys.filter((key, index, keys) => this.filter(key, index, keys));
 			}
 
-			// Sort keys in date order, meaning tags created more recently will appear higher up
-			let sortedKeys = keys.sort((a, b) => {				
-				return this.props.campaign.tags[b].created.toDate() - this.props.campaign.tags[a].created.toDate();
-			});
-			if(!this.state.tagSortDescending) {
+			if(this.state.tagSort < 3) {
+				// Sort keys in date order, meaning tags created more recently will appear higher up
+				sortedKeys = keys.sort((a, b) => {				
+					return this.props.campaign.tags[b].created.toDate() - this.props.campaign.tags[a].created.toDate();
+				});
+				
+			} else {
+				// Sort keys in alphabetical order based on tag names
+				sortedKeys = keys.sort((a, b) => {				
+					return ((this.props.campaign.tags[b].name <= this.props.campaign.tags[a].name) ? 1 : -1);
+				});
+			}
+			
+			// based on sorting, reverse keys
+			if(this.state.tagSort === 2 || this.state.tagSort === 3) {
 				sortedKeys.reverse();
 			}
 			
@@ -209,8 +227,9 @@ class TagsPage extends Component {
 					</Row>
 					<div className="border-bottom border-right tag-bar-lower">
 						<SortArrowsColumn
-							status = {this.state.tagSortDescending}
-							changeSort = {() => this.changeSort("tagSortDescending")}
+							status = {this.state.tagSort}
+							changeSort = {(value) => this.changeSort("tagSort", value)}
+							alphabetical = {true}
 						/>
 						<div className="tag-item-list remove-scroll-bar">
 							{tagItems}
@@ -238,7 +257,8 @@ class TagsPage extends Component {
 				<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
 					<SortArrowsColumn
 						status = {this.state.recapSortDescending}
-						changeSort = {() => this.changeSort("recapSortDescending")}
+						changeSort = {() => this.changeSort("recapSortDescending", null)}
+						alphabetical = {false}
 					/>
 					<div className="recap-item-list remove-scroll-bar">
 						{recapItems}

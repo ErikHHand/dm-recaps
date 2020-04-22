@@ -163,6 +163,7 @@ class SessionsPage extends Component {
 						<SortArrowsColumn
 							status = {this.state.sessionSortDescending}
 							changeSort = {() => this.changeSort("sessionSortDescending")}
+							alphabetical = {false}
 						/>
 						<div className="session-item-list remove-scroll-bar">
 							{sessionItems}
@@ -190,6 +191,7 @@ class SessionsPage extends Component {
 					<SortArrowsColumn
 						status = {this.state.recapSortDescending}
 						changeSort = {() => this.changeSort("recapSortDescending")}
+						alphabetical = {false}
 					/>
 					<div className="recap-item-list remove-scroll-bar">
 						{this.state.recapSortDescending ? null : recapItems}

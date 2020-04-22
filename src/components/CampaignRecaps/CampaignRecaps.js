@@ -140,7 +140,7 @@ class CampaignRecaps extends Component {
 						</Navbar>
 					</Col>
 				</Row>
-				<Jumbotron fluid className="container">
+				<Jumbotron fluid className="container-window">
 					<Row>
 						<Col>
 							<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
