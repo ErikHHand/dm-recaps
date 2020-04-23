@@ -148,6 +148,42 @@ body  {
 	text-align: right;
 }
 
+.select-badge {
+	font-size: 14px !important;
+	margin: 0.2rem 0.35rem;
+	cursor: pointer;
+	border-width: 1px;
+	border: solid rgb(230, 230, 230);
+}
+
+.select-badge:hover {
+	border: solid rgb(94, 94, 94);
+}
+
+.select-border {
+	border: solid rgb(206, 212, 218);
+	border-width: 1px;
+	border-radius: 4px;
+	width: 100%;
+	height: 35.375px;
+}
+
+.select-label {
+	height: 100%;
+	display: flex;
+	justify-content: center; /* align horizontal */
+	align-items: center;
+	cursor: default;
+}
+
+.select-row {
+	margin-bottom: 2rem;
+}
+
+.select-tag {
+	display: inline-block;
+}
+
 .session-info-text {
 	font-size: 0.9rem;
 	color: rgba(151, 146, 146, 0.835);

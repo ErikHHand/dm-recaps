@@ -30,7 +30,7 @@ class TagsPage extends Component {
 			recapListHeight: 0,
 			selectedTag: null,
 			showTagInfo: false,
-			tag: {name: "", description: "", type: "Location", colour: "#415b39"},
+			tag: {name: "", description: "", type: "Location", colour: "red"},
 			tagKeys: [],
 			tagSort: 1,
 			textFilter: "",
@@ -95,7 +95,7 @@ class TagsPage extends Component {
 	addTag() {
 		this.setState({
 			tagID: null,
-			tag: {name: "", description: "", type: "Location", colour: "#415b39"},
+			tag: {name: "", description: "", type: "Location", colour: "red"},
 			edit: false,
 			showTagInfo: true,
 		});

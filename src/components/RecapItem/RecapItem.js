@@ -11,6 +11,12 @@ import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
 import { Form, Button } from 'react-bootstrap';
 
+import { COLOURS } from '../../constants/colours.js';
+import { TEXTCOLOURS } from '../../constants/colours.js';
+import { TYPES } from '../../constants/types.js';
+import { ICONS } from '../../constants/types.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
@@ -262,10 +268,12 @@ class RecapItem extends Component {
 		let tags = this.props.recapItem.tags.map((tagID) =>
 			<Badge 
 				pill 
-				style={{ backgroundColor: this.props.campaign.tags[tagID].colour}} 
+				style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
 				key={this.props.recapItem.tags.indexOf(tagID)}
-				className="text-white"
+				className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour]}
 			>
+				<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
+				&nbsp;
 				{this.props.campaign.tags[tagID].name}
 			</Badge>
 		);

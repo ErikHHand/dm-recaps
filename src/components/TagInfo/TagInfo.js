@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
+import FormSelectBadge from '../FormSelectBadge/FormSelectBadge';
+
 import Modal from 'react-bootstrap/Modal'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
@@ -20,6 +24,7 @@ class TagInfo extends Component {
 
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.changeValue = this.changeValue.bind(this);
 	}
 
 	// Will be called when props change, which will update state accordingly
@@ -109,6 +114,12 @@ class TagInfo extends Component {
     	this.setState({ [event.target.name]: event.target.value });
   	};
 
+	changeValue(name, value) {
+		this.setState({
+			[name]: value,
+		});
+	}
+
 	render() {
 
 		let title, submit;
@@ -167,44 +178,27 @@ class TagInfo extends Component {
 								For example "Misty Mountains".
 							</Form.Text>
 						</Form.Group>
-
-						<Form.Group controlId="formType">
-							<Form.Label>Type</Form.Label>
-							<Form.Control 
-								name="type"
-								value={type}
-								onChange={this.onChange}
-								as="select"
-							>
-								<option>Location</option>
-								<option>NPC</option>
-								<option>Player</option>
-								<option>Quest</option>
-								<option>Item</option>
-							</Form.Control>
-						</Form.Group>
-
-						<Form.Group controlId="formColour">
-							<Form.Label>Colour</Form.Label>
-							<Form.Control 
-								name="colour"
-								value={colour}
-								onChange={this.onChange}
-								as="select"
-								placeholder="Type..."
-							>
-								<option>#415b39</option>
-								<option>#66d7d1</option>
-								<option>#403d58</option>
-								<option>#ea5864</option>
-								<option>#f0f757</option>
-							</Form.Control>
-						</Form.Group>
-						
-						<Button variant="success" type="submit" disabled={isInvalid}>
-							{submit}
-						</Button>
-
+						<Row className="select-row">
+							<Col>
+								<FormSelectBadge
+									name = "type"
+									value = {type}
+									changeValue = {(name, value) => this.changeValue(name, value)}
+								/>
+							</Col>
+							<Col>
+								<FormSelectBadge
+									name = "colour"
+									value = {colour}
+									changeValue = {(name, value) => this.changeValue(name, value)}
+								/>
+							</Col>
+						</Row>
+						<div>
+							<Button variant="success" type="submit" disabled={isInvalid} >
+								{submit}
+							</Button>
+						</div>
 						{error && <p>{error.message}</p>}
 					</Form>
 				</Modal.Body>

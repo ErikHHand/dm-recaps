@@ -2,9 +2,17 @@ import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
 
+import { COLOURS } from '../../constants/colours.js';
+import { TEXTCOLOURS } from '../../constants/colours.js';
+import { TYPES } from '../../constants/types.js';
+import { ICONS } from '../../constants/types.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+
+
 
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
@@ -99,13 +107,13 @@ class TagItem extends Component {
 			text: "Are you sure you want to delete this tag and remove it from all recaps?"
 		}
 
-		let cardClasses = this.props.tagInfo.colour !== "#f0f757" ? "text-white item-title" : "item-title";
+		let cardClasses = TEXTCOLOURS[this.props.tagInfo.colour] + " item-title";
 
 		return (
 			<>
 				<Card 
 					className="tag-item item" 
-					style={{ backgroundColor: this.props.tagInfo.colour}}
+					style={{ backgroundColor: COLOURS[this.props.tagInfo.colour]}}
 					border={this.props.isSelected ? "info" : "light"} 
 					onClick = {this.props.handleClick}
 				>
@@ -113,6 +121,8 @@ class TagItem extends Component {
 						<Card.Title>
 							<Row>
 								<Col xs="9" className = {cardClasses}>
+									<FontAwesomeIcon icon={ICONS[this.props.tagInfo.type]} />
+									&nbsp;
 									{this.props.tagInfo.name}
 								</Col>
 								<Col xs="3" className="center">
