@@ -107,14 +107,14 @@ class SessionItem extends Component {
 		return (
 			<>
 				<Card 
-					className="session-item" 
+					className="session-item item" 
 					border={this.props.isCurrentSession ? "info" : ""} 
 					onClick = {this.props.click}
 				>
 					<Card.Body >
 						<Card.Title>
 							<Row>
-								<Col md={9} className="session-item-title">
+								<Col md={9} className="item-title">
 									{this.props.sessionInfo.description}
 								</Col>
 								<Col md={3} className="center">
@@ -131,7 +131,7 @@ class SessionItem extends Component {
 							</Row>
 							
 						</Card.Title>
-						<Card.Text className="text-muted session-item-date-text">
+						<Card.Text className="session-info-text">
 							{number + date.toDateString()}
 						</Card.Text>
 					</Card.Body>

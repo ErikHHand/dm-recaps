@@ -281,7 +281,7 @@ class RecapItem extends Component {
 				<Card.Body className="recap-body">
 					<Row>
 						<Col></Col>
-						<Col xs="auto" className="session-info">
+						<Col xs="auto" className="session-info-text">
 							{number + date.toDateString()}
 							&emsp;
 							{this.props.campaign.sessions[this.props.recapItem.session].description}
@@ -301,7 +301,7 @@ class RecapItem extends Component {
 									recapItem = {this.props.recapItem}
 									writeRecap = {this.writeRecap}
 								/> : 
-								<p>{this.props.recapItem.text}</p>
+								<p className="recap-text">{this.props.recapItem.text}</p>
 							}
 						</Col>
 					</Row>

@@ -157,56 +157,58 @@ class SessionsPage extends Component {
 		}
 
 		return (
-			<Row noGutters={true}>
-				<Col lg={3} md={4} className="remove-padding">
-					<div className="border-bottom border-right">
+			<>
+				<Row noGutters={true} className="border-bottom">
+					<Col lg={3} md={4} className="remove-padding list-height">
+						<div className="border-right session-list-column">
+							<SortArrowsColumn
+								status = {this.state.sessionSortDescending}
+								changeSort = {() => this.changeSort("sessionSortDescending")}
+								alphabetical = {false}
+							/>
+							<div className="item-list remove-scroll-bar">
+								{sessionItems}
+							</div>
+						</div>
+					</Col>
+					<Col lg={9} md={8} className="remove-padding list-height">
 						<SortArrowsColumn
-							status = {this.state.sessionSortDescending}
-							changeSort = {() => this.changeSort("sessionSortDescending")}
+							status = {this.state.recapSortDescending}
+							changeSort = {() => this.changeSort("recapSortDescending")}
 							alphabetical = {false}
 						/>
-						<div className="session-item-list remove-scroll-bar">
-							{sessionItems}
+						<div className="item-list remove-scroll-bar">
+							{this.state.recapSortDescending ? null : recapItems}
+							<RecapNew 
+								session = {this.state.selectedSession}
+								sessions = {this.props.sessions}
+								campaign = {this.props.campaign}
+								handleSessions = {this.props.handleSessions}
+								handleCampaign = {this.props.handleCampaign}
+								campaignRef = {this.props.campaignRef}
+							/>
+							{this.state.recapSortDescending ? recapItems : null}
 						</div>
-					</div>
-					
-					<div className="center add-session">
-						<Button variant="success" onClick={this.addSession}>New Session</Button>
-					</div>
-					<SessionInfo 
-						show = {this.state.showSessionInfo}
-						onHide = {() => this.setState({ showSessionInfo: false })}
-						sessions = {this.props.sessions}
-						campaign = {this.props.campaign}
-						handleSessions = {this.props.handleSessions}
-						handleCampaign = {this.props.handleCampaign}
-						campaignRef = {this.props.campaignRef}
-						edit = {this.state.edit}
-						description = {this.state.description}
-						date = {this.state.date}
-						sessionID = {this.state.sessionID}
-					/>
-				</Col>
-				<Col lg={9} md={8} className="remove-padding recap-item-column border-bottom">
-					<SortArrowsColumn
-						status = {this.state.recapSortDescending}
-						changeSort = {() => this.changeSort("recapSortDescending")}
-						alphabetical = {false}
-					/>
-					<div className="recap-item-list remove-scroll-bar">
-						{this.state.recapSortDescending ? null : recapItems}
-						<RecapNew 
-							session = {this.state.selectedSession}
-							sessions = {this.props.sessions}
-							campaign = {this.props.campaign}
-							handleSessions = {this.props.handleSessions}
-							handleCampaign = {this.props.handleCampaign}
-							campaignRef = {this.props.campaignRef}
-						/>
-						{this.state.recapSortDescending ? recapItems : null}
-					</div>
-				</Col>
-			</Row>
+					</Col>
+				</Row>
+
+				<div className="center add-button">
+					<Button variant="success" onClick={this.addSession}>New Session</Button>
+				</div>
+				<SessionInfo 
+					show = {this.state.showSessionInfo}
+					onHide = {() => this.setState({ showSessionInfo: false })}
+					sessions = {this.props.sessions}
+					campaign = {this.props.campaign}
+					handleSessions = {this.props.handleSessions}
+					handleCampaign = {this.props.handleCampaign}
+					campaignRef = {this.props.campaignRef}
+					edit = {this.state.edit}
+					description = {this.state.description}
+					date = {this.state.date}
+					sessionID = {this.state.sessionID}
+				/>
+			</>
 		);
 	}
 }

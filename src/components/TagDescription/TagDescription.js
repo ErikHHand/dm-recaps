@@ -23,7 +23,7 @@ class TagDescription extends Component {
 			<>
 				<Card className="tag-description" border="" bg="light">
 					<Card.Body>
-						<Card.Title>
+						<Card.Title className="">
 							{this.props.tag.name}
 						</Card.Title>
 						<Card.Text>

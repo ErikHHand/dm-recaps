@@ -11,7 +11,7 @@ body  {
 	background-size: cover;
 }
 
-.add-session {
+.add-button {
 	margin-top: 1.5rem;
 }
 
@@ -78,6 +78,17 @@ body  {
 	min-height: 8%;
 }
 
+.item:hover {
+	cursor: pointer;
+}
+
+.item-list {
+	max-height: 100%;
+	margin: 0 0 0 30px;
+	overflow: scroll;
+	padding: 0.5rem 0.75rem 0.5rem 0rem !important;
+}
+
 .item-menu {
 	font-size: 18pt;
 	color: rgba(151, 146, 146, 0.424);
@@ -89,12 +100,16 @@ body  {
 	color: rgba(151, 146, 146, 0.835);
 }
 
-.my-navbar {
-	width: 100%;
+.item-title {
+	font-size: 16px !important;
 }
 
-.react-search-field {
-	
+.list-height {
+	height: 44rem;
+}
+
+.my-navbar {
+	width: 100%;
 }
 
 .react-search-field-input {
@@ -105,16 +120,10 @@ body  {
 	padding: 0.6em 1em 0.6em 1em !important;
 }
 
-.recap-item-column {
-	height: 44rem;
-	max-width: 100%;
-}
-
-.recap-item-list {
-	max-height: 100%;
-	margin: 0 0 0 30px;
-	overflow: scroll;
-	padding: 0.5rem 0.75rem 0.5rem 0.2rem !important;
+.recap-text {
+	font-size: 15px;
+	line-height: 1.2rem;
+	margin-bottom: 0.3rem;
 }
 
 .remove-margin {
@@ -139,8 +148,8 @@ body  {
 	text-align: right;
 }
 
-.session-info {
-	font-size: 0.9em;
+.session-info-text {
+	font-size: 0.9rem;
 	color: rgba(151, 146, 146, 0.835);
 	font-style: italic;
 }
@@ -151,23 +160,8 @@ body  {
 	border-width: 2px !important;
 }
 
-.session-item:hover {
-	cursor: pointer;
-}
-
-.session-item-date-text {
-	font-size: 0.95rem !important;
-}
-
-.session-item-list {
-	overflow: scroll;
-	max-height: 44rem;
-	margin: 0 0 0 30px;
-	padding: 0.5rem 0.75rem 0.5rem 0 !important;
-}
-
-.session-item-title {
-	font-size: 13pt;
+.session-list-column {
+	height: 100%;
 }
 
 .sort-arrow-active {
@@ -191,11 +185,7 @@ body  {
     float: left;
 }
 
-.tag-bar {
-	height: 44rem;
-}
-
-.tag-bar-lower {
+.tag-list-column {
 	height: 92%;
 }
 
@@ -209,23 +199,12 @@ body  {
 	border-width: 2px !important;
 }
 
-.tag-item:hover {
-	cursor: pointer;
+.text-on-bright {
+	color: #5B644B;
 }
 
-.tag-item-list {
-	overflow: scroll;
-	max-height: 100%;
-	margin: 0 0 0 30px;
-	padding: 0.5rem 0.75rem 0.5rem 0 !important;
-}
-
-.tag-item-title {
-	font-size: 1.1rem;
-}
-
-.tag-row {
-	height: 44rem;
+.text-on-dark {
+	color: #D4E9FB;
 }
 
 #sign-in-box {

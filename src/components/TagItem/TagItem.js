@@ -99,10 +99,12 @@ class TagItem extends Component {
 			text: "Are you sure you want to delete this tag and remove it from all recaps?"
 		}
 
+		let cardClasses = this.props.tagInfo.colour !== "#f0f757" ? "text-white item-title" : "item-title";
+
 		return (
 			<>
 				<Card 
-					className="tag-item" 
+					className="tag-item item" 
 					style={{ backgroundColor: this.props.tagInfo.colour}}
 					border={this.props.isSelected ? "info" : "light"} 
 					onClick = {this.props.handleClick}
@@ -110,7 +112,7 @@ class TagItem extends Component {
 					<Card.Body>
 						<Card.Title>
 							<Row>
-								<Col xs="9" className="tag-item-title text-white">
+								<Col xs="9" className = {cardClasses}>
 									{this.props.tagInfo.name}
 								</Col>
 								<Col xs="3" className="center">

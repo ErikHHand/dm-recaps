@@ -197,25 +197,25 @@ class TagsPage extends Component {
 
 		return (
 			<>
-				<Row noGutters={true} className="border-bottom tag-row">
-					<Col lg={3} md={4} className="remove-padding tag-bar">
+				<Row noGutters={true} className="border-bottom">
+					<Col lg={3} md={4} className="remove-padding list-height">
 						<TagFilter
 							campaign = {this.props.campaign}
 							handleTagKeys = {this.handleTagKeys}
 							tagSort = {this.state.tagSort}
 						/>
-						<div className=" border-right tag-bar-lower">
+						<div className=" border-right tag-list-column">
 							<SortArrowsColumn
 								status = {this.state.tagSort}
 								changeSort = {(value) => this.changeSort("tagSort", value)}
 								alphabetical = {true}
 							/>
-							<div className="tag-item-list remove-scroll-bar">
+							<div className="item-list remove-scroll-bar">
 								{tagItems}
 							</div>
 						</div>
 					</Col>
-					<Col lg={9} md={8} className="remove-padding recap-item-column" ref={ref => (this.recapItemColumn = ref)}>
+					<Col lg={9} md={8} className="remove-padding list-height" ref={ref => (this.recapItemColumn = ref)}>
 						<div ref={ref => (this.tagDescription = ref)}>
 							{this.state.selectedTag ? <TagDescription tag = {this.props.campaign.tags[this.state.selectedTag]}/> : null}
 						</div>
@@ -224,12 +224,12 @@ class TagsPage extends Component {
 							changeSort = {() => this.changeSort("recapSortDescending", null)}
 							alphabetical = {false}
 						/>
-						<div className="recap-item-list remove-scroll-bar" style={this.state.recapListStyle}>
+						<div className="item-list remove-scroll-bar" style={this.state.recapListStyle}>
 							{recapItems}
 						</div>
 					</Col>
 				</Row>
-				<div>
+				<div className="center add-button">
 					<Button variant="success" onClick={this.addTag}>New Tag</Button>
 				</div>
 				<TagInfo 
