@@ -34,7 +34,7 @@ class TagItem extends Component {
 	deleteTag() {
 
 		// Set current tag to null
-		this.props.handleCurrentTag(null);
+		this.props.handleSelectedTag(null);
 
 		// Delete tag in session recaps locally and on Firestore
 		let sessions = this.props.sessions;

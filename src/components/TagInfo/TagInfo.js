@@ -106,6 +106,8 @@ class TagInfo extends Component {
 
 		let campaign = this.props.campaign;
 		campaign.tags[tagID] = tagInfo;
+		console.log(this.props.campaign);
+		console.log(campaign);
 		this.props.handleCampaign(campaign);
 	}
 	

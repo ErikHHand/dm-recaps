@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import TagFilter from '../TagFilter/TagFilter';
+
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
@@ -33,6 +35,7 @@ class RecapTagSelector extends Component {
 		}
 
 		this.state = {
+			filteredTags: [],
 			tags: tags,
 			showTagOverlay: false,
 		}
@@ -40,6 +43,7 @@ class RecapTagSelector extends Component {
 		// Set the context for "this" for the following functions
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onClick = this.onClick.bind(this);
+		this.handleFilteredTags = this.handleFilteredTags.bind(this);
 	}
 
 	// Triggers when an update to component happens
@@ -58,6 +62,12 @@ class RecapTagSelector extends Component {
 				tags: tags,
 			});
 		}		
+	}
+
+	handleFilteredTags(filteredTags) {
+		this.setState({
+			filteredTags: filteredTags,
+		})
 	}
 
 	// Triggers when changing tags
@@ -91,9 +101,6 @@ class RecapTagSelector extends Component {
 		// Update recap Item with potentially new text and tags
 		let recapItem = this.props.recapItem;
 		recapItem.tags = tags;
-
-		console.log(previousTags)
-		console.log(recapItem.tags)
 		
 		this.props.writeRecap(recapItem, previousTags);
 	};
@@ -101,25 +108,36 @@ class RecapTagSelector extends Component {
 	render() {
 		let recapTagSelector = this;
 
-		// The tags for the overlay where you select what tags to tag the recap with
-		let allTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
-			return (
-				<Badge 
-					pill 
-					style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
-					key={tagID}
-					className={
-						TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
-						(!this.state.tags[tagID] ? " tag-not-selected" : "")
-					}
-					onClick={() => this.onClick(tagID)}
-				>
-					<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
-					&nbsp;
-					{this.props.campaign.tags[tagID].name}
-				</Badge>
-			)
-		});
+		let allTags = [];
+		let cols = [];
+		let col1n2Length = Math.ceil(this.state.filteredTags.length / 3);
+		cols[0] = this.state.filteredTags.slice(0, col1n2Length);
+		cols[1] = this.state.filteredTags.length > 1 ? 
+					this.state.filteredTags.slice(col1n2Length, col1n2Length * 2) : [];
+		cols[2] = this.state.filteredTags.slice(col1n2Length * 2, this.state.filteredTags.length);
+
+		for(let i = 0; i < 3; i++) {
+			// The tags for the overlay where you select what tags to tag the recap with
+			allTags[i] = cols[i].map((tagID) => {
+				return (
+					<Badge 
+						pill 
+						style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
+						key={tagID}
+						className={
+							TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
+							(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
+						}
+						onClick={() => this.onClick(tagID)}
+					>
+						<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
+						&nbsp;
+						{this.props.campaign.tags[tagID].name}
+					</Badge>
+				)
+			});
+		}
+		
 
 		// The tags currently attached to this recap
 		let recapTags = this.props.recapItem.tags.map((tagID) =>
@@ -158,13 +176,42 @@ class RecapTagSelector extends Component {
 						show: _show,
 						...props
 					}) => (
-						<Popover id="popover-basic" {...props}>
+						<Popover id="popover-basic" {...props} className="tag-selector">
 							<Popover.Title as="h3">
-								Choose tags
+								<Row>
+									<Col className="filter-bar-width">
+										<TagFilter
+											campaign = {this.props.campaign}
+											filteredTags = {this.state.filteredTags}
+											handleFilteredTags = {this.handleFilteredTags}
+											tagSort = "4" // Will sort alphabetical
+										/>
+									</Col>
+								</Row>
 							</Popover.Title>
 							<Popover.Content>
-								{allTags}
-								<Button variant="info" onClick={this.onSubmit}>Done</Button>
+								<Row>
+									<Col className="border-right">
+										{allTags[0]}
+									</Col>
+									<Col className="border-right">
+										{allTags[1]}
+									</Col>
+									<Col>
+										{allTags[2]}
+									</Col>
+								</Row>
+								
+								<Row className="button-row" noGutters={true}>
+									<Col md={4}>
+										<Button variant="info" onClick={this.onSubmit}>Done</Button>
+									</Col>
+									<Col md={4}>
+									</Col>
+									<Col md={4} className="right-align">
+										<Button variant="success">New Tag</Button>
+									</Col>
+								</Row>
 							</Popover.Content>
 						</Popover>
 					)}

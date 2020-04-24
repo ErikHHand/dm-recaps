@@ -48,6 +48,11 @@ body  {
 	font-weight: 400 !important;
 }
 
+.button-row {
+	margin-top: 0.5rem;
+	padding-top: 0.5rem;
+}
+
 .campaign-item {
 	margin-right: 2rem;
 	margin-left: 2rem;
@@ -73,9 +78,18 @@ body  {
 	padding-top: 1rem !important;
 }
 
-.filter-and-search-bar {
+.filter-bar {
 	padding: 0.5rem 0 0.5rem 31px;
 	min-height: 8%;
+}
+
+.filter-field {
+	width: 11rem;
+	float: left;
+}
+
+.filter-type-button {
+	margin: 0 0 0 11.5rem;
 }
 
 .item:hover {
@@ -237,6 +251,17 @@ body  {
 
 .tag-not-selected {
 	opacity: 0.3;
+}
+
+.tag-selector {
+	width: 26rem !important;
+	max-width: 26rem !important;
+}
+
+.tag-selector-tag {
+	font-size: 12px !important;
+	cursor: pointer;
+	margin-bottom: 0.2rem;
 }
 
 .text-on-bright {

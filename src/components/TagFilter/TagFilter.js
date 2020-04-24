@@ -24,14 +24,23 @@ class TagFilter extends Component {
 		// Set the context for "this" for the following functions
 		this.textFilter = this.textFilter.bind(this);
 		this.filter = this.filter.bind(this);
+
+		if(this.props.campaign.tags) {
+			this.filterKeys();
+		}
 	}
 
 	componentDidUpdate(prevProps) {
-		// Handles case when site mounts and tags is still in a promise
-		if(this.props.campaign && !prevProps.campaign.tags) {
+	
+		if (this.props.tagSort !== prevProps.tagSort) {
 			this.filterKeys();
-		} else if (this.props.tagSort !== prevProps.tagSort) {
+		} else if(this.props.campaign && !prevProps.campaign.tags) {
+			// Handles case when site mounts and tags is still in a promise
 			this.filterKeys();
+		} else if(this.props.campaign && prevProps.campaign.tags) {
+			if(Object.keys(this.props.campaign.tags).length !== this.props.filteredTags.length) {
+				this.filterKeys();
+			}
 		}
 	}
 	  
@@ -72,7 +81,7 @@ class TagFilter extends Component {
 				});
 			}
 
-			this.props.handleTagKeys(sortedKeys);
+			this.props.handleFilteredTags(sortedKeys);
 		}
 	}
 
@@ -84,23 +93,22 @@ class TagFilter extends Component {
 
 	render() {
 		return (
-			<Row noGutters={true} className="filter-and-search-bar border-bottom border-right">
-				<Col xs={9} >
+			<>
+				<div className="remove-padding filter-field">
 					<SearchField
 						placeholder="Search..."
 						onChange={(value, event) => this.textFilter(value, event)}
 						searchText=""
-						classNames="search-field"
 					/>
-				</Col>
-				<Col xs={3}>
+				</div>
+				<div className="filter-type-button">
 					<DropdownButton variant="outline-secondary" title="All" size="my-sm">
 						<Dropdown.Item>Action</Dropdown.Item>
 						<Dropdown.Item>Another action</Dropdown.Item>
 						<Dropdown.Item>Something else</Dropdown.Item>
 					</DropdownButton>
-				</Col>
-			</Row>
+				</div>
+			</>
 		);
 	}
 }

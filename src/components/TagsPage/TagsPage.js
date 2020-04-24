@@ -31,7 +31,7 @@ class TagsPage extends Component {
 			selectedTag: null,
 			showTagInfo: false,
 			tag: {name: "", description: "", type: "Location", colour: "red"},
-			tagKeys: [],
+			filteredTags: [],
 			tagSort: 1,
 			textFilter: "",
 		};
@@ -40,7 +40,7 @@ class TagsPage extends Component {
 		this.addTag = this.addTag.bind(this);
 		this.editTag = this.editTag.bind(this);
 		this.handleSelectedTag = this.handleSelectedTag.bind(this);
-		this.handleTagKeys = this.handleTagKeys.bind(this);
+		this.handleFilteredTags = this.handleFilteredTags.bind(this);
 		this.changeSort = this.changeSort.bind(this);
 	}
 
@@ -75,9 +75,9 @@ class TagsPage extends Component {
 		})
 	}
 
-	handleTagKeys(tagKeys) {
+	handleFilteredTags(filteredTags) {
 		this.setState({
-			tagKeys: tagKeys,
+			filteredTags: filteredTags,
 		})
 	}
 
@@ -122,7 +122,7 @@ class TagsPage extends Component {
 		if(!this.props.campaign.tags) {
 			tagItems = <div></div>; //Render nothing if there are no tags
 		} else {
-			let sortedKeys = [...this.state.tagKeys];
+			let sortedKeys = [...this.state.filteredTags];
 
 			// based on sorting, reverse keys
 			if(this.state.tagSort === 2 || this.state.tagSort === 3) {
@@ -199,11 +199,15 @@ class TagsPage extends Component {
 			<>
 				<Row noGutters={true} className="border-bottom">
 					<Col lg={3} md={4} className="remove-padding list-height">
-						<TagFilter
-							campaign = {this.props.campaign}
-							handleTagKeys = {this.handleTagKeys}
-							tagSort = {this.state.tagSort}
-						/>
+						<div className="filter-bar filter-bar-width border-bottom border-right">
+							<TagFilter
+								campaign = {this.props.campaign}
+								filteredTags = {this.state.filteredTags}
+								handleFilteredTags = {this.handleFilteredTags}
+								tagSort = {this.state.tagSort}
+							/>
+						</div>
+						
 						<div className=" border-right tag-list-column">
 							<SortArrowsColumn
 								status = {this.state.tagSort}
