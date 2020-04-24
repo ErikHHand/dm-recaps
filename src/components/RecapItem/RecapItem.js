@@ -2,19 +2,12 @@ import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
 import RecapEditText from '../RecapEditText/RecapEditText';
+import RecapTagSelector from '../RecapTagSelector/RecapTagSelector';
 
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Badge from 'react-bootstrap/Badge'
-import Overlay from 'react-bootstrap/Overlay'
-import Popover from 'react-bootstrap/Popover'
-import { Form, Button } from 'react-bootstrap';
 
-import { COLOURS } from '../../constants/colours.js';
-import { TEXTCOLOURS } from '../../constants/colours.js';
-import { TYPES } from '../../constants/types.js';
-import { ICONS } from '../../constants/types.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { withFirebase } from '../Firebase/Firebase';
@@ -29,19 +22,7 @@ class RecapItem extends Component {
 	constructor(props) {
 		super(props);
 
-		// TODO: WTF does this line do??? Something with tag pop-up...
-		this.attachRef = target => this.setState({ target });
-
-		// WARNING: This creates a derived state! In this case I think that 
-		// this is a logical solution
-		let tags = {};
-		for (let tag in this.props.campaign.tags) {
-			tags[tag] = this.props.recapItem.tags.includes(tag);			
-		}
-
 		this.state = {
-			tags: tags,
-			showTagOverlay: false,
 			edit: false,
 		}
 
@@ -51,32 +32,13 @@ class RecapItem extends Component {
 		this.writeRecap = this.writeRecap.bind(this);
 	}
 
-	// Triggers when an update to component happens
-	// This is used to handle a change in number of tags
-	// caused by deleting tags
-	componentDidUpdate() {
-		
-		// Check if the number of tags has changed
-		if(Object.keys(this.state.tags).length !== Object.keys(this.props.campaign.tags).length) {
-			let tags = {};
-			for (let tag in this.props.campaign.tags) {
-				tags[tag] = this.props.recapItem.tags.includes(tag);			
-			}
-
-			this.setState({
-				tags: tags,
-			});
-		}		
-	}
-
 	// Write recap
 	// This function is called when adding a new recap
 	// or editing recap data
 	writeRecap(recapItem, previousTags) {
 
-		// Close tag overlay and remove edit text area
+		// Remove edit text area
 		this.setState({
-			showTagOverlay: false,
 			edit: false,
 		});
 
@@ -100,10 +62,10 @@ class RecapItem extends Component {
 		// Add or delete locally and on Firestore
 		let tagsCollection = this.props.tags;
 		
-		for (let tag in this.state.tags) {
+		for (let tag in tagsCollection) {
 
 			// If tag has been added
-			if(this.state.tags[tag]){
+			if(recapItem.tags.includes(tag)){
 				
 				// Add locally to tags
 				tagsCollection[tag].recaps[id] = recapItem;
@@ -121,50 +83,14 @@ class RecapItem extends Component {
 			}
 
 			// If tag has been removed
-			else if(!this.state.tags[tag] && previousTags.includes(tag)) {
+			else if(!recapItem.tags.includes(tag) && previousTags.includes(tag)) {
 
 				// Delete locally and from Firestore
 				this.deleteFromTags(tag, tagsCollection)
 			}	
 		}
 		this.props.handleTags(tagsCollection);
-		
 	}
-
-	// TODO: Remove this when a new component for editing tags has been created
-	// Edits the recap.
-	// This function is called when changing tags or the recap text
-	onSubmit = event => {
-
-		event.preventDefault();
-		
-		// Add tags with value True
-		let tags = [];
-		for (let tag in this.state.tags) {
-			if(this.state.tags[tag]){
-				tags.push(tag)
-			}	
-		}
-		
-		let previousTags = this.props.recapItem.tags;
-
-		// Update recap Item with potentially new text and tags
-		let recapItem = this.props.recapItem;
-		recapItem.tags = tags;
-		
-		this.writeRecap(recapItem, previousTags);
-	};
-
-	// Triggers when changing tags
-	// Updates tags for this recap item
-	onChangeTags = event => {
-    	let tags = this.state.tags;
-		tags[event.target.name] = event.target.checked;
-
-		this.setState({
-			tags: tags,
-		});
-	};
 
 	// Delete recap item from tags collection, both locally and on Firestore
 	deleteFromTags(tag, tags) {
@@ -245,39 +171,6 @@ class RecapItem extends Component {
 			text: "Are you sure you want to delete this recap?"
 		}
 
-		const { showTagOverlay, target } = this.state;
-
-		let recapItem = this;
-
-		// The tags for the overlay where you select what tags to tag the recap with
-		let selectTags = Array.from(Object.keys(this.props.campaign.tags)).map((tagID) => {
-			return (
-				<Form.Group id="formCheckbox" key={tagID} name={tagID}>
-					<Form.Check 
-						type="checkbox" 
-						label={this.props.campaign.tags[tagID].name} 
-						name={tagID} 
-						checked={this.state.tags[tagID]} 
-						onChange={this.onChangeTags}
-					/>
-				</Form.Group>
-			)
-		});
-
-		// The tags currently attached to this recap
-		let tags = this.props.recapItem.tags.map((tagID) =>
-			<Badge 
-				pill 
-				style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
-				key={this.props.recapItem.tags.indexOf(tagID)}
-				className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour]}
-			>
-				<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
-				&nbsp;
-				{this.props.campaign.tags[tagID].name}
-			</Badge>
-		);
-
 		let date = new Date(this.props.campaign.sessions[this.props.recapItem.session].date.seconds * 1000);
 
 		// Create number for session order
@@ -315,37 +208,11 @@ class RecapItem extends Component {
 					</Row>
 					<Row>
 						<Col>
-							<div className="right-align">
-								{tags}
-								<Badge 
-									pill 
-									variant="light" 
-									className="add-tag" 
-									onClick={() => this.setState({ showTagOverlay: !showTagOverlay })}
-									ref={this.attachRef}
-								>
-									+
-								</Badge>
-								<Overlay 
-									target={target} 
-									show={showTagOverlay ? true : false} 
-									placement="left" 
-									rootClose={true}
-									onHide={() => recapItem.setState({showTagOverlay: false})}
-								>
-									{({
-										show: _show,
-										...props
-									}) => (
-										<Popover id="popover-basic" title="Choose tags" {...props}>
-											<Form onSubmit={this.onSubmit}>
-												{selectTags}
-												<Button variant="secondary" type="submit">Done</Button>
-											</Form>
-										</Popover>
-									)}
-								</Overlay>
-							</div>
+							<RecapTagSelector
+								campaign = {this.props.campaign}
+								recapItem = {this.props.recapItem}
+								writeRecap = {this.writeRecap}
+							/>
 						</Col>
 					</Row>
 				</Card.Body>

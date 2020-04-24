@@ -235,6 +235,10 @@ body  {
 	border-width: 2px !important;
 }
 
+.tag-not-selected {
+	opacity: 0.3;
+}
+
 .text-on-bright {
 	color: #5B644B;
 }
