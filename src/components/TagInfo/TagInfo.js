@@ -98,6 +98,14 @@ class TagInfo extends Component {
 		.catch(error => {
 			console.error("Error writing document: ", error);
 		});
+
+		// Reset the state
+		this.setState({
+			name: "",
+			type: "Location",
+			colour: "red",
+			description: "",
+		});
 	};
 
 	// Triggers when editing a tag or just after a new tag has been added.
