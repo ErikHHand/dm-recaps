@@ -10,26 +10,18 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 /*
 	This class holds the three dots the brings up the item menu when clicked
 */
-class CustomToggle extends Component {
-	constructor(props, context) {
-	  	super(props, context);
-		
-		// Set the context for "this" for the following function
-	  	this.handleClick = this.handleClick.bind(this);
-	}
-  
-	// Triggers when the three dots are clicked <i onClick={this.handleClick} className="fas fa-ellipsis-h item-menu"></i>
-	handleClick(e) {
-	  	e.preventDefault();
-	  	this.props.onClick(e);
-	}
-  
-	render() {
-		return (
-			<FontAwesomeIcon onClick={this.handleClick} icon={faEllipsisH} className="item-menu"/>	
-		);
-	}
-}
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+	<a
+		href=""
+		ref={ref}
+		onClick={(e) => {
+			e.preventDefault();
+			onClick(e);
+		}}
+	>
+		{children}
+	</a>
+));
 
 /*
 	This class holds the menu that is shown when the three dots are clicked.
@@ -68,7 +60,9 @@ class ItemMenu extends Component {
 		return (
 			<>
 				<Dropdown>
-					<Dropdown.Toggle as={CustomToggle} />
+					<Dropdown.Toggle as={CustomToggle}>
+						<FontAwesomeIcon icon={faEllipsisH} className="item-menu"/>	
+					</Dropdown.Toggle>
 					<Dropdown.Menu>
 						<Dropdown.Item onClick={this.props.edit}>Edit</Dropdown.Item>
 						<Dropdown.Item onClick={this.showDeleteWindow}>Delete</Dropdown.Item>
