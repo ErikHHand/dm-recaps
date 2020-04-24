@@ -72,6 +72,7 @@ class TagsPage extends Component {
 	handleSelectedTag(tagID) {
 		this.setState({
 			selectedTag: tagID,
+			tag: this.props.campaign.tags[tagID],
 		})
 	}
 
@@ -84,11 +85,8 @@ class TagsPage extends Component {
 	// Triggers before editing a tag
 	editTag(tagID, tag) {
 		this.setState({
-			tagID: tagID,
-			tag: tag,
 			edit: true,
-			showTagInfo: true,
-		});
+		}, this.setState({showTagInfo: true}));
 	}
 
 	// Triggers before adding a tag
@@ -97,8 +95,7 @@ class TagsPage extends Component {
 			tagID: null,
 			tag: {name: "", description: "", type: "Location", colour: "red"},
 			edit: false,
-			showTagInfo: true,
-		});
+		}, this.setState({showTagInfo: true}));
 	}
 
 	changeSort(list, value) {
@@ -143,7 +140,7 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					handleSelectedTag = {this.handleSelectedTag}
 					isSelected = {this.state.selectedTag === tag}
-					handleClick = {() => tagsPage.setState({selectedTag: tag})}
+					handleClick = {() => this.handleSelectedTag(tag)}
 					editTag = {this.editTag}
 					campaignRef = {this.props.campaignRef}
 				/>
@@ -245,8 +242,9 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					campaignRef = {this.props.campaignRef}
 					edit = {this.state.edit}
-					tagID = {this.state.tagID}
+					tagID = {this.state.selectedTag}
 					tag = {this.state.tag}
+					selectedTag = {this.state.selectedTag}
 				/>
 			</>
 		)

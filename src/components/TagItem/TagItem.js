@@ -57,9 +57,7 @@ class TagItem extends Component {
 			});
 
 			// Add recap in tags (for each tag) on Firestore
-			recapItem.tags.forEach( tagID => {
-				console.log(tagID);
-				
+			recapItem.tags.forEach( tagID => {				
 				this.props.campaignRef.collection("tags").doc(tagID).update({
 					["recaps." + recapID]: recapItem,
 				}).then(function() {

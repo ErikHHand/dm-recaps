@@ -45,7 +45,7 @@ class TagFilter extends Component {
 			// Handles case when site mounts and tags is still in a promise
 			this.filterKeys();
 		} else if(this.props.campaign && prevProps.campaign.tags) {
-			if(Object.keys(this.props.campaign.tags).length !== this.props.filteredTags.length) {
+			if(prevProps.filteredTags.length !== this.props.filteredTags.length) {
 				this.filterKeys();
 			}
 		}
@@ -59,7 +59,7 @@ class TagFilter extends Component {
 		}, this.filterKeys);
 	}
 
-	typeFilter(value) {		
+	typeFilter(value) {	
 		this.setState({
 			typeFilter: value,
 		}, this.filterKeys);
@@ -71,7 +71,7 @@ class TagFilter extends Component {
 			let sortedKeys;
 
 			// Filter results
-			if(this.state.textFilter) {
+			if(this.state.textFilter || this.state.typeFilter !== "All") {
 				keys = keys.filter((key, index, keys) => this.filter(key, index, keys));
 			}
 
@@ -86,7 +86,7 @@ class TagFilter extends Component {
 				sortedKeys = keys.sort((a, b) => {				
 					return ((this.props.campaign.tags[b].name <= this.props.campaign.tags[a].name) ? 1 : -1);
 				});
-			}
+			}			
 
 			this.props.handleFilteredTags(sortedKeys);
 		}
@@ -94,7 +94,8 @@ class TagFilter extends Component {
 
 	filter(key, index, keys) {
 		let textFilter = this.props.campaign.tags[key].name.toLowerCase().startsWith(this.state.textFilter);
-		return textFilter;
+		let typeFilter = this.state.typeFilter !== "All" ? this.props.campaign.tags[key].type === this.state.typeFilter : true;
+		return textFilter && typeFilter;
 	}
 
 

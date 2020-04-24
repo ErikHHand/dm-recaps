@@ -28,15 +28,24 @@ class TagInfo extends Component {
 	}
 
 	// Will be called when props change, which will update state accordingly
-	componentWillReceiveProps(newProps) {
+	componentDidUpdate(prevProps) {
 
 		// Put the current information about the tag in the state
-		this.setState({
-			name: newProps.tag.name,
-			type: newProps.tag.type,
-			colour: newProps.tag.colour,
-			description: newProps.tag.description ? newProps.tag.description : "",
-		});
+		if(this.props.selectedTag !== prevProps.selectedTag) {
+			this.setState({
+				name: this.props.tag.name,
+				type: this.props.tag.type,
+				colour: this.props.tag.colour,
+				description: this.props.tag.description ? this.props.tag.description : "",
+			});
+		} else if(this.props.edit !== prevProps.edit) {
+			this.setState({
+				name: this.props.tag.name,
+				type: this.props.tag.type,
+				colour: this.props.tag.colour,
+				description: this.props.tag.description ? this.props.tag.description : "",
+			});
+		}
 	}
 
 	// Triggers when submitting tag info
@@ -106,8 +115,6 @@ class TagInfo extends Component {
 
 		let campaign = this.props.campaign;
 		campaign.tags[tagID] = tagInfo;
-		console.log(this.props.campaign);
-		console.log(campaign);
 		this.props.handleCampaign(campaign);
 	}
 	
