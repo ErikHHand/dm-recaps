@@ -4,6 +4,12 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Badge from 'react-bootstrap/Badge'
+
+import { TYPES } from '../../constants/types.js';
+import { ICONS } from '../../constants/types.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 import SearchField from "react-search-field";
 
@@ -18,6 +24,7 @@ class TagFilter extends Component {
 		super(props);
 	  
 		this.state = {
+			typeFilter: "All",
 			textFilter: "",
 		};
 
@@ -92,6 +99,29 @@ class TagFilter extends Component {
 
 
 	render() {
+		let typeFilterItems = Object.keys(TYPES).map((type) => 
+			<Dropdown.Item key={type}>
+				<Badge 
+					pill 
+					className = "select-type"
+					onClick = {() => this.typeFilter(type)}
+				>
+					<FontAwesomeIcon icon={ICONS[type]} />
+					&nbsp;
+					{TYPES[type]}
+				</Badge>
+			</Dropdown.Item>
+		);
+
+		let currentTypeFilter = "";
+		if(this.state.typeFilter === "All") {
+			currentTypeFilter = <FontAwesomeIcon icon={faFilter}/>
+		} else {
+			currentTypeFilter = <FontAwesomeIcon icon={ICONS[this.state.typeFilter]}/>
+		}
+		
+		
+
 		return (
 			<>
 				<div className="remove-padding filter-field">
@@ -102,10 +132,9 @@ class TagFilter extends Component {
 					/>
 				</div>
 				<div className="filter-type-button">
-					<DropdownButton variant="outline-secondary" title="All" size="my-sm">
-						<Dropdown.Item>Action</Dropdown.Item>
-						<Dropdown.Item>Another action</Dropdown.Item>
-						<Dropdown.Item>Something else</Dropdown.Item>
+					<DropdownButton variant="outline-secondary" title={currentTypeFilter} size="my-sm">
+						<Dropdown.Item onClick = {() => this.typeFilter("All")}>All</Dropdown.Item>
+						{typeFilterItems}
 					</DropdownButton>
 				</div>
 			</>

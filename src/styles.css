@@ -198,6 +198,12 @@ body  {
 	display: inline-block;
 }
 
+.select-type {
+	font-size: 14px !important;
+	border-width: 1px;
+	border: solid rgb(230, 230, 230);
+}
+
 .session-info-text {
 	font-size: 0.9rem;
 	color: rgba(151, 146, 146, 0.835);
