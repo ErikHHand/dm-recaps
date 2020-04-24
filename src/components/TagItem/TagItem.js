@@ -33,6 +33,8 @@ class TagItem extends Component {
 	// Triggers when deleting a tag
 	deleteTag() {
 
+		console.log("Delete")
+
 		// Set current tag to null
 		this.props.handleSelectedTag(null);
 
@@ -96,6 +98,7 @@ class TagItem extends Component {
 		}).catch(function(error) {
 			console.log("Error deleting document:", error);
 		});
+		this.props.handleSelectedTag(null);
 	}
 
 	render() {	
@@ -125,10 +128,7 @@ class TagItem extends Component {
 								</Col>
 								<Col xs="3" className="center">
 									<ItemMenu
-										edit = {() => this.props.editTag(
-											this.props.tagID,
-											this.props.tagInfo
-										)}
+										edit = {this.props.editTag}
 										delete = {this.deleteTag}
 										deleteText = {deleteText}
 									/>

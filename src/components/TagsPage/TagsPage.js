@@ -70,10 +70,13 @@ class TagsPage extends Component {
 	// Handles changing which tag is the current tag,
 	// which tag is currently selected
 	handleSelectedTag(tagID) {
-		this.setState({
-			selectedTag: tagID,
-			tag: this.props.campaign.tags[tagID],
-		})
+		if(tagID !== this.state.selectedTag) {
+			this.setState({
+				tagID: tagID,
+				selectedTag: tagID,
+				tag: this.props.campaign.tags[tagID],
+			});
+		}
 	}
 
 	handleFilteredTags(filteredTags) {
@@ -83,7 +86,7 @@ class TagsPage extends Component {
 	}
 
 	// Triggers before editing a tag
-	editTag(tagID, tag) {
+	editTag() {
 		this.setState({
 			edit: true,
 		}, this.setState({showTagInfo: true}));
@@ -111,6 +114,10 @@ class TagsPage extends Component {
 	}
 
 	render() {
+
+		console.log("Render")
+		console.log(this.state.selectedTag)
+		console.log(this.state.tag)
 
 		let tagsPage = this;
 		let tagItems;
@@ -242,7 +249,7 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					campaignRef = {this.props.campaignRef}
 					edit = {this.state.edit}
-					tagID = {this.state.selectedTag}
+					tagID = {this.state.tagID}
 					tag = {this.state.tag}
 					selectedTag = {this.state.selectedTag}
 				/>

@@ -19,6 +19,10 @@ class TagInfo extends Component {
 		super(props);
 
 		this.state = {
+			name: "",
+			description: "",
+			type: "Location",
+			colour: "red",
 			error: "",
 		}
 
@@ -30,15 +34,13 @@ class TagInfo extends Component {
 	// Will be called when props change, which will update state accordingly
 	componentDidUpdate(prevProps) {
 
+		console.log(this.props)
+		console.log(prevProps)
+
+		let update = this.props.tagID !== prevProps.tagID;
+
 		// Put the current information about the tag in the state
-		if(this.props.selectedTag !== prevProps.selectedTag) {
-			this.setState({
-				name: this.props.tag.name,
-				type: this.props.tag.type,
-				colour: this.props.tag.colour,
-				description: this.props.tag.description ? this.props.tag.description : "",
-			});
-		} else if(this.props.edit !== prevProps.edit) {
+		if(update) {
 			this.setState({
 				name: this.props.tag.name,
 				type: this.props.tag.type,
@@ -150,7 +152,7 @@ class TagInfo extends Component {
 		}
 
 		const { name, type, colour, description, error } = this.state;
-		const isInvalid = name === "";
+		const isInvalid = name === "" || description === "";
 
 		return (
 			<Modal

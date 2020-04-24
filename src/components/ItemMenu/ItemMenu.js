@@ -80,7 +80,13 @@ class ItemMenu extends Component {
 						<Button variant="secondary" onClick={this.hideDeleteWindow}>
 							Close
 						</Button>
-						<Button variant="danger" onClick={() => {this.hideDeleteWindow(); this.props.delete();}}>
+						<Button variant="danger" onClick={(event) => {
+								event.preventDefault();
+								event.stopPropagation();
+								this.hideDeleteWindow(); 
+								this.props.delete();
+							}}
+						>
 							Delete
 						</Button>
 					</Modal.Footer>
