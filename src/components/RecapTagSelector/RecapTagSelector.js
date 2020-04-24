@@ -110,11 +110,11 @@ class RecapTagSelector extends Component {
 
 		let allTags = [];
 		let cols = [];
-		let col1n2Length = Math.ceil(this.state.filteredTags.length / 3);
-		cols[0] = this.state.filteredTags.slice(0, col1n2Length);
-		cols[1] = this.state.filteredTags.length > 1 ? 
-					this.state.filteredTags.slice(col1n2Length, col1n2Length * 2) : [];
-		cols[2] = this.state.filteredTags.slice(col1n2Length * 2, this.state.filteredTags.length);
+		let col1Length = Math.ceil(this.state.filteredTags.length / 3);
+		let col2Length = this.state.filteredTags.length > 1 ? Math.ceil((this.state.filteredTags.length - col1Length) / 2) : 0
+		cols[0] = this.state.filteredTags.slice(0, col1Length);
+		cols[1] = this.state.filteredTags.slice(col1Length, col1Length + col2Length);
+		cols[2] = this.state.filteredTags.slice(col1Length + col2Length, this.state.filteredTags.length);
 
 		for(let i = 0; i < 3; i++) {
 			// The tags for the overlay where you select what tags to tag the recap with
