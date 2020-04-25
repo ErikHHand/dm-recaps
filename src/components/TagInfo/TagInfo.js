@@ -32,12 +32,25 @@ class TagInfo extends Component {
 	}
 
 	// Will be called when props change, which will update state accordingly
+	componentDidMount() {
+
+		if(this.props.edit) {
+			this.setState({
+				name: this.props.tag.name,
+				type: this.props.tag.type,
+				colour: this.props.tag.colour,
+				description: this.props.tag.description ? this.props.tag.description : "",
+			});
+		}
+	}
+
+	// Will be called when props change, which will update state accordingly
 	componentDidUpdate(prevProps) {
 
 		console.log(this.props)
 		console.log(prevProps)
 
-		let update = (this.props.tagID !== prevProps.tagID) && (this.props.tag !== null);
+		let update = this.props.tagID !== prevProps.tagID;
 
 		// Put the current information about the tag in the state
 		if(update) {
@@ -126,7 +139,9 @@ class TagInfo extends Component {
 		let campaign = this.props.campaign;
 		campaign.tags[tagID] = tagInfo;
 		this.props.handleCampaign(campaign);
-		this.props.handleSelectedTag(tagID);
+		if(this.props.selectTag) {
+			this.props.handleSelectedTag(tagID);
+		}
 	}
 	
 	// Triggers when changing tag info

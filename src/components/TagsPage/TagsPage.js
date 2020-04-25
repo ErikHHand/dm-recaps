@@ -24,7 +24,6 @@ class TagsPage extends Component {
 		super(props);
 
 		this.state = {
-			edit: false,
 			recapSortDescending: false,
 			recapListStyle: { height: "100%",},
 			recapListHeight: 0,
@@ -33,12 +32,9 @@ class TagsPage extends Component {
 			tag: {name: "", description: "", type: "Location", colour: "red"},
 			filteredTags: [],
 			tagSort: 1,
-			textFilter: "",
 		};
 
 		// Set the context for "this" for the following functions
-		this.addTag = this.addTag.bind(this);
-		this.editTag = this.editTag.bind(this);
 		this.handleSelectedTag = this.handleSelectedTag.bind(this);
 		this.handleFilteredTags = this.handleFilteredTags.bind(this);
 		this.changeSort = this.changeSort.bind(this);
@@ -73,8 +69,6 @@ class TagsPage extends Component {
 		if(tagID !== this.state.selectedTag) {
 			this.setState({
 				selectedTag: tagID,
-				tag: tagID ? this.props.campaign.tags[tagID] : 
-					{name: "", description: "", type: "Location", colour: "red"},
 			});
 		}
 	}
@@ -83,22 +77,6 @@ class TagsPage extends Component {
 		this.setState({
 			filteredTags: filteredTags,
 		})
-	}
-
-	// Triggers before editing a tag
-	editTag() {
-		this.setState({
-			edit: true,
-		}, this.setState({showTagInfo: true}));
-	}
-
-	// Triggers before adding a tag
-	addTag() {
-		this.setState({
-			selectedTag: null,
-			tag: {name: "", description: "", type: "Location", colour: "red"},
-			edit: false,
-		}, this.setState({showTagInfo: true}));
 	}
 
 	changeSort(list, value) {
@@ -119,7 +97,6 @@ class TagsPage extends Component {
 		console.log(this.state.selectedTag)
 		console.log(this.state.tag)
 
-		let tagsPage = this;
 		let tagItems;
 		let recapItems;
 
@@ -230,8 +207,8 @@ class TagsPage extends Component {
 									handleCampaign = {this.props.handleCampaign}
 									handleSelectedTag = {this.handleSelectedTag}
 									handleFilteredTags = {this.handleFilteredTags}
-									editTag = {this.editTag}
 									campaignRef = {this.props.campaignRef}
+									handleSelectedTag = {this.handleSelectedTag}
 								/> : null}
 						</div>
 						<SortArrowsColumn
@@ -245,7 +222,12 @@ class TagsPage extends Component {
 					</Col>
 				</Row>
 				<div className="center add-button">
-					<Button variant="success" onClick={this.addTag}>New Tag</Button>
+					<Button 
+						variant="success" 
+						onClick={() => this.setState({ showTagInfo: true})}
+					>
+						New Tag
+					</Button>
 				</div>
 				<TagInfo 
 					show = {this.state.showTagInfo}
@@ -255,9 +237,10 @@ class TagsPage extends Component {
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
 					campaignRef = {this.props.campaignRef}
-					edit = {this.state.edit}
-					tagID = {this.state.selectedTag}
+					edit = {false}
+					tagID = {null}
 					tag = {this.state.tag}
+					selectTag = {true}
 					handleSelectedTag = {this.handleSelectedTag}
 				/>
 			</>

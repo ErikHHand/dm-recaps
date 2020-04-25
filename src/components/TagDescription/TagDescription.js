@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
+import TagInfo from '../TagInfo/TagInfo';
 
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
@@ -16,6 +17,10 @@ import * as firebase from 'firebase'; // Do not remove
 class TagDescription extends Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			showTagInfo: false,
+		};
 
 			// Set the context for "this" for the following function
 			this.deleteTag = this.deleteTag.bind(this);
@@ -107,25 +112,40 @@ class TagDescription extends Component {
 		let noDescription = "This tag has no description";
 
 		return (
-			<Card className="tag-description" border="" bg="light">
-				<Card.Body>
-					<Card.Title className="">
-						<Row>
-							<Col xs={11}>{this.props.tag.name}</Col>
-							<Col xs={1}>
-								<ItemMenu
-									edit = {this.props.editTag}
-									delete = {this.deleteTag}
-									deleteText = {deleteText}
-								/>
-							</Col>
-						</Row>
-					</Card.Title>
-					<Card.Text>
-						{this.props.tag.description ? this.props.tag.description : noDescription}
-					</Card.Text>
-				</Card.Body>
-			</Card>
+			<>
+				<Card className="tag-description" border="" bg="light">
+					<Card.Body>
+						<Card.Title className="">
+							<Row>
+								<Col xs={11}>{this.props.tag.name}</Col>
+								<Col xs={1}>
+									<ItemMenu
+										edit = {() => this.setState({ showTagInfo: true})}
+										delete = {this.deleteTag}
+										deleteText = {deleteText}
+									/>
+								</Col>
+							</Row>
+						</Card.Title>
+						<Card.Text>
+							{this.props.tag.description ? this.props.tag.description : noDescription}
+						</Card.Text>
+					</Card.Body>
+				</Card>
+				<TagInfo 
+					show = {this.state.showTagInfo}
+					onHide = {() => this.setState({ showTagInfo: false })}
+					tags = {this.props.tags}
+					campaign = {this.props.campaign}
+					handleTags = {this.props.handleTags}
+					handleCampaign = {this.props.handleCampaign}
+					campaignRef = {this.props.campaignRef}
+					edit = {true}
+					tagID = {this.props.tagID}
+					tag = {this.props.tag}
+					handleSelectedTag = {this.props.handleSelectedTag}
+				/>
+			</>
 		);
 	}
 }
