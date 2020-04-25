@@ -33,12 +33,16 @@ class CampaignRecaps extends Component {
 			campaign: {},
 			sessions: {},
 			tags: {},
+			sessionTabActive: true, 
+			tagTabActive: false, 
 		};
 
 		// Set the context for "this" for the following functions
 		this.handleSessions = this.handleSessions.bind(this);
 		this.handleCampaign = this.handleCampaign.bind(this);
 		this.handleTags = this.handleTags.bind(this);
+		this.sessionTabActive = this.sessionTabActive.bind(this);
+		this.tagTabActive = this.tagTabActive.bind(this);
 	}
 
 	/*
@@ -120,6 +124,22 @@ class CampaignRecaps extends Component {
 		})
 	}
 
+	// Triggers when session tab is clicked
+	sessionTabActive() {
+		this.setState({
+			sessionTabActive: true, 
+			tagTabActive: false, 
+		})
+	}
+
+	// Triggers when tag tab is clicked
+	tagTabActive() {
+		this.setState({
+			sessionTabActive: false, 
+			tagTabActive: true, 
+		})
+	}
+
 	render() {
 
 		// The id for this campaign
@@ -149,10 +169,20 @@ class CampaignRecaps extends Component {
 							<Col>
 								<Nav variant="tabs" className="justify-content-center">
 									<Nav.Item>
-										<Nav.Link eventKey="sessions">Sessions</Nav.Link>
+										<Nav.Link 
+											eventKey="sessions"
+											onClick={this.sessionTabActive}
+										>
+											Sessions
+										</Nav.Link>
 									</Nav.Item>
 									<Nav.Item>
-										<Nav.Link eventKey="tags">Tags</Nav.Link>
+										<Nav.Link 
+											eventKey="tags"
+											onClick={this.tagTabActive}
+										>
+											Tags
+										</Nav.Link>
 									</Nav.Item>
 								</Nav>
 							</Col>
@@ -168,6 +198,7 @@ class CampaignRecaps extends Component {
 									handleCampaign = {this.handleCampaign}
 									handleTags = {this.handleTags}
 									campaignRef = {campaignRef}
+									sessionTabActive = {this.state.sessionTabActive}
 								/>
 							</Tab.Pane>
 							<Tab.Pane eventKey="tags">
@@ -179,6 +210,7 @@ class CampaignRecaps extends Component {
 									handleSessions = {this.handleSessions}
 									handleTags = {this.handleTags}
 									campaignRef = {campaignRef}
+									tagTabActive = {this.state.tagTabActive}
 								/>
 							</Tab.Pane>
 						</Tab.Content>

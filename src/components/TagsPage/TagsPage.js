@@ -41,7 +41,7 @@ class TagsPage extends Component {
 	}
 
 	componentDidUpdate() {
-		if(this.state.selectedTag) {
+		if(this.state.selectedTag && this.props.tagTabActive) {
 			let div1Height = window.getComputedStyle(this.tagDescription).getPropertyValue("height");
 			let div1FontSize = window.getComputedStyle(this.tagDescription).getPropertyValue("font-size");
 			let containerHeight = window.getComputedStyle(this.recapItemColumn).getPropertyValue("height");
@@ -55,6 +55,9 @@ class TagsPage extends Component {
 			let recapListHeight = containerHeight / containerFontSize - div1Height / div1FontSize;
 			
 			if(this.state.recapListHeight !== recapListHeight) {
+				console.log(recapListHeight)
+				console.log(containerHeight / containerFontSize)
+				console.log(div1Height / div1FontSize)
 				this.setState({
 					recapListStyle: { height: recapListHeight + "rem"},
 					recapListHeight: recapListHeight,
