@@ -195,6 +195,7 @@ class RecapTagSelector extends Component {
 											filteredTags = {this.state.filteredTags}
 											handleFilteredTags = {this.handleFilteredTags}
 											tagSort = "4" // Will sort alphabetical
+											showTagInfo = {this.state.showTagInfo}
 										/>
 									</Col>
 								</Row>

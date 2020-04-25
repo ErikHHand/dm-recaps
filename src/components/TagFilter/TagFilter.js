@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 
 import { TYPES } from '../../constants/types.js';
@@ -41,13 +39,10 @@ class TagFilter extends Component {
 	
 		if (this.props.tagSort !== prevProps.tagSort) {
 			this.filterKeys();
-		} else if(this.props.campaign && !prevProps.campaign.tags) {
-			// Handles case when site mounts and tags is still in a promise
-			this.filterKeys();
-		} else if(this.props.campaign && prevProps.campaign.tags) {
-			if(prevProps.filteredTags.length !== this.props.filteredTags.length) {
-				this.filterKeys();
-			}
+		} else if(this.props.filteredTags.length !== prevProps.filteredTags.length) {
+			this.filterKeys();	
+		} else if (!this.props.showTagInfo && prevProps.showTagInfo) {
+			this.filterKeys();	
 		}
 	}
 	  
@@ -86,7 +81,7 @@ class TagFilter extends Component {
 				sortedKeys = keys.sort((a, b) => {				
 					return ((this.props.campaign.tags[b].name <= this.props.campaign.tags[a].name) ? 1 : -1);
 				});
-			}			
+			}
 
 			this.props.handleFilteredTags(sortedKeys);
 		}

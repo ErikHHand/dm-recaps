@@ -47,9 +47,6 @@ class TagInfo extends Component {
 	// Will be called when props change, which will update state accordingly
 	componentDidUpdate(prevProps) {
 
-		console.log(this.props)
-		console.log(prevProps)
-
 		let update = this.props.tagID !== prevProps.tagID;
 
 		// Put the current information about the tag in the state
@@ -66,9 +63,8 @@ class TagInfo extends Component {
 	// Triggers when submitting tag info
 	onSubmit(event) {
 
-		// Hide the tag info window
-		this.props.onHide();
 		event.preventDefault();
+		console.log("submit")
 
 		// The info to be saved with the tag
 		let tagInfo = {
@@ -142,6 +138,9 @@ class TagInfo extends Component {
 		if(this.props.selectTag) {
 			this.props.handleSelectedTag(tagID);
 		}
+
+		// Hide the tag info window
+		this.props.onHide();
 	}
 	
 	// Triggers when changing tag info

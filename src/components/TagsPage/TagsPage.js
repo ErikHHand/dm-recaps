@@ -94,23 +94,30 @@ class TagsPage extends Component {
 	render() {
 
 		console.log("Render")
-		console.log(this.state.selectedTag)
-		console.log(this.state.tag)
 
+		let tagFilter;
 		let tagItems;
 		let recapItems;
 
 		if(!this.props.campaign.tags) {
+			tagFilter = <div></div>; //Render nothing if there are no tags
 			tagItems = <div></div>; //Render nothing if there are no tags
 		} else {
+
+			tagFilter = <TagFilter
+							campaign = {this.props.campaign}
+							filteredTags = {this.state.filteredTags}
+							handleFilteredTags = {this.handleFilteredTags}
+							tagSort = {this.state.tagSort}
+							showTagInfo = {this.state.showTagInfo}
+						/>
+
 			let sortedKeys = [...this.state.filteredTags];
 
 			// based on sorting, reverse keys
 			if(this.state.tagSort === 2 || this.state.tagSort === 3) {
 				sortedKeys.reverse();
 			}
-
-			console.log(sortedKeys)
 			
 			// Render tag items
 			tagItems = sortedKeys.map((tag)=>
@@ -173,14 +180,8 @@ class TagsPage extends Component {
 				<Row noGutters={true} className="border-bottom">
 					<Col lg={3} md={4} className="remove-padding list-height">
 						<div className="filter-bar filter-bar-width border-bottom border-right">
-							<TagFilter
-								campaign = {this.props.campaign}
-								filteredTags = {this.state.filteredTags}
-								handleFilteredTags = {this.handleFilteredTags}
-								tagSort = {this.state.tagSort}
-							/>
+							{tagFilter}
 						</div>
-						
 						<div className=" border-right tag-list-column">
 							<SortArrowsColumn
 								status = {this.state.tagSort}
