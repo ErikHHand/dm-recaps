@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 
 import TagFilter from '../TagFilter/TagFilter';
+import TagInfo from '../TagInfo/TagInfo';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
-import PopoverContent from 'react-bootstrap/PopoverContent'
-import PopoverTitle from 'react-bootstrap/PopoverTitle'
+//import PopoverContent from 'react-bootstrap/PopoverContent'
+//import PopoverTitle from 'react-bootstrap/PopoverTitle'
 import { Form, Button } from 'react-bootstrap';
 
 import { COLOURS } from '../../constants/colours.js';
 import { TEXTCOLOURS } from '../../constants/colours.js';
-import { TYPES } from '../../constants/types.js';
 import { ICONS } from '../../constants/types.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -36,14 +36,17 @@ class RecapTagSelector extends Component {
 
 		this.state = {
 			filteredTags: [],
+			tag: {name: "", description: "", type: "Location", colour: "red"},
 			tags: tags,
 			showTagOverlay: false,
+			showTagInfo: false,
 		}
 
 		// Set the context for "this" for the following functions
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onClick = this.onClick.bind(this);
 		this.handleFilteredTags = this.handleFilteredTags.bind(this);
+		this.changeWindow = this.changeWindow.bind(this);
 	}
 
 	// Triggers when an update to component happens
@@ -104,6 +107,13 @@ class RecapTagSelector extends Component {
 		
 		this.props.writeRecap(recapItem, previousTags);
 	};
+
+	changeWindow() {
+		this.setState({
+			showTagInfo: !this.state.showTagInfo,
+			showTagOverlay: !this.state.showTagOverlay,
+		});
+	}
 
 	render() {
 		let recapTagSelector = this;
@@ -204,18 +214,36 @@ class RecapTagSelector extends Component {
 								
 								<Row className="button-row" noGutters={true}>
 									<Col md={4}>
-										<Button variant="info" onClick={this.onSubmit}>Done</Button>
+										<Button 
+											variant="success" 
+											onClick={this.changeWindow}
+										>
+											New Tag
+										</Button>
 									</Col>
 									<Col md={4}>
 									</Col>
 									<Col md={4} className="right-align">
-										<Button variant="success">New Tag</Button>
+										<Button variant="info" onClick={this.onSubmit}>Done</Button>
 									</Col>
 								</Row>
 							</Popover.Content>
 						</Popover>
 					)}
 				</Overlay>
+				<TagInfo 
+					show = {this.state.showTagInfo}
+					onHide = {this.changeWindow}
+					tags = {this.props.tags}
+					campaign = {this.props.campaign}
+					handleTags = {this.props.handleTags}
+					handleCampaign = {this.props.handleCampaign}
+					campaignRef = {this.props.campaignRef}
+					edit = {false}
+					tagID = {null}
+					tag = {this.state.tag}
+					selectTag = {false}
+				/>
 			</div>
 		)
 	}

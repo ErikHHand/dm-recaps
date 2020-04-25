@@ -209,9 +209,13 @@ class RecapItem extends Component {
 					<Row>
 						<Col>
 							<RecapTagSelector
-								campaign = {this.props.campaign}
 								recapItem = {this.props.recapItem}
 								writeRecap = {this.writeRecap}
+								tags = {this.props.tags}
+								campaign = {this.props.campaign}
+								handleTags = {this.props.handleTags}
+								handleCampaign = {this.props.handleCampaign}
+								campaignRef = {this.props.campaignRef}
 							/>
 						</Col>
 					</Row>
