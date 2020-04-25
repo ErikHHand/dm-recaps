@@ -84,7 +84,7 @@ class SessionItem extends Component {
 		});
 
 		// Set current session to null
-		this.props.handleCurrentSession(null);
+		this.props.handleSelectedSession(null);
 	}
 
 	render() {

@@ -8,9 +8,7 @@ import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
-//import PopoverContent from 'react-bootstrap/PopoverContent'
-//import PopoverTitle from 'react-bootstrap/PopoverTitle'
-import { Form, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import { COLOURS } from '../../constants/colours.js';
 import { TEXTCOLOURS } from '../../constants/colours.js';
@@ -53,6 +51,9 @@ class RecapTagSelector extends Component {
 	// This is used to handle a change in number of tags
 	// caused by deleting tags
 	componentDidUpdate() {
+
+		console.log(this.props.campaign.tags)
+		console.log(this.state.tags)
 		
 		// Check if the number of tags has changed
 		if(Object.keys(this.state.tags).length !== Object.keys(this.props.campaign.tags).length) {
@@ -63,6 +64,7 @@ class RecapTagSelector extends Component {
 
 			this.setState({
 				tags: tags,
+				filteredTags: Object.keys(this.props.campaign.tags)
 			});
 		}		
 	}
@@ -125,28 +127,32 @@ class RecapTagSelector extends Component {
 		cols[0] = this.state.filteredTags.slice(0, col1Length);
 		cols[1] = this.state.filteredTags.slice(col1Length, col1Length + col2Length);
 		cols[2] = this.state.filteredTags.slice(col1Length + col2Length, this.state.filteredTags.length);
+		console.log(this.props.campaign.tags)
+		console.log(this.state.filteredTags)
 
-		for(let i = 0; i < 3; i++) {
-			// The tags for the overlay where you select what tags to tag the recap with
-			allTags[i] = cols[i].map((tagID) => {
-				return (
-					<Badge 
-						pill 
-						style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
-						key={tagID}
-						className={
-							TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
-							(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
-						}
-						onClick={() => this.onClick(tagID)}
-					>
-						<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
-						&nbsp;
-						{this.props.campaign.tags[tagID].name}
-					</Badge>
-				)
-			});
-		}
+		if(this.state.filteredTags.length === Object.keys(this.props.campaign.tags).length)
+			for(let i = 0; i < 3; i++) {
+				console.log(cols[i])
+				// The tags for the overlay where you select what tags to tag the recap with
+				allTags[i] = cols[i].map((tagID) => {
+					return (
+						<Badge 
+							pill 
+							style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
+							key={tagID}
+							className={
+								TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
+								(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
+							}
+							onClick={() => this.onClick(tagID)}
+						>
+							<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
+							&nbsp;
+							{this.props.campaign.tags[tagID].name}
+						</Badge>
+					)
+				});
+			}
 		
 
 		// The tags currently attached to this recap
