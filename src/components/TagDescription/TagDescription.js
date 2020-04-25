@@ -79,6 +79,12 @@ class TagDescription extends Component {
 			let campaign = this.props.campaign;
 			delete campaign.tags[this.props.tagID];
 			this.props.handleCampaign(campaign);
+
+			// Delete tag from filtered Tags array
+			let filteredTags = this.props.filteredTags;
+			let index = filteredTags.indexOf(this.props.tagID);
+			if(index !== -1) filteredTags.splice(index, 1);
+			this.props.handleFilteredTags(filteredTags);
 	
 			// Delete tag info on Firestore
 			this.props.campaignRef.update({

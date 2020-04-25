@@ -37,7 +37,7 @@ class TagInfo extends Component {
 		console.log(this.props)
 		console.log(prevProps)
 
-		let update = this.props.tagID !== prevProps.tagID;
+		let update = (this.props.tagID !== prevProps.tagID) && (this.props.tag !== null);
 
 		// Put the current information about the tag in the state
 		if(update) {
@@ -126,6 +126,7 @@ class TagInfo extends Component {
 		let campaign = this.props.campaign;
 		campaign.tags[tagID] = tagInfo;
 		this.props.handleCampaign(campaign);
+		this.props.handleSelectedTag(tagID);
 	}
 	
 	// Triggers when changing tag info

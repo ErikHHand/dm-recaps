@@ -72,9 +72,9 @@ class TagsPage extends Component {
 	handleSelectedTag(tagID) {
 		if(tagID !== this.state.selectedTag) {
 			this.setState({
-				tagID: tagID,
 				selectedTag: tagID,
-				tag: this.props.campaign.tags[tagID],
+				tag: tagID ? this.props.campaign.tags[tagID] : 
+					{name: "", description: "", type: "Location", colour: "red"},
 			});
 		}
 	}
@@ -95,7 +95,7 @@ class TagsPage extends Component {
 	// Triggers before adding a tag
 	addTag() {
 		this.setState({
-			tagID: null,
+			selectedTag: null,
 			tag: {name: "", description: "", type: "Location", colour: "red"},
 			edit: false,
 		}, this.setState({showTagInfo: true}));
@@ -132,6 +132,8 @@ class TagsPage extends Component {
 			if(this.state.tagSort === 2 || this.state.tagSort === 3) {
 				sortedKeys.reverse();
 			}
+
+			console.log(sortedKeys)
 			
 			// Render tag items
 			tagItems = sortedKeys.map((tag)=>
@@ -222,10 +224,12 @@ class TagsPage extends Component {
 									campaign = {this.props.campaign}
 									sessions = {this.props.sessions}
 									tags = {this.props.tags}
+									filteredTags = {this.state.filteredTags}
 									handleSessions = {this.props.handleSessions}
 									handleTags = {this.props.handleTags}
 									handleCampaign = {this.props.handleCampaign}
 									handleSelectedTag = {this.handleSelectedTag}
+									handleFilteredTags = {this.handleFilteredTags}
 									editTag = {this.editTag}
 									campaignRef = {this.props.campaignRef}
 								/> : null}
@@ -252,9 +256,9 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					campaignRef = {this.props.campaignRef}
 					edit = {this.state.edit}
-					tagID = {this.state.tagID}
+					tagID = {this.state.selectedTag}
 					tag = {this.state.tag}
-					selectedTag = {this.state.selectedTag}
+					handleSelectedTag = {this.handleSelectedTag}
 				/>
 			</>
 		)
