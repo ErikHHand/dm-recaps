@@ -250,9 +250,19 @@ body  {
 }
 
 .tag-item {
-	width: inherit;
-	margin-bottom: 0.3rem;
-	border-width: 2px !important;
+	width: 100%;
+	font-size: 18px !important;
+	margin: 0.1rem 0.35rem;
+	cursor: pointer;
+	border-width: 2px;
+	border: solid rgba(151, 146, 146, 0.424);
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.tag-item-selected {
+	border: solid rgb(94, 94, 94);
 }
 
 .tag-not-selected {

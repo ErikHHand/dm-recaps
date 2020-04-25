@@ -137,19 +137,9 @@ class TagsPage extends Component {
 			tagItems = sortedKeys.map((tag)=>
 				<TagItem 
 					key = {tag}
-					tagID = {tag}
 					tagInfo = {this.props.campaign.tags[tag]}
-					campaign = {this.props.campaign}
-					sessions = {this.props.sessions}
-					tags = {this.props.tags}
-					handleSessions = {this.props.handleSessions}
-					handleTags = {this.props.handleTags}
-					handleCampaign = {this.props.handleCampaign}
-					handleSelectedTag = {this.handleSelectedTag}
 					isSelected = {this.state.selectedTag === tag}
 					handleClick = {() => this.handleSelectedTag(tag)}
-					editTag = {this.editTag}
-					campaignRef = {this.props.campaignRef}
 				/>
 			);
 		}
@@ -225,7 +215,20 @@ class TagsPage extends Component {
 					</Col>
 					<Col lg={9} md={8} className="remove-padding list-height" ref={ref => (this.recapItemColumn = ref)}>
 						<div ref={ref => (this.tagDescription = ref)}>
-							{this.state.selectedTag ? <TagDescription tag = {this.props.campaign.tags[this.state.selectedTag]}/> : null}
+							{this.state.selectedTag ? 
+								<TagDescription 
+									tagID = {this.state.selectedTag}
+									tag = {this.props.campaign.tags[this.state.selectedTag]}
+									campaign = {this.props.campaign}
+									sessions = {this.props.sessions}
+									tags = {this.props.tags}
+									handleSessions = {this.props.handleSessions}
+									handleTags = {this.props.handleTags}
+									handleCampaign = {this.props.handleCampaign}
+									handleSelectedTag = {this.handleSelectedTag}
+									editTag = {this.editTag}
+									campaignRef = {this.props.campaignRef}
+								/> : null}
 						</div>
 						<SortArrowsColumn
 							status = {this.state.recapSortDescending}
