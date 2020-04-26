@@ -27,7 +27,6 @@ class TagsPage extends Component {
 			recapSortDescending: false,
 			recapListStyle: { height: "100%",},
 			recapListHeight: 0,
-			selectedTag: null,
 			showTagInfo: false,
 			tag: {name: "", description: "", type: "Location", colour: "red"},
 			filteredTags: [],
@@ -35,13 +34,12 @@ class TagsPage extends Component {
 		};
 
 		// Set the context for "this" for the following functions
-		this.handleSelectedTag = this.handleSelectedTag.bind(this);
 		this.handleFilteredTags = this.handleFilteredTags.bind(this);
 		this.changeSort = this.changeSort.bind(this);
 	}
 
 	componentDidUpdate() {
-		if(this.state.selectedTag && this.props.activeTab === "tags") {
+		if(this.props.selectedTag && this.props.activeTab === "tags") {
 			let div1Height = window.getComputedStyle(this.tagDescription).getPropertyValue("height");
 			let div1FontSize = window.getComputedStyle(this.tagDescription).getPropertyValue("font-size");
 			let containerHeight = window.getComputedStyle(this.recapItemColumn).getPropertyValue("height");
@@ -66,16 +64,6 @@ class TagsPage extends Component {
 		}
 	}
 
-	// Handles changing which tag is the current tag,
-	// which tag is currently selected
-	handleSelectedTag(tagID) {
-		if(tagID !== this.state.selectedTag) {
-			this.setState({
-				selectedTag: tagID,
-			});
-		}
-	}
-
 	handleFilteredTags(filteredTags) {
 		this.setState({
 			filteredTags: filteredTags,
@@ -95,8 +83,6 @@ class TagsPage extends Component {
 	}
 
 	render() {
-
-		console.log("Render tag page")
 
 		let tagFilter;
 		let tagItems;
@@ -127,18 +113,18 @@ class TagsPage extends Component {
 				<TagItem 
 					key = {tag}
 					tagInfo = {this.props.campaign.tags[tag]}
-					isSelected = {this.state.selectedTag === tag}
-					handleClick = {() => this.handleSelectedTag(tag)}
+					isSelected = {this.props.selectedTag === tag}
+					handleClick = {() => this.props.handleSelectedTag(tag)}
 				/>
 			);
 		}
 
-		if(!this.state.selectedTag) {
+		if(!this.props.selectedTag) {
 			recapItems = <div></div>; // No current tag
-		} else if(!this.props.tags[this.state.selectedTag]) {
+		} else if(!this.props.tags[this.props.selectedTag]) {
 			recapItems = <div></div>; // // Current tag doesn't exist?
 		} else {
-			let recapList = this.props.tags[this.state.selectedTag].recaps;
+			let recapList = this.props.tags[this.props.selectedTag].recaps;
 			let length = this.props.campaign.sessionOrder.length;
 			let recapKeys = {};
 
@@ -173,6 +159,8 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					handleSessions = {this.props.handleSessions}
 					handleTags = {this.props.handleTags}
+					handleSelectedSession = {this.props.handleSelectedSession}
+					handleSelectedTag = {this.props.handleSelectedTag}
 					campaignRef = {this.props.campaignRef}
 				/>
 			);
@@ -198,10 +186,10 @@ class TagsPage extends Component {
 					</Col>
 					<Col lg={9} md={8} className="remove-padding list-height" ref={ref => (this.recapItemColumn = ref)}>
 						<div ref={ref => (this.tagDescription = ref)}>
-							{this.state.selectedTag ? 
+							{this.props.selectedTag ? 
 								<TagDescription 
-									tagID = {this.state.selectedTag}
-									tag = {this.props.campaign.tags[this.state.selectedTag]}
+									tagID = {this.props.selectedTag}
+									tag = {this.props.campaign.tags[this.props.selectedTag]}
 									campaign = {this.props.campaign}
 									sessions = {this.props.sessions}
 									tags = {this.props.tags}
@@ -209,10 +197,9 @@ class TagsPage extends Component {
 									handleSessions = {this.props.handleSessions}
 									handleTags = {this.props.handleTags}
 									handleCampaign = {this.props.handleCampaign}
-									handleSelectedTag = {this.handleSelectedTag}
+									handleSelectedTag = {this.props.handleSelectedTag}
 									handleFilteredTags = {this.handleFilteredTags}
 									campaignRef = {this.props.campaignRef}
-									handleSelectedTag = {this.handleSelectedTag}
 								/> : null}
 						</div>
 						<SortArrowsColumn
@@ -245,7 +232,7 @@ class TagsPage extends Component {
 					tagID = {null}
 					tag = {this.state.tag}
 					selectTag = {true}
-					handleSelectedTag = {this.handleSelectedTag}
+					handleSelectedTag = {this.props.handleSelectedTag}
 				/>
 			</>
 		)

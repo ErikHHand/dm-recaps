@@ -173,7 +173,8 @@ class RecapTagSelector extends Component {
 				pill 
 				style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
 				key={this.props.recapItem.tags.indexOf(tagID)}
-				className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour]}
+				className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag"}
+				onClick={() => this.props.handleSelectedTag(tagID)}
 			>
 				<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
 				&nbsp;

@@ -34,6 +34,8 @@ class CampaignRecaps extends Component {
 			sessions: {},
 			tags: {},
 			activeTab: "sessions",
+			selectedSession: null,
+			selectedTag: null,
 		};
 
 		// Set the context for "this" for the following functions
@@ -41,6 +43,8 @@ class CampaignRecaps extends Component {
 		this.handleCampaign = this.handleCampaign.bind(this);
 		this.handleTags = this.handleTags.bind(this);
 		this.setActiveTab = this.setActiveTab.bind(this);
+		this.handleSelectedSession = this.handleSelectedSession.bind(this);
+		this.handleSelectedTag = this.handleSelectedTag.bind(this);
 	}
 
 	/*
@@ -121,6 +125,27 @@ class CampaignRecaps extends Component {
 		})
 	}
 
+	// Handles changing which session is the selected session
+	handleSelectedSession(sessionID) {
+		if(sessionID === null || this.state.sessions[sessionID]) {
+			this.setState({
+				activeTab: "sessions",
+				selectedSession: sessionID,
+			});
+		}
+	}
+
+	// Handles changing which tag is the current tag,
+	// which tag is currently selected
+	handleSelectedTag(tagID) {
+		if(tagID !== this.state.selectedTag) {
+			this.setState({
+				activeTab: "tags",
+				selectedTag: tagID,
+			});
+		}
+	}
+
 	render() {
 
 		// The id for this campaign
@@ -145,7 +170,7 @@ class CampaignRecaps extends Component {
 					</Navbar>
 				</Row>
 				<Jumbotron fluid className="container-window">
-					<Tab.Container defaultActiveKey="sessions" transition={false}>
+					<Tab.Container activeKey={this.state.activeTab} transition={false}>
 						<Row>
 							<Col>
 								<Nav 
@@ -184,6 +209,9 @@ class CampaignRecaps extends Component {
 									handleTags = {this.handleTags}
 									campaignRef = {campaignRef}
 									activeTab = {this.state.activeTab}
+									selectedSession = {this.state.selectedSession}
+									handleSelectedSession = {this.handleSelectedSession}
+									handleSelectedTag = {this.handleSelectedTag}
 								/>
 							</Tab.Pane>
 							<Tab.Pane eventKey="tags">
@@ -196,6 +224,9 @@ class CampaignRecaps extends Component {
 									handleTags = {this.handleTags}
 									campaignRef = {campaignRef}
 									activeTab = {this.state.activeTab}
+									selectedTag = {this.state.selectedTag}
+									handleSelectedSession = {this.handleSelectedSession}
+									handleSelectedTag = {this.handleSelectedTag}
 								/>
 							</Tab.Pane>
 						</Tab.Content>

@@ -182,7 +182,11 @@ class RecapItem extends Component {
 				<Card.Body className="recap-body">
 					<Row>
 						<Col></Col>
-						<Col xs="auto" className="session-info-text">
+						<Col 
+							xs="auto" 
+							className="session-info-text recap-session-info-text"
+							onClick={() => this.props.handleSelectedSession(this.props.recapItem.session)}
+						>
 							{number + date.toDateString()}
 							&emsp;
 							{this.props.campaign.sessions[this.props.recapItem.session].description}
@@ -215,6 +219,7 @@ class RecapItem extends Component {
 								campaign = {this.props.campaign}
 								handleTags = {this.props.handleTags}
 								handleCampaign = {this.props.handleCampaign}
+								handleSelectedTag = {this.props.handleSelectedTag}
 								campaignRef = {this.props.campaignRef}
 							/>
 						</Col>
