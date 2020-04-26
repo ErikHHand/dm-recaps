@@ -168,19 +168,25 @@ class RecapTagSelector extends Component {
 		
 
 		// The tags currently attached to this recap
-		let recapTags = this.props.recapItem.tags.map((tagID) =>
-			<Badge 
-				pill 
-				style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
-				key={this.props.recapItem.tags.indexOf(tagID)}
-				className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag"}
-				onClick={() => this.props.handleSelectedTag(tagID)}
-			>
-				<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
-				&nbsp;
-				{this.props.campaign.tags[tagID].name}
-			</Badge>
-		);
+		let recapTags = this.props.recapItem.tags.map((tagID) => {
+			if(this.props.campaign.tags[tagID]) {
+				return (
+					<Badge 
+						pill 
+						style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
+						key={this.props.recapItem.tags.indexOf(tagID)}
+						className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag"}
+						onClick={() => this.props.handleSelectedTag(tagID)}
+					>
+						<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
+						&nbsp;
+						{this.props.campaign.tags[tagID].name}
+					</Badge>
+				);
+			} else {
+				return <div key={tagID}></div>
+			}
+		});
 
 		return (
 			<div className="right-align">

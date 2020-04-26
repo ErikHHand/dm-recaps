@@ -138,7 +138,7 @@ class CampaignRecaps extends Component {
 	// Handles changing which tag is the current tag,
 	// which tag is currently selected
 	handleSelectedTag(tagID) {
-		if(tagID !== this.state.selectedTag) {
+		if(tagID === null || this.state.tags[tagID]) {
 			this.setState({
 				activeTab: "tags",
 				selectedTag: tagID,
