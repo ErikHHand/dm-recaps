@@ -79,7 +79,7 @@ class RecapTagSelector extends Component {
 
 		this.setState({
 			tags: tags,
-		}, console.log(tags));
+		});
 	};
 
 	// Edits the recap.
@@ -142,22 +142,27 @@ class RecapTagSelector extends Component {
 		for(let i = 0; i < 3; i++) {
 			// The tags for the overlay where you select what tags to tag the recap with
 			allTags[i] = cols[i].map((tagID) => {
-				return (
-					<Badge 
-						pill 
-						style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
-						key={tagID}
-						className={
-							TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
-							(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
-						}
-						onClick={() => this.onClick(tagID)}
-					>
-						<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
-						&nbsp;
-						{this.props.campaign.tags[tagID].name}
-					</Badge>
-				)
+				if(this.props.campaign.tags[tagID]) {
+					return (
+						<Badge 
+							pill 
+							style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
+							key={tagID}
+							className={
+								TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
+								(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
+							}
+							onClick={() => this.onClick(tagID)}
+						>
+							<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
+							&nbsp;
+							{this.props.campaign.tags[tagID].name}
+						</Badge>
+					)
+				} else {
+					return <div key={tagID}></div>
+				}
+				
 			});
 		}
 		

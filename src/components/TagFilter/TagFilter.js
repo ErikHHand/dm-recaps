@@ -24,6 +24,7 @@ class TagFilter extends Component {
 		this.state = {
 			typeFilter: "All",
 			textFilter: "",
+			numTags: 0,
 		};
 
 		// Set the context for "this" for the following functions
@@ -39,17 +40,9 @@ class TagFilter extends Component {
 
 	componentDidUpdate(prevProps) {
 
-		console.log(this.props)
-		console.log(prevProps)
-		console.log(this.state.prevKeys)
-
 		if (this.props.tagSort !== prevProps.tagSort) {
 			this.filterKeys();
-		} else if(this.props.filteredTags.length !== prevProps.filteredTags.length) {
-			this.filterKeys();	
-		} else if (!this.props.showTagInfo && prevProps.showTagInfo) {
-			this.filterKeys();	
-		} else if (this.state.prevKeys.length !== Object.keys(this.props.campaign.tags).length) {
+		} else if (this.state.numTags !== Object.keys(this.props.campaign.tags).length) {
 			this.filterKeys();	
 		}
 	}
@@ -69,38 +62,33 @@ class TagFilter extends Component {
 	}
 
 	filterKeys() {
-		//if(this.props.campaign) {
-			let keys = Object.keys(this.props.campaign.tags);
+		let keys = Object.keys(this.props.campaign.tags);
 
-			this.setState({
-				prevKeys: keys,
-			})
-			console.log(keys)
+		this.setState({
+			numTags: keys.length,
+		})
 
-			let sortedKeys;
+		let sortedKeys;
 
-			// Filter results
-			if(this.state.textFilter || this.state.typeFilter !== "All") {
-				keys = keys.filter((key, index, keys) => this.filter(key, index, keys));
-			}
+		// Filter results
+		if(this.state.textFilter || this.state.typeFilter !== "All") {
+			keys = keys.filter((key, index, keys) => this.filter(key, index, keys));
+		}
 
-			if(this.props.tagSort < 3) {
-				// Sort keys in date order, meaning tags created more recently will appear higher up
-				sortedKeys = keys.sort((a, b) => {				
-					return this.props.campaign.tags[b].created.toDate() - this.props.campaign.tags[a].created.toDate();
-				});
-				
-			} else {
-				// Sort keys in alphabetical order based on tag names
-				sortedKeys = keys.sort((a, b) => {				
-					return ((this.props.campaign.tags[b].name <= this.props.campaign.tags[a].name) ? 1 : -1);
-				});
-			}
+		if(this.props.tagSort < 3) {
+			// Sort keys in date order, meaning tags created more recently will appear higher up
+			sortedKeys = keys.sort((a, b) => {				
+				return this.props.campaign.tags[b].created.toDate() - this.props.campaign.tags[a].created.toDate();
+			});
+			
+		} else {
+			// Sort keys in alphabetical order based on tag names
+			sortedKeys = keys.sort((a, b) => {				
+				return ((this.props.campaign.tags[b].name <= this.props.campaign.tags[a].name) ? 1 : -1);
+			});
+		}
 
-			console.log(sortedKeys)
-
-			this.props.handleFilteredTags(sortedKeys);
-		//}
+		this.props.handleFilteredTags(sortedKeys);
 	}
 
 	filter(key, index, keys) {
