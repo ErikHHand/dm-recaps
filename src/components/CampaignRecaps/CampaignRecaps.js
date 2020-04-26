@@ -159,6 +159,8 @@ class CampaignRecaps extends Component {
 		let campaignRef = this.props.firebase.db.collection("users")
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
 
+		let title = this.state.campaign ? this.state.campaign.name : "";
+
 		return (
 			<Container>
 				<Row>
@@ -174,6 +176,7 @@ class CampaignRecaps extends Component {
 					</Navbar>
 				</Row>
 				<Jumbotron fluid className="container-window">
+					<div className="center campaign-title">{title}</div>
 					<Tab.Container activeKey={this.state.activeTab} transition={false}>
 						<Row>
 							<Col>

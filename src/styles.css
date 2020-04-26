@@ -67,6 +67,11 @@ body  {
 	padding: 0.5rem 0;
 }
 
+.campaign-title {
+	font-size: 28px;
+	font-weight: 500;
+}
+
 .center {
     text-align: center;
 }
@@ -74,7 +79,7 @@ body  {
 .container-window {
 	opacity: 0.97;
 	border-radius: 8px;
-	height: 53rem;
+	height: 55rem;
 	padding-top: 1rem !important;
 }
 
