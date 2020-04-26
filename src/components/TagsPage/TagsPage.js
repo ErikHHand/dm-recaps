@@ -96,7 +96,7 @@ class TagsPage extends Component {
 
 	render() {
 
-		console.log("Render")
+		console.log("Render tag page")
 
 		let tagFilter;
 		let tagItems;

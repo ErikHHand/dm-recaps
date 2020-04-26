@@ -20,21 +20,30 @@ class SessionInfo extends Component {
 
 		this.state = {
 			error: null,
+			description: "",
+			date: new Date(),
 		}
+
+		// Set the context for "this" for the following function
+		this.onSubmit = this.onSubmit.bind(this);
+		this.onChangeDate = this.onChangeDate.bind(this);
+		this.onChangeDescription = this.onChangeDescription.bind(this);
 	}
 
 	// Will be called when props change, which will update date and description accordingly
-	componentWillReceiveProps(newProps) {
+	componentDidMount() {
 
 		// Put the current information about the session in the state
-		this.setState({
-			description: newProps.description,
-			date: newProps.date,
-		});
+		if(this.props.edit) {
+			this.setState({
+				description: this.props.session.description,
+				date: new Date(this.props.session.date.seconds * 1000),
+			});
+		}
 	}
 
 	// Triggers when submitting session info
-	onSubmit = event => {
+	onSubmit(event){
 
 		// Hide the session info window
 		this.props.onHide();
@@ -138,12 +147,12 @@ class SessionInfo extends Component {
 	}
 	
 	// Triggers when changing the date
-	onChangeDate = date => {		
+	onChangeDate(date){		
     	this.setState({ date: date });
   	};
 
 	// Triggers when changing the description
-	onChangeDescription = event => {		
+	onChangeDescription(event){		
     	this.setState({ description: event.target.value });
   	};
 	

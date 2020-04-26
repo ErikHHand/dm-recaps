@@ -40,15 +40,13 @@ class SessionsPage extends Component {
 		this.state = {
 			showSessionInfo: false,
 			selectedSession: null,
-			edit: false,
+			session: {description: "", date: new Date()},
 			sessionSortDescending: true,
 			recapSortDescending: false,
 		};
 
 		// Set the context for "this" for the following functions
 		this.handleSelectedSession = this.handleSelectedSession.bind(this);
-		this.editSession = this.editSession.bind(this);
-		this.addSession = this.addSession.bind(this);
 		this.changeSort = this.changeSort.bind(this);
 	}
 
@@ -61,28 +59,6 @@ class SessionsPage extends Component {
 		}
 	}
 
-	// Triggers before editing a session
-	editSession(sessionID, description, date) {
-		this.setState({
-			sessionID: sessionID,
-			description: description,
-			date: date,
-			edit: true,
-			showSessionInfo: true,
-		});
-	}
-
-	// Triggers before adding a session
-	addSession() {
-		this.setState({
-			sessionID: null,
-			description: "",
-			date: new Date(),
-			edit: false,
-			showSessionInfo: true,
-		});
-	}
-
 	changeSort(list) {
 		this.setState({
 			[list]: !this.state[list],
@@ -90,6 +66,8 @@ class SessionsPage extends Component {
 	}
 
 	render() {	
+
+		console.log("Render session page")
 
 		let sessionItems;
 
@@ -106,7 +84,6 @@ class SessionsPage extends Component {
 				<SessionItem 
 					key = {sessionID}
 					sessionID = {sessionID}
-					sessionInfo = {this.props.campaign.sessions[sessionID]}
 					sessions = {this.props.sessions}
 					tags = {this.props.tags}
 					campaign = {this.props.campaign}
@@ -114,8 +91,7 @@ class SessionsPage extends Component {
 					handleTags = {this.props.handleTags}
 					handleCampaign = {this.props.handleCampaign}
 					handleSelectedSession = {this.handleSelectedSession}
-					isCurrentSession = {this.state.selectedSession === sessionID}
-					editSession = {this.editSession}
+					isSelectedSession = {this.state.selectedSession === sessionID}
 					campaignRef = {this.props.campaignRef}
 					click = {() => this.handleSelectedSession(sessionID)}
 				/>
@@ -193,7 +169,12 @@ class SessionsPage extends Component {
 				</Row>
 
 				<div className="center add-button">
-					<Button variant="success" onClick={this.addSession}>New Session</Button>
+					<Button 
+						variant="success" 
+						onClick={() => this.setState({showSessionInfo: true})}
+					>
+						New Session
+					</Button>
 				</div>
 				<SessionInfo 
 					show = {this.state.showSessionInfo}
@@ -203,10 +184,7 @@ class SessionsPage extends Component {
 					handleSessions = {this.props.handleSessions}
 					handleCampaign = {this.props.handleCampaign}
 					campaignRef = {this.props.campaignRef}
-					edit = {this.state.edit}
-					description = {this.state.description}
-					date = {this.state.date}
-					sessionID = {this.state.sessionID}
+					edit = {false}
 				/>
 			</>
 		);

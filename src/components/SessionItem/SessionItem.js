@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
+import SessionInfo from '../SessionInfo/SessionInfo';
 
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
@@ -17,6 +18,10 @@ class SessionItem extends Component {
 
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			showSessionInfo: false
+		}
 
 		// Set the context for "this" for the following function
 		this.deleteSession = this.deleteSession.bind(this);
@@ -100,30 +105,26 @@ class SessionItem extends Component {
 			this.props.campaign.sessionOrder.indexOf(this.props.sessionID)) + " ";
 
 		// Create date
-		let date = this.props.sessionInfo.date;
-		date = new Date(date.seconds * 1000);
 
+		let session = this.props.campaign.sessions[this.props.sessionID]
+		let date = new Date(session.date.seconds * 1000);
 		
 		return (
 			<>
 				<Card 
 					className="session-item item" 
-					border={this.props.isCurrentSession ? "info" : ""} 
+					border={this.props.isSelectedSession ? "info" : ""} 
 					onClick = {this.props.click}
 				>
 					<Card.Body >
 						<Card.Title>
 							<Row>
 								<Col md={9} className="item-title">
-									{this.props.sessionInfo.description}
+									{session.description}
 								</Col>
 								<Col md={3} className="center">
 									<ItemMenu
-										edit = {() => this.props.editSession(
-											this.props.sessionID,
-											this.props.sessionInfo.description,
-											date
-										)}
+										edit = {() => this.setState({ showSessionInfo: true})}
 										delete = {this.deleteSession}
 										deleteText = {deleteText}
 									/>
@@ -136,6 +137,18 @@ class SessionItem extends Component {
 						</Card.Text>
 					</Card.Body>
 				</Card>
+				<SessionInfo 
+					show = {this.state.showSessionInfo}
+					onHide = {() => this.setState({ showSessionInfo: false })}
+					sessions = {this.props.sessions}
+					campaign = {this.props.campaign}
+					handleSessions = {this.props.handleSessions}
+					handleCampaign = {this.props.handleCampaign}
+					campaignRef = {this.props.campaignRef}
+					edit = {true}
+					session = {session}
+					sessionID = {this.props.sessionID}
+				/>
 			</>
 		);
 	}
