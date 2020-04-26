@@ -298,14 +298,18 @@ body  {
 }
 
 .tag-selector {
-	width: 26rem !important;
-	max-width: 26rem !important;
+	width: 32rem !important;
+	max-width: 32rem !important;
 }
 
 .tag-selector-tag {
 	font-size: 12px !important;
 	cursor: pointer;
 	margin-bottom: 0.2rem;
+	max-width: 100%;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
 }
 
 .text-on-bright {

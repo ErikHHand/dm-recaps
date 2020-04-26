@@ -144,20 +144,22 @@ class RecapTagSelector extends Component {
 			allTags[i] = cols[i].map((tagID) => {
 				if(this.props.campaign.tags[tagID]) {
 					return (
-						<Badge 
-							pill 
-							style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
-							key={tagID}
-							className={
-								TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
-								(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
-							}
-							onClick={() => this.onClick(tagID)}
-						>
-							<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
-							&nbsp;
-							{this.props.campaign.tags[tagID].name}
-						</Badge>
+						<div style={{display: "block"}}>
+							<Badge 
+								pill 
+								style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
+								key={tagID}
+								className={
+									TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
+									(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
+								}
+								onClick={() => this.onClick(tagID)}
+							>
+								<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
+								&nbsp;
+								{this.props.campaign.tags[tagID].name}
+							</Badge>
+						</div>
 					)
 				} else {
 					return <div key={tagID}></div>
@@ -182,7 +184,7 @@ class RecapTagSelector extends Component {
 						&nbsp;
 						{this.props.campaign.tags[tagID].name}
 					</Badge>
-				);
+			);
 			} else {
 				return <div key={tagID}></div>
 			}
@@ -221,13 +223,13 @@ class RecapTagSelector extends Component {
 							</Popover.Title>
 							<Popover.Content>
 								<Row>
-									<Col className="border-right">
+									<Col className="border-right center" sm={4}>
 										{allTags[0]}
 									</Col>
-									<Col className="border-right">
+									<Col className="border-right center" sm={4}>
 										{allTags[1]}
 									</Col>
-									<Col>
+									<Col className="center" sm={4}>
 										{allTags[2]}
 									</Col>
 								</Row>
