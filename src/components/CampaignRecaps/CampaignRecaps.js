@@ -33,16 +33,14 @@ class CampaignRecaps extends Component {
 			campaign: {},
 			sessions: {},
 			tags: {},
-			sessionTabActive: true, 
-			tagTabActive: false, 
+			activeTab: "sessions",
 		};
 
 		// Set the context for "this" for the following functions
 		this.handleSessions = this.handleSessions.bind(this);
 		this.handleCampaign = this.handleCampaign.bind(this);
 		this.handleTags = this.handleTags.bind(this);
-		this.sessionTabActive = this.sessionTabActive.bind(this);
-		this.tagTabActive = this.tagTabActive.bind(this);
+		this.setActiveTab = this.setActiveTab.bind(this);
 	}
 
 	/*
@@ -117,19 +115,9 @@ class CampaignRecaps extends Component {
 		})
 	}
 
-	// Triggers when session tab is clicked
-	sessionTabActive() {
+	setActiveTab(tab) {
 		this.setState({
-			sessionTabActive: true, 
-			tagTabActive: false, 
-		})
-	}
-
-	// Triggers when tag tab is clicked
-	tagTabActive() {
-		this.setState({
-			sessionTabActive: false, 
-			tagTabActive: true, 
+			activeTab: tab,
 		})
 	}
 
@@ -157,14 +145,18 @@ class CampaignRecaps extends Component {
 					</Navbar>
 				</Row>
 				<Jumbotron fluid className="container-window">
-					<Tab.Container defaultActiveKey="sessions">
+					<Tab.Container defaultActiveKey="sessions" transition={false}>
 						<Row>
 							<Col>
-								<Nav variant="tabs" className="justify-content-center">
+								<Nav 
+									variant="tabs" 
+									className="justify-content-center"
+									activeKey={this.state.activeTab}
+								>
 									<Nav.Item>
 										<Nav.Link 
 											eventKey="sessions"
-											onClick={this.sessionTabActive}
+											onSelect={() => this.setActiveTab("sessions")}
 										>
 											Sessions
 										</Nav.Link>
@@ -172,7 +164,7 @@ class CampaignRecaps extends Component {
 									<Nav.Item>
 										<Nav.Link 
 											eventKey="tags"
-											onClick={this.tagTabActive}
+											onSelect={() => this.setActiveTab("tags")}
 										>
 											Tags
 										</Nav.Link>
@@ -191,7 +183,7 @@ class CampaignRecaps extends Component {
 									handleCampaign = {this.handleCampaign}
 									handleTags = {this.handleTags}
 									campaignRef = {campaignRef}
-									sessionTabActive = {this.state.sessionTabActive}
+									activeTab = {this.state.activeTab}
 								/>
 							</Tab.Pane>
 							<Tab.Pane eventKey="tags">
@@ -203,7 +195,7 @@ class CampaignRecaps extends Component {
 									handleSessions = {this.handleSessions}
 									handleTags = {this.handleTags}
 									campaignRef = {campaignRef}
-									tagTabActive = {this.state.tagTabActive}
+									activeTab = {this.state.activeTab}
 								/>
 							</Tab.Pane>
 						</Tab.Content>

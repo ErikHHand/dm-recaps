@@ -41,7 +41,7 @@ class TagsPage extends Component {
 	}
 
 	componentDidUpdate() {
-		if(this.state.selectedTag && this.props.tagTabActive) {
+		if(this.state.selectedTag && this.props.activeTab === "tags") {
 			let div1Height = window.getComputedStyle(this.tagDescription).getPropertyValue("height");
 			let div1FontSize = window.getComputedStyle(this.tagDescription).getPropertyValue("font-size");
 			let containerHeight = window.getComputedStyle(this.recapItemColumn).getPropertyValue("height");
