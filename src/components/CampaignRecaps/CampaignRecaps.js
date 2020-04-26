@@ -62,45 +62,38 @@ class CampaignRecaps extends Component {
 
 		// Get the campaign for Firestore and save in the state
 		campaignRef.get()
-		.then((doc) => {
-			campaign.setState({
-				campaign: doc.data(),
+		.then((campaginDoc) => {
+			// Query for getting the sessions collection from Firestore
+			campaignRef.collection("sessions").get().then((querySnapshot) => {
+				let sessions = {};
+
+				// Get all entries in the sessions collection
+				querySnapshot.forEach((doc) => {
+					sessions[doc.id] = doc.data();
+				});
+
+				// Query for getting the tags collection from firestore
+				campaignRef.collection("tags").get().then((querySnapshot) => {
+					let tags = {};
+
+					// Get all entries in the tags collection
+					querySnapshot.forEach((doc) => {
+						tags[doc.id] = doc.data();
+					});
+
+					// Save the tags, sessions and campaign in the state
+					campaign.setState({
+						tags: tags,
+						sessions: sessions,
+						campaign: campaginDoc.data(),
+					});		
+				}).catch((error) => {
+					console.log("Error getting document:", error);
+				});						
+			}).catch((error) => {
+				console.log("Error getting document:", error);
 			});
-		});
-
-        // Query for getting the sessions collection from Firestore
-		campaignRef.collection("sessions").get().then((querySnapshot) => {
-            let sessions = {};
-
-            // Get all entries in the sessions collection
-            querySnapshot.forEach((doc) => {
-                sessions[doc.id] = doc.data();
-            });
-
-			// Save the sessions in the state
-            campaign.setState({
-                sessions: sessions,
-			});			
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-		});
-		
-		// Query for getting the tags collection from firestore
-		campaignRef.collection("tags").get().then((querySnapshot) => {
-            let tags = {};
-
-            // Get all entries in the tags collection
-            querySnapshot.forEach((doc) => {
-                tags[doc.id] = doc.data();
-            });
-
-			// Save the tags in the state
-            campaign.setState({
-                tags: tags,
-			});		
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
+		});	
 	}
 
 	// Handles changes to campaign data
