@@ -135,9 +135,9 @@ class TagsPage extends Component {
 			for(let recapItem in recapList) {
 				let session = this.props.campaign.sessions[recapList[recapItem].session];
 				let sessionIndex = this.props.campaign.sessionOrder.indexOf(recapList[recapItem].session);
-				recapKeys[recapItem] = (length - sessionIndex) * 100000 + session.recapOrder.indexOf(Number(recapItem));
-			}			
-
+				recapKeys[recapItem] = (length - sessionIndex) * 100000 + session.recapOrder.indexOf(recapItem);
+			}
+			
 			// Then sort keys
 			let sortedKeys = Object.keys(recapKeys).sort((a, b) => {				
 				return recapKeys[a] - recapKeys[b];
