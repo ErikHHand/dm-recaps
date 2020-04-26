@@ -148,6 +148,10 @@ class CampaignRecaps extends Component {
 
 	render() {
 
+		console.log(this.state.tags)
+		console.log(this.state.campaign)
+		console.log(this.state.sessions)
+
 		// The id for this campaign
 		let id = this.props.location.state.id;
 

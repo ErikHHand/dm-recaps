@@ -28,20 +28,19 @@ class TagDescription extends Component {
 	
 		// Triggers when deleting a tag
 		deleteTag() {
-	
-			console.log("Delete")
-	
+		
 			// Set current tag to null
 			this.props.handleSelectedTag(null);
 	
 			// Delete tag in session recaps locally and on Firestore
 			let sessions = this.props.sessions;
+			let tags = this.props.tags;
 	
 			for(let recapID in this.props.tags[this.props.tagID].recaps) {
 	
 				let recapItem = this.props.tags[this.props.tagID].recaps[recapID];
 				let tagIndex = recapItem.tags.indexOf(this.props.tagID);
-	
+
 				if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1); // Remove tag from recap item
 				sessions[recapItem.session].recaps[recapID] = recapItem; // Re-add the recap item without the tag
 	
@@ -55,7 +54,10 @@ class TagDescription extends Component {
 				});
 	
 				// Add recap in tags (for each tag) on Firestore
-				recapItem.tags.forEach( tagID => {				
+				recapItem.tags.forEach( tagID => {
+					
+					tags[tagID].recaps[recapID] = recapItem;
+
 					this.props.campaignRef.collection("tags").doc(tagID).update({
 						["recaps." + recapID]: recapItem,
 					}).then(function() {
@@ -68,7 +70,6 @@ class TagDescription extends Component {
 			this.props.handleSessions(sessions);
 	
 			// Delete tag recaps locally
-			let tags = this.props.tags;
 			delete tags[this.props.tagID];
 			this.props.handleTags(tags);
 			
