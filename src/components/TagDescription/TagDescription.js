@@ -110,14 +110,9 @@ class TagDescription extends Component {
 		const deleteText = {
 			title: "Delete Tag",
 			text: "Are you sure you want to delete this tag and remove it from all recaps?"
-		}
-		
+		}		
 		let noDescription = "This tag has no description";
-
 		let background = {backgroundColor: COLOURSRGB[this.props.tag.colour] + ", 0.14)"}
-		let style={backgroundColor: "rgba(100, 100, 100, 1)"}
-
-		console.log(background)
 
 		return (
 			<>
