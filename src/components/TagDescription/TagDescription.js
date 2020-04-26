@@ -7,6 +7,8 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import { COLOURSRGB } from '../../constants/colours.js';
+
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
@@ -112,9 +114,14 @@ class TagDescription extends Component {
 		
 		let noDescription = "This tag has no description";
 
+		let background = {backgroundColor: COLOURSRGB[this.props.tag.colour] + ", 0.14)"}
+		let style={backgroundColor: "rgba(100, 100, 100, 1)"}
+
+		console.log(background)
+
 		return (
 			<>
-				<Card className="tag-description" border="" bg="light">
+				<Card className="tag-description" style={background}>
 					<Card.Body>
 						<Card.Title className="">
 							<Row>
