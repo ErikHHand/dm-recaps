@@ -84,7 +84,7 @@ class TagFilter extends Component {
 		} else {
 			// Sort keys in alphabetical order based on tag names
 			sortedKeys = keys.sort((a, b) => {				
-				return ((this.props.campaign.tags[b].name <= this.props.campaign.tags[a].name) ? 1 : -1);
+				return ((this.props.campaign.tags[b].name.toLowerCase() <= this.props.campaign.tags[a].name.toLowerCase()) ? 1 : -1);
 			});
 		}
 
