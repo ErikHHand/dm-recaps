@@ -36,12 +36,14 @@ class TagFilter extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-	
+
 		if (this.props.tagSort !== prevProps.tagSort) {
 			this.filterKeys();
 		} else if(this.props.filteredTags.length !== prevProps.filteredTags.length) {
 			this.filterKeys();	
 		} else if (!this.props.showTagInfo && prevProps.showTagInfo) {
+			this.filterKeys();	
+		} else if (this.state.prevKeys.length !== Object.keys(this.props.campaign.tags).length) {
 			this.filterKeys();	
 		}
 	}
@@ -61,8 +63,13 @@ class TagFilter extends Component {
 	}
 
 	filterKeys() {
-		if(this.props.campaign) {
+		//if(this.props.campaign) {
 			let keys = Object.keys(this.props.campaign.tags);
+
+			this.setState({
+				prevKeys: keys,
+			})
+
 			let sortedKeys;
 
 			// Filter results
@@ -84,7 +91,7 @@ class TagFilter extends Component {
 			}
 
 			this.props.handleFilteredTags(sortedKeys);
-		}
+		//}
 	}
 
 	filter(key, index, keys) {
