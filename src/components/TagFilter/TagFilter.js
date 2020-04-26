@@ -29,13 +29,19 @@ class TagFilter extends Component {
 		// Set the context for "this" for the following functions
 		this.textFilter = this.textFilter.bind(this);
 		this.filter = this.filter.bind(this);
+	}
 
+	componentDidMount() {
 		if(this.props.campaign.tags) {
 			this.filterKeys();
 		}
 	}
 
 	componentDidUpdate(prevProps) {
+
+		console.log(this.props)
+		console.log(prevProps)
+		console.log(this.state.prevKeys)
 
 		if (this.props.tagSort !== prevProps.tagSort) {
 			this.filterKeys();
@@ -69,6 +75,7 @@ class TagFilter extends Component {
 			this.setState({
 				prevKeys: keys,
 			})
+			console.log(keys)
 
 			let sortedKeys;
 
@@ -89,6 +96,8 @@ class TagFilter extends Component {
 					return ((this.props.campaign.tags[b].name <= this.props.campaign.tags[a].name) ? 1 : -1);
 				});
 			}
+
+			console.log(sortedKeys)
 
 			this.props.handleFilteredTags(sortedKeys);
 		//}

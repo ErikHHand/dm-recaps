@@ -139,28 +139,27 @@ class RecapTagSelector extends Component {
 		cols[1] = this.state.filteredTags.slice(col1Length, col1Length + col2Length);
 		cols[2] = this.state.filteredTags.slice(col1Length + col2Length, this.state.filteredTags.length);
 
-		if(this.state.filteredTags.length === Object.keys(this.props.campaign.tags).length)
-			for(let i = 0; i < 3; i++) {
-				// The tags for the overlay where you select what tags to tag the recap with
-				allTags[i] = cols[i].map((tagID) => {
-					return (
-						<Badge 
-							pill 
-							style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
-							key={tagID}
-							className={
-								TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
-								(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
-							}
-							onClick={() => this.onClick(tagID)}
-						>
-							<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
-							&nbsp;
-							{this.props.campaign.tags[tagID].name}
-						</Badge>
-					)
-				});
-			}
+		for(let i = 0; i < 3; i++) {
+			// The tags for the overlay where you select what tags to tag the recap with
+			allTags[i] = cols[i].map((tagID) => {
+				return (
+					<Badge 
+						pill 
+						style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
+						key={tagID}
+						className={
+							TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
+							(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
+						}
+						onClick={() => this.onClick(tagID)}
+					>
+						<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
+						&nbsp;
+						{this.props.campaign.tags[tagID].name}
+					</Badge>
+				)
+			});
+		}
 		
 
 		// The tags currently attached to this recap
