@@ -39,6 +39,7 @@ class CampaignRecaps extends Component {
 		};
 
 		// Set the context for "this" for the following functions
+		this.downloadCampaign = this.downloadCampaign.bind(this);
 		this.handleSessions = this.handleSessions.bind(this);
 		this.handleCampaign = this.handleCampaign.bind(this);
 		this.handleTags = this.handleTags.bind(this);
@@ -96,6 +97,26 @@ class CampaignRecaps extends Component {
 				console.log("Error getting document:", error);
 			});
 		});	
+	}
+
+	async downloadCampaign() {
+
+		let campaginData = {
+			campaign: this.state.campaign,
+			sessions: this.state.sessions,
+			tags: this.state.tags,
+		};
+
+		const fileName = "campaignData";
+		const json = JSON.stringify(campaginData);
+		const blob = new Blob([json], {type: "application/json"});
+		const href = await URL.createObjectURL(blob);
+		const link = document.createElement('a');
+		link.href = href;
+		link.download = fileName + ".json";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 	}
 
 	// Handles changes to campaign data
@@ -169,6 +190,7 @@ class CampaignRecaps extends Component {
 							<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
 						</Col>
 						<Col md={8}>
+							<Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button>
 						</Col>
 						<Col md={2} className="right-align">
 							<SignOutButton />	
