@@ -64,8 +64,8 @@ class CampaignRecaps extends Component {
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
 
 		// Get the campaign for Firestore and save in the state
-		campaignRef.get()
-		.then((campaginDoc) => {
+		campaignRef.get().then((campaginDoc) => {
+			
 			// Query for getting the sessions collection from Firestore
 			campaignRef.collection("sessions").get().then((querySnapshot) => {
 				let sessions = {};

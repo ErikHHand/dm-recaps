@@ -15,6 +15,7 @@ class CampaignInfo extends Component {
 		super(props);	
 
 		this.state = {
+			file: {},
 			description: "",
 			name: "",
 			world: "",
@@ -24,8 +25,17 @@ class CampaignInfo extends Component {
 
 		// Set the context for "this" for the following functions
 		//this.onSubmit = this.onSubmit.bind(this);
+		this.uploadCampaign = this.uploadCampaign.bind(this);
+		this.updateFile = this.updateFile.bind(this);
+
+		this.fileReader = new FileReader();
+		this.fileReader.onload = (event) => {
+			console.log(event.target)
+			this.setState({ file: JSON.parse(event.target.result)});
+		};
 	}
 
+	
 	// Will be called when props change, which will update the state accordingly
 	componentWillReceiveProps(newProps) {
 
@@ -36,6 +46,59 @@ class CampaignInfo extends Component {
 			world: newProps.campaign.world,
 			setting: newProps.campaign.setting
 		});
+	}
+
+	uploadCampaign(event) {
+		event.preventDefault();
+		this.props.onHide();
+		console.log(this.state.file)
+
+		// Fix dates
+		for (let [sessionID, session] of Object.entries(this.state.file.campaign.sessions)) {	
+			session.created = new Date(session.created.nanoseconds / 1000000 + session.created.seconds * 1000)
+			session.date = new Date(session.date.nanoseconds / 1000000 + session.date.seconds * 1000)
+		}
+		for (let [tagID, tag] of Object.entries(this.state.file.campaign.tags)) {
+			tag.created = new Date(tag.created.nanoseconds / 1000000 + tag.created.seconds * 1000)
+		}
+
+		let campaigns = this.props.campaigns;	
+		
+		// Add to Firestore, which will generate an id, then add localy using the id
+		this.props.campaignsRef.add(this.state.file.campaign)
+		.then((docRef) => {
+			console.log("Document successfully written! DocRef: ", docRef);
+
+			// Add locally
+			campaigns[docRef.id] = this.state.file.campaign;
+			this.props.handleCampaigns(campaigns);
+
+			// Add sessions
+			for (let [sessionID, session] of Object.entries(this.state.file.sessions)) {
+
+				this.props.campaignsRef.doc(docRef.id).collection("sessions").doc(sessionID).set(session)
+				.then(function() {
+					console.log("Document successfully updated!");
+				}).catch(function(error) {
+					console.log("Error getting document:", error);
+				});
+			}
+
+			// Add tags
+			for (let [tagID, tag] of Object.entries(this.state.file.tags)) {
+
+				this.props.campaignsRef.doc(docRef.id).collection("tags").doc(tagID).set(tag)
+				.then(function() {
+					console.log("Document successfully updated!");
+				}).catch(function(error) {
+					console.log("Error getting document:", error);
+				});
+			}
+		})
+		.catch(error => {
+			console.error("Error writing document: ", error);
+		});
+		
 	}
 
 	// Triggers when info is submitted
@@ -100,7 +163,12 @@ class CampaignInfo extends Component {
 	// Triggers when changing campaing info
 	onChange = event => {
     	this.setState({ [event.target.name]: event.target.value });
-  	};
+	};
+	  
+	updateFile(event) {
+		console.log(event.target.files[0]);
+		this.fileReader.readAsText(event.target.files[0]);
+	}
 	
 
 	render() {
@@ -195,6 +263,18 @@ class CampaignInfo extends Component {
 						</Button>
 
 						{error && <p>{error.message}</p>}
+					</Form>
+					<Form onSubmit={(event) => this.uploadCampaign(event)}>
+						<Form.File
+							name="file"
+							id="custom-file"
+							label="Custom file input"
+							custom
+							onChange={this.updateFile}
+						/>
+						<Button variant="success" type="submit">
+							Upload campaign
+						</Button>
 					</Form>
 				</Modal.Body>
 			</Modal>

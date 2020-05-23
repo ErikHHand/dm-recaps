@@ -72,7 +72,12 @@ class CampaignItem extends Component {
 
 		// Calculate time between latest session and today, if there are any sessions
 		if(this.props.campaign.sessionOrder[0]) {
-			let lastSessionDate = this.props.campaign.sessions[this.props.campaign.sessionOrder[0]].date.toDate();
+			let lastSessionDate = {};
+			if(this.props.campaign.sessions[this.props.campaign.sessionOrder[0]].date instanceof Date) {
+				lastSessionDate = this.props.campaign.sessions[this.props.campaign.sessionOrder[0]].date;
+			} else {
+				lastSessionDate = this.props.campaign.sessions[this.props.campaign.sessionOrder[0]].date.toDate();
+			}
 			dateDifference = Math.ceil(Math.abs(date - lastSessionDate) / (1000 * 60 * 60 * 24));
 		}
 
