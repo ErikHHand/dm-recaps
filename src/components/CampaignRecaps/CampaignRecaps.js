@@ -11,7 +11,6 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
-import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
 import { withFirebase } from '../Firebase/Firebase';
@@ -19,9 +18,9 @@ import { withFirebase } from '../Firebase/Firebase';
 
 /*
 	This class holds the global state for this App.
-	Here is where campaign, tag and session data is stored 
+	This is where campaign, tag and session data is stored 
 	and managed. This class also handles the switching between tabs
-	and renders the tags page and the session page components.
+	and renders the tag page and the session page components.
 */
 class CampaignRecaps extends Component {
 
@@ -48,10 +47,9 @@ class CampaignRecaps extends Component {
 		this.handleSelectedTag = this.handleSelectedTag.bind(this);
 	}
 
-	/*
-		When component mounts, get the Firestore reference for this campaign.
-		Then get the campaign, the sessions and the tags and save in the state
-	*/
+
+	// When component mounts, get the Firestore reference for this campaign.
+	// Then get the campaign, the sessions and the tags and save in the state
 	componentDidMount() {
 
 		let campaign = this;
@@ -99,6 +97,9 @@ class CampaignRecaps extends Component {
 		});	
 	}
 
+	// Function for downloading all campaign, tag and session data
+	// as a JSON file
+	// NOTE: Download functionality currently disabled
 	async downloadCampaign() {
 
 		let campaginData = {
@@ -140,6 +141,7 @@ class CampaignRecaps extends Component {
 		})
 	}
 
+	// Handles changes to which tab is currently shown
 	setActiveTab(tab) {
 		this.setState({
 			activeTab: tab,
@@ -156,8 +158,7 @@ class CampaignRecaps extends Component {
 		}
 	}
 
-	// Handles changing which tag is the current tag,
-	// which tag is currently selected
+	// Handles changing which tag is the selected tag
 	handleSelectedTag(tagID) {
 		if(tagID === null || this.state.tags[tagID]) {
 			this.setState({
@@ -169,10 +170,6 @@ class CampaignRecaps extends Component {
 
 	render() {
 
-		console.log(this.state.tags)
-		console.log(this.state.campaign)
-		console.log(this.state.sessions)
-
 		// The id for this campaign
 		let id = this.props.location.state.id;
 
@@ -180,6 +177,7 @@ class CampaignRecaps extends Component {
 		let campaignRef = this.props.firebase.db.collection("users")
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
 
+		// Render title if a campaign exists
 		let title = this.state.campaign ? this.state.campaign.name : "";
 
 		return (
@@ -190,7 +188,8 @@ class CampaignRecaps extends Component {
 							<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
 						</Col>
 						<Col md={8}>
-							{/* <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
+							{/* Disabled download functionality
+							<Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
 						</Col>
 						<Col md={2} className="right-align">
 							<SignOutButton />	
