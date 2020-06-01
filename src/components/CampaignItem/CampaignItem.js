@@ -13,7 +13,7 @@ import * as firebase from 'firebase'; // Do not remove
 
 /*
 	This class holds the Campaign Items on the Campaign Page.
-	This class holds the layout as well as the function for deleting
+	This class holds the layout as well as the function for deleting a campaign
 */
 class CampaignItem extends Component {
 
@@ -28,12 +28,15 @@ class CampaignItem extends Component {
 		this.deleteCampaign = this.deleteCampaign.bind(this);
 	}
 
+	// Function that is called when hovering over a campaign item
+	// which will add a visible border to it.
 	addBorder() {
 		this.setState({
 			border: "info"
 		});
 	}
 
+	// Function to remove border when oving cursor away from a campaign item
 	removeBorder() {
 		this.setState({
 			border: ""
@@ -87,6 +90,7 @@ class CampaignItem extends Component {
 			lastSession = "Last session: " + dateDifference + " days ago";
 		}
 
+		// Set campaign description, or a placeholder if there is no description
 		let description = "No campaign description";
 		if(this.props.campaign.description) {
 			description = this.props.campaign.description;
