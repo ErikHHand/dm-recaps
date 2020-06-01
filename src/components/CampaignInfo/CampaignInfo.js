@@ -264,7 +264,7 @@ class CampaignInfo extends Component {
 
 						{error && <p>{error.message}</p>}
 					</Form>
-					<Form onSubmit={(event) => this.uploadCampaign(event)}>
+					{/* <Form onSubmit={(event) => this.uploadCampaign(event)}>
 						<Form.File
 							name="file"
 							id="custom-file"
@@ -275,7 +275,7 @@ class CampaignInfo extends Component {
 						<Button variant="success" type="submit">
 							Upload campaign
 						</Button>
-					</Form>
+					</Form> */}
 				</Modal.Body>
 			</Modal>
 		)

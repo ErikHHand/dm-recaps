@@ -190,7 +190,7 @@ class CampaignRecaps extends Component {
 							<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
 						</Col>
 						<Col md={8}>
-							<Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button>
+							{/* <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
 						</Col>
 						<Col md={2} className="right-align">
 							<SignOutButton />	
