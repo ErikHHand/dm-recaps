@@ -10,19 +10,19 @@ import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
-import Form from 'react-bootstrap/Form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /*
-	
+	This class holds the component used both for selecting tag type and 
+	tag colour when adding and editing tags in the TagInfo component.
 */
 class FormSelectBadge extends Component {
 
 	constructor(props) {
 		super(props);
 
-		// TODO: WTF does this line do??? Something with tag pop-up...
+		// Function for attaching references to elements
 		this.attachRef = target => this.setState({ target });
 
 		this.state = {
@@ -33,6 +33,8 @@ class FormSelectBadge extends Component {
 		this.changeValue = this.changeValue.bind(this);
 	}
 
+	// Triggered when selecting a value (for example a type or a colour)
+	// Closes this selector and changes the value in the parent component
 	changeValue(value) {
 		this.setState({
 			show: false,
@@ -47,7 +49,8 @@ class FormSelectBadge extends Component {
 		let formSelectBadge  = this;
 		let options = null;
 
-
+		// Fill the select pop-up with different badges depending on
+		// if the component is used for selecting colour or selecting type
 		if(this.props.name === "colour") {
 			options = Array.from(Object.keys(COLOURS)).map((colour) =>
 				<Badge 
@@ -74,14 +77,16 @@ class FormSelectBadge extends Component {
 				</Badge>
 			);
 		}
-		
-		
-		let value = "Select...";
-
+	
+		// Set form field name, with first lettter to upper case
 		let name = this.props.name.charAt(0).toUpperCase() + this.props.name.slice(1) + ":";
 
+		let value = "Select..."; // Placeholder value
+
+		// Create the badge shown as the currently selected alternative, with different
+		// styles depending on if selecting colour or type
 		if(this.props.value) {
-			for(let option in options) {
+			for(let option in options) { // Why for-loop here?
 				if(options[option].key === this.props.value) {
 					if(this.props.name === "colour") {
 						value = <Badge 
