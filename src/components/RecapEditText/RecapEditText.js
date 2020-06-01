@@ -6,8 +6,7 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
 /*
-	This class holds the field where new recaps are entered and
-	handles adding new recaps.
+	This class holds the text field for editing recap texts
 */
 class RecapEditText extends Component {
 	constructor(props) {
@@ -32,10 +31,11 @@ class RecapEditText extends Component {
 	onSubmit(event) {
 		event.preventDefault();
 
-		// Save text in recapItem
+		// Save text in recapItem locally
 		let recap = this.props.recapItem;
 		recap.text = this.state.text;
 		
+		// Call function in parent to add changes to Firestore
 		this.props.writeRecap(recap, recap.tags);
 	};
 
