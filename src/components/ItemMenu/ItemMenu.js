@@ -8,7 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 /*
-	This class holds the three dots the brings up the item menu when clicked
+	This class is used for toggling the item menu
+	See react bootstrap documentaion on custom toggled
+	pop-ups for more details on why it is done this way
 */
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 	<a
