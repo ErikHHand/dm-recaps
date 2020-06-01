@@ -8,13 +8,11 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
 /*
-	This component represents a recap item, the whole card with recap text
+	This component holds a recap item, which is a card with recap text
 	and attached tags.
 */
 class RecapItem extends Component {
@@ -32,12 +30,11 @@ class RecapItem extends Component {
 		this.writeRecap = this.writeRecap.bind(this);
 	}
 
-	// Write recap
 	// This function is called when adding a new recap
 	// or editing recap data
 	writeRecap(recapItem, previousTags) {
 
-		// Remove edit text area
+		// Remove edit text area if it was open
 		this.setState({
 			edit: false,
 		});
@@ -59,7 +56,8 @@ class RecapItem extends Component {
 			console.log("Error getting document:", error);
 		});
 
-		// Add or delete locally and on Firestore
+		// Add or delete locally and on Firestore, based on
+		// which tags are attached to this recap item
 		let tagsCollection = this.props.tags;
 		
 		for (let tag in tagsCollection) {
@@ -109,12 +107,15 @@ class RecapItem extends Component {
 		});
 	}
 
+	// Triggers when a user clicks "edit" in the item menu on recap items
+	// This will replace the static text with a editable text field
 	editRecap() {
 		this.setState({
 			edit: true,
 		});
 	}
-	  
+	
+	// Function for deleting a recap item
 	deleteRecap() {
 
 		let session = this.props.recapItem.session;
@@ -171,6 +172,7 @@ class RecapItem extends Component {
 			text: "Are you sure you want to delete this recap?"
 		}
 
+		// Date for the session of this recap item
 		let date = new Date(this.props.campaign.sessions[this.props.recapItem.session].date.seconds * 1000);
 
 		// Create number for session order
