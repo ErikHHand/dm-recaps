@@ -28,6 +28,9 @@ class CampaignInfo extends Component {
 		this.uploadCampaign = this.uploadCampaign.bind(this);
 		this.updateFile = this.updateFile.bind(this);
 
+		// Set up a file reader for campaign importing
+		// NOTE: Campaign importing is currently disabled since there are no security
+		// checks in place for the files being imported 
 		this.fileReader = new FileReader();
 		this.fileReader.onload = (event) => {
 			console.log(event.target)
@@ -35,7 +38,9 @@ class CampaignInfo extends Component {
 		};
 	}
 
-	
+	// *** WARNING ***
+	// This function is going to be rewritten since componentWillReceiveProps
+	// is outdated.
 	// Will be called when props change, which will update the state accordingly
 	componentWillReceiveProps(newProps) {
 
@@ -48,12 +53,15 @@ class CampaignInfo extends Component {
 		});
 	}
 
+	// Function for uploading a campaign from a JSON file
+	// NOTE: Campaign importing is currently disabled since there are no security
+	// checks in place for the files being imported 
 	uploadCampaign(event) {
 		event.preventDefault();
 		this.props.onHide();
 		console.log(this.state.file)
 
-		// Fix dates
+		// Dates in the JSON file are strings, this converts them to date objects
 		for (let [sessionID, session] of Object.entries(this.state.file.campaign.sessions)) {	
 			session.created = new Date(session.created.nanoseconds / 1000000 + session.created.seconds * 1000)
 			session.date = new Date(session.date.nanoseconds / 1000000 + session.date.seconds * 1000)
@@ -65,7 +73,7 @@ class CampaignInfo extends Component {
 		let campaigns = this.props.campaigns;	
 		
 		// Add to Firestore, which will generate an id, then add localy using the id
-		this.props.campaignsRef.add(this.state.file.campaign)
+		this.props.campaignsRef.add(this.state.file.campaign) // Add campaign
 		.then((docRef) => {
 			console.log("Document successfully written! DocRef: ", docRef);
 
@@ -101,14 +109,16 @@ class CampaignInfo extends Component {
 		
 	}
 
-	// Triggers when info is submitted
+	// Triggers when campaign info is submitted
 	onSubmit = event => {
 
 		// Hide the campaign info window
 		this.props.onHide();
 		event.preventDefault();
 
-		if(!this.props.edit) {
+		// Do different tasks depending on if editing an existing campaign
+		// or adding a new campaign
+		if(!this.props.edit) { // Add new campaign
 			// Create campaign info
 			let campaign = {
 				description: this.state.description,
@@ -165,6 +175,7 @@ class CampaignInfo extends Component {
     	this.setState({ [event.target.name]: event.target.value });
 	};
 	  
+	// Triggers when adding a file to the upload form
 	updateFile(event) {
 		console.log(event.target.files[0]);
 		this.fileReader.readAsText(event.target.files[0]);
