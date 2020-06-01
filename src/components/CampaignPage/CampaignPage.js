@@ -39,11 +39,9 @@ class CampaignPage extends Component {
 
 		let home = this;
 
-        // Save the query reference for campaigns
+		// Query for getting the campaign collection from firestore
         let campaignsRef = this.props.firebase.db.collection("users")
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns");
-
-		// Query for getting the campaign collection from firestore
         campaignsRef.get().then((querySnapshot) => {
             let campaigns = {};
 
@@ -51,7 +49,8 @@ class CampaignPage extends Component {
             querySnapshot.forEach((doc) => {
                 campaigns[doc.id] = doc.data();
             });
-
+			
+			// Save the campaigns in the state
             home.setState({
                 campaigns: campaigns,
 			});
@@ -61,6 +60,7 @@ class CampaignPage extends Component {
         });
 	}
 
+	// Triggers when adding a campaign
 	addCampaign() {
 		this.setState({
 			campaignID: null,
