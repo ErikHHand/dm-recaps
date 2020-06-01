@@ -184,8 +184,8 @@ class CampaignRecaps extends Component {
 
 		return (
 			<Container>
-				<Row>
-					<Navbar variant="dark" className="my-navbar">
+				<Jumbotron fluid className="container-window">
+					<Row>
 						<Col md={2}>
 							<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
 						</Col>
@@ -195,9 +195,7 @@ class CampaignRecaps extends Component {
 						<Col md={2} className="right-align">
 							<SignOutButton />	
 						</Col>
-					</Navbar>
-				</Row>
-				<Jumbotron fluid className="container-window">
+					</Row>
 					<div className="center campaign-title">{title}</div>
 					<Tab.Container activeKey={this.state.activeTab} transition={false}>
 						<Row>
