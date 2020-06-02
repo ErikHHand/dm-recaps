@@ -16,7 +16,13 @@ import { ICONS } from '../../constants/types.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /*
-	
+	This class holds the component for selecting tags to attach to recap items.
+	This includes the bottom row of the recap item where currently attached tags are shown,
+	as well as the pop-up window for attaching and removing tags.
+
+	The component keeps track of the tags currently selected for the recap item in
+	the state, but does not handle the actual writing to backend. This is handled in
+	the RecapItem component.
 */
 class RecapTagSelector extends Component {
 
@@ -33,9 +39,9 @@ class RecapTagSelector extends Component {
 		}
 
 		this.state = {
-			filteredTags: [],
+			filteredTags: [], // Holds tags shown in the selector based on the current filter
 			tag: {name: "", description: "", type: "Location", colour: "red"},
-			tags: tags,
+			tags: tags, // Holds all tags of this campaign with a T/F value based on selection
 			showTagOverlay: false,
 			showTagInfo: false,
 		}
@@ -48,8 +54,8 @@ class RecapTagSelector extends Component {
 	}
 
 	// Triggers when an update to component happens
-	// This is used to handle a change in number of tags
-	// caused by deleting tags
+	// This is used to handle a change in number of tags caused by 
+	// adding or deleting tags from the campaign
 	componentDidUpdate() {
 		
 		// Check if the number of tags has changed
@@ -65,6 +71,7 @@ class RecapTagSelector extends Component {
 		}		
 	}
 
+	// Triggers when a new filter is entered
 	handleFilteredTags(filteredTags) {
 		this.setState({
 			filteredTags: filteredTags,
@@ -82,9 +89,11 @@ class RecapTagSelector extends Component {
 		});
 	};
 
-	// Edits the recap.
-	// This function is called when changing tags 
+	// This function is called when a user submits changes to
+	// which tags are attached to the recap item
 	onSubmit() {
+
+		// Hide tag selection pop-up
 		this.setState({
 			showTagOverlay: false,
 		})
@@ -97,15 +106,17 @@ class RecapTagSelector extends Component {
 			}	
 		}
 		
+		// Save previous tags to simplify removal of tags from the recap item
 		let previousTags = this.props.recapItem.tags;
 
 		// Update recap Item with potentially new text and tags
 		let recapItem = this.props.recapItem;
 		recapItem.tags = tags;
-		
 		this.props.writeRecap(recapItem, previousTags);
 	};
 
+	// This function is called when changing visibility of the tag selection pop-up
+	// and the tag info component for adding new tags
 	changeWindow() {
 		this.setState({
 			showTagInfo: !this.state.showTagInfo,
@@ -116,9 +127,9 @@ class RecapTagSelector extends Component {
 	render() {
 
 		let recapTagSelector = this;
-
 		let tagFilter;
 
+		// Only render the tag filter component if there are at least one tag
 		if(!this.props.campaign.tags) {
 			tagFilter = <div></div>; //Render nothing if there are no tags
 		} else {
@@ -131,6 +142,8 @@ class RecapTagSelector extends Component {
 						/>
 		}
 
+		// Divide all filtered tags into three groups to put in 
+		// different columns in the tag selection pop-up
 		let allTags = [];
 		let cols = [];
 		let col1Length = Math.ceil(this.state.filteredTags.length / 3);
@@ -139,10 +152,10 @@ class RecapTagSelector extends Component {
 		cols[1] = this.state.filteredTags.slice(col1Length, col1Length + col2Length);
 		cols[2] = this.state.filteredTags.slice(col1Length + col2Length, this.state.filteredTags.length);
 
+		// For each column, create the tag badge and put in the column
 		for(let i = 0; i < 3; i++) {
-			// The tags for the overlay where you select what tags to tag the recap with
 			allTags[i] = cols[i].map((tagID) => {
-				if(this.props.campaign.tags[tagID]) {
+				if(this.props.campaign.tags[tagID]) { // Avoid bug when filtered tag doesn't exists for some reason
 					return (
 						<div style={{display: "block"}}>
 							<Badge 
@@ -167,11 +180,10 @@ class RecapTagSelector extends Component {
 				
 			});
 		}
-		
 
-		// The tags currently attached to this recap
+		// Create the tags currently attached to this recap
 		let recapTags = this.props.recapItem.tags.map((tagID) => {
-			if(this.props.campaign.tags[tagID]) {
+			if(this.props.campaign.tags[tagID]) { // Avoid bug when tag doesn't exists for some reason
 				return (
 					<Badge 
 						pill 
