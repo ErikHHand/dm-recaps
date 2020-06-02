@@ -15,8 +15,8 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
 /*
-	This component holds the tags tab of the App. This component also
-	handles which tag item is selected.
+	This component holds the tags tab of the app. It handles dynamically updating the height of the
+	recap item list, as well as the rendring and sorting of recap item list and tag item list.
 */
 class TagsPage extends Component {
 
@@ -28,7 +28,6 @@ class TagsPage extends Component {
 			recapListStyle: { height: "100%",},
 			recapListHeight: 0,
 			showTagInfo: false,
-			tag: {name: "", description: "", type: "Location", colour: "red"},
 			filteredTags: [],
 			tagSort: 1,
 		};
@@ -38,6 +37,9 @@ class TagsPage extends Component {
 		this.changeSort = this.changeSort.bind(this);
 	}
 
+	// Triggers when props for component updates
+	// This is used to dynamically adjust the height of the recap item list, 
+	// based on the height of the tag description box (tried doing it with css, but no luck...)
 	componentDidUpdate() {
 		if(this.props.selectedTag && this.props.activeTab === "tags") {
 			let div1Height = window.getComputedStyle(this.tagDescription).getPropertyValue("height");
@@ -64,12 +66,14 @@ class TagsPage extends Component {
 		}
 	}
 
+	// Handles changes to the tags shown based on filtering
 	handleFilteredTags(filteredTags) {
 		this.setState({
 			filteredTags: filteredTags,
 		})
 	}
 
+	// Change sorting of a list
 	changeSort(list, value) {
 		if(value) {
 			this.setState({
@@ -88,9 +92,11 @@ class TagsPage extends Component {
 		let tagItems;
 		let recapItems;
 
+		// Create the tag filter component and the tag item list 
 		if(!this.props.campaign.tags) {
-			tagFilter = <div></div>; //Render nothing if there are no tags
-			tagItems = <div></div>; //Render nothing if there are no tags
+			//Render nothing if there are no tags
+			tagFilter = <div></div>;
+			tagItems = <div></div>; 
 		} else {
 
 			tagFilter = <TagFilter
@@ -101,9 +107,9 @@ class TagsPage extends Component {
 							showTagInfo = {this.state.showTagInfo}
 						/>
 
-			let sortedKeys = [...this.state.filteredTags];
+			let sortedKeys = [...this.state.filteredTags]; // Copy list so it can be sorted
 
-			// based on sorting, reverse keys
+			// Reverse keys, based on the current sorting
 			if(this.state.tagSort === 2 || this.state.tagSort === 3) {
 				sortedKeys.reverse();
 			}
@@ -119,6 +125,7 @@ class TagsPage extends Component {
 			);
 		}
 
+		// Create the recap item list
 		if(!this.props.selectedTag) {
 			recapItems = <div></div>; // No current tag
 		} else if(!this.props.tags[this.props.selectedTag]) {
@@ -143,6 +150,7 @@ class TagsPage extends Component {
 				return recapKeys[a] - recapKeys[b];
 			});
 
+			// Change sorting if specified
 			if(this.state.recapSortDescending) {
 				sortedKeys.reverse();
 			}
@@ -230,7 +238,6 @@ class TagsPage extends Component {
 					campaignRef = {this.props.campaignRef}
 					edit = {false}
 					tagID = {null}
-					tag = {this.state.tag}
 					selectTag = {true}
 					handleSelectedTag = {this.props.handleSelectedTag}
 				/>
