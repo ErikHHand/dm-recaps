@@ -16,8 +16,7 @@ const INITIAL_STATE = {
 };
 
 /*
-	This class holds the sign in window and handles
-	adding new users to Firestore
+	This class holds the sign in window
 */
 class SignInFormBase extends Component {
   	constructor(props) {
