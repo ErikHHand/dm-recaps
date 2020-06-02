@@ -48,9 +48,7 @@ class RecapNew extends Component {
 		// and then add locally
 		let sessions = this.props.sessions;
 		let session = sessions[this.props.session];
-		
-		// TODO: Check for hashcode collisions
-		let id = recap.text.hashCode().toString();
+		let id = recap.text.hashCode().toString(); // TODO: Check for hashcode collisions
 		session.recaps[id] = recap;
 
 		sessions[this.props.session] = session;
