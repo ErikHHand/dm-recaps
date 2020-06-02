@@ -11,8 +11,9 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
 /*
-	This class holds the Session Items on the left side of the Session Page.
-	This class holds the layout as well as the function for deleting
+	This class holds the session item component, found in the list to the
+	left on the session page. This component holds the layout as well as 
+	the function for deleting.
 */
 class SessionItem extends Component {
 
@@ -76,7 +77,6 @@ class SessionItem extends Component {
 		if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
 		this.props.handleCampaign(campaign);
 
-
 		// Delete session info on Firestore
 		this.props.campaignRef.update({
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
@@ -105,7 +105,6 @@ class SessionItem extends Component {
 			this.props.campaign.sessionOrder.indexOf(this.props.sessionID)) + " ";
 
 		// Create date
-
 		let session = this.props.campaign.sessions[this.props.sessionID]
 		let date = new Date(session.date.seconds * 1000);
 		
