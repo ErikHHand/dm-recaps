@@ -6,6 +6,11 @@ import { faSortNumericUpAlt } from '@fortawesome/free-solid-svg-icons';
 import { faSortAlphaDown } from '@fortawesome/free-solid-svg-icons';
 import { faSortAlphaUpAlt } from '@fortawesome/free-solid-svg-icons';
 
+/*
+	This constant holds the column for the sorting arrows for the different list.
+	The arrows rendered differes based on if an alphabetical sort is wanted or not
+	(which is currently only used for the tag item list).
+*/
 const SortArrowsColumn = (props) => (
 	<div className="center sort-arrows-col">
 		{props.alphabetical ?
