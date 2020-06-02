@@ -11,7 +11,9 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
 /*
-	This class holds the Tag Items on the left side of the Tags Page. 
+	This class holds the tag item component, found in the list to the
+	left on the tags page. This component only holds the layout. Functions
+	for editing and deleting can be found in the tag description component. 
 */
 class TagItem extends Component {
 
