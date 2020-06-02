@@ -7,7 +7,6 @@ import SignOutButton from '../SignOut/SignOut';
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
-import Navbar from 'react-bootstrap/Navbar';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
@@ -107,18 +106,15 @@ class CampaignPage extends Component {
 		);
 
 		return (
-			<Container>
-				<Row>
-					<Col md={10}>
-					</Col>
-					<Col md={2}>
-						<Navbar variant="dark">
+			<Container>				
+				<Jumbotron fluid className="container-window">
+					<Row>
+						<Col md={10}>
+						</Col>
+						<Col md={2}>
 							<SignOutButton/>	
-						</Navbar>
-					</Col>
-				</Row>
-				
-				<Jumbotron fluid className="container">
+						</Col>
+					</Row>
 					<h1 className="center">Campaigns</h1>
 					<div className="campaign-list remove-scroll-bar border-top border-bottom">{campaigns}</div>
 					<div className="center">
