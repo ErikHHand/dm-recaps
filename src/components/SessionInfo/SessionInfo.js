@@ -10,8 +10,8 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
 
 /*
-	This component holds the pop-up window for when creating a new
-	and editing a session.
+	This component holds the pop-up window for when creating a new session
+	or editing an existing session.
 */
 class SessionInfo extends Component {
 
@@ -30,7 +30,8 @@ class SessionInfo extends Component {
 		this.onChangeDescription = this.onChangeDescription.bind(this);
 	}
 
-	// Will be called when props change, which will update date and description accordingly
+	// Will be called when component mounts, and put necessary information in the state
+	// if a session is being edited
 	componentDidMount() {
 
 		// Put the current information about the session in the state
@@ -56,7 +57,6 @@ class SessionInfo extends Component {
 		};
 
 		// If editing, only writing to the session field in the campaign object
-		// is neccessary and a new session is not needed
 		if(this.props.edit) {
 			this.editSessionInfo(this.props.sessionID, sessionInfo);
 		} else {
@@ -64,7 +64,7 @@ class SessionInfo extends Component {
 		}
 	}
 	
-	// Triggers when adding an entirely new session, as opposed to editing an existing one.
+	// Triggers when adding an entirely new session
 	// This function saves the session locally and on Firestore
 	addNewSession(sessionInfo) {
 
@@ -114,8 +114,6 @@ class SessionInfo extends Component {
 		}
 
 		// Sort session in chronological order and add it to the session order array
-		let session;
-
 		if(campaign.sessionOrder.length === 0 
 			|| campaign.sessions[campaign.sessionOrder[campaign.sessionOrder.length - 1]].date.toDate() > sessionInfo.date.toDate()) {
 
@@ -123,7 +121,7 @@ class SessionInfo extends Component {
 			campaign.sessionOrder.splice(campaign.sessionOrder.length, 0, sessionID);
 		} else {
 			for(let i = 0; i < campaign.sessionOrder.length; i++) {
-				session = campaign.sessions[campaign.sessionOrder[i]];
+				let session = campaign.sessions[campaign.sessionOrder[i]];
 				
 				if(session.date.toDate().getTime() <= sessionInfo.date.toDate().getTime()) {
 					campaign.sessionOrder.splice(i, 0, sessionID);
@@ -155,7 +153,6 @@ class SessionInfo extends Component {
 	onChangeDescription(event){		
     	this.setState({ description: event.target.value });
   	};
-	
 
 	render() {
 
