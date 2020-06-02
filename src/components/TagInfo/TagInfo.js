@@ -11,7 +11,8 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
 /*
-	This component holds the pop-up for editing and adding tags
+	This component holds the pop-up window for when creating a new session
+	or editing an existing session.
 */
 class TagInfo extends Component {
 
@@ -26,12 +27,14 @@ class TagInfo extends Component {
 			error: "",
 		}
 
+		// Set the context for "this" for the following function
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.changeValue = this.changeValue.bind(this);
 	}
 
-	// Will be called when props change, which will update state accordingly
+	// Will be called when component mounts, and put necessary information in the state
+	// if a tag is being edited
 	componentDidMount() {
 
 		if(this.props.edit) {
@@ -44,13 +47,12 @@ class TagInfo extends Component {
 		}
 	}
 
-	// Will be called when props change, which will update state accordingly
+	// Will be called when an update happens to props. This is used to check
+	// if a new tag is selected
 	componentDidUpdate(prevProps) {
 
-		let update = this.props.tagID !== prevProps.tagID;
-
-		// Put the current information about the tag in the state
-		if(update) {
+		// Update information in state based on the new tag selected
+		if(this.props.tagID !== prevProps.tagID) {
 			this.setState({
 				name: this.props.tag.name,
 				type: this.props.tag.type,
@@ -60,11 +62,10 @@ class TagInfo extends Component {
 		}
 	}
 
-	// Triggers when submitting tag info
+	// Triggers when submitting tag info after adding or editing a tag
 	onSubmit(event) {
 
 		event.preventDefault();
-		console.log("submit")
 
 		// The info to be saved with the tag
 		let tagInfo = {
@@ -75,8 +76,7 @@ class TagInfo extends Component {
 			created: firebase.firestore.Timestamp.fromDate(new Date()),
 		};
 
-		// If editing, only writing to the tag field in the campaign object
-		// is neccessary and a new tag is not needed
+		// If editing, only write to the tag field in the campaign object
 		if(this.props.edit) {
 			this.editTagInfo(this.props.tagID, tagInfo);
 		} else {
@@ -84,7 +84,7 @@ class TagInfo extends Component {
 		}
 	}
 
-	// Triggers when adding an entirely new tag, as opposed to editing an existing one.
+	// Triggers when adding an entirely new tag
 	// This function saves the tag locally and on Firestore
 	addNewTag(tagInfo) {
 
@@ -143,11 +143,12 @@ class TagInfo extends Component {
 		this.props.onHide();
 	}
 	
-	// Triggers when changing tag info
+	// Triggers when changing tag name or tag description
 	onChange(event){
     	this.setState({ [event.target.name]: event.target.value });
   	};
 
+	  // Triggers when changing tag type or tag colour
 	changeValue(name, value) {
 		this.setState({
 			[name]: value,
@@ -158,6 +159,7 @@ class TagInfo extends Component {
 
 		let title, submit;
 
+		// Change texts based on whether editing or adding
 		if(this.props.edit) {
 			title = "Edit Tag";
 			submit = "Submit changes";
