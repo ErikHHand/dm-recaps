@@ -28,7 +28,14 @@ String.prototype.hashCode = function() {
 };
 
 /*
-	This component holds the session tab of the App.
+	This component holds the session tab of the app.
+
+	This is a child component to the CampaignRecaps component, and is on
+	the same level as the TagsPage component.
+
+	This component handles rendering the list of session items and the list of
+	recap items, based on the selected session. This component also handles sorting order
+	for the two lists.
 */
 class SessionsPage extends Component {
 
@@ -46,7 +53,6 @@ class SessionsPage extends Component {
 		this.changeSort = this.changeSort.bind(this);
 	}
 
-
 	changeSort(list) {
 		this.setState({
 			[list]: !this.state[list],
@@ -55,14 +61,16 @@ class SessionsPage extends Component {
 
 	render() {	
 
+		// Render session items
 		let sessionItems;
 
-		// Render session items
 		if(!this.props.campaign.sessions) {
 			sessionItems = <div></div>;
 		} else {
-			let sessionOrder = [...this.props.campaign.sessionOrder];
-			if(!this.state.sessionSortDescending) {
+
+			// Create a copy of the list so it can be sorted 
+			let sessionOrder = [...this.props.campaign.sessionOrder]; 
+			if(!this.state.sessionSortDescending) { //
 				sessionOrder.reverse();
 			}
 
@@ -84,9 +92,10 @@ class SessionsPage extends Component {
 			);
 		}
 
+		// Render recap items
 		let recapItems;
 
-		// Render recapItems
+		// TODO: Check if all of these checks really are necessary anymore
 		if(!this.props.selectedSession) {
 			recapItems = <div></div>;
 		} else if(!this.props.sessions[this.props.selectedSession]) {
@@ -95,9 +104,9 @@ class SessionsPage extends Component {
 			recapItems = <div></div>;	 
 		} else {
 
+			// Get list of recaps and copy the recap order list so it can be sorted
 			let recapList = this.props.sessions[this.props.selectedSession].recaps;
 			let recapOrder = [...this.props.campaign.sessions[this.props.selectedSession].recapOrder];
-
 			if(this.state.recapSortDescending) {
 				recapOrder.reverse();
 			}
