@@ -53,6 +53,7 @@ class SessionsPage extends Component {
 		this.changeSort = this.changeSort.bind(this);
 	}
 
+	// Change sorting of a list
 	changeSort(list) {
 		this.setState({
 			[list]: !this.state[list],
