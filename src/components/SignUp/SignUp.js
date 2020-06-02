@@ -17,6 +17,10 @@ const INITIAL_STATE = {
 	error: null,
 };
 
+/*
+	This class holds the sign up window and handles
+	adding new users to Firestore
+*/
 class SignUpFormBase extends Component {
   	constructor(props) {
 		super(props);
