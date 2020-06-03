@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Do not remove
+import * as firebase from 'firebase';
 
 /*
 	This component holds a recap item, which is a card with recap text

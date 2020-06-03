@@ -12,7 +12,6 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Do not remove
 
 // Function for hashing strings.
 // Used to create ID:s for the recap Items

@@ -7,9 +7,6 @@ import { TEXTCOLOURS } from '../../constants/colours.js';
 import { ICONS } from '../../constants/types.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Do not remove
-
 /*
 	This class holds the tag item component, found in the list to the
 	left on the tags page. This component only holds the layout. Functions
@@ -41,4 +38,4 @@ class TagItem extends Component {
 	}
 }
 
-export default withFirebase(TagItem)
+export default TagItem

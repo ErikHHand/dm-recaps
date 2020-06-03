@@ -9,7 +9,6 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Do not remove
 
 /*
 	This class holds the Campaign Items on the Campaign Page.

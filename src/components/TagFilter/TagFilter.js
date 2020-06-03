@@ -12,7 +12,6 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import SearchField from "react-search-field";
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Do not remove
 
 /*
 	This component holds the filter/search bar in for tags. It is used both

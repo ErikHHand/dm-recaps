@@ -8,8 +8,7 @@ import Col from 'react-bootstrap/Col'
 import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Do not remove
-
+import * as firebase from 'firebase';
 /*
 	This component holds the pop-up window for when creating a new session
 	or editing an existing session.

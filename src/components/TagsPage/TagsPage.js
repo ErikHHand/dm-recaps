@@ -12,7 +12,6 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Do not remove
 
 /*
 	This component holds the tags tab of the app. It handles dynamically updating the height of the
