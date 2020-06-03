@@ -26,9 +26,13 @@ class SignUpFormBase extends Component {
 		super(props);
 		
 		this.state = { ...INITIAL_STATE };
+
+		// Set the context for "this" for the following functions
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
   	}
 
-	onSubmit = event => {
+	onSubmit(event) {
 		const { username, email, passwordOne } = this.state;
 
 		this.props.firebase
@@ -57,7 +61,7 @@ class SignUpFormBase extends Component {
 		event.preventDefault();
 	}
 
-	onChange = event => {
+	onChange(event) {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 

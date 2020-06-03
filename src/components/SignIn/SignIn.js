@@ -22,10 +22,14 @@ class SignInFormBase extends Component {
   	constructor(props) {
     	super(props);
 
-    	this.state = { ...INITIAL_STATE };
+		this.state = { ...INITIAL_STATE };
+		
+		// Set the context for "this" for the following functions
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
   	}
 
-  	onSubmit = event => {
+  	onSubmit(event) {
     	const { email, password } = this.state;
 
     	this.props.firebase
@@ -41,7 +45,7 @@ class SignInFormBase extends Component {
     	event.preventDefault();
   	};
 
-  	onChange = event => {
+  	onChange(event) {
     	this.setState({ [event.target.name]: event.target.value });
   	};
 

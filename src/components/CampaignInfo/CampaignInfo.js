@@ -24,9 +24,10 @@ class CampaignInfo extends Component {
 		}
 
 		// Set the context for "this" for the following functions
-		//this.onSubmit = this.onSubmit.bind(this);
 		this.uploadCampaign = this.uploadCampaign.bind(this);
 		this.updateFile = this.updateFile.bind(this);
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
 
 		// Set up a file reader for campaign importing
 		// NOTE: Campaign importing is currently disabled since there are no security
@@ -110,7 +111,7 @@ class CampaignInfo extends Component {
 	}
 
 	// Triggers when campaign info is submitted
-	onSubmit = event => {
+	onSubmit(event) {
 
 		// Hide the campaign info window
 		this.props.onHide();
@@ -171,7 +172,7 @@ class CampaignInfo extends Component {
 	};
 	  
 	// Triggers when changing campaing info
-	onChange = event => {
+	onChange(event) {
     	this.setState({ [event.target.name]: event.target.value });
 	};
 	  
