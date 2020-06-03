@@ -54,9 +54,6 @@ class TagsPage extends Component {
 			let recapListHeight = containerHeight / containerFontSize - div1Height / div1FontSize;
 			
 			if(this.state.recapListHeight !== recapListHeight) {
-				console.log(recapListHeight)
-				console.log(containerHeight / containerFontSize)
-				console.log(div1Height / div1FontSize)
 				this.setState({
 					recapListStyle: { height: recapListHeight + "rem"},
 					recapListHeight: recapListHeight,
