@@ -33,18 +33,6 @@ button:focus {
 	margin-top: 1.5rem;
 }
 
-.add-tag {
-	font-weight: 900 !important;
-	border-style: dashed;
-	border-width: 2px !important;
-	border-color: #30A64A;
-}
-
-.add-tag:hover {
-	background-color: #30A64A;
-	color: white;
-}
-
 .border-bottom{
 	border: solid rgba(134, 134, 134, 0.1);
 	border-width: 0 0 1px 0;
@@ -154,6 +142,23 @@ button:focus {
 
 .react-search-field-input {
 	width: 100%;
+}
+
+.recap-add-tag {
+	overflow: hidden;
+	font-weight: 900 !important;
+	border-style: dashed;
+	border-width: 2px;
+	border-color: #30A64A;
+	font-size: 13px !important;
+	margin: 0 0.1rem;
+	cursor: pointer;
+	color: rgb(112, 109, 109);
+}
+
+.recap-add-tag:hover {
+	background-color: #30A64A;
+	color: white;
 }
 
 .recap-body {

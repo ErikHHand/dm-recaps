@@ -14,6 +14,7 @@ import { COLOURS } from '../../constants/colours.js';
 import { TEXTCOLOURS } from '../../constants/colours.js';
 import { ICONS } from '../../constants/types.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 /*
 	This class holds the component for selecting tags to attach to recap items.
@@ -207,12 +208,11 @@ class RecapTagSelector extends Component {
 				{recapTags}
 				<Badge 
 					pill 
-					variant="light" 
-					className="add-tag" 
+					className="recap-add-tag" 
 					onClick={() => this.setState({ showTagOverlay: !this.state.showTagOverlay })}
 					ref={this.attachRef}
 				>
-					+
+					<FontAwesomeIcon icon={faPlus} />
 				</Badge>
 				<Overlay 
 					target={this.state.target} 
