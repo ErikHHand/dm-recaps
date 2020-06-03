@@ -183,17 +183,17 @@ class RecapItem extends Component {
 			<Card onClick = {this.props.click}>
 				<Card.Body className="recap-body">
 					<Row>
-						<Col></Col>
 						<Col 
-							xs="auto" 
-							className="session-info-text recap-session-info-text"
+							lg="11"
+							md="10" 
+							className="session-info-text recap-session-info-text right-align"
 							onClick={() => this.props.handleSelectedSession(this.props.recapItem.session)}
 						>
 							{number + date.toDateString()}
 							&emsp;
 							{this.props.campaign.sessions[this.props.recapItem.session].description}
 						</Col>
-						<Col xs="1">
+						<Col lg="1" md="2" className="right-align">
 							<ItemMenu
 								edit = {this.editRecap}
 								delete = {this.deleteRecap}

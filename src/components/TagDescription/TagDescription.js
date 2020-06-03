@@ -125,8 +125,8 @@ class TagDescription extends Component {
 					<Card.Body>
 						<Card.Title className="">
 							<Row>
-								<Col xs={11}>{this.props.tag.name}</Col>
-								<Col xs={1}>
+								<Col lg="11" md="10">{this.props.tag.name}</Col>
+								<Col lg="1" md="2" className="right-align">
 									<ItemMenu
 										edit = {() => this.setState({ showTagInfo: true})}
 										delete = {this.deleteTag}
