@@ -13,19 +13,6 @@ import Button from 'react-bootstrap/Button';
 
 import { withFirebase } from '../Firebase/Firebase';
 
-// Function for hashing strings.
-// Used to create ID:s for the recap Items
-String.prototype.hashCode = function() {
-	var hash = 0, i, chr;
-	if (this.length === 0) return hash;
-	for (i = 0; i < this.length; i++) {
-		chr   = this.charCodeAt(i);
-		hash  = ((hash << 5) - hash) + chr;
-		hash |= 0; // Convert to 32bit integer
-	}
-	return hash;
-};
-
 /*
 	This component holds the session tab of the app.
 

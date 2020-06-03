@@ -64,11 +64,11 @@ class CampaignInfo extends Component {
 		console.log(this.state.file)
 
 		// Dates in the JSON file are strings, this converts them to date objects
-		for (let [sessionID, session] of Object.entries(this.state.file.campaign.sessions)) {	
+		for (let session of Object.values(this.state.file.campaign.sessions)) {
 			session.created = new Date(session.created.nanoseconds / 1000000 + session.created.seconds * 1000)
 			session.date = new Date(session.date.nanoseconds / 1000000 + session.date.seconds * 1000)
 		}
-		for (let [tagID, tag] of Object.entries(this.state.file.campaign.tags)) {
+		for (let tag of Object.values(this.state.file.campaign.tags)) {
 			tag.created = new Date(tag.created.nanoseconds / 1000000 + tag.created.seconds * 1000)
 		}
 

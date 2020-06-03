@@ -27,6 +27,24 @@ class RecapNew extends Component {
 		this.setState({ text: event.target.value });
 	}
 
+	// Function for hashing strings.
+	// Used to create ID:s for the recap Item
+	hashCode(string) {
+
+		let hash = 0;
+		let chr;
+
+		if (string.length === 0) return hash;
+
+		for (let i = 0; i < string.length; i++) {
+			chr = string.charCodeAt(i);
+			hash = ((hash << 5) - hash) + chr;
+			hash |= 0; // Convert to 32bit integer
+		}
+
+		return hash;
+	};
+
 	// Triggers when submitting a recap
 	onSubmit(event) {
 		event.preventDefault();
@@ -47,7 +65,7 @@ class RecapNew extends Component {
 		// and then add locally
 		let sessions = this.props.sessions;
 		let session = sessions[this.props.session];
-		let id = recap.text.hashCode().toString(); // TODO: Check for hashcode collisions
+		let id = this.hashCode(recap.text).toString(); // TODO: Check for hashcode collisions
 		session.recaps[id] = recap;
 
 		sessions[this.props.session] = session;

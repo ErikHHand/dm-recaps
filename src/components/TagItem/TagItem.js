@@ -14,10 +14,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 */
 class TagItem extends Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	render() {	
 
 		let badgeClasses = TEXTCOLOURS[this.props.tagInfo.colour] + " tag-item " +
