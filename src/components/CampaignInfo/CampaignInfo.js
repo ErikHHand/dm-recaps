@@ -221,7 +221,8 @@ class CampaignInfo extends Component {
 								value={name}
 								onChange={this.onChange}
 								type="text"
-								placeholder="Campaign name..." 
+								placeholder="Campaign name..."
+								maxlength="140" 
 							/>
 							<Form.Text className="text-muted">
 								For example "Glorious Adventures in Middle Earth". Or perhaps just the name of your character?
@@ -236,7 +237,8 @@ class CampaignInfo extends Component {
 								onChange={this.onChange}
 								as="textarea"
 								type="text"
-								placeholder="Campaign description..." 
+								placeholder="Campaign description..."
+								maxlength="2000"
 							/>
 							<Form.Text className="text-muted">
 								A short description of the campaign. 
@@ -251,6 +253,7 @@ class CampaignInfo extends Component {
 								onChange={this.onChange}
 								type="text"
 								placeholder="World..."
+								maxlength="70"
 							/>
 							<Form.Text className="text-muted">
 								For example "Middle Earth".
@@ -265,6 +268,7 @@ class CampaignInfo extends Component {
 								onChange={this.onChange}
 								type="text"
 								placeholder="Setting..."
+								maxlength="70"
 							/>
 							<Form.Text className="text-muted">
 								For example "Fantasy".

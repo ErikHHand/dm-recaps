@@ -160,9 +160,19 @@ button:focus {
 	padding: 0.6em 1em 0.6em 1em !important;
 }
 
+.recap-session-info-text {
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	line-height: 1.5rem !important;
+}
+
 .recap-session-info-text:hover {
 	cursor: pointer;
-	color: rgba(151, 146, 146, 1);
+	color: rgb(112, 109, 109);
 }
 
 .recap-tag {
@@ -171,6 +181,9 @@ button:focus {
 	cursor: pointer;
 	border-width: 1px;
 	border: solid rgb(230, 230, 230);
+	max-width: 20rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .recap-tag:hover {
