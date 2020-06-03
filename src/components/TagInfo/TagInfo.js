@@ -209,7 +209,7 @@ class TagInfo extends Component {
 								type="text"
 								as="textarea"
 								placeholder="Description...."
-								maxlength="900" 
+								maxlength="1000" 
 							/>
 							<Form.Text className="text-muted">
 								For example "Misty Mountains".

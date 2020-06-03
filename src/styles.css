@@ -191,8 +191,6 @@ button:focus {
 }
 
 .recap-text {
-	font-size: 15px;
-	line-height: 1.2rem;
 	margin-bottom: 0.6rem;
 }
 
@@ -307,6 +305,11 @@ button:focus {
 
 .tag-description {
 	width: 100%;
+}
+
+.regular-text {
+	font-size: 14px !important;
+	line-height: 1.2rem !important;
 }
 
 .tag-item {

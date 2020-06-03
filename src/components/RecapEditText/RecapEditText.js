@@ -56,6 +56,7 @@ class RecapEditText extends Component {
 						as="textarea"
 						placeholder="Write something that happened..."
 						autoFocus
+						className="regular-text"
 					/>
 				</Form.Group>
 				{error && <p>{error.message}</p>}

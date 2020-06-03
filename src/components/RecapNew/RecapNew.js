@@ -135,6 +135,7 @@ class RecapNew extends Component {
 						as="textarea"
 						placeholder="Write something that happened..."
 						maxlength="4000" 
+						className="regular-text"
 					/>
 				</Form.Group>
 				<p hidden={this.props.session}>Select a session before writing a recap!</p>

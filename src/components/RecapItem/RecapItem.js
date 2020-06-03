@@ -208,7 +208,7 @@ class RecapItem extends Component {
 									recapItem = {this.props.recapItem}
 									writeRecap = {this.writeRecap}
 								/> : 
-								<p className="recap-text with-line-breaks">{this.props.recapItem.text}</p>
+								<p className="recap-text with-line-breaks regular-text">{this.props.recapItem.text}</p>
 							}
 						</Col>
 					</Row>
