@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form'
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase'; // Do not remove
 
 /*
 	This class holds the text field for editing recap texts
