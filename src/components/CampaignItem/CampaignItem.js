@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
+import CampaignInfo from '../CampaignInfo/CampaignInfo';
 
 import { Link } from "react-router-dom";
 
@@ -20,6 +21,7 @@ class CampaignItem extends Component {
 		super(props);
 
 		this.state = {
+			showCampaignInfo: false,
 			border: ""
 		};
 
@@ -41,7 +43,6 @@ class CampaignItem extends Component {
 			border: ""
 		});
 	}
-
 
 	// Triggers when deleting a campaign
 	deleteCampaign() {
@@ -109,10 +110,7 @@ class CampaignItem extends Component {
 							</Col>
 							<Col md="1" className="center">
 								<ItemMenu
-									edit = {() => this.props.editCampaign(
-										this.props.campaignID,
-										this.props.campaign
-									)}
+									edit = {() => this.setState({ showCampaignInfo: true})}
 									delete = {this.deleteCampaign}
 									deleteText = {deleteText}
 								/>
@@ -136,6 +134,16 @@ class CampaignItem extends Component {
 					</Link>
 					<Card.Footer className="text-muted">{lastSession}</Card.Footer>
 				</Card>
+				<CampaignInfo 
+					show = {this.state.showCampaignInfo}
+					onHide = {() => this.setState({ showCampaignInfo: false })}
+					campaignID = {this.props.campaignID}
+					campaign = {this.props.campaign}
+					campaigns = {this.props.campaigns}
+					handleCampaigns = {this.props.handleCampaigns}
+					campaignsRef = {this.props.campaignsRef}
+					edit = {true}
+				/>
 			</>
 		);
 	}

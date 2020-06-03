@@ -39,20 +39,21 @@ class CampaignInfo extends Component {
 		};
 	}
 
-	// *** WARNING ***
-	// This function is going to be rewritten since componentWillReceiveProps
-	// is outdated.
-	// Will be called when props change, which will update the state accordingly
-	componentWillReceiveProps(newProps) {
+	// Will be called when component mounts, and put necessary information in the state
+	// if a campaign is being edited
+	componentDidMount() {
 
-		// Put the current information about the session in the state
-		this.setState({
-			name: newProps.campaign.name,
-			description: newProps.campaign.description ? newProps.campaign.description : "",
-			world: newProps.campaign.world,
-			setting: newProps.campaign.setting
-		});
+		// Put the current information about the campaign in the state
+		if(this.props.edit) {
+			this.setState({ 
+				name: this.props.campaign.name,
+				world: this.props.campaign.world,
+				setting: this.props.campaign.setting,
+				description: this.props.campaign.description,
+			});
+		}
 	}
+
 
 	// Function for uploading a campaign from a JSON file
 	// NOTE: Campaign importing is currently disabled since there are no security

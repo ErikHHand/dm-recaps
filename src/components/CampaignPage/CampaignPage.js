@@ -23,14 +23,11 @@ class CampaignPage extends Component {
 		this.state = {
 			campaigns: [],
 			showCampaignInfo: false,
-			edit: false,
 			campaignID: null,
 			campaign: {name: "", description: "", world: "", setting: ""},
 		};
 
-		// Set the context for "this" for the following functions
-		this.addCampaign = this.addCampaign.bind(this);
-		this.editCampaign = this.editCampaign.bind(this);
+		// Set the context for "this" for the following function
 		this.handleCampaigns = this.handleCampaigns.bind(this);
 	}
 
@@ -59,26 +56,6 @@ class CampaignPage extends Component {
         });
 	}
 
-	// Triggers when adding a campaign
-	addCampaign() {
-		this.setState({
-			campaignID: null,
-			edit: false,
-			campaign: {name: "", description: "", world: "", setting: ""},
-			showCampaignInfo: true,
-		});
-	}
-
-	// Triggers before editing a campaign
-	editCampaign(campaignID, campaign) {
-		this.setState({
-			campaignID: campaignID,
-			campaign: campaign,
-			edit: true,
-			showCampaignInfo: true,
-		});
-	}
-
 	// Handles changes to the campaign list
 	handleCampaigns(campaigns) {
 		this.setState({
@@ -98,7 +75,6 @@ class CampaignPage extends Component {
 				key={campaignID}
 				campaignID = {campaignID}
 				campaign = {this.state.campaigns[campaignID]}
-				editCampaign = {this.editCampaign}
 				campaigns = {this.state.campaigns}
 				handleCampaigns = {this.handleCampaigns}
 				campaignsRef = {campaignsRef}
@@ -116,9 +92,11 @@ class CampaignPage extends Component {
 						</Col>
 					</Row>
 					<h1 className="center">Campaigns</h1>
-					<div className="campaign-list remove-scroll-bar border-top border-bottom">{campaigns}</div>
+					<div className="campaign-list remove-scroll-bar border-top border-bottom">
+						{campaigns}
+					</div>
 					<div className="center">
-						<Button variant="success" onClick={this.addCampaign}>Create a new campaign!</Button>
+						<Button variant="success" onClick={() => this.setState({showCampaignInfo: true})}>Create a new campaign!</Button>
 					</div>
 					<CampaignInfo 
 						show = {this.state.showCampaignInfo}
@@ -126,9 +104,8 @@ class CampaignPage extends Component {
 						campaigns = {this.state.campaigns}
 						handleCampaigns = {this.handleCampaigns}
 						campaignsRef = {campaignsRef}
-						edit = {this.state.edit}
+						edit = {false}
 						campaignID = {this.state.campaignID}
-						campaign = {this.state.campaign}
 					/>
 				</Jumbotron>
 			</Container>
