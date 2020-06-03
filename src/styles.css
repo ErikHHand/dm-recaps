@@ -343,13 +343,19 @@ button:focus {
 }
 
 .tag-selector-tag {
-	font-size: 12px !important;
+	font-size: 13px !important;
+	margin-bottom: 0.1rem;
 	cursor: pointer;
-	margin-bottom: 0.2rem;
+	border-width: 1px;
+	border: solid rgb(230, 230, 230);
 	max-width: 100%;
 	white-space: nowrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
+}
+
+.tag-selector-tag:hover {
+	border: solid rgb(94, 94, 94);
 }
 
 .text-on-bright {
