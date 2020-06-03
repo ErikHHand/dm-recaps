@@ -126,14 +126,12 @@ class SignUpFormBase extends Component {
 					/>
 				</Form.Group>
 				<Row>
-					<Col md={2}>
+					<Col>
 						<Button variant="success" type="submit" disabled={isInvalid}>
 							Sign up
 						</Button>
 					</Col>
-					<Col md={7}>
-					</Col>
-					<Col md={3}>
+					<Col className="right-align">
 						<Button variant="secondary" onClick={this.props.changeWindow}>
 							Back to sign in
 						</Button>
