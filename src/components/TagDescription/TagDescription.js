@@ -135,7 +135,7 @@ class TagDescription extends Component {
 								</Col>
 							</Row>
 						</Card.Title>
-						<Card.Text>
+						<Card.Text className="with-line-breaks">
 							{this.props.tag.description ? this.props.tag.description : noDescription}
 						</Card.Text>
 					</Card.Body>

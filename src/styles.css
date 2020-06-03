@@ -338,6 +338,10 @@ button:focus {
 	color: #D4E9FB;
 }
 
+.with-line-breaks {
+	white-space: pre-wrap;
+}
+
 #sign-in-box {
 	opacity: 0.95;
 }

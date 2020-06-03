@@ -129,7 +129,7 @@ class CampaignItem extends Component {
                     		onMouseOut={() => this.removeBorder()}
 						>
 							<Card.Title>{this.props.campaign.name}</Card.Title>
-							<Card.Text>{description}</Card.Text>
+							<Card.Text className="with-line-breaks">{description}</Card.Text>
 						</Card.Body>
 					</Link>
 					<Card.Footer className="text-muted">{lastSession}</Card.Footer>
