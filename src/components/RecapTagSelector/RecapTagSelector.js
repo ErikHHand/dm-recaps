@@ -227,11 +227,9 @@ class RecapTagSelector extends Component {
 					}) => (
 						<Popover id="popover-basic" {...props} className="tag-selector">
 							<Popover.Title as="h3">
-								<Row>
-									<Col className="filter-bar-width">
-										{tagFilter}
-									</Col>
-								</Row>
+								<div className="select-filter-bar">
+									{tagFilter}
+								</div>
 							</Popover.Title>
 							<Popover.Content>
 								<Row>
