@@ -11,10 +11,11 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 	This class is used for toggling the item menu
 	See react bootstrap documentaion on custom toggled
 	pop-ups for more details on why it is done this way
+	https://react-bootstrap.github.io/components/dropdowns/#custom-dropdown-components
 */
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-	<a
-		href=""
+	<button
+		href="#"
 		ref={ref}
 		onClick={(e) => {
 			e.preventDefault();
@@ -22,7 +23,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 		}}
 	>
 		{children}
-	</a>
+	</button>
 ));
 
 /*
