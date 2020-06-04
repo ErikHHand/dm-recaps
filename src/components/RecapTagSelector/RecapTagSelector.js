@@ -158,11 +158,10 @@ class RecapTagSelector extends Component {
 			allTags[i] = cols[i].map((tagID) => {
 				if(this.props.campaign.tags[tagID]) { // Avoid bug when filtered tag doesn't exists for some reason
 					return (
-						<div style={{display: "block"}}>
+						<div style={{display: "block"}} key={tagID}>
 							<Badge 
 								pill 
 								style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
-								key={tagID}
 								className={
 									TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
 									(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
@@ -226,13 +225,25 @@ class RecapTagSelector extends Component {
 						...props
 					}) => (
 						<Popover id="popover-basic" {...props} className="tag-selector">
-							<Popover.Title as="h3">
-								<div className="select-filter-bar">
-									{tagFilter}
-								</div>
+							<Popover.Title>
+								<Row>
+									<Col className="regular-text tag-selector-text remove-scroll-bar with-line-breaks">
+										{this.props.recapItem.text}
+									</Col>
+								</Row>
+								
 							</Popover.Title>
 							<Popover.Content>
 								<Row>
+									<Col>
+										<div className="select-filter-bar center">
+											{tagFilter}
+										</div>
+									</Col>
+								</Row>
+								
+
+								<Row className="tag-selector-tag-field remove-scroll-bar">
 									<Col className="border-right center" sm={4}>
 										{allTags[0]}
 									</Col>

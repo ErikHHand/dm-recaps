@@ -199,6 +199,11 @@ button:focus {
 	margin-bottom: 0.6rem;
 }
 
+.regular-text {
+	font-size: 14px !important;
+	line-height: 1.2rem !important;
+}
+
 .remove-margin {
 	margin: 0 !important;
 }
@@ -242,7 +247,9 @@ button:focus {
 }
 
 .select-filter-bar {
+	margin: auto;
 	max-width: 15rem;
+	margin-bottom: 0.5rem;
 }
 
 .select-label {
@@ -312,11 +319,6 @@ button:focus {
 	width: 100%;
 }
 
-.regular-text {
-	font-size: 14px !important;
-	line-height: 1.2rem !important;
-}
-
 .tag-item {
 	width: 100%;
 	font-size: 18px !important;
@@ -338,8 +340,8 @@ button:focus {
 }
 
 .tag-selector {
-	width: 32rem !important;
-	max-width: 32rem !important;
+	max-width: 36rem !important;
+	max-height: 90vh;
 }
 
 .tag-selector-tag {
@@ -356,6 +358,17 @@ button:focus {
 
 .tag-selector-tag:hover {
 	border: solid rgb(94, 94, 94);
+}
+
+.tag-selector-tag-field {
+	overflow: scroll;
+	max-height: 50vh;
+}
+
+.tag-selector-text {
+	overflow: scroll;
+	max-height: 20vh;
+	font-style: italic;
 }
 
 .text-on-bright {
