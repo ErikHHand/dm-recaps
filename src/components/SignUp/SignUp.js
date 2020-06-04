@@ -90,7 +90,7 @@ class SignUpFormBase extends Component {
 						onChange={this.onChange}
 						type="text"
 						placeholder="Username"
-						maxlength="25"
+						maxLength="25"
 					/>
 				</Form.Group>
 				<Form.Group controlId="formBasicEmail">
@@ -101,7 +101,7 @@ class SignUpFormBase extends Component {
 						onChange={this.onChange}
 						type="email"
 						placeholder="Email address"
-						maxlength="100"
+						maxLength="100"
 					/>
 					<Form.Text className="text-muted">
 						Your email address will never be shared with anyone else.
@@ -115,7 +115,7 @@ class SignUpFormBase extends Component {
 						onChange={this.onChange}
 						type="password"
 						placeholder="Password"
-						maxlength="100"
+						maxLength="100"
 					/>
 				</Form.Group>
 				<Form.Group controlId="formBasicPassword2">
@@ -126,7 +126,7 @@ class SignUpFormBase extends Component {
 						onChange={this.onChange}
 						type="password"
 						placeholder="Confirm Password"
-						maxlength="100"
+						maxLength="100"
 					/>
 				</Form.Group>
 				<Row>

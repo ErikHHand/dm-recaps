@@ -193,7 +193,7 @@ class TagInfo extends Component {
 								onChange={this.onChange}
 								type="text"
 								placeholder="Name...."
-								maxlength="80" 
+								maxLength="80" 
 							/>
 							<Form.Text className="text-muted">
 								For example "Misty Mountains".
@@ -209,7 +209,7 @@ class TagInfo extends Component {
 								type="text"
 								as="textarea"
 								placeholder="Description...."
-								maxlength="1000" 
+								maxLength="1000" 
 							/>
 							<Form.Text className="text-muted">
 								For example "Misty Mountains".
