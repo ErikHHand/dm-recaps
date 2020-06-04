@@ -102,7 +102,7 @@ class CampaignRecaps extends Component {
 	componentWillUnmount() {
 
 		// Check if user is signed in
-		if(this.props.firebase.auth.currentUser.uid) {
+		if(this.props.firebase.auth.currentUser) {
 			// The id for this campaign
 			let campaignID = this.props.location.state.id;
 
