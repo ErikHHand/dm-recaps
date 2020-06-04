@@ -100,8 +100,6 @@ class CampaignRecaps extends Component {
 	}
 
 	componentWillUnmount() {
-		console.log("unmount")
-
 		// The id for this campaign
 		let campaignID = this.props.location.state.id;
 
@@ -193,8 +191,6 @@ class CampaignRecaps extends Component {
 	}
 
 	render() {
-		console.log(this.state)
-
 		// The id for this campaign
 		let id = this.props.location.state.id;
 
