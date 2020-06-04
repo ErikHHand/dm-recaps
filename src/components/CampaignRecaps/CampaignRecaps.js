@@ -86,7 +86,10 @@ class CampaignRecaps extends Component {
 						tags: tags,
 						sessions: sessions,
 						campaign: campaginDoc.data(),
-					});		
+						activeTab: campaginDoc.data().activeTab ? campaginDoc.data().activeTab : "sessions",
+						selectedSession: campaginDoc.data().selectedSession,
+						selectedTag: campaginDoc.data().selectedTag,
+					});
 				}).catch((error) => {
 					console.log("Error getting document:", error);
 				});						
@@ -94,6 +97,28 @@ class CampaignRecaps extends Component {
 				console.log("Error getting document:", error);
 			});
 		});	
+	}
+
+	componentWillUnmount() {
+		console.log("unmount")
+
+		// The id for this campaign
+		let campaignID = this.props.location.state.id;
+
+		// The Firestore database reference for this campaign
+		let campaignRef = this.props.firebase.db.collection("users")
+		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(campaignID);
+
+		// Add 
+		campaignRef.update({
+			activeTab: this.state.activeTab, 
+			selectedSession: this.state.selectedSession,
+			selectedTag: this.state.selectedTag,
+		}).then(function() {
+			console.log("Document successfully updated!");
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
 	}
 
 	// Function for downloading all campaign, tag and session data
@@ -168,6 +193,7 @@ class CampaignRecaps extends Component {
 	}
 
 	render() {
+		console.log(this.state)
 
 		// The id for this campaign
 		let id = this.props.location.state.id;
