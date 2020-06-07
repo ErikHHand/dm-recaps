@@ -6,10 +6,12 @@ import RecapItem from '../RecapItem/RecapItem';
 import RecapNew from '../RecapNew/RecapNew';
 import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
 
-
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -127,6 +129,12 @@ class SessionsPage extends Component {
 								alphabetical = {false}
 							/>
 							<div className="item-list remove-scroll-bar">
+								<div 
+									className="session-add-button" 
+									onClick={() => this.setState({showSessionInfo: true})}
+								>
+									<FontAwesomeIcon icon={faPlus} className="session-add-button-plus"/>
+								</div>
 								{sessionItems}
 							</div>
 						</div>
@@ -152,14 +160,6 @@ class SessionsPage extends Component {
 					</Col>
 				</Row>
 
-				<div className="center add-button">
-					<Button 
-						variant="success" 
-						onClick={() => this.setState({showSessionInfo: true})}
-					>
-						New Session
-					</Button>
-				</div>
 				<SessionInfo 
 					show = {this.state.showSessionInfo}
 					onHide = {() => this.setState({ showSessionInfo: false })}
