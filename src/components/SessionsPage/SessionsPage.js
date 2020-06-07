@@ -133,7 +133,7 @@ class SessionsPage extends Component {
 									className="session-add-button" 
 									onClick={() => this.setState({showSessionInfo: true})}
 								>
-									<FontAwesomeIcon icon={faPlus} className="session-add-button-plus"/>
+									<FontAwesomeIcon icon={faPlus}/>
 								</div>
 								{sessionItems}
 							</div>
