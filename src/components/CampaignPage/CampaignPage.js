@@ -6,10 +6,12 @@ import CampaignItem from '../CampaignItem/CampaignItem';
 import SignOutButton from '../SignOut/SignOut';
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 /*
 	This component holds the page with the campaign list, the first page a 
@@ -93,11 +95,15 @@ class CampaignPage extends Component {
 					</Row>
 					<h1 className="center">Campaigns</h1>
 					<div className="campaign-list remove-scroll-bar border-top border-bottom">
+						<div 
+							className="campaign-add-button item-add-button" 
+							onClick={() => this.setState({showCampaignInfo: true})}
+						>
+							<FontAwesomeIcon icon={faPlus}/>
+						</div>
 						{campaigns}
 					</div>
-					<div className="center">
-						<Button variant="success" onClick={() => this.setState({showCampaignInfo: true})}>Create a new campaign!</Button>
-					</div>
+
 					<CampaignInfo 
 						show = {this.state.showCampaignInfo}
 						onHide = {() => this.setState({ showCampaignInfo: false })}
