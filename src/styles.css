@@ -104,6 +104,21 @@ button:focus {
 	margin-left: 77%;
 }
 
+.item-add-button {
+	display: flex;
+    align-items: center;
+	justify-content: center;
+	color: rgba(112, 109, 109, 0.5);
+	background-color: rgba(255, 255, 255, 0.4);
+	cursor: pointer;
+}
+
+.item-add-button:hover {
+	color: rgba(255, 255, 255, 1);
+	border: 2px solid rgba(39, 160, 180, 1);
+	background-color: rgba(39, 160, 180, 1);
+}
+
 .item:hover {
 	cursor: pointer;
 }
@@ -283,30 +298,6 @@ button:focus {
 	margin: 0 auto 0.3rem auto;
 }
 
-.tag-add-button {
-	border-radius: 10rem;
-	border: 3px dashed rgba(39, 160, 180, 1);
-	height: 33.75px;
-	width: 189.5px;
-	font-size: 20px;
-	margin: 0.2rem 0.35rem 0.45rem ;
-}
-
-.item-add-button {
-	display: flex;
-    align-items: center;
-	justify-content: center;
-	color: rgba(112, 109, 109, 0.5);
-	background-color: rgba(255, 255, 255, 0.4);
-	cursor: pointer;
-}
-
-.item-add-button:hover {
-	color: rgba(255, 255, 255, 1);
-	border: 2px solid rgba(39, 160, 180, 1);
-	background-color: rgba(39, 160, 180, 1);
-}
-
 .session-info-text {
 	font-size: 14px;
 	color: rgba(151, 146, 146, 0.85);
@@ -344,8 +335,13 @@ button:focus {
     float: left;
 }
 
-.tag-list-column {
-	height: 92%;
+.tag-add-button {
+	border-radius: 10rem;
+	border: 3px dashed rgba(39, 160, 180, 1);
+	height: 33.75px;
+	width: 189.5px;
+	font-size: 20px;
+	margin: 0.2rem 0.35rem 0.45rem ;
 }
 
 .tag-description {
@@ -366,6 +362,10 @@ button:focus {
 
 .tag-item-selected {
 	border: solid rgb(94, 94, 94);
+}
+
+.tag-list-column {
+	height: 92%;
 }
 
 .tag-not-selected {
