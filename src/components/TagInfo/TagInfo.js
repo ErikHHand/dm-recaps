@@ -65,6 +65,8 @@ class TagInfo extends Component {
 	onSubmit(event) {
 
 		event.preventDefault();
+		// Hide the tag info window
+		this.props.onHide();
 
 		// The info to be saved with the tag
 		let tagInfo = {
@@ -137,9 +139,6 @@ class TagInfo extends Component {
 		if(this.props.selectTag) {
 			this.props.handleSelectedTag(tagID);
 		}
-
-		// Hide the tag info window
-		this.props.onHide();
 	}
 	
 	// Triggers when changing tag name or tag description
