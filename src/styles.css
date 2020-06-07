@@ -279,17 +279,29 @@ button:focus {
 	border: 2px dashed rgba(39, 160, 180, 1);
 	height: 111px;
 	width: 185.5px;
+	font-size: 45px;
 	margin: 0 auto 0.3rem auto;
+}
+
+.tag-add-button {
+	border-radius: 10rem;
+	border: 3px dashed rgba(39, 160, 180, 1);
+	height: 33.75px;
+	width: 189.5px;
+	font-size: 20px;
+	margin: 0.2rem 0.35rem 0.45rem ;
+}
+
+.item-add-button {
 	display: flex;
     align-items: center;
 	justify-content: center;
-	font-size: 60px;
 	color: rgba(112, 109, 109, 0.5);
 	background-color: rgba(255, 255, 255, 0.4);
 	cursor: pointer;
 }
 
-.session-add-button:hover {
+.item-add-button:hover {
 	color: rgba(255, 255, 255, 1);
 	border: 2px solid rgba(39, 160, 180, 1);
 	background-color: rgba(39, 160, 180, 1);

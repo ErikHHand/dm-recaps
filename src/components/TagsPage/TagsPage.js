@@ -9,7 +9,9 @@ import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -184,6 +186,12 @@ class TagsPage extends Component {
 								alphabetical = {true}
 							/>
 							<div className="item-list remove-scroll-bar">
+								<div 
+									className="tag-add-button item-add-button" 
+									onClick={() => this.setState({ showTagInfo: true})}
+								>
+									<FontAwesomeIcon icon={faPlus}/>
+								</div>
 								{tagItems}
 							</div>
 						</div>
@@ -216,14 +224,7 @@ class TagsPage extends Component {
 						</div>
 					</Col>
 				</Row>
-				<div className="center add-button">
-					<Button 
-						variant="success" 
-						onClick={() => this.setState({ showTagInfo: true})}
-					>
-						New Tag
-					</Button>
-				</div>
+				
 				<TagInfo 
 					show = {this.state.showTagInfo}
 					onHide = {() => this.setState({ showTagInfo: false })}

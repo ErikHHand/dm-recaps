@@ -8,7 +8,6 @@ import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -130,7 +129,7 @@ class SessionsPage extends Component {
 							/>
 							<div className="item-list remove-scroll-bar">
 								<div 
-									className="session-add-button" 
+									className="session-add-button item-add-button" 
 									onClick={() => this.setState({showSessionInfo: true})}
 								>
 									<FontAwesomeIcon icon={faPlus}/>
