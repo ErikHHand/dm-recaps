@@ -21,6 +21,17 @@ class RecapEditText extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
   	}
 
+	componentWillUnmount() {
+		if(this.state.text !== this.props.recapItem.text) {
+			// Save text in recapItem locally
+			let recap = this.props.recapItem;
+			recap.text = this.state.text;
+			
+			// Call function in parent to add changes to Firestore
+			this.props.writeRecap(recap, recap.tags);
+		}
+	}
+	
 	// Saves the recap text to the state while writing
 	onChange(event) {
 		this.setState({ text: event.target.value });

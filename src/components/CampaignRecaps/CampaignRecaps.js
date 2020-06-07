@@ -100,25 +100,27 @@ class CampaignRecaps extends Component {
 	}
 
 	componentWillUnmount() {
-		console.log("unmount")
 
-		// The id for this campaign
-		let campaignID = this.props.location.state.id;
+		// Check if user is signed in
+		if(this.props.firebase.auth.currentUser) {
+			// The id for this campaign
+			let campaignID = this.props.location.state.id;
 
-		// The Firestore database reference for this campaign
-		let campaignRef = this.props.firebase.db.collection("users")
-		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(campaignID);
+			// The Firestore database reference for this campaign
+			let campaignRef = this.props.firebase.db.collection("users")
+			.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(campaignID);
 
-		// Add 
-		campaignRef.update({
-			activeTab: this.state.activeTab, 
-			selectedSession: this.state.selectedSession,
-			selectedTag: this.state.selectedTag,
-		}).then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
+			// Add info about active tab and session to back end
+			campaignRef.update({
+				activeTab: this.state.activeTab, 
+				selectedSession: this.state.selectedSession,
+				selectedTag: this.state.selectedTag,
+			}).then(function() {
+				console.log("Document successfully updated!");
+			}).catch(function(error) {
+				console.log("Error getting document:", error);
+			});
+		}
 	}
 
 	// Function for downloading all campaign, tag and session data
@@ -193,8 +195,6 @@ class CampaignRecaps extends Component {
 	}
 
 	render() {
-		console.log(this.state)
-
 		// The id for this campaign
 		let id = this.props.location.state.id;
 
