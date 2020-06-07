@@ -369,6 +369,8 @@ button:focus {
 	overflow: scroll;
 	max-height: 20vh;
 	font-style: italic;
+	margin: 0.5rem 0.8rem;
+	text-align: center;
 }
 
 .text-on-bright {
