@@ -117,7 +117,7 @@ class TagDescription extends Component {
 		let noDescription = "This tag has no description"; // Placeholder description
 
 		// Create background colour for the description box
-		let background = {backgroundColor: COLOURSRGB[this.props.tag.colour] + ", 0.14)"}
+		let background = {backgroundColor: COLOURSRGB[this.props.tag.colour]}
 
 		return (
 			<>
