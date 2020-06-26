@@ -26,6 +26,7 @@ class RecapItem extends Component {
 
 		this.state = {
 			edit: false,
+			showIcons: false,
 		}
 
 		// Set the context for "this" for the following functions
@@ -184,20 +185,31 @@ class RecapItem extends Component {
 			this.props.campaign.sessionOrder.indexOf(this.props.recapItem.session)) + " ";
 		
 		return (
-			<Card onClick = {this.props.click}>
+			<Card>
 				<Card.Body className="recap-body">
-					<Row noGutters={true}>
+					<Row 
+						noGutters={true}
+						onMouseEnter={() => this.setState({showIcons: true})} 
+						onMouseLeave={() => this.setState({showIcons: false})}
+					>
 						<Col lg="1" md="2">
-							<FontAwesomeIcon 
-								icon={faArrowUp} 
-								//onClick={() => props.changeSort(1)}
-								className={"arrow icon"}
-							/>
-							<FontAwesomeIcon 
-								icon={faArrowDown} 
-								//onClick={() => props.changeSort(1)}
-								className={"arrow icon"}
-							/>	
+							{
+								this.state.showIcons ?
+								<div>
+									<FontAwesomeIcon 
+										icon={faArrowUp} 
+										//onClick={() => props.changeSort(1)}
+										className={"arrow icon"}
+									/>
+									<FontAwesomeIcon 
+										icon={faArrowDown} 
+										//onClick={() => props.changeSort(1)}
+										className={"arrow icon"}
+									/>
+								</div> :	
+								<div></div>
+							}
+							
 						</Col>
 						<Col lg="10" md="8">
 							<div
@@ -210,11 +222,15 @@ class RecapItem extends Component {
 							</div>
 						</Col>
 						<Col lg="1" md="2" className="right-align">
-							<ItemMenu
-								edit = {this.editRecap}
-								delete = {this.deleteRecap}
-								deleteText = {deleteText}
-							/>
+							{
+								this.state.showIcons ?
+								<ItemMenu
+									edit = {this.editRecap}
+									delete = {this.deleteRecap}
+									deleteText = {deleteText}
+								/> :
+								<div></div>
+							}
 						</Col>
 					</Row>
 					<Row>
