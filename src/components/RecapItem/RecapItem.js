@@ -169,8 +169,40 @@ class RecapItem extends Component {
 		this.props.handleTags(tags);
 	}
 
+	// Moves the recap item up or down one place in the recap order array
 	changeRecapOrder(direction) {
-		let recapOrder = [...this.props.campaign.session]; 
+		let session = this.props.recapItem.session;
+		let recapOrder = [...this.props.campaign.sessions[session].recapOrder];
+		let index = recapOrder.indexOf(this.props.recapID);
+
+		// Check that it is possible to move item in that direction
+		if((direction === "up" && index === 0) ||
+			(direction === "down" && index === recapOrder.length - 1)) {
+			return;
+		}
+		
+		// Move the recap item in the desired direction
+		recapOrder.splice(index, 1);
+		if(direction === "up") {
+			recapOrder.splice(index - 1, 0, this.props.recapID)
+		} else if (direction === "down") {
+			recapOrder.splice(index + 1, 0, this.props.recapID)
+		}
+
+		// Write changes locally
+		let campaign = this.props.campaign;
+		campaign.sessions[session].recapOrder = recapOrder;
+		this.props.handleCampaign(campaign);
+		
+		// Write changes on Firestore
+		this.props.campaignRef.update({
+			['sessions.' + session + '.recapOrder']: recapOrder,
+		})
+		.then(function() {
+			console.log("Document successfully updated!");
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
 	}
 
 	render() {
