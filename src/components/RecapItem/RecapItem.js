@@ -169,6 +169,10 @@ class RecapItem extends Component {
 		this.props.handleTags(tags);
 	}
 
+	changeRecapOrder(direction) {
+		let recapOrder = [...this.props.campaign.session]; 
+	}
+
 	render() {
 
 		// Text for recap item deletion
@@ -194,16 +198,17 @@ class RecapItem extends Component {
 					>
 						<Col lg="1" md="2">
 							{
-								this.state.showIcons ?
+								(this.state.showIcons &&
+									this.props.campaign.activeTab === "sessions" )?
 								<div>
 									<FontAwesomeIcon 
 										icon={faArrowUp} 
-										//onClick={() => props.changeSort(1)}
+										onClick={() => this.changeRecapOrder("up")}
 										className={"arrow icon"}
 									/>
 									<FontAwesomeIcon 
 										icon={faArrowDown} 
-										//onClick={() => props.changeSort(1)}
+										onClick={() => this.changeRecapOrder("down")}
 										className={"arrow icon"}
 									/>
 								</div> :	

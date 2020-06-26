@@ -169,17 +169,24 @@ class CampaignRecaps extends Component {
 
 	// Handles changes to which tab is currently shown
 	setActiveTab(tab) {
+		let campaign = this.state.campaign;
+		campaign.activeTab = tab;
 		this.setState({
 			activeTab: tab,
-		})
+			campaign: campaign,
+		});
+		
 	}
 
 	// Handles changing which session is the selected session
 	handleSelectedSession(sessionID) {
 		if(sessionID === null || this.state.sessions[sessionID]) {
+			let campaign = this.state.campaign;
+			campaign.activeTab = "sessions";
 			this.setState({
 				activeTab: "sessions",
 				selectedSession: sessionID,
+				campaign: campaign,
 			});
 		}
 	}
@@ -187,9 +194,12 @@ class CampaignRecaps extends Component {
 	// Handles changing which tag is the selected tag
 	handleSelectedTag(tagID) {
 		if(tagID === null || this.state.tags[tagID]) {
+			let campaign = this.state.campaign;
+			campaign.activeTab = "tags";
 			this.setState({
 				activeTab: "tags",
 				selectedTag: tagID,
+				campaign: campaign,
 			});
 		}
 	}
