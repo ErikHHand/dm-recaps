@@ -147,10 +147,6 @@ button:focus {
 	background-color: rgba(39, 160, 180, 1);
 }
 
-.item:hover {
-	cursor: pointer;
-}
-
 .item-list {
 	max-height: 100%;
 	margin: 0 0 0 30px;
@@ -302,9 +298,7 @@ button:focus {
 	margin-bottom: 2rem;
 }
 
-.select-tag {
-	display: inline-block;
-}
+
 
 .select-type {
 	font-size: 14px !important;
@@ -331,10 +325,15 @@ button:focus {
 	width: inherit;
 	margin-bottom: 0.3rem;
 	border-width: 2px !important;
+	cursor: pointer;
 }
 
 .session-list-column {
 	height: 100%;
+}
+
+.sign-in-up-box {
+	opacity: 0.95;
 }
 
 .tag-add-button {
@@ -417,13 +416,4 @@ button:focus {
 
 .with-line-breaks {
 	white-space: pre-wrap;
-}
-
-#sign-in-box {
-	opacity: 0.95;
-}
-
-#tab-navigation {
-	display: flex;
-  	justify-content: center;
 }
