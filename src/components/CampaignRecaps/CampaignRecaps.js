@@ -4,7 +4,6 @@ import SessionsPage from '../SessionsPage/SessionsPage';
 import TagsPage from '../TagsPage/TagsPage';
 import SignOutButton from '../SignOut/SignOut';
 
-import Jumbotron from 'react-bootstrap/Jumbotron';
 import Tab from 'react-bootstrap/Tab'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -217,82 +216,80 @@ class CampaignRecaps extends Component {
 
 		return (
 			<Container>
-				<Jumbotron fluid className="container-window">
-					<Row>
-						<Col md={2}>
-							<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
-						</Col>
-						<Col md={8}>
-							{/* Disabled download functionality
-							<Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
-						</Col>
-						<Col md={2} className="right-align">
-							<SignOutButton />	
+				<Row className="top-bar">
+					<Col md={2}>
+						<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
+					</Col>
+					<Col md={8}>
+						{/* Disabled download functionality
+						<Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
+					</Col>
+					<Col md={2} className="right-align">
+						<SignOutButton />	
+					</Col>
+				</Row>
+				<div className="center campaign-title">{title}</div>
+				<Tab.Container activeKey={this.state.activeTab} transition={false}>
+					<Row className="tab-nav">
+						<Col>
+							<Nav 
+								variant="tabs" 
+								className="justify-content-center"
+								activeKey={this.state.activeTab}
+							>
+								<Nav.Item>
+									<Nav.Link 
+										eventKey="sessions"
+										onSelect={() => this.setActiveTab("sessions")}
+									>
+										Sessions
+									</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link 
+										eventKey="tags"
+										onSelect={() => this.setActiveTab("tags")}
+									>
+										Tags
+									</Nav.Link>
+								</Nav.Item>
+							</Nav>
 						</Col>
 					</Row>
-					<div className="center campaign-title">{title}</div>
-					<Tab.Container activeKey={this.state.activeTab} transition={false}>
-						<Row>
-							<Col>
-								<Nav 
-									variant="tabs" 
-									className="justify-content-center"
-									activeKey={this.state.activeTab}
-								>
-									<Nav.Item>
-										<Nav.Link 
-											eventKey="sessions"
-											onSelect={() => this.setActiveTab("sessions")}
-										>
-											Sessions
-										</Nav.Link>
-									</Nav.Item>
-									<Nav.Item>
-										<Nav.Link 
-											eventKey="tags"
-											onSelect={() => this.setActiveTab("tags")}
-										>
-											Tags
-										</Nav.Link>
-									</Nav.Item>
-								</Nav>
-							</Col>
-						</Row>
-							
-						<Tab.Content>
-							<Tab.Pane eventKey="sessions">
-								<SessionsPage
-									campaign = {this.state.campaign}
-									sessions = {this.state.sessions}
-									tags = {this.state.tags}
-									handleSessions = {this.handleSessions}
-									handleCampaign = {this.handleCampaign}
-									handleTags = {this.handleTags}
-									campaignRef = {campaignRef}
-									activeTab = {this.state.activeTab}
-									selectedSession = {this.state.selectedSession}
-									handleSelectedSession = {this.handleSelectedSession}
-									handleSelectedTag = {this.handleSelectedTag}
-								/>
-							</Tab.Pane>
-							<Tab.Pane eventKey="tags">
-								<TagsPage
-									campaign = {this.state.campaign}
-									sessions = {this.state.sessions}
-									tags = {this.state.tags}
-									handleCampaign = {this.handleCampaign}
-									handleSessions = {this.handleSessions}
-									handleTags = {this.handleTags}
-									campaignRef = {campaignRef}
-									activeTab = {this.state.activeTab}
-									selectedTag = {this.state.selectedTag}
-									handleSelectedSession = {this.handleSelectedSession}
-									handleSelectedTag = {this.handleSelectedTag}
-								/>
-							</Tab.Pane>
-						</Tab.Content>
-					</Tab.Container>
-				</Jumbotron>
+					
+					<Tab.Content>
+						<Tab.Pane eventKey="sessions">
+							<SessionsPage
+								campaign = {this.state.campaign}
+								sessions = {this.state.sessions}
+								tags = {this.state.tags}
+								handleSessions = {this.handleSessions}
+								handleCampaign = {this.handleCampaign}
+								handleTags = {this.handleTags}
+								campaignRef = {campaignRef}
+								activeTab = {this.state.activeTab}
+								selectedSession = {this.state.selectedSession}
+								handleSelectedSession = {this.handleSelectedSession}
+								handleSelectedTag = {this.handleSelectedTag}
+							/>
+						</Tab.Pane>
+						<Tab.Pane eventKey="tags">
+							<TagsPage
+								campaign = {this.state.campaign}
+								sessions = {this.state.sessions}
+								tags = {this.state.tags}
+								handleCampaign = {this.handleCampaign}
+								handleSessions = {this.handleSessions}
+								handleTags = {this.handleTags}
+								campaignRef = {campaignRef}
+								activeTab = {this.state.activeTab}
+								selectedTag = {this.state.selectedTag}
+								handleSelectedSession = {this.handleSelectedSession}
+								handleSelectedTag = {this.handleSelectedTag}
+							/>
+						</Tab.Pane>
+					</Tab.Content>
+				</Tab.Container>
 			</Container>
 		)
 	}

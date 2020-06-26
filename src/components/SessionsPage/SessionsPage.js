@@ -119,9 +119,9 @@ class SessionsPage extends Component {
 
 		return (
 			<>
-				<Row noGutters={true} className="border-bottom">
-					<Col lg={3} md={4} className="remove-padding list-height">
-						<div className="border-right session-list-column">
+				<Row noGutters={true} className="height-100">
+					<Col lg={3} md={4} className="remove-padding height-100">
+						<div className="border-right height-100">
 							<SortArrowsColumn
 								status = {this.state.sessionSortDescending}
 								changeSort = {() => this.changeSort("sessionSortDescending")}
@@ -138,7 +138,7 @@ class SessionsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col lg={9} md={8} className="remove-padding list-height">
+					<Col lg={9} md={8} className="remove-padding height-100">
 						<SortArrowsColumn
 							status = {this.state.recapSortDescending}
 							changeSort = {() => this.changeSort("recapSortDescending")}

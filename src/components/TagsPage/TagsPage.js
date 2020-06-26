@@ -174,12 +174,12 @@ class TagsPage extends Component {
 
 		return (
 			<>
-				<Row noGutters={true} className="border-bottom">
-					<Col lg={3} md={4} className="remove-padding list-height">
+				<Row noGutters={true} className="height-100">
+					<Col lg={3} md={4} className="remove-padding height-100">
 						<div className="filter-bar filter-bar-width border-bottom border-right">
 							{tagFilter}
 						</div>
-						<div className=" border-right tag-list-column">
+						<div className="border-right tag-list-column">
 							<SortArrowsColumn
 								status = {this.state.tagSort}
 								changeSort = {(value) => this.changeSort("tagSort", value)}
@@ -196,7 +196,7 @@ class TagsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col lg={9} md={8} className="remove-padding list-height" ref={ref => (this.recapItemColumn = ref)}>
+					<Col lg={9} md={8} className="remove-padding height-100" ref={ref => (this.recapItemColumn = ref)}>
 						<div ref={ref => (this.tagDescription = ref)}>
 							{this.props.selectedTag ? 
 								<TagDescription 

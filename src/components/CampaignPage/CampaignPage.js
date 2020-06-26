@@ -5,7 +5,6 @@ import CampaignInfo from '../CampaignInfo/CampaignInfo';
 import CampaignItem from '../CampaignItem/CampaignItem';
 import SignOutButton from '../SignOut/SignOut';
 
-import Jumbotron from 'react-bootstrap/Jumbotron';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
@@ -85,35 +84,33 @@ class CampaignPage extends Component {
 
 		return (
 			<Container>				
-				<Jumbotron fluid className="container-window">
-					<Row>
-						<Col md={10}>
-						</Col>
-						<Col md={2}>
-							<SignOutButton/>	
-						</Col>
-					</Row>
-					<h1 className="center">Campaigns</h1>
-					<div className="campaign-list remove-scroll-bar border-top border-bottom">
-						<div 
-							className="campaign-add-button item-add-button" 
-							onClick={() => this.setState({showCampaignInfo: true})}
-						>
-							<FontAwesomeIcon icon={faPlus}/>
-						</div>
-						{campaigns}
+				<Row className="top-bar">
+					<Col md={10}>
+					</Col>
+					<Col md={2}>
+						<SignOutButton/>	
+					</Col>
+				</Row>
+				<div className="center campaign-title">Campaigns</div>
+				<div className="campaign-list remove-scroll-bar border-top">
+					<div 
+						className="campaign-add-button item-add-button" 
+						onClick={() => this.setState({showCampaignInfo: true})}
+					>
+						<FontAwesomeIcon icon={faPlus}/>
 					</div>
+					{campaigns}
+				</div>
 
-					<CampaignInfo 
-						show = {this.state.showCampaignInfo}
-						onHide = {() => this.setState({ showCampaignInfo: false })}
-						campaigns = {this.state.campaigns}
-						handleCampaigns = {this.handleCampaigns}
-						campaignsRef = {campaignsRef}
-						edit = {false}
-						campaignID = {this.state.campaignID}
-					/>
-				</Jumbotron>
+				<CampaignInfo 
+					show = {this.state.showCampaignInfo}
+					onHide = {() => this.setState({ showCampaignInfo: false })}
+					campaigns = {this.state.campaigns}
+					handleCampaigns = {this.handleCampaigns}
+					campaignsRef = {campaignsRef}
+					edit = {false}
+					campaignID = {this.state.campaignID}
+				/>
 			</Container>
 		);
 	}
