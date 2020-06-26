@@ -8,6 +8,10 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
 
@@ -182,16 +186,28 @@ class RecapItem extends Component {
 		return (
 			<Card onClick = {this.props.click}>
 				<Card.Body className="recap-body">
-					<Row>
-						<Col 
-							lg="11"
-							md="10" 
-							className="session-info-text recap-session-info-text right-align"
-							onClick={() => this.props.handleSelectedSession(this.props.recapItem.session)}
-						>
-							{number + date.toDateString()}
-							&emsp;
-							{this.props.campaign.sessions[this.props.recapItem.session].description}
+					<Row noGutters={true}>
+						<Col lg="1" md="2">
+							<FontAwesomeIcon 
+								icon={faArrowUp} 
+								//onClick={() => props.changeSort(1)}
+								className={"arrow icon"}
+							/>
+							<FontAwesomeIcon 
+								icon={faArrowDown} 
+								//onClick={() => props.changeSort(1)}
+								className={"arrow icon"}
+							/>	
+						</Col>
+						<Col lg="10" md="8">
+							<div
+								onClick={() => this.props.handleSelectedSession(this.props.recapItem.session)}
+								className="session-info-text recap-session-info-text"
+							>
+								{number + date.toDateString()}
+								&emsp; 
+								{this.props.campaign.sessions[this.props.recapItem.session].description}
+							</div>
 						</Col>
 						<Col lg="1" md="2" className="right-align">
 							<ItemMenu

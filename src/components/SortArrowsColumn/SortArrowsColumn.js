@@ -12,40 +12,40 @@ import { faSortAlphaUpAlt } from '@fortawesome/free-solid-svg-icons';
 	(which is currently only used for the tag item list).
 */
 const SortArrowsColumn = (props) => (
-	<div className="center sort-arrows-col">
+	<div className="center arrow-sort-col">
 		{props.alphabetical ?
 			<>
 				<FontAwesomeIcon 
 					icon={faSortNumericUpAlt} 
 					onClick={props.status === 1 ? null : () => props.changeSort(1)}
-					className={props.status === 1 ? "sort-arrow-active" : "sort-arrow-inactive"}
+					className={props.status === 1 ? "arrow-sort-active arrow" : "arrow icon"}
 				/>
 				<FontAwesomeIcon 
 					icon={faSortNumericDown}
 					onClick={props.status === 2 ? null : () => props.changeSort(2)}
-					className={props.status === 2 ? "sort-arrow-active" : "sort-arrow-inactive"}
+					className={props.status === 2 ? "arrow-sort-active arrow" : "arrow icon"}
 				/>
 				<FontAwesomeIcon 
 					icon={faSortAlphaUpAlt} 
 					onClick={props.status === 3 ? null : () => props.changeSort(3)}
-					className={props.status === 3 ? "sort-arrow-active" : "sort-arrow-inactive"}
+					className={props.status === 3 ? "arrow-sort-active arrow" : "arrow icon"}
 				/>
 				<FontAwesomeIcon 
 					icon={faSortAlphaDown}
 					onClick={props.status === 4 ? null : () => props.changeSort(4)}
-					className={props.status === 4 ? "sort-arrow-active" : "sort-arrow-inactive"}
+					className={props.status === 4 ? "arrow-sort-active arrow" : "arrow icon"}
 				/>
 			</>
 		:	<>
 				<FontAwesomeIcon 
 					icon={faSortNumericUpAlt} 
 					onClick={props.status ? null : props.changeSort}
-					className={props.status ? "sort-arrow-active" : "sort-arrow-inactive"}
+					className={props.status ? "arrow-sort-active arrow" : "icon arrow"}
 				/>
 				<FontAwesomeIcon 
 					icon={faSortNumericDown}
 					onClick={props.status ? props.changeSort : null}
-					className={props.status ? "sort-arrow-inactive" : "sort-arrow-active"}
+					className={props.status ? "icon arrow" : "arrow-sort-active arrow"}
 				/>
 			</>
 		}

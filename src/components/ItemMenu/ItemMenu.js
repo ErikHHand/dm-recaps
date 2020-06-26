@@ -64,7 +64,7 @@ class ItemMenu extends Component {
 			<>
 				<Dropdown>
 					<Dropdown.Toggle as={CustomToggle}>
-						<FontAwesomeIcon icon={faEllipsisH} className="item-menu"/>	
+						<FontAwesomeIcon icon={faEllipsisH} className="item-menu icon"/>	
 					</Dropdown.Toggle>
 					<Dropdown.Menu>
 						<Dropdown.Item onClick={this.props.edit}>Edit</Dropdown.Item>

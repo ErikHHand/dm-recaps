@@ -29,6 +29,21 @@ button:focus {
 	outline: none !important;
 }
 
+.arrow {
+	margin: 0 0.3rem 0 0;
+}
+
+.arrow-sort-active {
+	color: rgba(39, 160, 180, 1);
+}
+
+.arrow-sort-col {
+	font-size: 18px;
+	padding-top: 0.5rem;
+	width: 30px;
+    float: left;
+}
+
 .border-bottom{
 	border: solid rgba(134, 134, 134, 0.1);
 	border-width: 0 0 1px 0;
@@ -108,6 +123,15 @@ button:focus {
 	margin-left: 77%;
 }
 
+.icon {
+	color: rgba(151, 146, 146, 0.424);
+	cursor: pointer;
+}
+
+.icon:hover {
+	color: rgba(151, 146, 146, 0.835);
+}
+
 .item-add-button {
 	display: flex;
     align-items: center;
@@ -135,14 +159,7 @@ button:focus {
 }
 
 .item-menu {
-	font-size: 18pt;
-	color: rgba(151, 146, 146, 0.424);
-	cursor: pointer;
-	line-height: 0.5em;
-}
-
-.item-menu:hover {
-	color: rgba(151, 146, 146, 0.835);
+	font-size: 21px;
 }
 
 .item-title {
@@ -191,10 +208,12 @@ button:focus {
 	text-overflow: ellipsis;
 	word-break: break-all;
 	line-height: 1.5rem !important;
+	display: inline-block;
+	float: right;
+	cursor: pointer;
 }
 
 .recap-session-info-text:hover {
-	cursor: pointer;
 	color: rgb(112, 109, 109);
 	text-decoration: underline;
 }
@@ -316,27 +335,6 @@ button:focus {
 
 .session-list-column {
 	height: 100%;
-}
-
-.sort-arrow-active {
-	color: rgba(39, 160, 180, 1);
-}
-
-.sort-arrow-inactive{
-	cursor: pointer;
-	color: rgba(151, 146, 146, 0.424);
-}
-
-.sort-arrow-inactive:hover {
-	color: rgba(151, 146, 146, 0.835);
-}
-
-.sort-arrows-col {
-	font-size: 15pt;
-	color: rgba(151, 146, 146, 0.424);
-	padding-top: 0.5rem;
-	width: 30px;
-    float: left;
 }
 
 .tag-add-button {
