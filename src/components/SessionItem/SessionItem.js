@@ -21,7 +21,8 @@ class SessionItem extends Component {
 		super(props);
 
 		this.state = {
-			showSessionInfo: false
+			showSessionInfo: false,
+			showIcons: false,
 		}
 
 		// Set the context for "this" for the following function
@@ -114,6 +115,8 @@ class SessionItem extends Component {
 					className="session-item item" 
 					border={this.props.isSelectedSession ? "info" : ""} 
 					onClick = {this.props.click}
+					onMouseEnter={() => this.setState({showIcons: true})} 
+					onMouseLeave={() => this.setState({showIcons: false})}
 				>
 					<Card.Body >
 						<Card.Title>
@@ -121,12 +124,16 @@ class SessionItem extends Component {
 								<Col md={9} className="item-title">
 									{session.description}
 								</Col>
-								<Col md={3} className="center">
-									<ItemMenu
-										edit = {() => this.setState({ showSessionInfo: true})}
-										delete = {this.deleteSession}
-										deleteText = {deleteText}
-									/>
+								<Col md={3} className="center item-menu-pos">
+									{
+										this.state.showIcons ?
+										<ItemMenu
+											edit = {() => this.setState({ showSessionInfo: true})}
+											delete = {this.deleteSession}
+											deleteText = {deleteText}
+										/> :
+										<div></div>
+									}
 								</Col>
 							</Row>
 							

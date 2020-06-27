@@ -167,7 +167,13 @@ button:focus {
 }
 
 .item-menu {
-	font-size: 21px;
+	font-size: 19px;
+}
+
+.item-menu-pos {
+	max-height: 19px;
+	position: relative;
+	bottom: 0.4rem;
 }
 
 .item-title {

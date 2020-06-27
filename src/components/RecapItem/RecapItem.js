@@ -222,12 +222,12 @@ class RecapItem extends Component {
 		
 		return (
 			<Card>
-				<Card.Body className="recap-body">
-					<Row 
-						noGutters={true}
-						onMouseEnter={() => this.setState({showIcons: true})} 
-						onMouseLeave={() => this.setState({showIcons: false})}
-					>
+				<Card.Body 
+					className="recap-body"
+					onMouseEnter={() => this.setState({showIcons: true})} 
+					onMouseLeave={() => this.setState({showIcons: false})}
+						>
+					<Row noGutters={true}>
 						<Col lg="1" md="2">
 							{
 								(this.state.showIcons &&
