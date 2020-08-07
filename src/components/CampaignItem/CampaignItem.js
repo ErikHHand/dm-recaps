@@ -122,6 +122,7 @@ class CampaignItem extends Component {
 						state: {
 							campaign: this.props.campaign,
 							id: this.props.campaignID,
+							activeTab: this.props.campaign.activeTab,
 						}
 					}}>
 						<Card.Body

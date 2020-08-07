@@ -5,6 +5,7 @@ import SessionItem from '../SessionItem/SessionItem';
 import RecapItem from '../RecapItem/RecapItem';
 import RecapNew from '../RecapNew/RecapNew';
 import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
+import Spinner from 'react-bootstrap/Spinner'
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -51,70 +52,98 @@ class SessionsPage extends Component {
 
 		// Render session items
 		let sessionItems;
-
-		if(!this.props.campaign.sessions) {
-			sessionItems = <div></div>;
-		} else {
-
-			// Create a copy of the list so it can be sorted 
-			let sessionOrder = [...this.props.campaign.sessionOrder]; 
-			if(!this.state.sessionSortDescending) { //
-				sessionOrder.reverse();
-			}
-
-			sessionItems = sessionOrder.map((sessionID)=>
-				<SessionItem 
-					key = {sessionID}
-					sessionID = {sessionID}
-					sessions = {this.props.sessions}
-					tags = {this.props.tags}
-					campaign = {this.props.campaign}
-					handleSessions = {this.props.handleSessions}
-					handleTags = {this.props.handleTags}
-					handleCampaign = {this.props.handleCampaign}
-					handleSelectedSession = {this.props.handleSelectedSession}
-					isSelectedSession = {this.props.selectedSession === sessionID}
-					campaignRef = {this.props.campaignRef}
-					click = {() => this.props.handleSelectedSession(sessionID)}
-				/>
-			);
-		}
-
-		// Render recap items
 		let recapItems;
+		let recapNew;
 
-		// TODO: Check if all of these checks really are necessary anymore
-		if(!this.props.selectedSession) {
-			recapItems = <div></div>;
-		} else if(!this.props.sessions[this.props.selectedSession]) {
-			recapItems = <div></div>;
-		} else if(this.props.sessions[this.props.selectedSession].recaps.length === 0) {
-			recapItems = <div></div>;	 
-		} else {
-
-			// Get list of recaps and copy the recap order list so it can be sorted
-			let recapList = this.props.sessions[this.props.selectedSession].recaps;
-			let recapOrder = [...this.props.campaign.sessions[this.props.selectedSession].recapOrder];
-			if(this.state.recapSortDescending) {
-				recapOrder.reverse();
-			}
-
-			recapItems = recapOrder.map((recapID)=>
-				<RecapItem 
-					key = {recapID}
-					recapID = {recapID}
-					recapItem = {recapList[recapID]}
-					campaign = {this.props.campaign}
+		switch (this.props.status) {
+			case "LOADING":
+				sessionItems = <div className="loading-spinner">
+					<Spinner animation="grow" variant="info" role="status">
+						<span className="sr-only">Loading...</span>
+					</Spinner>
+				</div>
+				recapItems = <div className="loading-spinner">
+					<Spinner animation="grow" variant="info" role="status">
+						<span className="sr-only">Loading...</span>
+					</Spinner>
+				</div>
+				break;
+			case "LOADED":
+				recapNew = <RecapNew 
+					session = {this.props.selectedSession}
 					sessions = {this.props.sessions}
-					tags = {this.props.tags}
-					handleCampaign = {this.props.handleCampaign}
+					campaign = {this.props.campaign}
 					handleSessions = {this.props.handleSessions}
-					handleTags = {this.props.handleTags}
-					handleSelectedSession = {this.props.handleSelectedSession}
-					handleSelectedTag = {this.props.handleSelectedTag}
+					handleCampaign = {this.props.handleCampaign}
 					campaignRef = {this.props.campaignRef}
 				/>
-			);
+
+				if(!this.props.campaign.sessions) {
+					sessionItems = <div></div>;
+				} else {
+		
+					// Create a copy of the list so it can be sorted 
+					let sessionOrder = [...this.props.campaign.sessionOrder]; 
+					if(!this.state.sessionSortDescending) { //
+						sessionOrder.reverse();
+					}
+		
+					sessionItems = sessionOrder.map((sessionID)=>
+						<SessionItem 
+							key = {sessionID}
+							sessionID = {sessionID}
+							sessions = {this.props.sessions}
+							tags = {this.props.tags}
+							campaign = {this.props.campaign}
+							handleSessions = {this.props.handleSessions}
+							handleTags = {this.props.handleTags}
+							handleCampaign = {this.props.handleCampaign}
+							handleSelectedSession = {this.props.handleSelectedSession}
+							isSelectedSession = {this.props.selectedSession === sessionID}
+							campaignRef = {this.props.campaignRef}
+							click = {() => this.props.handleSelectedSession(sessionID)}
+						/>
+					);
+				}
+		
+				// Render recap items		
+				// TODO: Check if all of these checks really are necessary anymore
+				if(!this.props.selectedSession) {
+					recapItems = <div></div>;
+				} else if(!this.props.sessions[this.props.selectedSession]) {
+					recapItems = <div></div>;
+				} else if(this.props.sessions[this.props.selectedSession].recaps.length === 0) {
+					recapItems = <div></div>;	 
+				} else {
+		
+					// Get list of recaps and copy the recap order list so it can be sorted
+					let recapList = this.props.sessions[this.props.selectedSession].recaps;
+					let recapOrder = [...this.props.campaign.sessions[this.props.selectedSession].recapOrder];
+					if(this.state.recapSortDescending) {
+						recapOrder.reverse();
+					}
+		
+					recapItems = recapOrder.map((recapID)=>
+						<RecapItem 
+							key = {recapID}
+							recapID = {recapID}
+							recapItem = {recapList[recapID]}
+							campaign = {this.props.campaign}
+							sessions = {this.props.sessions}
+							tags = {this.props.tags}
+							handleCampaign = {this.props.handleCampaign}
+							handleSessions = {this.props.handleSessions}
+							handleTags = {this.props.handleTags}
+							handleSelectedSession = {this.props.handleSelectedSession}
+							handleSelectedTag = {this.props.handleSelectedTag}
+							campaignRef = {this.props.campaignRef}
+						/>
+					);
+				}
+				break;
+			default:
+				sessionItems = <p>Failed to load data, please reload the page or check your internet connection.</p>
+				break;
 		}
 
 		return (
@@ -146,14 +175,7 @@ class SessionsPage extends Component {
 						/>
 						<div className="item-list remove-scroll-bar">
 							{this.state.recapSortDescending ? null : recapItems}
-							<RecapNew 
-								session = {this.props.selectedSession}
-								sessions = {this.props.sessions}
-								campaign = {this.props.campaign}
-								handleSessions = {this.props.handleSessions}
-								handleCampaign = {this.props.handleCampaign}
-								campaignRef = {this.props.campaignRef}
-							/>
+							{recapNew}
 							{this.state.recapSortDescending ? recapItems : null}
 						</div>
 					</Col>

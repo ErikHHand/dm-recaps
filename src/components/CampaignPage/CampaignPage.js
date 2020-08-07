@@ -8,6 +8,7 @@ import SignOutButton from '../SignOut/SignOut';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
+import Spinner from 'react-bootstrap/Spinner'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -22,6 +23,7 @@ class CampaignPage extends Component {
 		super(props);
 
 		this.state = {
+			status: "LOADING",
 			campaigns: [],
 			showCampaignInfo: false,
 			campaignID: null,
@@ -49,7 +51,8 @@ class CampaignPage extends Component {
 			
 			// Save the campaigns in the state
             home.setState({
-                campaigns: campaigns,
+				campaigns: campaigns,
+				status: "LOADED",
 			});
 						
         }).catch((error) => {
@@ -69,19 +72,36 @@ class CampaignPage extends Component {
 		// Save the query reference for campaigns
         let campaignsRef = this.props.firebase.db.collection("users")
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns");
-		
-		// Fill campaign list
-		let campaigns = Array.from(Object.keys(this.state.campaigns)).map((campaignID)=>
-			<CampaignItem
-				key={campaignID}
-				campaignID = {campaignID}
-				campaign = {this.state.campaigns[campaignID]}
-				campaigns = {this.state.campaigns}
-				handleCampaigns = {this.handleCampaigns}
-				campaignsRef = {campaignsRef}
-			/>
-		);
 
+		let campaigns = null;
+
+		switch (this.state.status) {
+			case "LOADING":
+				campaigns = <div className="loading-spinner">
+					<Spinner animation="grow" variant="info" role="status">
+						<span className="sr-only">Loading...</span>
+					</Spinner>
+				</div>
+				break;
+			case "LOADED":
+				// Fill campaign list
+				campaigns = Array.from(Object.keys(this.state.campaigns)).map((campaignID)=>
+					<CampaignItem
+						key={campaignID}
+						campaignID = {campaignID}
+						campaign = {this.state.campaigns[campaignID]}
+						campaigns = {this.state.campaigns}
+						handleCampaigns = {this.handleCampaigns}
+						campaignsRef = {campaignsRef}
+					/>
+				);
+				break;
+			default:
+				campaigns = <p>Failed to load data, please reload the page or check your internet connection.</p>
+				break;
+		}
+		
+		
 		return (
 			<Container>				
 				<Row className="top-bar">

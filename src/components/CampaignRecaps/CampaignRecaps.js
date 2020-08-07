@@ -25,12 +25,14 @@ class CampaignRecaps extends Component {
 	constructor(props) {
 		super(props);
 
+		console.log(this)
+
 		this.state = {
-			key: 'sessions',
+			status: "LOADING",
 			campaign: {},
 			sessions: {},
 			tags: {},
-			activeTab: "sessions",
+			activeTab: this.props.location.state.activeTab ? this.props.location.state.activeTab : "sessions",
 			selectedSession: null,
 			selectedTag: null,
 		};
@@ -82,6 +84,7 @@ class CampaignRecaps extends Component {
 
 					// Save the tags, sessions and campaign in the state
 					campaign.setState({
+						status: "LOADED",
 						tags: tags,
 						sessions: sessions,
 						campaign: campaginDoc.data(),
@@ -271,6 +274,7 @@ class CampaignRecaps extends Component {
 								selectedSession = {this.state.selectedSession}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
+								status = {this.state.status}
 							/>
 						</Tab.Pane>
 						<Tab.Pane eventKey="tags">
@@ -286,6 +290,7 @@ class CampaignRecaps extends Component {
 								selectedTag = {this.state.selectedTag}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
+								status = {this.state.status}
 							/>
 						</Tab.Pane>
 					</Tab.Content>

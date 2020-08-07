@@ -6,6 +6,7 @@ import TagInfo from '../TagInfo/TagInfo';
 import TagFilter from '../TagFilter/TagFilter';
 import TagDescription from '../TagDescription/TagDescription';
 import SortArrowsColumn from '../SortArrowsColumn/SortArrowsColumn';
+import Spinner from 'react-bootstrap/Spinner'
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -90,86 +91,107 @@ class TagsPage extends Component {
 		let tagItems;
 		let recapItems;
 
-		// Create the tag filter component and the tag item list 
-		if(!this.props.campaign.tags) {
-			//Render nothing if there are no tags
-			tagFilter = <div></div>;
-			tagItems = <div></div>; 
-		} else {
+		switch (this.props.status) {
+			case "LOADING":
+				tagItems = <div className="loading-spinner">
+					<Spinner animation="grow" variant="info" role="status">
+						<span className="sr-only">Loading...</span>
+					</Spinner>
+				</div>
+				recapItems = <div className="loading-spinner">
+					<Spinner animation="grow" variant="info" role="status">
+						<span className="sr-only">Loading...</span>
+					</Spinner>
+				</div>
+				break;
+			case "LOADED":
 
-			tagFilter = <TagFilter
-							campaign = {this.props.campaign}
-							filteredTags = {this.state.filteredTags}
-							handleFilteredTags = {this.handleFilteredTags}
-							tagSort = {this.state.tagSort}
-							showTagInfo = {this.state.showTagInfo}
+				// Create the tag filter component and the tag item list 
+				if(!this.props.campaign.tags) {
+					//Render nothing if there are no tags
+					tagFilter = <div></div>;
+					tagItems = <div></div>; 
+				} else {
+
+					tagFilter = <TagFilter
+									campaign = {this.props.campaign}
+									filteredTags = {this.state.filteredTags}
+									handleFilteredTags = {this.handleFilteredTags}
+									tagSort = {this.state.tagSort}
+									showTagInfo = {this.state.showTagInfo}
+								/>
+
+					let sortedKeys = [...this.state.filteredTags]; // Copy list so it can be sorted
+
+					// Reverse keys, based on the current sorting
+					if(this.state.tagSort === 2 || this.state.tagSort === 3) {
+						sortedKeys.reverse();
+					}
+					
+					// Render tag items
+					tagItems = sortedKeys.map((tag)=>
+						<TagItem 
+							key = {tag}
+							tagInfo = {this.props.campaign.tags[tag]}
+							isSelected = {this.props.selectedTag === tag}
+							handleClick = {() => this.props.handleSelectedTag(tag)}
 						/>
+					);
+				}
 
-			let sortedKeys = [...this.state.filteredTags]; // Copy list so it can be sorted
+				// Create the recap item list
+				if(!this.props.selectedTag) {
+					recapItems = <div></div>; // No current tag
+				} else if(!this.props.tags[this.props.selectedTag]) {
+					recapItems = <div></div>; // Current tag doesn't exist?
+				} else {
+					let recapList = this.props.tags[this.props.selectedTag].recaps;
+					let length = this.props.campaign.sessionOrder.length;
+					let recapKeys = {};
 
-			// Reverse keys, based on the current sorting
-			if(this.state.tagSort === 2 || this.state.tagSort === 3) {
-				sortedKeys.reverse();
-			}
-			
-			// Render tag items
-			tagItems = sortedKeys.map((tag)=>
-				<TagItem 
-					key = {tag}
-					tagInfo = {this.props.campaign.tags[tag]}
-					isSelected = {this.props.selectedTag === tag}
-					handleClick = {() => this.props.handleSelectedTag(tag)}
-				/>
-			);
-		}
+					// Order recap items chronologically
+					// First, give each recap item a number for sorting
+					// Multiply session order by a large number to guarantee that is counted higher
+					// than the recap order, which is added by as a small number
+					for(let recapItem in recapList) {
+						let session = this.props.campaign.sessions[recapList[recapItem].session];
+						let sessionIndex = this.props.campaign.sessionOrder.indexOf(recapList[recapItem].session);
+						recapKeys[recapItem] = (length - sessionIndex) * 100000 + session.recapOrder.indexOf(recapItem);
+					}
+					
+					// Then sort keys
+					let sortedKeys = Object.keys(recapKeys).sort((a, b) => {				
+						return recapKeys[a] - recapKeys[b];
+					});
 
-		// Create the recap item list
-		if(!this.props.selectedTag) {
-			recapItems = <div></div>; // No current tag
-		} else if(!this.props.tags[this.props.selectedTag]) {
-			recapItems = <div></div>; // // Current tag doesn't exist?
-		} else {
-			let recapList = this.props.tags[this.props.selectedTag].recaps;
-			let length = this.props.campaign.sessionOrder.length;
-			let recapKeys = {};
+					// Change sorting if specified
+					if(this.state.recapSortDescending) {
+						sortedKeys.reverse();
+					}
 
-			// Order recap items chronologically
-			// First, give each recap item a number for sorting
-			// Multiply session order by a large number to guarantee that is counted higher
-			// than the recap order, which is added by as a small number
-			for(let recapItem in recapList) {
-				let session = this.props.campaign.sessions[recapList[recapItem].session];
-				let sessionIndex = this.props.campaign.sessionOrder.indexOf(recapList[recapItem].session);
-				recapKeys[recapItem] = (length - sessionIndex) * 100000 + session.recapOrder.indexOf(recapItem);
-			}
-			
-			// Then sort keys
-			let sortedKeys = Object.keys(recapKeys).sort((a, b) => {				
-				return recapKeys[a] - recapKeys[b];
-			});
-
-			// Change sorting if specified
-			if(this.state.recapSortDescending) {
-				sortedKeys.reverse();
-			}
-
-			// Render recap items
-			recapItems = sortedKeys.map((recapID)=>
-				<RecapItem 
-					key = {recapID}
-					recapID = {recapID}
-					recapItem = {recapList[recapID]}
-					campaign = {this.props.campaign}
-					sessions = {this.props.sessions}
-					tags = {this.props.tags}
-					handleCampaign = {this.props.handleCampaign}
-					handleSessions = {this.props.handleSessions}
-					handleTags = {this.props.handleTags}
-					handleSelectedSession = {this.props.handleSelectedSession}
-					handleSelectedTag = {this.props.handleSelectedTag}
-					campaignRef = {this.props.campaignRef}
-				/>
-			);
+					// Render recap items
+					recapItems = sortedKeys.map((recapID)=>
+						<RecapItem 
+							key = {recapID}
+							recapID = {recapID}
+							recapItem = {recapList[recapID]}
+							campaign = {this.props.campaign}
+							sessions = {this.props.sessions}
+							tags = {this.props.tags}
+							handleCampaign = {this.props.handleCampaign}
+							handleSessions = {this.props.handleSessions}
+							handleTags = {this.props.handleTags}
+							handleSelectedSession = {this.props.handleSelectedSession}
+							handleSelectedTag = {this.props.handleSelectedTag}
+							campaignRef = {this.props.campaignRef}
+						/>
+					);
+				}
+				
+				break;
+			default:
+				tagItems = <p>Failed to load data, please reload the page or check your internet connection.</p>
+				break;
 		}
 
 		return (
