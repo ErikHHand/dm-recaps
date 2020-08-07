@@ -25,8 +25,6 @@ class CampaignRecaps extends Component {
 	constructor(props) {
 		super(props);
 
-		console.log(this)
-
 		this.state = {
 			status: "LOADING",
 			campaign: {},
