@@ -5,6 +5,7 @@ import Landing from '../Landing/Landing';
 import NotFound from '../NotFound/NotFound';
 import CampaignPage from '../CampaignPage/CampaignPage';
 import CampaignRecaps from '../CampaignRecaps/CampaignRecaps';
+import Account from '../Account/Account';
 
 import { AuthUserContext } from '../Session/Session';
 
@@ -41,6 +42,10 @@ class Navigation extends Component {
                 <Route
                     path = "/campaigns/:id"
                     render = { (props) => <CampaignRecaps {...props}/> }
+                />
+                <Route
+                    path = "/account/"
+                    render = { (props) => <Account {...props}/> }
                 />
                 <Route path='*' component={NotFound} />                        
             </Switch>

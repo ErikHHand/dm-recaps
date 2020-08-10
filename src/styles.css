@@ -102,7 +102,6 @@ button:focus {
 	font-size: 24px;
 	font-weight: 500;
 	text-overflow: ellipsis;
-	height: 5vh;
 }
 
 .center {
@@ -184,6 +183,10 @@ button:focus {
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.jumbotron-box {
+	opacity: 0.95;
 }
 
 .loading-spinner {
@@ -346,15 +349,11 @@ button:focus {
 	cursor: pointer;
 }
 
-.sign-in-up-box {
-	opacity: 0.95;
-}
-
 .tab-content {
-	height: 80vh;
+	height: 83vh;
 }
 
-.tab-nav {
+.tab-nav { /* Do not remove */
 	height: 5vh;
 }
 
@@ -442,6 +441,8 @@ button:focus {
 
 .top-bar {
 	height: 5vh;
+	padding-top: 1.5vh;
+	margin-bottom: 2vh;
 }
 
 .with-line-breaks {

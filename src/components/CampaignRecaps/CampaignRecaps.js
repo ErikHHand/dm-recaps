@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 
 import SessionsPage from '../SessionsPage/SessionsPage';
 import TagsPage from '../TagsPage/TagsPage';
-import SignOutButton from '../SignOut/SignOut';
+import Navbar from '../Navbar/Navbar';
 
 import Tab from 'react-bootstrap/Tab'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
-import Button from 'react-bootstrap/Button';
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -113,8 +112,8 @@ class CampaignRecaps extends Component {
 			// Add info about active tab and session to back end
 			campaignRef.update({
 				activeTab: this.state.activeTab, 
-				selectedSession: this.state.selectedSession,
-				selectedTag: this.state.selectedTag,
+				selectedSession: this.state.selectedSession ? this.state.selectedSession : "",
+				selectedTag: this.state.selectedTag ? this.state.selectedTag : "",
 			}).then(function() {
 				console.log("Document successfully updated!");
 			}).catch(function(error) {
@@ -217,19 +216,9 @@ class CampaignRecaps extends Component {
 
 		return (
 			<Container>
-				<Row className="top-bar">
-					<Col md={2}>
-						<Button variant="outline-secondary" onClick={() => this.props.history.push("/campaigns")}>Back</Button>
-					</Col>
-					<Col md={8}>
-						{/* Disabled download functionality
-						<Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
-					</Col>
-					<Col md={2} className="right-align">
-						<SignOutButton />	
-					</Col>
-				</Row>
-				<div className="center campaign-title">{title}</div>
+				<Navbar
+					title = {title}
+				/>
 				<Tab.Container activeKey={this.state.activeTab} transition={false}>
 					<Row className="tab-nav">
 						<Col>

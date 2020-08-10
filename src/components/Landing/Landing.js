@@ -3,7 +3,6 @@ import { Row, Col } from 'react-bootstrap';
 
 import SignIn from "./../SignIn/SignIn";
 import SignUp from "./../SignUp/SignUp";
-
 import Jumbotron from 'react-bootstrap/Jumbotron';
 
 import './../../styles.css';
@@ -39,7 +38,7 @@ class Landing extends Component {
 				<Col xs={0} md={3}></Col>
 				<Col xs={12} md={6}>
 					<h1 className="center"> {title} </h1>
-					<Jumbotron className="sign-in-up-box">
+					<Jumbotron className="jumbotron-box">
 						<h1>{this.state.signIn ? "Sign in" : "Sign up"}</h1>
 						{this.state.signIn ?
 							<SignIn changeWindow = {this.changeWindow}/> : 
