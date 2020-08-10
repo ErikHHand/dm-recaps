@@ -28,7 +28,7 @@ class NavbarBase extends Component {
                         <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic"></Dropdown.Toggle>
 
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Acount</Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</Dropdown.Item>
                             <Dropdown.Item onClick={this.props.firebase.doSignOut}>Sign out</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>	

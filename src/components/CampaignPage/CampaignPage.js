@@ -4,6 +4,7 @@ import { withAuthorization } from '../Session/Session';
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
 import CampaignItem from '../CampaignItem/CampaignItem';
 import SignOutButton from '../SignOut/SignOut';
+import Navbar from '../Navbar/Navbar';
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -104,14 +105,7 @@ class CampaignPage extends Component {
 		
 		return (
 			<Container>				
-				<Row className="top-bar">
-					<Col md={10}>
-					</Col>
-					<Col md={2}>
-						<SignOutButton/>	
-					</Col>
-				</Row>
-				<div className="center campaign-title">Campaigns</div>
+				<Navbar title = "Campaigns"/>
 				<div className="campaign-list remove-scroll-bar border-top">
 					<div 
 						className="campaign-add-button item-add-button" 

@@ -91,7 +91,7 @@ button:focus {
 
 .campaign-list  {
 	overflow: scroll;
-	max-height: 84vh;
+	max-height: 88vh;
 	margin: 1vh 0 0 0;
 	padding: 0.5rem 0;
 }
