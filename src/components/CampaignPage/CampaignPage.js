@@ -3,11 +3,8 @@ import React, { Component } from 'react';
 import { withAuthorization } from '../Session/Session';
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
 import CampaignItem from '../CampaignItem/CampaignItem';
-import SignOutButton from '../SignOut/SignOut';
 import Navbar from '../Navbar/Navbar';
 
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Spinner from 'react-bootstrap/Spinner'
 

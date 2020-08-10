@@ -16,7 +16,7 @@ class NavbarBase extends Component {
         return  (
             <Row className="top-bar">
                 <Col md={2}>
-                    <Button variant="outline-secondary" href="/campaigns/">Campaigns</Button>
+                    <Button variant="outline-secondary" onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</Button>
                 </Col>
                 <Col md={8}>
                     <div className="center campaign-title">{this.props.title ? this.props.title : ""}</div>
