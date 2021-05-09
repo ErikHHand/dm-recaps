@@ -10,7 +10,7 @@
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
     "firebase": "^7.14.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-date-picker": "^5.1.0",
