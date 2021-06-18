@@ -4,8 +4,6 @@ import { compose } from 'recompose';
 
 import * as ROUTES from '../../constants/routes';
 
-import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
