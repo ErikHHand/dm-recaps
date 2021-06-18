@@ -196,6 +196,16 @@ button:focus {
 	margin-top: 4rem;
 }
 
+.nav-text {
+	font-size: 16px;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.nav-text:hover {
+	text-decoration: underline;
+}
+
 .react-search-field-input {
 	width: 100%;
 }

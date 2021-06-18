@@ -16,22 +16,18 @@ class NavbarBase extends Component {
         return  (
             <Row className="top-bar">
                 <Col md={2}>
-                    <Button variant="outline-secondary" onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</Button>
+                    <p className="nav-text" onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
                 </Col>
                 <Col md={8}>
                     <div className="center campaign-title">{this.props.title ? this.props.title : ""}</div>
                     {/* Disabled download functionality
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
-                <Col md={2} className="right-align">
-                    <Dropdown>
-                        <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic"></Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</Dropdown.Item>
-                            <Dropdown.Item onClick={this.props.firebase.doSignOut}>Sign out</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>	
+                <Col md={1} className="right-align">
+                    <p className="nav-text" onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
+                </Col>
+                <Col md={1} className="right-align">
+                    <p className="nav-text" onClick={this.props.firebase.doSignOut}>Sign out</p>
                 </Col>
             </Row>
         )
