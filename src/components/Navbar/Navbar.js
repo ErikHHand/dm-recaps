@@ -11,10 +11,21 @@ import { withFirebase } from '../Firebase/Firebase';
 
 class NavbarBase extends Component {
     render() {
+        
+        const pathName = this.props.location.pathname;
+
+        var navClasses = ["nav-text", "nav-text"]; // [campaigns, account]
+
+        if (pathName == '/campaigns') {
+            navClasses[0] += " nav-text-current";
+        } else if (pathName == '/account') {
+            navClasses[1] += " nav-text-current";
+        }
+        
         return  (
             <Row className="top-bar">
                 <Col md={1}>
-                    <p className="nav-text" onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
+                    <p className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
                 </Col>
                 <Col md={4}>
                     <div className="nav-text">{this.props.title ? this.props.title : ""}</div>
@@ -22,7 +33,7 @@ class NavbarBase extends Component {
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
                 <Col md={{span:1, offset: 5}} className="right-align">
-                    <p className="nav-text" onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
+                    <p className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
                 </Col>
                 <Col md={1} className="right-align">
                     <p className="nav-text" onClick={this.props.firebase.doSignOut}>Sign out</p>
