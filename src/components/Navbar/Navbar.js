@@ -13,15 +13,15 @@ class NavbarBase extends Component {
     render() {
         return  (
             <Row className="top-bar">
-                <Col md={2}>
+                <Col md={1}>
                     <p className="nav-text" onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
                 </Col>
-                <Col md={8}>
-                    <div className="center campaign-title">{this.props.title ? this.props.title : ""}</div>
+                <Col md={4}>
+                    <div className="nav-text">{this.props.title ? this.props.title : ""}</div>
                     {/* Disabled download functionality
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
-                <Col md={1} className="right-align">
+                <Col md={{span:1, offset: 5}} className="right-align">
                     <p className="nav-text" onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
                 </Col>
                 <Col md={1} className="right-align">
