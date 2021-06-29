@@ -15,27 +15,30 @@ class NavbarBase extends Component {
         const pathName = this.props.location.pathname;
 
         var navClasses = ["nav-text", "nav-text"]; // [campaigns, account]
+        var colClasses = ["column", "right-align column"]; //[campigns, account]
 
         if (pathName == '/campaigns') {
             navClasses[0] += " nav-text-current";
+            colClasses[0] += " column-current"
         } else if (pathName == '/account') {
             navClasses[1] += " nav-text-current";
+            colClasses[1] += " column-current"
         }
         
         return  (
             <Row className="top-bar" noGutters={true}>
-                <Col md={2}>
+                <Col md={2} className={colClasses[0]}>
                     <p className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
                 </Col>
-                <Col md={4}>
+                <Col md={4} className="column">
                     <div className="nav-text">{this.props.title ? this.props.title : ""}</div>
                     {/* Disabled download functionality
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
-                <Col md={{span: 2, offset: 3}} className="right-align">
+                <Col md={{span: 2, offset: 3}} className={colClasses[1]}>
                     <p className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
                 </Col>
-                <Col md={1} className="right-align">
+                <Col md={1} className="right-align column">
                     <p className="nav-text" onClick={this.props.firebase.doSignOut}>Sign out</p>
                 </Col>
             </Row>

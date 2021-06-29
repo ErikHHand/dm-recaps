@@ -108,6 +108,18 @@ button:focus {
     text-align: center;
 }
 
+.column {
+	border: none;
+}
+
+.column:hover {
+	border-bottom: 3px solid gray;
+}
+
+.column-current {
+	border-bottom: 3px solid black;
+}
+
 .container {
 	opacity: 0.97;
 	border-radius: 4px;
@@ -292,6 +304,7 @@ button:focus {
 /* Hide scrollbar for IE and Edge */
 .remove-scroll-bar {
 	-ms-overflow-style: none;
+	scrollbar-width: none; /* Firefox 64 */
 }
 
 .right-align {
