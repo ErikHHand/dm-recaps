@@ -212,12 +212,8 @@ button:focus {
 	font-size: 16px;
 	cursor: pointer;
 	display: inline-block;
-	/*padding: 20px; */
 }
 
-.nav-text:hover {
-	text-decoration: underline;
-}
 
 .nav-text-current {
 	font-weight: bold;
