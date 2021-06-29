@@ -11,7 +11,7 @@ import { withFirebase } from '../Firebase/Firebase';
 
 class NavbarBase extends Component {
     render() {
-        
+
         const pathName = this.props.location.pathname;
 
         var navClasses = ["nav-text", "nav-text"]; // [campaigns, account]
@@ -23,8 +23,8 @@ class NavbarBase extends Component {
         }
         
         return  (
-            <Row className="top-bar">
-                <Col md={1}>
+            <Row className="top-bar" noGutters={true}>
+                <Col md={2}>
                     <p className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
                 </Col>
                 <Col md={4}>
@@ -32,7 +32,7 @@ class NavbarBase extends Component {
                     {/* Disabled download functionality
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
-                <Col md={{span:1, offset: 5}} className="right-align">
+                <Col md={{span: 2, offset: 3}} className="right-align">
                     <p className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
                 </Col>
                 <Col md={1} className="right-align">

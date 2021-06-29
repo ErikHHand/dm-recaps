@@ -200,10 +200,15 @@ button:focus {
 	font-size: 16px;
 	cursor: pointer;
 	display: inline-block;
+	/*padding: 20px; */
 }
 
 .nav-text:hover {
 	text-decoration: underline;
+}
+
+.nav-text-current {
+	font-weight: bold;
 }
 
 .react-search-field-input {
@@ -452,7 +457,7 @@ button:focus {
 .top-bar {
 	height: 5vh;
 	padding-top: 1.5vh;
-	margin-bottom: 2vh;
+	margin: 0vh 2rem 2vh 2rem !important;
 }
 
 .with-line-breaks {
