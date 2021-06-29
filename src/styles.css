@@ -110,6 +110,7 @@ button:focus {
 
 .column {
 	border: none;
+	height: 35px;
 }
 
 .column:hover {
