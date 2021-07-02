@@ -10,6 +10,7 @@ import Container from 'react-bootstrap/Container'
 
 
 const INITIAL_STATE = {
+    currentUsername: '',
     email: '',
     username: '',
     passwordOne: '',
@@ -29,6 +30,23 @@ class Account extends Component {
 		this.onChangeUsername = this.onChangeUsername.bind(this);
 		this.onChangeEmail = this.onChangeEmail.bind(this);
     }
+
+    componentDidMount() {
+
+		let account = this;
+
+		// Query for getting the campaign collection from firestore
+        var accountRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+        accountRef.get().then((user) => {
+			
+            account.setState({
+				currentUsername: user.data().username,
+			});
+						
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+	}
 
     onChangePassword(event) {
         const { passwordOne } = this.state;
@@ -67,7 +85,7 @@ class Account extends Component {
 
         const { email } = this.state;
 
-        // Change username on Firestore
+        // Change email on Firestore
 		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
 		.update({
 			email: email,
@@ -96,12 +114,14 @@ class Account extends Component {
         const isUsernameInvalid = username === '';
 
         const isEmailInvalid = email === '';
+
+        console.log(this.props.firebase.auth.currentUser)
         
 
         return (
             <Container>
                 <Navbar/>
-                <h1 className="border-bottom">Account</h1>
+                <h1 className="border-bottom">{this.state.currentUsername + "'s Account"}</h1>
                 <h4>Change Password</h4>
                 <Form onSubmit={this.onChangePassword}>
                     <Form.Group controlId="passwordOne">
