@@ -70,6 +70,16 @@ class Account extends Component {
         const { username } = this.state;
 
         // Change username on Firestore
+		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+		.update({
+			username: username,
+		})
+		.then(function() {
+			console.log("Document successfully updated!");
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
+        
         this.props.firebase.auth.currentUser.updateProfile({
             displayName: username,
           }).then(() => {

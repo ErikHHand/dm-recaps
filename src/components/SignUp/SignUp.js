@@ -41,7 +41,6 @@ class SignUpFormBase extends Component {
 
 			this.props.firebase.db.collection("users").doc(authUser.user.uid).set({
 				username: username,
-				email: email,
 			})
 			.then(
 				console.log("Document written with ID: ", authUser.user.uid)
