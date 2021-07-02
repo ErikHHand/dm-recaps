@@ -49,6 +49,15 @@ class SignUpFormBase extends Component {
 			.catch(function(error) {
 				console.error("Error adding document: ", error);
 			});
+
+			authUser.user.updateProfile({
+				displayName: username,
+			  }).then(() => {
+				console.log("Document successfully updated!");
+			  }).catch((error) => {
+				console.log("Error updating document:", error);
+			  });  
+			  
 		})
 		.then(authUser => {
 			this.setState({ ...INITIAL_STATE });

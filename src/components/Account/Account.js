@@ -31,6 +31,7 @@ class Account extends Component {
 		this.onChangeEmail = this.onChangeEmail.bind(this);
     }
 
+    /*
     componentDidMount() {
 
 		let account = this;
@@ -47,6 +48,7 @@ class Account extends Component {
             console.log("Error getting document:", error);
         });
 	}
+    */
 
     onChangePassword(event) {
         const { passwordOne } = this.state;
@@ -105,7 +107,6 @@ class Account extends Component {
 
     render() {
 
-        //console.log(this.props.location.pathname)
         const { passwordOne, passwordTwo, username, email, error } = this.state;
      
         const isPasswordInvalid =
@@ -121,7 +122,7 @@ class Account extends Component {
         return (
             <Container>
                 <Navbar/>
-                <h1 className="border-bottom">{this.state.currentUsername + "'s Account"}</h1>
+                <h1 className="border-bottom">{this.props.firebase.auth.currentUser.displayName + "'s Account"}</h1>
                 <h4>Change Password</h4>
                 <Form onSubmit={this.onChangePassword}>
                     <Form.Group controlId="passwordOne">
