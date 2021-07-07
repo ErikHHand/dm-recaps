@@ -121,6 +121,10 @@ button:focus {
 	border-bottom: 3px solid black;
 }
 
+.column-current:hover {
+	border-bottom: 3px solid black;
+}
+
 .container {
 	opacity: 0.97;
 	border-radius: 4px;
