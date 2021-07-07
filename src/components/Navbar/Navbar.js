@@ -13,9 +13,10 @@ class NavbarBase extends Component {
     render() {
 
         const pathName = this.props.location.pathname;
+        console.log(pathName.substring(0,11));
 
-        var navClasses = ["nav-text", "nav-text"]; // [campaigns, account]
-        var colClasses = ["column", "right-align column"]; //[campigns, account]
+        var navClasses = ["nav-text", "nav-text", "nav-text"]; // [campaigns, account, current/last visited campaign]
+        var colClasses = ["column", "right-align column", "column"]; //[campigns, account, current/last visited campaign]
 
         if (pathName === '/campaigns') {
             navClasses[0] += " nav-text-current";
@@ -23,15 +24,19 @@ class NavbarBase extends Component {
         } else if (pathName === '/account') {
             navClasses[1] += " nav-text-current";
             colClasses[1] += " column-current"
+        } else if (pathName.substring(0,11) === '/campaigns/') {
+            navClasses[2] += " nav-text-current";
+            colClasses[2] += " column-current";
         }
+
         
         return  (
             <Row className="top-bar" noGutters={true}>
                 <Col md={2} className={colClasses[0]}>
                     <p className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
                 </Col>
-                <Col md={3} className="column">
-                    <div className="nav-text">{this.props.title ? this.props.title : ""}</div>
+                <Col md={3} className={colClasses[2]}>
+                    <div className={navClasses[2]}>{this.props.title ? this.props.title : ""}</div>
                     {/* Disabled download functionality
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
