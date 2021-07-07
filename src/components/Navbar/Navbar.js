@@ -17,10 +17,10 @@ class NavbarBase extends Component {
         var navClasses = ["nav-text", "nav-text"]; // [campaigns, account]
         var colClasses = ["column", "right-align column"]; //[campigns, account]
 
-        if (pathName == '/campaigns') {
+        if (pathName === '/campaigns') {
             navClasses[0] += " nav-text-current";
             colClasses[0] += " column-current"
-        } else if (pathName == '/account') {
+        } else if (pathName === '/account') {
             navClasses[1] += " nav-text-current";
             colClasses[1] += " column-current"
         }
