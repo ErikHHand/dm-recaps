@@ -7,6 +7,8 @@ import * as ROUTES from '../../constants/routes';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import { Link } from "react-router-dom";
+
 import { withFirebase } from '../Firebase/Firebase';
 
 class NavbarBase extends Component {
@@ -15,7 +17,8 @@ class NavbarBase extends Component {
 		super(props);
 
 		this.state = {
-			lastCampaign: "",
+			lastCampaignName: "",
+            lastCampaignID: ""
 		};
 
 	}
@@ -26,13 +29,18 @@ class NavbarBase extends Component {
 
         userRef.get().then((doc) => {
 
-            let campaignName = "";
+            let lastCampaignName = "";
+            let lastCampaignID = "";
             if (doc.exists) {
-                campaignName = doc.data().lastCampaign;
+                
+                lastCampaignName = doc.data().lastCampaignName;
+                lastCampaignID = doc.data().lastCampaignID;
+                console.log(lastCampaignName);
             }
 
 			this.setState({
-				lastCampaign: campaignName,
+				lastCampaignName: lastCampaignName,
+                lastCampaignID: lastCampaignID,
 			});
 						
         }).catch((error) => {
@@ -44,6 +52,7 @@ class NavbarBase extends Component {
     render() {
 
         const pathName = this.props.location.pathname;
+        console.log(this.state.lastCampaignID)
 
         var navClasses = ["nav-text", "nav-text", "nav-text"]; // [campaigns, account, current/last visited campaign]
         var colClasses = ["column", "right-align column", "column"]; //[campigns, account, current/last visited campaign]
@@ -66,7 +75,14 @@ class NavbarBase extends Component {
                     <p className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
                 </Col>
                 <Col md={3} lg={3} className={colClasses[2]}>
-                    <div className={navClasses[2]}>{this.state.lastCampaign }</div>
+                    <Link to={{
+						pathname: "/campaigns/"+ this.state.lastCampaignID,
+						state: {
+							id: this.state.lastCampaignID ? this.state.lastCampaignID: "",
+						}
+					}}>
+                        <div className={navClasses[2]} >{this.state.lastCampaignName }</div>
+                    </Link>
                     {/* Disabled download functionality
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>

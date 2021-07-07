@@ -29,7 +29,7 @@ class CampaignRecaps extends Component {
 			campaign: {},
 			sessions: {},
 			tags: {},
-			activeTab: this.props.location.state.activeTab ? this.props.location.state.activeTab : "sessions",
+			activeTab: this.props.location.state ? this.props.location.state.activeTab : "sessions",
 			selectedSession: null,
 			selectedTag: null,
 		};
@@ -124,7 +124,8 @@ class CampaignRecaps extends Component {
 			});
 
 			userRef.update({
-				lastCampaign: this.state.campaign ? this.state.campaign.name : "",
+				lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
+				lastCampaignID: this.props.location.state.id ? this.props.location.state.id: "",
 			}).then(function() {
 				console.log("Document successfully updated!");
 			}).catch(function(error) {
