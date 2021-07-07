@@ -60,42 +60,104 @@ class CampaignRecaps extends Component {
 
 		// Get the campaign for Firestore and save in the state
 		campaignRef.get().then((campaginDoc) => {
+
+			campaignRef.collection("recaps").get().then(querySnapshot => {
+				if(querySnapshot.size > 0) {
+					campaignRef.collection("recaps").get().then((querySnapshot) => {
+						let sessions = {};
+						let tags = {};
+
+						for (let tagID in campaginDoc.data().tags) {
+							tags[tagID] = {};
+							tags[tagID]["recaps"] = {};
+							
+						}
+						for (let sessionID in campaginDoc.data().sessions) {
+							sessions[sessionID] = {};
+							sessions[sessionID]["recaps"] = {};
+						}
+
+						// Get all entries in the sessions collection
+						querySnapshot.forEach((doc) => {
+							sessions[doc.data().session].recaps[doc.id] = doc.data();
+							for (let i = 0; i < doc.data().tags.length; i++) {
+								tags[doc.data().tags[i]].recaps[doc.id] = doc.data();
+							}
+						});
+
+						// Save the tags, sessions and campaign in the state
+						campaign.setState({
+							status: "LOADED",
+							sessions: sessions,
+							tags: tags,
+							campaign: campaginDoc.data(),
+							activeTab: campaginDoc.data().activeTab ? campaginDoc.data().activeTab : "sessions",
+							selectedSession: campaginDoc.data().selectedSession,
+							selectedTag: campaginDoc.data().selectedTag,
+						});
+					}).catch((error) => {
+						console.log("Error getting document:", error);
+					});	
+				} else {
+					// Query for getting the sessions collection from Firestore
+					campaignRef.collection("sessions").get().then((querySnapshot) => {
+						let sessions = {};
+
+						// Get all entries in the sessions collection
+						querySnapshot.forEach((doc) => {
+							sessions[doc.id] = doc.data();
+						});
+
+						// Query for getting the tags collection from firestore
+						campaignRef.collection("tags").get().then((querySnapshot) => {
+							let tags = {};
+
+							// Get all entries in the tags collection
+							querySnapshot.forEach((doc) => {
+								tags[doc.id] = doc.data();
+							});
+
+							campaign.createRecapCollection(sessions, campaignRef);
+
+							// Save the tags, sessions and campaign in the state
+							campaign.setState({
+								status: "LOADED",
+								sessions: sessions,
+								tags: tags,
+								campaign: campaginDoc.data(),
+								activeTab: campaginDoc.data().activeTab ? campaginDoc.data().activeTab : "sessions",
+								selectedSession: campaginDoc.data().selectedSession,
+								selectedTag: campaginDoc.data().selectedTag,
+							});
+						}).catch((error) => {
+							console.log("Error getting document:", error);
+						});						
+					}).catch((error) => {
+						console.log("Error getting document:", error);
+					});
+				}
+			})
 			
-			// Query for getting the sessions collection from Firestore
-			campaignRef.collection("sessions").get().then((querySnapshot) => {
-				let sessions = {};
-
-				// Get all entries in the sessions collection
-				querySnapshot.forEach((doc) => {
-					sessions[doc.id] = doc.data();
-				});
-
-				// Query for getting the tags collection from firestore
-				campaignRef.collection("tags").get().then((querySnapshot) => {
-					let tags = {};
-
-					// Get all entries in the tags collection
-					querySnapshot.forEach((doc) => {
-						tags[doc.id] = doc.data();
-					});
-
-					// Save the tags, sessions and campaign in the state
-					campaign.setState({
-						status: "LOADED",
-						tags: tags,
-						sessions: sessions,
-						campaign: campaginDoc.data(),
-						activeTab: campaginDoc.data().activeTab ? campaginDoc.data().activeTab : "sessions",
-						selectedSession: campaginDoc.data().selectedSession,
-						selectedTag: campaginDoc.data().selectedTag,
-					});
-				}).catch((error) => {
-					console.log("Error getting document:", error);
-				});						
-			}).catch((error) => {
-				console.log("Error getting document:", error);
-			});
+			
 		});	
+	}
+
+	createRecapCollection(sessions, campaignRef) {
+
+		/*
+		let recaps = {};
+		for (let sessionID in sessions) {
+			for (let recapID in sessions[sessionID].recaps) {
+				campaignRef.collection("recaps").doc(recapID)
+				.set(sessions[sessionID].recaps[recapID])
+				.then(function() {
+					console.log("Document successfully updated!");
+				}).catch(function(error) {
+					console.log("Error getting document:", error);
+				});
+			}
+		}
+		*/
 	}
 
 	componentWillUnmount() {
