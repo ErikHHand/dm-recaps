@@ -13,7 +13,6 @@ class NavbarBase extends Component {
     render() {
 
         const pathName = this.props.location.pathname;
-        console.log(pathName.substring(0,11));
 
         var navClasses = ["nav-text", "nav-text", "nav-text"]; // [campaigns, account, current/last visited campaign]
         var colClasses = ["column", "right-align column", "column"]; //[campigns, account, current/last visited campaign]
