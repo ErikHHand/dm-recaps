@@ -211,8 +211,8 @@ button:focus {
 
 .nav-text {
 	font-size: 16px;
+	text-align: center;
 	cursor: pointer;
-	display: inline-block;
 }
 
 
