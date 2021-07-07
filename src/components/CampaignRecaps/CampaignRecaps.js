@@ -109,11 +109,22 @@ class CampaignRecaps extends Component {
 			let campaignRef = this.props.firebase.db.collection("users")
 			.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(campaignID);
 
+			let userRef = this.props.firebase.db.collection("users")
+			.doc(this.props.firebase.auth.currentUser.uid);
+
 			// Add info about active tab and session to back end
 			campaignRef.update({
 				activeTab: this.state.activeTab, 
 				selectedSession: this.state.selectedSession ? this.state.selectedSession : "",
 				selectedTag: this.state.selectedTag ? this.state.selectedTag : "",
+			}).then(function() {
+				console.log("Document successfully updated!");
+			}).catch(function(error) {
+				console.log("Error getting document:", error);
+			});
+
+			userRef.update({
+				lastCampaign: this.state.campaign ? this.state.campaign.name : "",
 			}).then(function() {
 				console.log("Document successfully updated!");
 			}).catch(function(error) {
@@ -211,14 +222,9 @@ class CampaignRecaps extends Component {
 		let campaignRef = this.props.firebase.db.collection("users")
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
 
-		// Render title if a campaign exists
-		let title = this.state.campaign ? this.state.campaign.name : "";
-
 		return (
 			<Container>
-				<Navbar
-					title = {title}
-				/>
+				<Navbar/>
 				<Tab.Container activeKey={this.state.activeTab} transition={false}>
 					<Row className="tab-nav">
 						<Col>

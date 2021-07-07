@@ -10,6 +10,37 @@ import Col from 'react-bootstrap/Col'
 import { withFirebase } from '../Firebase/Firebase';
 
 class NavbarBase extends Component {
+
+    constructor(props) {
+		super(props);
+
+		this.state = {
+			lastCampaign: "",
+		};
+
+	}
+
+    componentDidMount() {
+        let userRef = this.props.firebase.db.collection("users")
+		.doc(this.props.firebase.auth.currentUser.uid);
+
+        userRef.get().then((doc) => {
+
+            let campaignName = "";
+            if (doc.exists) {
+                campaignName = doc.data().lastCampaign;
+            }
+
+			this.setState({
+				lastCampaign: campaignName,
+			});
+						
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+
+    }
+
     render() {
 
         const pathName = this.props.location.pathname;
@@ -35,7 +66,7 @@ class NavbarBase extends Component {
                     <p className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
                 </Col>
                 <Col md={3} lg={3} className={colClasses[2]}>
-                    <div className={navClasses[2]}>{this.props.title ? this.props.title : ""}</div>
+                    <div className={navClasses[2]}>{this.state.lastCampaign }</div>
                     {/* Disabled download functionality
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>

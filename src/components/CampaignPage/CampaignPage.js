@@ -102,7 +102,7 @@ class CampaignPage extends Component {
 		
 		return (
 			<Container>				
-				<Navbar title = "Campaigns"/>
+				<Navbar/>
 				<div className="campaign-list remove-scroll-bar border-top">
 					<div 
 						className="campaign-add-button item-add-button" 
