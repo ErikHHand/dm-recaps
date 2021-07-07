@@ -124,13 +124,13 @@ class Account extends Component {
 
         const isEmailInvalid = email === '';
 
-        console.log(this.props.firebase.auth.currentUser)
-        
+        let displayNameTitle = this.props.firebase.auth.currentUser.displayName ? 
+            this.props.firebase.auth.currentUser.displayName + "'s Account" : "Account";
 
         return (
             <Container>
                 <Navbar/>
-                <h1 className="border-bottom">{this.props.firebase.auth.currentUser.displayName + "'s Account"}</h1>
+                <h1 className="border-bottom">{displayNameTitle}</h1>
                 <h4>Change Password</h4>
                 <Form onSubmit={this.onChangePassword}>
                     <Form.Group controlId="passwordOne">
