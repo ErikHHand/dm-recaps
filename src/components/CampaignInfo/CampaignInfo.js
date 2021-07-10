@@ -58,7 +58,7 @@ class CampaignInfo extends Component {
 	// Function for uploading a campaign from a JSON file
 	// NOTE: Campaign importing is currently disabled since there are no security
 	// checks in place for the files being imported 
-	uploadCampaign(event) {
+	/*uploadCampaign(event) {
 		event.preventDefault();
 		this.props.onHide();
 		console.log(this.state.file)
@@ -109,7 +109,7 @@ class CampaignInfo extends Component {
 			console.error("Error writing document: ", error);
 		});
 		
-	}
+	}*/
 
 	// Triggers when campaign info is submitted
 	onSubmit(event) {
