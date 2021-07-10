@@ -24,7 +24,7 @@ class CampaignInfo extends Component {
 		}
 
 		// Set the context for "this" for the following functions
-		this.uploadCampaign = this.uploadCampaign.bind(this);
+		//this.uploadCampaign = this.uploadCampaign.bind(this);
 		this.updateFile = this.updateFile.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
