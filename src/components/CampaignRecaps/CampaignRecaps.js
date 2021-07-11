@@ -61,9 +61,6 @@ class CampaignRecaps extends Component {
 
 		campaignRef.get().then((doc) => {
 			if (doc.exists) {
-				// NOTE: ALWAYS USING OLD REF NOW FOR TESTING
-				campaignRef = this.props.firebase.db.collection("users")
-					.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
 				console.log("Campaign document is in NEW campaign collection");
 			} else {
 				console.log("Campaign document is in OLD campaign collection");
@@ -233,8 +230,7 @@ class CampaignRecaps extends Component {
 			let campaignID = this.props.location.state.id;
 
 			// The Firestore database reference for this campaign
-			let campaignRef = this.props.firebase.db.collection("users")
-			.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(campaignID);
+			let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
 			// Add info about active tab and session to backend
 			campaignRef.update({
@@ -331,12 +327,12 @@ class CampaignRecaps extends Component {
 	}
 
 	render() {
+
 		// The id for this campaign
-		let id = this.props.location.state.id;
+		let campaignID = this.props.location.state.id;
 
 		// The Firestore database reference for this campaign
-		let campaignRef = this.props.firebase.db.collection("users")
-			.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
+		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
 		// Render title if a campaign exists
 		let title = this.state.campaign ? this.state.campaign.name : "";
