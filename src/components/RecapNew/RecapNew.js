@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form'
 
 import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase';
 
 /*
-	This class holds the field where new recaps are entered and
+	This class holds the text field where new recaps are entered and
 	handles adding new recaps.
 */
 class RecapNew extends Component {
@@ -27,24 +28,6 @@ class RecapNew extends Component {
 		this.setState({ text: event.target.value });
 	}
 
-	// Function for hashing strings.
-	// Used to create ID:s for the recap Item
-	hashCode(string) {
-
-		let hash = 0;
-		let chr;
-
-		if (string.length === 0) return hash;
-
-		for (let i = 0; i < string.length; i++) {
-			chr = string.charCodeAt(i);
-			hash = ((hash << 5) - hash) + chr;
-			hash |= 0; // Convert to 32bit integer
-		}
-
-		return hash;
-	};
-
 	// Triggers when submitting a recap
 	onSubmit(event) {
 		event.preventDefault();
@@ -60,56 +43,40 @@ class RecapNew extends Component {
 		this.setState({
 			text: "",
 		});
-
-		// Generate a hash code from the recap text
-		// and then add locally
-		let sessions = this.props.sessions;
-		let session = sessions[this.props.session];
-		let id = this.hashCode(recap.text).toString(); // TODO: Check for hashcode collisions
-		session.recaps[id] = recap;
-
-		sessions[this.props.session] = session;
-		this.props.handleSessions(sessions);
 		
-		// Add to Firestore Sessions
-		this.props.campaignRef.collection("sessions").doc(this.props.session)
-		.update({
-			['recaps.' + id]: recap,
-		})
-		.then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
+		// Add to Firestore Recaps collection
+		this.props.campaignRef.collection("recaps").add(recap)
+		.then((recapRef) => {
 
-		// Add locally to recap order array
-		let campaign = this.props.campaign;
+			// Add locally
+			let sessions = this.props.sessions;
+			let sessionID = this.props.session;
+			let session = sessions[sessionID];			
 
-		// TEMPORARY LOOP - REMOVE AFTER A WHILE - IS HERE TO BUGFIX TYPE ERROR
-		for(let session in campaign.sessions) {
-			for(let i = 0; i < campaign.sessions[session].recapOrder.length; i++) {
-				let recapID = campaign.sessions[session].recapOrder[i];
-				if(!isNaN(recapID)) {
-					campaign.sessions[session].recapOrder[i] = recapID.toString();
-				}
-			}
-		}
-		
-		campaign.sessions[this.props.session].recapOrder.push(id);
-		this.props.handleCampaign(campaign);
+			session.recaps[recapRef.id] = recap;
+			sessions[sessionID] = session;
+			this.props.handleSessions(sessions);
 
-		// TEMPORARY LOOP - REMOVE AFTER A WHILE - IS HERE TO BUGFIX TYPE ERROR
-		for(let session in campaign.sessions) {
+			// Add locally to recap order array
+			let campaign = this.props.campaign;
+
+			campaign.sessions[sessionID].recapOrder.push(recapRef.id);
+			this.props.handleCampaign(campaign);
+
 			// Add to Firestore recap order array
 			this.props.campaignRef.update({
-				['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
+				['sessions.' + sessionID + '.recapOrder']: firebase.firestore.FieldValue.arrayUnion(recapRef.id),
 			})
-			.then(function() {
+			.then(() => {
 				console.log("Document successfully updated!");
-			}).catch(function(error) {
+			}).catch((error) => {
 				console.log("Error getting document:", error);
 			});
-		}
+
+			console.log("Document successfully updated!");
+		}).catch((error) => {
+			console.log("Error getting document:", error);
+		});
 	};
 
 	render() {

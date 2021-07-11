@@ -188,6 +188,7 @@ class SessionsPage extends Component {
 					campaign = {this.props.campaign}
 					handleSessions = {this.props.handleSessions}
 					handleCampaign = {this.props.handleCampaign}
+					handleSelectedSession = {this.props.handleSelectedSession}
 					campaignRef = {this.props.campaignRef}
 					edit = {false}
 				/>
