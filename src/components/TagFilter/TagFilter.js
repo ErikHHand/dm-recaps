@@ -147,7 +147,17 @@ class TagFilter extends Component {
 				</div>
 				<div className="filter-type-button">
 					<DropdownButton variant="outline-secondary" title={currentTypeFilter} size="my-sm">
-						<Dropdown.Item onClick = {() => this.typeFilter("All")}>All</Dropdown.Item>
+						<Dropdown.Item onClick = {() => this.typeFilter("All")}>
+							<Badge
+								pill 
+								className = "select-type"
+								//onClick = {() => this.typeFilter(type)}
+							>
+								&nbsp;
+								All
+							</Badge>
+						</Dropdown.Item>
+							
 						{typeFilterItems}
 					</DropdownButton>
 				</div>
