@@ -48,42 +48,19 @@ class TagDescription extends Component {
 			sessions[recapItem.session].recaps[recapID] = recapItem; // Re-add the recap item without the tag
 
 			// Add recap in sessions on Firestore
-			this.props.campaignRef.collection("sessions").doc(recapItem.session).update({
-				["recaps." + recapID]: recapItem,
-			}).then(function() {
+			this.props.campaignRef.collection("recaps").doc(recapID).update(recapItem)
+			.then(() => {
 				console.log("Document successfully deleted!");
-			}).catch(function(error) {
+			}).catch((error) => {
 				console.log("Error deleting document:", error);
 			});
-
-			// Overwrite recap in tags on Firestore,
-			// for every other attached tag
-			recapItem.tags.forEach( tagID => {
-				
-				tags[tagID].recaps[recapID] = recapItem;
-
-				this.props.campaignRef.collection("tags").doc(tagID).update({
-					["recaps." + recapID]: recapItem,
-				}).then(function() {
-					console.log("Document successfully deleted!");
-				}).catch(function(error) {
-					console.log("Error deleting document:", error);
-				});
-			});
 		}
+
 		this.props.handleSessions(sessions);
 
 		// Delete tag recaps locally
 		delete tags[this.props.tagID];
 		this.props.handleTags(tags);
-		
-		// Delete tag recaps on Firestore
-		this.props.campaignRef.collection("tags").doc(this.props.tagID).delete()
-		.then(function() {
-			console.log("Document successfully deleted!");
-		}).catch(function(error) {
-			console.log("Error deleting document:", error);
-		});
 
 		// Delete tag info locally
 		let campaign = this.props.campaign;

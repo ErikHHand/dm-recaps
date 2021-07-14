@@ -13,7 +13,6 @@ import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase';
 
 /*
 	This component holds a recap item, which is a card with recap text
@@ -43,73 +42,37 @@ class RecapItem extends Component {
 		this.setState({
 			edit: false,
 		});
-
-		let id = this.props.recapID;
 		
 		// Add locally to sessions
 		let sessions = this.props.sessions;
 		sessions[recapItem.session].recaps[this.props.recapID] = recapItem
 		this.props.handleSessions(sessions);
 
-		// Add to Firestore Sessions
-		this.props.campaignRef.collection("sessions").doc(recapItem.session).update({
-			['recaps.' + id]: recapItem,
-		})
-		.then(function() {
+		// Add to Firestore Recaps collection
+		this.props.campaignRef.collection("recaps").doc(this.props.recapID).set(recapItem)
+		.then(() => {
 			console.log("Document successfully updated!");
 		}).catch(function(error) {
 			console.log("Error getting document:", error);
 		});
 
-		// Add or delete locally and on Firestore, based on
+		// Add or delete locally based on
 		// which tags are attached to this recap item
-		let tagsCollection = this.props.tags;
+		let tags = this.props.tags;
 		
-		for (let tag in tagsCollection) {
+		for (let tag in tags) {
 
 			// If tag has been added
 			if(recapItem.tags.includes(tag)){
-				
-				// Add locally to tags
-				tagsCollection[tag].recaps[id] = recapItem;
-				this.props.handleTags(tagsCollection);
-				
-				// Add to Firestore Tags
-				this.props.campaignRef.collection("tags").doc(tag).update({
-					['recaps.' + id]: recapItem,
-				})
-				.then(function() {
-					console.log("Document successfully updated!");
-				}).catch(function(error) {
-					console.log("Error getting document:", error);
-				});
+				tags[tag].recaps[this.props.recapID] = recapItem; // Add locally to tags
 			}
 
 			// If tag has been removed
 			else if(!recapItem.tags.includes(tag) && previousTags.includes(tag)) {
-
-				// Delete locally and from Firestore
-				this.deleteFromTags(tag, tagsCollection)
+				delete tags[tag].recaps[this.props.recapID]; // Delete locally 
 			}	
 		}
-		this.props.handleTags(tagsCollection);
-	}
-
-	// Delete recap item from tags collection, both locally and on Firestore
-	deleteFromTags(tag, tags) {
-
-		// Delete locally from tags
-		delete tags[tag].recaps[this.props.recapID];
-
-		// Delete from Firestore Tags
-		this.props.campaignRef.collection("tags").doc(tag).update({
-			['recaps.' + this.props.recapID]: firebase.firestore.FieldValue.delete(),
-		})
-		.then(function() {
-			console.log("Document successfully deleted!");
-		}).catch(function(error) {
-			console.log("Error deleting field:", error);
-		});
+		this.props.handleTags(tags);
 	}
 
 	// Triggers when a user clicks "edit" in the item menu on recap items
@@ -137,7 +100,7 @@ class RecapItem extends Component {
 		this.props.campaignRef.update({
 			['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
 		})
-		.then(function() {
+		.then(() => {
 			console.log("Document successfully updated!");
 		}).catch(function(error) {
 			console.log("Error getting document:", error);
@@ -148,11 +111,9 @@ class RecapItem extends Component {
 		delete sessions[session].recaps[this.props.recapID];
 		this.props.handleSessions(sessions);
 
-		// Delete recap on Firestore sessions
-		this.props.campaignRef.collection("sessions").doc(session).update({
-			['recaps.' + this.props.recapID]: firebase.firestore.FieldValue.delete(),
-		})
-		.then(function() {
+		// Delete recap on Firestore Recaps collection
+		this.props.campaignRef.collection("recaps").doc(this.props.recapID).delete()
+		.then(() => {
 			console.log("Document successfully deleted!");
 		}).catch(function(error) {
 			console.log("Error deleting document:", error);
@@ -163,7 +124,7 @@ class RecapItem extends Component {
 		let tags = this.props.tags;
 
 		this.props.recapItem.tags.forEach(tag => {
-			this.deleteFromTags(tag, tags)
+			delete tags[tag].recaps[this.props.recapID];
 		});
 
 		this.props.handleTags(tags);

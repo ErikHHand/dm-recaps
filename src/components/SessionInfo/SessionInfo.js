@@ -43,6 +43,24 @@ class SessionInfo extends Component {
 		}
 	}
 
+	// Function for hashing strings.
+	// Used to create ID:s for the recap Item
+	hashCode(string) {
+
+		let hash = 0;
+		let chr;
+
+		if (string.length === 0) return hash;
+
+		for (let i = 0; i < string.length; i++) {
+			chr = string.charCodeAt(i);
+			hash = ((hash << 5) - hash) + chr;
+			hash |= 0; // Convert to 32bit integer
+		}
+
+		return hash;
+	};
+
 	// Triggers when submitting session info
 	onSubmit(event){
 
@@ -71,24 +89,23 @@ class SessionInfo extends Component {
 		let session = {
 			recaps: {},
 		};
-		
-		// First add to Firestore then add locally, because adding to Firestore 
-		// will generate the id needed to store locally
-		this.props.campaignRef.collection("sessions").add(session)
-		.then((docRef) => {
-			console.log("Document successfully written! DocRef: ", docRef);
 
-			// Add session locally
-			let sessions = this.props.sessions;
-			sessions[docRef.id] = session;
-			this.props.handleSessions(sessions);
+		let sessions = this.props.sessions;
+		let sessionID = this.hashCode(sessionInfo.description).toString(); // TODO: Check for hashcode collisions
 
-			// Write session info
-			this.editSessionInfo(docRef.id, sessionInfo);
-		})
-		.catch(error => {
-			console.error("Error writing document: ", error);
-		});
+		if(sessions[sessionID]) {
+			this.props.handleSelectedSession(sessionID);
+			return;
+		}
+
+		// Add session locally
+		sessions[sessionID] = session;
+		this.props.handleSessions(sessions);
+
+		// Write session info
+		this.editSessionInfo(sessionID, sessionInfo);
+
+		this.props.handleSelectedSession(sessionID);
 	};
 
 	// Triggers when editing a session or just after a new session has been added.

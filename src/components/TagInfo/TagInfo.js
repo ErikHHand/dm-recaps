@@ -35,7 +35,6 @@ class TagInfo extends Component {
 	// Will be called when component mounts, and put necessary information in the state
 	// if a tag is being edited
 	componentDidMount() {
-
 		if(this.props.edit) {
 			this.setState({
 				name: this.props.tag.name,
@@ -60,6 +59,24 @@ class TagInfo extends Component {
 			});
 		}
 	}
+
+	// Function for hashing strings.
+	// Used to create ID:s for the recap Item
+	hashCode(string) {
+
+		let hash = 0;
+		let chr;
+
+		if (string.length === 0) return hash;
+
+		for (let i = 0; i < string.length; i++) {
+			chr = string.charCodeAt(i);
+			hash = ((hash << 5) - hash) + chr;
+			hash |= 0; // Convert to 32bit integer
+		}
+
+		return hash;
+	};
 
 	// Triggers when submitting tag info after adding or editing a tag
 	onSubmit(event) {
@@ -93,23 +110,21 @@ class TagInfo extends Component {
 			recaps: {},
 		}
 
-		// First add to Firestore then add locally, because adding to Firestore 
-		// will generate the id needed to store locally
-		this.props.campaignRef.collection("tags").add(tag)
-		.then((docRef) => {
-			console.log("Document successfully written! DocRef: ", docRef);
+		let tags = this.props.tags;
+		let tagID = this.hashCode(tagInfo.name).toString(); 
 
-			// Add tag locally
-			let tags = this.props.tags;
-			tags[docRef.id] = tag;
-			this.props.handleTags(tags);
+		if(tags[tagID]) {
+			this.props.handleSelectedTag(tagID);
+			return;
+		}
 
-			// Write tag info
-			this.editTagInfo(docRef.id, tagInfo);
-		})
-		.catch(error => {
-			console.error("Error writing document: ", error);
-		});
+		// Add session locally
+		tags[tagID] = tag;
+		this.props.handleTags(tags);
+
+		// Write tag info
+		this.editTagInfo(tagID, tagInfo);
+		this.props.handleSelectedTag(tagID);
 
 		// Reset the state
 		this.setState({

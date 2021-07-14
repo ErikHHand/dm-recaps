@@ -36,38 +36,26 @@ class SessionItem extends Component {
 		let tags = this.props.tags;
 		let recaps = this.props.sessions[this.props.sessionID].recaps
 		for(let recap in recaps) {
-			recaps[recap].tags.forEach(tag => {
-				
-				// Delete locally
-				delete tags[tag].recaps[recap];
 
-				// Delete on Firestore
-				this.props.campaignRef.collection("tags").doc(tag).update({
-					["recaps." + recap]: firebase.firestore.FieldValue.delete(),
-				})
-				.then(function() {
-					console.log("Document successfully deleted!");
-				}).catch(function(error) {
-					console.log("Error deleting document:", error);
-				});
+			// Delete from tags
+			recaps[recap].tags.forEach(tag => {
+				delete tags[tag].recaps[recap];
+			});
+
+			// Delete on Firestore
+			this.props.campaignRef.collection("recaps").doc(recap).delete()
+			.then(() => {
+				console.log("Document successfully deleted!");
+			}).catch((error) => {
+				console.log("Error deleting document:", error);
 			});
 		}
 		this.props.handleTags(tags);
 
-
 		// Delete session recaps locally
 		let sessions = this.props.sessions;
 		delete sessions[this.props.sessionID];
-		this.props.handleSessions(sessions);
-
-		// Delete session recaps on Firestore
-		this.props.campaignRef.collection("sessions").doc(this.props.sessionID).delete()
-		.then(function() {
-			console.log("Document successfully deleted!");
-		}).catch(function(error) {
-			console.log("Error deleting document:", error);
-		});
-
+		this.props.handleSessions(sessions);		
 
 		// Delete session info locally
 		let campaign = this.props.campaign;
@@ -83,9 +71,9 @@ class SessionItem extends Component {
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
 			sessionOrder: campaign.sessionOrder,
 		})
-		.then(function() {
+		.then(() => {
 			console.log("Document successfully deleted!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error deleting document:", error);
 		});
 
