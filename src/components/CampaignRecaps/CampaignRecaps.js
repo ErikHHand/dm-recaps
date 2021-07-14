@@ -29,7 +29,7 @@ class CampaignRecaps extends Component {
 			campaign: {},
 			sessions: {},
 			tags: {},
-			activeTab: this.props.location.state.activeTab ? this.props.location.state.activeTab : "sessions",
+			activeTab: this.props.location.state ? this.props.location.state.activeTab : "sessions",
 			selectedSession: null,
 			selectedTag: null,
 		};
@@ -115,11 +115,23 @@ class CampaignRecaps extends Component {
 			// The Firestore database reference for this campaign
 			let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
+			let userRef = this.props.firebase.db.collection("users")
+			.doc(this.props.firebase.auth.currentUser.uid);
+
 			// Add info about active tab and session to backend
 			campaignRef.update({
 				activeTab: this.state.activeTab, 
 				selectedSession: this.state.selectedSession ? this.state.selectedSession : "",
 				selectedTag: this.state.selectedTag ? this.state.selectedTag : "",
+			}).then(function() {
+				console.log("Document successfully updated!");
+			}).catch(function(error) {
+				console.log("Error getting document:", error);
+			});
+
+			userRef.update({
+				lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
+				lastCampaignID: this.props.location.state.id ? this.props.location.state.id: "",
 			}).then(function() {
 				console.log("Document successfully updated!");
 			}).catch(function(error) {
@@ -217,7 +229,6 @@ class CampaignRecaps extends Component {
 		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
-		// Render title if a campaign exists
 		let title = this.state.campaign ? this.state.campaign.name : "";
 
 		return (

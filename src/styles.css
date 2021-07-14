@@ -108,6 +108,23 @@ button:focus {
     text-align: center;
 }
 
+.column {
+	border: none;
+	height: 35px;
+}
+
+.column:hover {
+	border-bottom: 3px solid gray;
+}
+
+.column-current {
+	border-bottom: 3px solid black;
+}
+
+.column-current:hover {
+	border-bottom: 3px solid black;
+}
+
 .container {
 	opacity: 0.97;
 	border-radius: 4px;
@@ -197,13 +214,18 @@ button:focus {
 }
 
 .nav-text {
-	font-size: 16px;
 	cursor: pointer;
-	display: inline-block;
+	font-size: 18px;
+	line-height: 1.3;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: baseline;
 }
 
-.nav-text:hover {
-	text-decoration: underline;
+.nav-text-current {
+	font-weight: bold;
 }
 
 .react-search-field-input {
@@ -287,6 +309,7 @@ button:focus {
 /* Hide scrollbar for IE and Edge */
 .remove-scroll-bar {
 	-ms-overflow-style: none;
+	scrollbar-width: none; /* Firefox 64 */
 }
 
 .right-align {
@@ -452,7 +475,7 @@ button:focus {
 .top-bar {
 	height: 5vh;
 	padding-top: 1.5vh;
-	margin-bottom: 2vh;
+	margin: 0vh 2rem 2vh 2rem !important;
 }
 
 .with-line-breaks {
