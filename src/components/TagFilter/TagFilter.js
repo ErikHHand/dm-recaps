@@ -104,9 +104,10 @@ class TagFilter extends Component {
 	// This function currently just uses the text filter to check for appearence in the beginning of the tag name.
 	// It uses the type filter to match with the tag type, if type filter valut is not "All"
 	filter(key, index, keys) {
-		let textFilter = this.props.campaign.tags[key].name.toLowerCase().startsWith(this.state.textFilter);
+		let textFilter = this.props.campaign.tags[key].name.toLowerCase().includes(this.state.textFilter);
+		let textDescriptionFilter = this.props.campaign.tags[key].description.toLowerCase().includes(this.state.textFilter);
 		let typeFilter = this.state.typeFilter !== "All" ? this.props.campaign.tags[key].type === this.state.typeFilter : true;
-		return textFilter && typeFilter;
+		return (textFilter || textDescriptionFilter) && typeFilter;
 	}
 
 
