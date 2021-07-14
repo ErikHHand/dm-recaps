@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import { withAuthorization } from '../Session/Session';
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
 import CampaignItem from '../CampaignItem/CampaignItem';
 import Navbar from '../Navbar/Navbar';
@@ -10,6 +9,8 @@ import Spinner from 'react-bootstrap/Spinner'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+import { withAuthorization } from '../Session/Session';
 
 /*
 	This component holds the page with the campaign list, the first page a 
