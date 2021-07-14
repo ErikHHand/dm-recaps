@@ -223,9 +223,13 @@ class CampaignRecaps extends Component {
 		let campaignRef = this.props.firebase.db.collection("users")
 		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
 
+		let title = this.state.campaign ? this.state.campaign.name : "";
+
 		return (
 			<Container>
-				<Navbar/>
+				<Navbar
+					title = {title}
+				/>
 				<Tab.Container activeKey={this.state.activeTab} transition={false}>
 					<Row className="tab-nav">
 						<Col>

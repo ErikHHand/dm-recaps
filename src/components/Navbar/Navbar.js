@@ -31,8 +31,9 @@ class NavbarBase extends Component {
 
             let lastCampaignName = "";
             let lastCampaignID = "";
+            const pathName = this.props.location.pathname;
+            console.log(this.props.title);
             if (doc.exists) {
-                
                 lastCampaignName = doc.data().lastCampaignName;
                 lastCampaignID = doc.data().lastCampaignID;
                 console.log(lastCampaignName);
@@ -52,7 +53,6 @@ class NavbarBase extends Component {
     render() {
 
         const pathName = this.props.location.pathname;
-        console.log(this.state.lastCampaignID)
 
         var navClasses = ["nav-text", "nav-text", "nav-text"]; // [campaigns, account, current/last visited campaign]
         var colClasses = ["column", "right-align column", "column"]; //[campigns, account, current/last visited campaign]
@@ -66,6 +66,7 @@ class NavbarBase extends Component {
         } else if (pathName.substring(0,11) === '/campaigns/') {
             navClasses[2] += " nav-text-current";
             colClasses[2] += " column-current";
+
         }
 
         
@@ -81,7 +82,7 @@ class NavbarBase extends Component {
 							id: this.state.lastCampaignID ? this.state.lastCampaignID: "",
 						}
 					}}>
-                        <div className={navClasses[2]} >{this.state.lastCampaignName }</div>
+                        <div className={navClasses[2]} >{this.props.title ? this.props.title : this.state.lastCampaignName }</div>
                     </Link>
                     {/* Disabled download functionality
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
