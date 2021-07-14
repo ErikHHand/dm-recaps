@@ -31,12 +31,10 @@ class NavbarBase extends Component {
 
             let lastCampaignName = "";
             let lastCampaignID = "";
-            const pathName = this.props.location.pathname;
-            console.log(this.props.title);
+
             if (doc.exists) {
                 lastCampaignName = doc.data().lastCampaignName;
                 lastCampaignID = doc.data().lastCampaignID;
-                console.log(lastCampaignName);
             }
 
 			this.setState({
