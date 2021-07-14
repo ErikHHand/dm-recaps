@@ -11,7 +11,6 @@ import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
 
 import { withFirebase } from '../Firebase/Firebase';
-import * as firebase from 'firebase';
 
 
 /*
@@ -53,173 +52,57 @@ class CampaignRecaps extends Component {
 		let campaign = this;
 
 		// The id for this campaign
-		let id = this.props.location.state.id;
-
+		let campaignID = this.props.location.state.id;
 
 		// Set the correct Firestore database reference for this campaign
-		let campaignRef = this.props.firebase.db.collection("campaigns").doc(this.props.location.state.id);
+		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
-		campaignRef.get().then((doc) => {
-			if (doc.exists) {
-				console.log("Campaign document is in NEW campaign collection");
-			} else {
-				console.log("Campaign document is in OLD campaign collection");
-				campaignRef = this.props.firebase.db.collection("users")
-					.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns").doc(id);
-			}
+		// Get the campaign for Firestore and save in the state
+		campaignRef.get().then((campaginDoc) => {
+			campaignRef.collection("recaps").get().then((querySnapshot) => {
+				let sessions = {};
+				let tags = {};
+				let recaps = {};
 
-			// Get the campaign for Firestore and save in the state
-			campaignRef.get().then((campaginDoc) => {
+				for (let tagID in campaginDoc.data().tags) {
+					tags[tagID] = {};
+					tags[tagID]["recaps"] = {};
+					
+				}
+				for (let sessionID in campaginDoc.data().sessions) {
+					sessions[sessionID] = {};
+					sessions[sessionID]["recaps"] = {};
+				}
 
-				campaignRef.collection("recaps").get().then(querySnapshot => {
-					if(querySnapshot.size > 0) {
-						campaignRef.collection("recaps").get().then((querySnapshot) => {
-							let sessions = {};
-							let tags = {};
-							let recaps = {};
-
-							for (let tagID in campaginDoc.data().tags) {
-								tags[tagID] = {};
-								tags[tagID]["recaps"] = {};
-								
-							}
-							for (let sessionID in campaginDoc.data().sessions) {
-								sessions[sessionID] = {};
-								sessions[sessionID]["recaps"] = {};
-							}
-
-							// Get all entries in the sessions collection
-							querySnapshot.forEach((doc) => {
-								sessions[doc.data().session].recaps[doc.id] = doc.data();
-								for (let i = 0; i < doc.data().tags.length; i++) {
-									tags[doc.data().tags[i]].recaps[doc.id] = doc.data();
-								}
-							});
-
-							// Get all entries in the recaps collection
-							querySnapshot.forEach((doc) => {
-								recaps[doc.id] = doc.data();
-							});
-
-							// Save the tags, sessions and campaign in the state
-							campaign.setState({
-								status: "LOADED",
-								recaps: recaps,
-								sessions: sessions,
-								tags: tags,
-								campaign: campaginDoc.data(),
-								activeTab: campaginDoc.data().activeTab ? campaginDoc.data().activeTab : "sessions",
-								selectedSession: campaginDoc.data().selectedSession,
-								selectedTag: campaginDoc.data().selectedTag,
-							});
-
-							campaign.createCampaignDocument(campaginDoc.data(), recaps)
-						}).catch((error) => {
-							console.log("Error getting document:", error);
-						});	
-					} else {
-						// Query for getting the sessions collection from Firestore
-						campaignRef.collection("sessions").get().then((querySnapshot) => {
-							let sessions = {};
-
-							// Get all entries in the sessions collection
-							querySnapshot.forEach((doc) => {
-								sessions[doc.id] = doc.data();
-							});
-
-							// Query for getting the tags collection from firestore
-							campaignRef.collection("tags").get().then((querySnapshot) => {
-								let tags = {};
-
-								// Get all entries in the tags collection
-								querySnapshot.forEach((doc) => {
-									tags[doc.id] = doc.data();
-								});
-
-								campaign.createRecapCollection(sessions, campaignRef);
-
-								// Save the tags, sessions and campaign in the state
-								campaign.setState({
-									status: "LOADED",
-									sessions: sessions,
-									tags: tags,
-									campaign: campaginDoc.data(),
-									activeTab: campaginDoc.data().activeTab ? campaginDoc.data().activeTab : "sessions",
-									selectedSession: campaginDoc.data().selectedSession,
-									selectedTag: campaginDoc.data().selectedTag,
-								});
-							}).catch((error) => {
-								console.log("Error getting document:", error);
-							});						
-						}).catch((error) => {
-							console.log("Error getting document:", error);
-						});
+				// Get all entries in the sessions collection
+				querySnapshot.forEach((doc) => {
+					sessions[doc.data().session].recaps[doc.id] = doc.data();
+					for (let i = 0; i < doc.data().tags.length; i++) {
+						tags[doc.data().tags[i]].recaps[doc.id] = doc.data();
 					}
 				});
+
+				// Get all entries in the recaps collection
+				querySnapshot.forEach((doc) => {
+					recaps[doc.id] = doc.data();
+				});
+
+				// Save the tags, sessions and campaign in the state
+				campaign.setState({
+					status: "LOADED",
+					recaps: recaps,
+					sessions: sessions,
+					tags: tags,
+					campaign: campaginDoc.data(),
+					activeTab: campaginDoc.data().activeTab ? campaginDoc.data().activeTab : "sessions",
+					selectedSession: campaginDoc.data().selectedSession,
+					selectedTag: campaginDoc.data().selectedTag,
+				});
+
+			}).catch((error) => {
+				console.log("Error getting document:", error);
 			});	
-		}).catch((error) => {
-			console.log("Error getting document:", error);
-		});
-	}
-
-	createRecapCollection(sessions, campaignRef) {
-
-		for (let sessionID in sessions) {
-			for (let recapID in sessions[sessionID].recaps) {
-				campaignRef.collection("recaps").doc(recapID)
-				.set(sessions[sessionID].recaps[recapID])
-				.then(function() {
-					console.log("Document successfully updated!");
-				}).catch(function(error) {
-					console.log("Error getting document:", error);
-				});
-			}
-		}
-	}
-
-	createCampaignDocument(campaign, recaps) {
-
-		let campaignRef = this.props.firebase.db.collection("campaigns").doc(this.props.location.state.id);
-
-		campaign["ownerID"] = this.props.firebase.auth.currentUser.uid;
-		campaign["ownerDisplayName"] = this.props.firebase.auth.currentUser.displayName;
-
-		campaignRef.get().then((doc) => {
-			if (doc.exists) {
-				console.log("Campaign document exists!");
-				return;
-			} else {
-				console.log("No campaign document, writing now.");
-				campaignRef.set(campaign)
-				.then(() => {
-					for (let recapID in recaps) {
-						campaignRef.collection("recaps").doc(recapID).set(recaps[recapID])
-						.then(() => {
-							console.log("Document successfully written!");
-						})
-						.catch((error) => {
-							console.error("Error writing document: ", error);
-						});
-					}
-				})
-				.catch((error) => {
-					console.error("Error writing document: ", error);
-				});
-			}
-		}).catch((error) => {
-			console.log("Error getting document:", error);
-		});
-
-		let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
-
-		userRef.update({
-			ownedCampaigns: firebase.firestore.FieldValue.arrayUnion(this.props.location.state.id)
-		}).then(() => {
-			console.log("Document successfully written!");
-		})
-		.catch((error) => {
-			console.error("Error writing document: ", error);
-		});
+		});	
 	}
 
 	componentWillUnmount() {
