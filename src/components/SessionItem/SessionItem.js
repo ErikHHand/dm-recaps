@@ -70,12 +70,14 @@ class SessionItem extends Component {
 		this.props.campaignRef.update({
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
 			sessionOrder: campaign.sessionOrder,
+			selectedSession: this.props.sessionID,
 		})
 		.then(() => {
 			console.log("Document successfully deleted!");
 
 			// Update selected session
-			let latestSession = campaign.sessionOrder[campaign.sessionOrder.length - 1];
+			let latestSession = campaign.sessionOrder[campaign.sessionOrder.length - 1] ? 
+				campaign.sessionOrder[campaign.sessionOrder.length - 1] : "";
 			this.props.handleSelectedSession(latestSession);
 
 			this.props.campaignRef.update({

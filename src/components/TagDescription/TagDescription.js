@@ -76,10 +76,18 @@ class TagDescription extends Component {
 		// Delete tag info on Firestore
 		this.props.campaignRef.update({
 			["tags." + this.props.tagID]: firebase.firestore.FieldValue.delete(),
+			selectedTag: this.props.tagID,
 		})
-		.then(function() {
+		.then(() => {
 			console.log("Document successfully deleted!");
-		}).catch(function(error) {
+			this.props.campaignRef.update({
+				selectedTag: "",
+			}).then(() => {
+				console.log("Document successfully deleted!");
+			}).catch((error) => {
+				console.log("Error deleting document:", error);
+			});
+		}).catch((error) => {
 			console.log("Error deleting document:", error);
 		});
 	}

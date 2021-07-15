@@ -66,6 +66,7 @@ class RecapNew extends Component {
 			// Add to Firestore recap order array
 			this.props.campaignRef.update({
 				['sessions.' + sessionID + '.recapOrder']: firebase.firestore.FieldValue.arrayUnion(recapRef.id),
+				selectedSession: sessionID,
 			})
 			.then(() => {
 				console.log("Document successfully updated!");

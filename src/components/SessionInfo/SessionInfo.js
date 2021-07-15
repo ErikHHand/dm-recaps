@@ -76,7 +76,7 @@ class SessionInfo extends Component {
 
 		// If editing, only writing to the session field in the campaign object
 		if(this.props.edit) {
-			this.editSessionInfo(this.props.sessionID, sessionInfo, this.props.session.recapOrder);
+			this.editSessionInfo(this.props.sessionID, sessionInfo);
 		} else {
 			this.addNewSession(sessionInfo);
 		}
@@ -103,14 +103,14 @@ class SessionInfo extends Component {
 		this.props.handleSessions(sessions);
 
 		// Write session info
-		this.editSessionInfo(sessionID, sessionInfo, []);
+		this.editSessionInfo(sessionID, sessionInfo);
 
 		this.props.handleSelectedSession(sessionID);
 	};
 
 	// Triggers when editing a session or just after a new session has been added.
 	// This function saves the session info locally and on Firestore
-	editSessionInfo(sessionID, sessionInfo, recapOrder) {
+	editSessionInfo(sessionID, sessionInfo) {
 
 		let campaign = this.props.campaign;
 
@@ -156,7 +156,6 @@ class SessionInfo extends Component {
 			selectedSession: sessionID,
 			['sessions.' + sessionID]: sessionInfo, 
 			sessionOrder: campaign.sessionOrder,
-			recapOrder: recapOrder,
 		}).then(() => {
 			console.log("Document successfully updated!");
 		}).catch((error) => {

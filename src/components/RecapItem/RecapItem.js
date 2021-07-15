@@ -99,6 +99,7 @@ class RecapItem extends Component {
 		// Delete from Firestore Recap order
 		this.props.campaignRef.update({
 			['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
+			selectedSession: this.props.recapItem.session,
 		})
 		.then(() => {
 			console.log("Document successfully updated!");
