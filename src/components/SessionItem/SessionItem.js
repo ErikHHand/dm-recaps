@@ -73,12 +73,24 @@ class SessionItem extends Component {
 		})
 		.then(() => {
 			console.log("Document successfully deleted!");
+
+			// Update selected session
+			let latestSession = campaign.sessionOrder[campaign.sessionOrder.length - 1];
+			this.props.handleSelectedSession(latestSession);
+
+			this.props.campaignRef.update({
+				selectedSession: latestSession,
+			})
+			.then(() => {
+				console.log("Document successfully deleted!");
+			}).catch((error) => {
+				console.log("Error deleting document:", error);
+			});
 		}).catch((error) => {
 			console.log("Error deleting document:", error);
 		});
 
-		// Set current session to null
-		this.props.handleSelectedSession(null);
+		
 	}
 
 	render() {
