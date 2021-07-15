@@ -38,9 +38,9 @@ class CampaignPage extends Component {
 		let home = this;
 
 		// Query for getting the campaign collection from firestore
-        let campaignsRef = this.props.firebase.db.collection("users")
-		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns");
-        campaignsRef.get().then((querySnapshot) => {
+        let campaignsRef = this.props.firebase.db.collection("campaigns");
+
+        campaignsRef.where("ownerID", "==", this.props.firebase.auth.currentUser.uid).get().then((querySnapshot) => {
             let campaigns = {};
 
             // Get all entries in the campaign collection
@@ -69,8 +69,7 @@ class CampaignPage extends Component {
 	render() {
 
 		// Save the query reference for campaigns
-        let campaignsRef = this.props.firebase.db.collection("users")
-		.doc(this.props.firebase.auth.currentUser.uid).collection("campaigns");
+        let campaignsRef = this.props.firebase.db.collection("campaigns");
 
 		let campaigns = null;
 

@@ -123,13 +123,18 @@ class CampaignInfo extends Component {
 		if(!this.props.edit) { // Add new campaign
 			// Create campaign info
 			let campaign = {
+				activeTab: "sessions",
 				description: this.state.description,
 				name: this.state.name,
 				world: this.state.world,
 				setting: this.state.setting,
 				sessionOrder: [],
 				sessions: {},
+				selectedSession: "",
 				tags: {},
+				selectedTag: "",
+				ownerDisplayName: this.props.firebase.auth.currentUser.displayName,
+				ownerID: this.props.firebase.auth.currentUser.uid,
 			};
 
 			let campaigns = this.props.campaigns;		
