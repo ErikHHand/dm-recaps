@@ -91,8 +91,11 @@ class RecapItem extends Component {
 		// Delete recap in Recap order
 		let campaign = this.props.campaign;
 		
-		let index = campaign.sessions[session].recapOrder.indexOf(this.props.recapID);
-		if (index !== -1) campaign.sessions[session].recapOrder.splice(index, 1);
+		let indexRecapOrder = campaign.sessions[session].recapOrder.indexOf(this.props.recapID);
+		if (indexRecapOrder !== -1) campaign.sessions[session].recapOrder.splice(indexRecapOrder, 1);
+
+		let indexRecaps = campaign.recaps.indexOf(this.props.recapID);
+		if (indexRecaps !== -1) campaign.recaps.splice(indexRecaps, 1);
 
 		this.props.handleCampaign(campaign);
 
@@ -100,6 +103,7 @@ class RecapItem extends Component {
 		this.props.campaignRef.update({
 			['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
 			selectedSession: this.props.recapItem.session,
+			recaps: campaign.recaps,
 		})
 		.then(() => {
 			console.log("Document successfully updated!");

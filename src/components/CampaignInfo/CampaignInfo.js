@@ -128,6 +128,7 @@ class CampaignInfo extends Component {
 				name: this.state.name,
 				world: this.state.world,
 				setting: this.state.setting,
+				recaps: [],
 				sessionOrder: [],
 				sessions: {},
 				selectedSession: "",

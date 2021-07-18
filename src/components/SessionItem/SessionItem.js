@@ -35,7 +35,19 @@ class SessionItem extends Component {
 		// Delete recaps from tags locally and on Firestore
 		let tags = this.props.tags;
 		let recaps = this.props.sessions[this.props.sessionID].recaps
+		let campaign = this.props.campaign;
+
 		for(let recap in recaps) {
+
+			console.log(campaign.recaps)
+
+			// Delete in recaps array in campaign
+			let index = campaign.recaps.indexOf(recap);
+			if (index > -1) {
+				campaign.recaps.splice(index, 1);
+			}
+
+			console.log(campaign.recaps)
 
 			// Delete from tags
 			recaps[recap].tags.forEach(tag => {
@@ -58,7 +70,6 @@ class SessionItem extends Component {
 		this.props.handleSessions(sessions);		
 
 		// Delete session info locally
-		let campaign = this.props.campaign;
 		delete campaign.sessions[this.props.sessionID];
 
 		// Delete session from the session order list
@@ -71,6 +82,7 @@ class SessionItem extends Component {
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
 			sessionOrder: campaign.sessionOrder,
 			selectedSession: this.props.sessionID,
+			recaps: campaign.recaps
 		})
 		.then(() => {
 			console.log("Document successfully deleted!");
