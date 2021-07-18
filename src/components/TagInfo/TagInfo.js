@@ -141,10 +141,11 @@ class TagInfo extends Component {
 
 		// Add tag in campaign document
 		this.props.campaignRef.update({
+			selectedTag: tagID,
 			['tags.' + tagID]: tagInfo,
-		}).then(function() {
+		}).then(() => {
 			console.log("Document successfully updated!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error getting document:", error);
 		});
 

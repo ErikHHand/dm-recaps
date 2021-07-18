@@ -37,9 +37,10 @@ class TagDescription extends Component {
 		// Delete tag in session recaps locally and on Firestore
 		let sessions = this.props.sessions;
 		let tags = this.props.tags;
+		let tagRecaps = this.props.tags[this.props.tagID].recaps
 
 		// Iterate over all recap items this tag is attached to
-		for(let recapID in this.props.tags[this.props.tagID].recaps) {
+		for(let recapID in tagRecaps) {
 
 			let recapItem = this.props.tags[this.props.tagID].recaps[recapID];
 			let tagIndex = recapItem.tags.indexOf(this.props.tagID);
@@ -76,10 +77,18 @@ class TagDescription extends Component {
 		// Delete tag info on Firestore
 		this.props.campaignRef.update({
 			["tags." + this.props.tagID]: firebase.firestore.FieldValue.delete(),
+			selectedTag: this.props.tagID,
 		})
-		.then(function() {
+		.then(() => {
 			console.log("Document successfully deleted!");
-		}).catch(function(error) {
+			this.props.campaignRef.update({
+				selectedTag: "",
+			}).then(() => {
+				console.log("Document successfully deleted!");
+			}).catch((error) => {
+				console.log("Error deleting document:", error);
+			});
+		}).catch((error) => {
 			console.log("Error deleting document:", error);
 		});
 	}

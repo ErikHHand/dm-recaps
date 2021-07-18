@@ -153,10 +153,12 @@ class SessionInfo extends Component {
 
 		// Add session in campaign document
 		this.props.campaignRef.update({
-			['sessions.' + sessionID]: sessionInfo, sessionOrder: campaign.sessionOrder,
-		}).then(function() {
+			selectedSession: sessionID,
+			['sessions.' + sessionID]: sessionInfo, 
+			sessionOrder: campaign.sessionOrder,
+		}).then(() => {
 			console.log("Document successfully updated!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error getting document:", error);
 		});
 	}
