@@ -153,6 +153,7 @@ class TagFilter extends Component {
 								className = "select-type"
 								//onClick = {() => this.typeFilter(type)}
 							>
+								<FontAwesomeIcon icon={faFilter} />
 								&nbsp;
 								All
 							</Badge>
@@ -160,7 +161,7 @@ class TagFilter extends Component {
 							
 						{typeFilterItems}
 					</DropdownButton>
-				</div>
+				</div> 
 			</>
 		);
 	}
