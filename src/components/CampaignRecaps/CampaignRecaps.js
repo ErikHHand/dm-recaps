@@ -197,7 +197,7 @@ class CampaignRecaps extends Component {
 
 	// Handles changing which session is the selected session
 	handleSelectedSession(sessionID) {
-		if(sessionID === null || this.state.sessions[sessionID]) {
+		if(sessionID === "" || this.state.sessions[sessionID]) {
 			let campaign = this.state.campaign;
 			campaign.activeTab = "sessions";
 			this.setState({
