@@ -115,11 +115,11 @@ class TagFilter extends Component {
 
 		// The dropdown list where a type for the filter is selected
 		let typeFilterItems = Object.keys(TYPES).map((type) => 
-			<Dropdown.Item key={type}>
+			<Dropdown.Item key={type} onClick = {() => this.typeFilter(type)}>
 				<Badge 
 					pill 
 					className = "select-type"
-					onClick = {() => this.typeFilter(type)}
+					
 				>
 					<FontAwesomeIcon icon={ICONS[type]} />
 					&nbsp;
