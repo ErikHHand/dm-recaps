@@ -31,7 +31,7 @@ class SessionItem extends Component {
 
 	// Triggers when deleting a session
 	deleteSession() {
-
+		console.log("hello from deleteSession()!")
 		// Delete recaps from tags locally and on Firestore
 		let tags = this.props.tags;
 		let recaps = this.props.sessions[this.props.sessionID].recaps

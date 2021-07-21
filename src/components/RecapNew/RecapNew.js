@@ -96,6 +96,7 @@ class RecapNew extends Component {
 		const { text, error} = this.state;
 
 		let recapNew = this;
+		console.log("hello from RN render", this.props.session);
 
 		return (
 			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>

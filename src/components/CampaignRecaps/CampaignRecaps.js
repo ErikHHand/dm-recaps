@@ -205,6 +205,10 @@ class CampaignRecaps extends Component {
 				selectedSession: sessionID,
 				campaign: campaign,
 			});
+		} else {
+			this.setState({
+				selectedSession: null,
+			});
 		}
 	}
 
@@ -224,6 +228,7 @@ class CampaignRecaps extends Component {
 	render() {
 
 		// The id for this campaign
+		console.log(this.props.location);
 		let campaignID = this.props.location.state.id;
 
 		// The Firestore database reference for this campaign
