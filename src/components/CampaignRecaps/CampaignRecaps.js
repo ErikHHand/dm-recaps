@@ -207,7 +207,7 @@ class CampaignRecaps extends Component {
 			});
 		} else {
 			this.setState({
-				selectedSession: null,
+				selectedSession: "",
 			});
 		}
 	}
