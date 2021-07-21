@@ -138,7 +138,7 @@ class TagFilter extends Component {
 
 		return (
 			<>
-				<div className="remove-padding filter-field">
+				<div className="remove-padding filter-field search-text">
 					<SearchField
 						placeholder="Search..."
 						onChange={(value, event) => this.textFilter(value, event)}
@@ -147,10 +147,21 @@ class TagFilter extends Component {
 				</div>
 				<div className="filter-type-button">
 					<DropdownButton variant="outline-secondary" title={currentTypeFilter} size="my-sm">
-						<Dropdown.Item onClick = {() => this.typeFilter("All")}>All</Dropdown.Item>
+						<Dropdown.Item onClick = {() => this.typeFilter("All")}>
+							<Badge
+								pill 
+								className = "select-type"
+								//onClick = {() => this.typeFilter(type)}
+							>
+								<FontAwesomeIcon icon={faFilter} />
+								&nbsp;
+								All
+							</Badge>
+						</Dropdown.Item>
+							
 						{typeFilterItems}
 					</DropdownButton>
-				</div>
+				</div> 
 			</>
 		);
 	}
