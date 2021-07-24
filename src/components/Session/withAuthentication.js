@@ -2,6 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
+import * as ROUTES from '../../constants/routes';
+
 import AuthUserContext from './context';
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -20,12 +22,10 @@ const withAuthentication = Component => {
 			this.listener = this.props.firebase.auth.onAuthStateChanged(
 				authUser => {
 					if(authUser) {
-						this.setState({ authUser })
-						
-					}
-					else {
+						this.setState({ authUser });
+					} else {
 						this.setState({ authUser: null });
-						this.props.history.push("/");
+						this.props.history.push(ROUTES.LANDING);
 					}
 				}
 			);
