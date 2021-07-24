@@ -69,25 +69,38 @@ class Account extends Component {
 
         const { username } = this.state;
 
-        // Change username on Firestore
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.update({
-			username: username,
-		})
-		.then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
+        let usernameRef = this.props.firebase.db.collection("usernames").doc(username);
+
+        usernameRef.get().then((usernameDoc) => {
+			if(!usernameDoc.exists) {
+
+                // Change username on Firestore
+                this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+                .update({
+                    username: username,
+                })
+                .then(() => {
+                    console.log("Document successfully updated!");
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
+                
+                this.props.firebase.auth.currentUser.updateProfile({
+                    displayName: username,
+                }).then(() => {
+                    console.log("Document successfully updated!");
+                }).catch((error) => {
+                    console.log("Error updating document:", error);
+                }); 
+            } else {
+                this.setState({ 
+                    error: {message: "Username is not available. Please choose a different username."}, 
+                });
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });	
         
-        this.props.firebase.auth.currentUser.updateProfile({
-            displayName: username,
-          }).then(() => {
-            console.log("Document successfully updated!");
-          }).catch((error) => {
-            console.log("Error updating document:", error);
-          }); 
-     
         event.preventDefault();
     }
 
