@@ -95,17 +95,22 @@ class Account extends Component {
 
         const { email } = this.state;
 
-        // Change email on Firestore
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.update({
-			email: email,
-		})
-		.then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
+        this.props.firebase.auth.currentUser.updateEmail(email)
+        .then(() => {
+            console.log("Email successfully updated!");
+            // Change email on Firestore
+            this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+            .update({
+                email: email,
+            })
+            .then(() => {
+                console.log("Document successfully updated!");
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+        }).catch((error) => {
 			console.log("Error getting document:", error);
 		});
-     
         event.preventDefault();
     }
 

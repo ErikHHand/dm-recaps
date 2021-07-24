@@ -6,6 +6,7 @@ import Navbar from '../Navbar/Navbar';
 
 import Container from 'react-bootstrap/Container'
 import Spinner from 'react-bootstrap/Spinner'
+import Alert from 'react-bootstrap/Alert'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -73,6 +74,30 @@ class CampaignsPage extends Component {
 
 		let campaigns = null;
 
+		let currentUser = this.props.firebase.auth.currentUser;
+
+		let timeSinceAccountCreation = (Date.now() - Date.parse(currentUser.metadata.creationTime));
+		let alert;
+
+		if(timeSinceAccountCreation < 86400000 || currentUser.emailVerified) {
+			alert = <div></div>;
+		} else if (timeSinceAccountCreation < 1209600000) {
+			alert = <Alert variant="info">
+						Remember to verify the email for this account!  &nbsp;
+						<Alert.Link onClick={() => currentUser.sendEmailVerification()}>
+							Send verification email again
+						</Alert.Link>
+					</Alert>
+		} else {
+			alert = <Alert variant="danger">
+						WARNING! You have not yet verified the email for this account! 
+						This account could be deleted if it is not verified soon! &nbsp;
+						<Alert.Link onClick={() => currentUser.sendEmailVerification()}>
+							Send verification email again
+						</Alert.Link>
+					</Alert>
+		}
+
 		switch (this.state.status) {
 			case "LOADING":
 				campaigns = <div className="loading-spinner">
@@ -103,6 +128,7 @@ class CampaignsPage extends Component {
 		return (
 			<Container>				
 				<Navbar/>
+				{alert}
 				<div className="campaign-list remove-scroll-bar border-top">
 					<div 
 						className="campaign-add-button item-add-button" 

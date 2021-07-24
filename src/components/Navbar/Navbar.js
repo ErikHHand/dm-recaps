@@ -89,7 +89,9 @@ class NavbarBase extends Component {
                     <p className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
                 </Col>
                 <Col md={"auto"} lg={1} className="right-align column">
-                    <p className="nav-text" onClick={this.props.firebase.doSignOut}>Sign out</p>
+                    <p className="nav-text" onClick={this.props.firebase.doSignOut}>
+                        Sign out
+                    </p>
                 </Col>
             </Row>
         )
