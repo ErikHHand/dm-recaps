@@ -134,7 +134,7 @@ class CampaignInfo extends Component {
 				selectedSession: "",
 				tags: {},
 				selectedTag: "",
-				ownerDisplayName: this.props.firebase.auth.currentUser.displayName,
+				ownerUsername: this.props.firebase.auth.currentUser.displayName,
 				ownerID: this.props.firebase.auth.currentUser.uid,
 			};
 
