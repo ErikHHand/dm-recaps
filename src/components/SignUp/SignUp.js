@@ -91,68 +91,71 @@ class SignUpFormBase extends Component {
 			username === '';
 
 		return (
-			<Form onSubmit={this.onSubmit}>
-				<Form.Group controlId="formBasicUsername">
-					<Form.Label>Username</Form.Label>
-					<Form.Control 
-						name="username"
-						value={username}
-						onChange={this.onChange}
-						type="text"
-						placeholder="Username"
-						maxLength="25"
-					/>
-				</Form.Group>
-				<Form.Group controlId="formBasicEmail">
-					<Form.Label>Email address</Form.Label>
-					<Form.Control 
-						name="email"
-						value={email}
-						onChange={this.onChange}
-						type="email"
-						placeholder="Email address"
-						maxLength="100"
-					/>
-					<Form.Text className="text-muted">
-						Your email address will never be shared with anyone else.
-					</Form.Text>
-				</Form.Group>
-				<Form.Group controlId="formBasicPassword">
-					<Form.Label>Password</Form.Label>
-					<Form.Control 
-						name="passwordOne"
-						value={passwordOne}
-						onChange={this.onChange}
-						type="password"
-						placeholder="Password"
-						maxLength="100"
-					/>
-				</Form.Group>
-				<Form.Group controlId="formBasicPassword2">
-					<Form.Label>Password</Form.Label>
-					<Form.Control 
-						name="passwordTwo"
-						value={passwordTwo}
-						onChange={this.onChange}
-						type="password"
-						placeholder="Confirm Password"
-						maxLength="100"
-					/>
-				</Form.Group>
-				<Row>
-					<Col>
-						<Button variant="success" type="submit" disabled={isInvalid}>
-							Sign up
-						</Button>
-					</Col>
-					<Col className="right-align">
-						<Button variant="secondary" onClick={this.props.changeWindow}>
-							Back to sign in
-						</Button>
-					</Col>
-				</Row>
-				{error && <p>{error.message}</p>}
-			</Form>
+			<>
+				<h1>Sign up</h1>
+				<Form onSubmit={this.onSubmit}>
+					<Form.Group controlId="formBasicUsername">
+						<Form.Label>Username</Form.Label>
+						<Form.Control 
+							name="username"
+							value={username}
+							onChange={this.onChange}
+							type="text"
+							placeholder="Username"
+							maxLength="25"
+						/>
+					</Form.Group>
+					<Form.Group controlId="formBasicEmail">
+						<Form.Label>Email address</Form.Label>
+						<Form.Control 
+							name="email"
+							value={email}
+							onChange={this.onChange}
+							type="email"
+							placeholder="Email address"
+							maxLength="100"
+						/>
+						<Form.Text className="text-muted">
+							Your email address will never be shared with anyone else.
+						</Form.Text>
+					</Form.Group>
+					<Form.Group controlId="formBasicPassword">
+						<Form.Label>Password</Form.Label>
+						<Form.Control 
+							name="passwordOne"
+							value={passwordOne}
+							onChange={this.onChange}
+							type="password"
+							placeholder="Password"
+							maxLength="100"
+						/>
+					</Form.Group>
+					<Form.Group controlId="formBasicPassword2">
+						<Form.Label>Password</Form.Label>
+						<Form.Control 
+							name="passwordTwo"
+							value={passwordTwo}
+							onChange={this.onChange}
+							type="password"
+							placeholder="Confirm Password"
+							maxLength="100"
+						/>
+					</Form.Group>
+					<Row>
+						<Col>
+							<Button variant="success" type="submit" disabled={isInvalid}>
+								Sign up
+							</Button>
+						</Col>
+						<Col className="right-align">
+							<Button variant="secondary" onClick={this.props.changeWindow}>
+								Back to sign in
+							</Button>
+						</Col>
+					</Row>
+					{error && <p>{error.message}</p>}
+				</Form>
+			</>
 		);
 	}
 }
