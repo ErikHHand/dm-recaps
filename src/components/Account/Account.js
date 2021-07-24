@@ -59,8 +59,7 @@ class Account extends Component {
                 this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
                 .update({
                     username: username,
-                })
-                .then(() => {
+                }).then(() => {
                     console.log("Document successfully updated!");
                 }).catch((error) => {
                     console.log("Error getting document:", error);
@@ -70,6 +69,7 @@ class Account extends Component {
                     displayName: username,
                 }).then(() => {
                     console.log("Document successfully updated!");
+                    this.setState({ ...INITIAL_STATE });
                 }).catch((error) => {
                     console.log("Error updating document:", error);
                 });
