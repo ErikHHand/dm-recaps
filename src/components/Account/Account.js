@@ -10,7 +10,6 @@ import Container from 'react-bootstrap/Container'
 
 
 const INITIAL_STATE = {
-    currentUsername: '',
     email: '',
     username: '',
     passwordOne: '',
@@ -30,25 +29,6 @@ class Account extends Component {
 		this.onChangeUsername = this.onChangeUsername.bind(this);
 		this.onChangeEmail = this.onChangeEmail.bind(this);
     }
-
-    /*
-    componentDidMount() {
-
-		let account = this;
-
-		// Query for getting the campaign collection from firestore
-        var accountRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-        accountRef.get().then((user) => {
-			
-            account.setState({
-				currentUsername: user.data().username,
-			});
-						
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
-	}
-    */
 
     onChangePassword(event) {
         const { passwordOne } = this.state;
@@ -73,6 +53,7 @@ class Account extends Component {
 
         usernameRef.get().then((usernameDoc) => {
 			if(!usernameDoc.exists) {
+                let oldUsername = this.props.firebase.auth.currentUser.displayName;
 
                 // Change username on Firestore
                 this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
@@ -91,7 +72,24 @@ class Account extends Component {
                     console.log("Document successfully updated!");
                 }).catch((error) => {
                     console.log("Error updating document:", error);
-                }); 
+                });
+
+                // Delete old username document
+                this.props.firebase.db.collection("usernames").doc(oldUsername).delete()
+                .then(() => {
+                    console.log("Document successfully deleted!");
+                }).catch((error) => {
+                    console.log("Error deleting document:", error);
+                });
+
+                // Write new username document
+                this.props.firebase.db.collection("usernames").doc(username).set({
+                    uid: this.props.firebase.auth.currentUser.uid,
+                }).then(
+                    console.log("Document written with ID: ", username)
+                ).catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
             } else {
                 this.setState({ 
                     error: {message: "Username is not available. Please choose a different username."}, 
@@ -100,7 +98,7 @@ class Account extends Component {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });	
-        
+
         event.preventDefault();
     }
 
