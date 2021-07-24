@@ -35,39 +35,49 @@ class SignUpFormBase extends Component {
 	onSubmit(event) {
 		const { username, email, passwordOne } = this.state;
 
-		this.props.firebase
-		.doCreateUserWithEmailAndPassword(email, passwordOne)
-		.then(authUser => {
+		let usernameRef = this.props.firebase.db.collection("usernames").doc(username);
 
-			authUser.user.sendEmailVerification();
+		usernameRef.get().then((usernameDoc) => {
+			if(!usernameDoc.exists) {
+				this.props.firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
+				.then(authUser => {
 
-			this.props.firebase.db.collection("users").doc(authUser.user.uid).set({
-				username: username,
-			})
-			.then(
-				console.log("Document written with ID: ", authUser.user.uid)
-			)
-			.catch(function(error) {
-				console.error("Error adding document: ", error);
-			});
+					authUser.user.sendEmailVerification();
 
-			authUser.user.updateProfile({
-				displayName: username,
-			  }).then(() => {
-				console.log("Document successfully updated!");
-			  }).catch((error) => {
-				console.log("Error updating document:", error);
-			  });  
-			  
-		})
-		.then(authUser => {
-			this.setState({ ...INITIAL_STATE });
-			this.props.history.push(ROUTES.HOME);
-		})
-		.catch(error => {
-			this.setState({ error });
-		});
+					this.props.firebase.db.collection("users").doc(authUser.user.uid).set({
+						username: username,
+					})
+					.then(
+						console.log("Document written with ID: ", authUser.user.uid)
+					)
+					.catch(function(error) {
+						console.error("Error adding document: ", error);
+					});
 
+					authUser.user.updateProfile({
+						displayName: username,
+					}).then(() => {
+						console.log("Document successfully updated!");
+					}).catch((error) => {
+						console.log("Error updating document:", error);
+					});  
+					
+				})
+				.then(authUser => {
+					this.setState({ ...INITIAL_STATE });
+					this.props.history.push(ROUTES.HOME);
+				})
+				.catch(error => {
+					this.setState({ error });
+				});
+			} else {
+				this.setState({ 
+					error: {message: "Username is not available. Please choose a different username."}, 
+				});
+			}
+		}).catch((error) => {
+			console.log("Error getting document:", error);
+		});	
 		event.preventDefault();
 	}
 
