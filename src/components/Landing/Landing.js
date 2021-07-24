@@ -39,7 +39,6 @@ class Landing extends Component {
 				<Col xs={12} md={6}>
 					<h1 className="center"> {title} </h1>
 					<Jumbotron className="jumbotron-box">
-						<h1>{this.state.signIn ? "Sign in" : "Sign up"}</h1>
 						{this.state.signIn ?
 							<SignIn changeWindow = {this.changeWindow}/> : 
 							<SignUp changeWindow = {this.changeWindow}/> 
