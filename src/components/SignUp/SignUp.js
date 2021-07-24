@@ -46,21 +46,17 @@ class SignUpFormBase extends Component {
 
 					this.props.firebase.db.collection("users").doc(authUser.user.uid).set({
 						username: username,
-					})
-					.then(
+					}).then(
 						console.log("Document written with ID: ", authUser.user.uid)
-					)
-					.catch((error) => {
+					).catch((error) => {
 						console.error("Error adding document: ", error);
 					});
 
 					this.props.firebase.db.collection("usernames").doc(username).set({
 						uid: authUser.user.uid,
-					})
-					.then(
-						console.log("Document written with ID: ", authUser.user.uid)
-					)
-					.catch((error) => {
+					}).then(
+						console.log("Document written with ID: ", username)
+					).catch((error) => {
 						console.error("Error adding document: ", error);
 					});
 
