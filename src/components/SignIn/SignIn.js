@@ -58,8 +58,8 @@ class SignInFormBase extends Component {
 	onSubmitForgotPassword(event) {
 		const { email } = this.state;
 
-		this.props.firebase.auth.sendPasswordResetEmail(email).
-		then(() => {
+		this.props.firebase.auth.sendPasswordResetEmail(email)
+		.then(() => {
 			this.setState({ 
 				...INITIAL_STATE,
 				showConfirm: true,
