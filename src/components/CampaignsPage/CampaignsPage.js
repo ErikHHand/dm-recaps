@@ -16,7 +16,7 @@ import { withAuthorization } from '../Session/Session';
 	This component holds the page with the campaign list, the first page a 
 	users sees when logging in.
 */
-class CampaignPage extends Component {
+class CampaignsPage extends Component {
 
 	constructor(props) {
 		super(props);
@@ -129,4 +129,4 @@ class CampaignPage extends Component {
 
 const condition = authUser => !!authUser;
 
-export default withAuthorization(condition)(CampaignPage);
+export default withAuthorization(condition)(CampaignsPage);
