@@ -68,12 +68,10 @@ class SignUpFormBase extends Component {
 						console.log("Error updating document:", error);
 					});  
 					
-				})
-				.then(authUser => {
+				}).then(authUser => {
 					this.setState({ ...INITIAL_STATE });
 					this.props.history.push(ROUTES.HOME);
-				})
-				.catch(error => {
+				}).catch(error => {
 					this.setState({ error });
 				});
 			} else {
