@@ -69,9 +69,9 @@ class NavbarBase extends Component {
 
         
         return  (
-            <Row className="top-bar" noGutters={true}>
+            <Row className="top-bar border-bottom" noGutters={true}>
                 <Col md={2} lg={2} className={colClasses[0]}>
-                    <p className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
+                    <div className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</div>
                 </Col>
                 <Col md={3} lg={3} className={colClasses[2]}>
                     <Link to={{
@@ -86,12 +86,12 @@ class NavbarBase extends Component {
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
                 <Col md={{span:2, offset:3}} lg={{span: 1, offset: 5}} className={colClasses[1]}>
-                    <p className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
+                    <div className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</div>
                 </Col>
                 <Col md={"auto"} lg={1} className="right-align column">
-                    <p className="nav-text" onClick={this.props.firebase.doSignOut}>
+                    <div className="nav-text" onClick={this.props.firebase.doSignOut}>
                         Sign out
-                    </p>
+                    </div>
                 </Col>
             </Row>
         )

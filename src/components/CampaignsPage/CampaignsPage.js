@@ -128,8 +128,8 @@ class CampaignsPage extends Component {
 		return (
 			<Container>				
 				<Navbar/>
-				{alert}
-				<div className="campaign-list remove-scroll-bar border-top">
+				<div className="campaign-list remove-scroll-bar">
+					{alert}
 					<div 
 						className="campaign-add-button item-add-button" 
 						onClick={() => this.setState({showCampaignInfo: true})}

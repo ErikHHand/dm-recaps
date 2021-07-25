@@ -238,7 +238,7 @@ class CampaignRecaps extends Component {
 				/>
 				<Tab.Container activeKey={this.state.activeTab} transition={false}>
 					<Row className="tab-nav">
-						<Col>
+						<Col className="tab-nav-col">
 							<Nav 
 								variant="tabs" 
 								className="justify-content-center"
