@@ -87,11 +87,32 @@ button:focus {
 	border-width: 2px !important;
 }
 
-.campaign-list  {
+.campaign-list {
 	overflow: scroll;
 	max-height: calc(96.5vh - 60px);
 	margin: 1.5vh 0 0 0;
 	padding: 0.5rem 0;
+}
+
+.campaign-sharing-icon-on {
+	cursor: pointer;
+	color: rgba(54, 179, 201, 0.76);
+}
+
+.campaign-sharing-icon-on:hover {
+	color: rgba(39, 160, 180, 1);
+}
+
+.campaign-sharing-title {
+	font-size: 20px;
+	font-weight: 500;
+	height: 38px;
+  	line-height: 38px;
+  	text-align: center;
+}
+
+.campaign-sharing-window {
+	min-width: 320px;
 }
 
 .campaign-title {

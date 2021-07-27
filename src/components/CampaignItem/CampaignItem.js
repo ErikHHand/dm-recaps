@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
+import CampaignSharing from '../CampaignSharing/CampaignSharing';
+
 
 import { Link } from "react-router-dom";
 
@@ -104,7 +106,15 @@ class CampaignItem extends Component {
 				>
 					<Card.Header>
 						<Row>
-							<Col md="1"></Col>
+							<Col md="1">
+								<CampaignSharing
+									campaignID = {this.props.campaignID}
+									campaign = {this.props.campaign}
+									campaigns = {this.props.campaigns}
+									handleCampaigns = {this.props.handleCampaigns}
+									campaignsRef = {this.props.campaignsRef}
+								/>
+							</Col>
 							<Col md="10" className="text-muted">
 								{this.props.campaign.world}
 							</Col>
