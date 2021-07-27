@@ -108,11 +108,10 @@ button:focus {
 	font-weight: 500;
 	height: 38px;
   	line-height: 38px;
-  	text-align: center;
 }
 
 .campaign-sharing-window {
-	min-width: 320px;
+	min-width: 400px;
 }
 
 .campaign-title {
@@ -351,6 +350,13 @@ button:focus {
 
 .right-align {
 	text-align: right;
+}
+
+.search-user-result {
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	font-style: italic;
 }
 
 .select-badge {

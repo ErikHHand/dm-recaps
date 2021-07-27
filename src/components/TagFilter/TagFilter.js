@@ -138,7 +138,7 @@ class TagFilter extends Component {
 
 		return (
 			<>
-				<div className="remove-padding filter-field search-text">
+				<div className="remove-padding filter-field">
 					<SearchField
 						placeholder="Search..."
 						onChange={(value, event) => this.textFilter(value, event)}

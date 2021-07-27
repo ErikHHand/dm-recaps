@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Overlay from 'react-bootstrap/Overlay'
@@ -10,6 +9,9 @@ import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
+
+import UserSearch from '../UserSearch/UserSearch';
+
 
 /*
 	
@@ -101,15 +103,14 @@ class CampaignSharing extends Component {
         /* 
         --- FRONTEND ---
             I NEED:
-            - A BUTON FOR TURNING ON SHARING
+            - ***DONE*** A BUTON FOR TURNING ON SHARING
             - A SEARCH WINDOW
-            - AN OVERVIEW OF WHAT USERS HAVE ACCESS TO THE CAMPAIGN
+            - AN OVERVIEW OF WHICH USERS HAVE ACCESS TO THE CAMPAIGN
 
         --- BACKEND ---
             I NEED:
-            - A FIELD WITH BOOLEAN FOR IF SHARING IS TURNED ON
-            - LIST OF USERS WITH WRITE ACCESS
-            - LIST OF USERS WITH READ ACCESS
+            - ***DONE***A FIELD WITH BOOLEAN FOR IF SHARING IS TURNED ON
+            - LIST OF USERS WITH ACCESS
         */
 
 
@@ -139,10 +140,10 @@ class CampaignSharing extends Component {
 						<Popover id="popover-basic" {...props} className="campaign-sharing-window">
 							<Popover.Title>
 								<Row>
-									<Col xs="auto" className="campaign-sharing-title">
-                                        Campaign Sharing is &nbsp;
+									<Col xs="8" className="campaign-sharing-title">
+                                        Campaign Sharing
 									</Col>
-                                    <Col xs="auto">
+                                    <Col xs="4" className="right-align">
                                         <BootstrapSwitchButton
                                             checked={this.props.campaign.sharingIsOn}
                                             onstyle="info"
@@ -155,11 +156,7 @@ class CampaignSharing extends Component {
 								
 							</Popover.Title>
 							<Popover.Content>
-								<Row>
-									<Col>
-										Campaign Sharing stuff
-									</Col>
-								</Row>
+								<UserSearch/>
 							</Popover.Content>
 						</Popover>
 					)}
