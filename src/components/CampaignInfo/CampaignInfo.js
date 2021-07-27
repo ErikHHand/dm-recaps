@@ -132,6 +132,8 @@ class CampaignInfo extends Component {
 				sessionOrder: [],
 				sessions: {},
 				selectedSession: "",
+				sharingIsOn: false,
+				usersSharedWith: {},
 				tags: {},
 				selectedTag: "",
 				ownerUsername: this.props.firebase.auth.currentUser.displayName,
