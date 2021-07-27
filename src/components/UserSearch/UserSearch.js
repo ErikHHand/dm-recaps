@@ -48,18 +48,32 @@ class UserSearch extends Component {
 
     render() {
 
+        let searchResult = "No results";
+
+        if(this.state.searchResult) {
+            searchResult = <Badge 
+                                pill 
+                                className="recap-tag" 
+                                onClick={() => console.log("Added user")}
+                            >
+                                <FontAwesomeIcon icon={faUser} />
+                                &nbsp;
+						        {this.state.searchResult.username}
+                            </Badge>
+        }
+
         console.log(this.state)
         return (
             <Row>
-                <Col xs="7" className="filter-field">
+                <Col xs="6" className="filter-field">
                     <SearchField
                         placeholder="Search..."
                         onChange={(value, event) => this.handleTextChange(value, event)}
                         searchText=""
                     />
                 </Col>
-                <Col xs="5" className="search-user-result text-muted">
-                        {this.state.searchResult ? this.state.searchResult.username : "No results yet."}
+                <Col xs="6" className="search-user-result text-muted">
+                    {searchResult}
                 </Col>
             </Row>
         );
