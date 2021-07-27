@@ -352,11 +352,19 @@ button:focus {
 	text-align: right;
 }
 
-.search-user-result {
-	height: 35px;
-	line-height: 35px;
+.search-user-no-result {
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
 	text-align: center;
 	font-style: italic;
+}
+
+.search-user-result {
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+	text-align: center;
 }
 
 .select-badge {
@@ -521,6 +529,10 @@ button:focus {
 	height: 42px;
 	padding: 10px 0 0 0;
 	margin-bottom: 18px;
+}
+
+.user-search {
+	padding-bottom: 0.6rem;
 }
 
 .with-line-breaks {

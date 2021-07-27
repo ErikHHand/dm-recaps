@@ -22,6 +22,9 @@ class UserSearch extends Component {
 			searchText: "",
             searchResult: null,
 		}
+
+        this.shareWithUser = this.shareWithUser.bind(this);
+
     }
 
     componentWillUnmount() {
@@ -46,15 +49,35 @@ class UserSearch extends Component {
         }
     };
 
+    shareWithUser() {
+
+        // Change campaign sharing status locally
+        let campaigns = this.props.campaigns;
+        let user = this.state.searchResult;
+        campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
+        this.props.handleCampaigns(campaigns);
+
+       // Edit campaign document on Firestore
+        this.props.campaignsRef.doc(this.props.campaignID).update({
+            ['usersSharedWith.' + user.userID]: user.username, 
+        }).then(() => {
+            console.log("Document successfully updated!");
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    }
+
     render() {
 
-        let searchResult = "No results";
+        let searchResult =  <div className="search-user-no-result text-muted">
+                                No results
+                            </div> 
 
         if(this.state.searchResult) {
             searchResult = <Badge 
                                 pill 
                                 className="recap-tag" 
-                                onClick={() => console.log("Added user")}
+                                onClick={this.shareWithUser}
                             >
                                 <FontAwesomeIcon icon={faUser} />
                                 &nbsp;
@@ -64,7 +87,7 @@ class UserSearch extends Component {
 
         console.log(this.state)
         return (
-            <Row>
+            <Row className="border-bottom user-search">
                 <Col xs="6" className="filter-field">
                     <SearchField
                         placeholder="Search..."
@@ -72,7 +95,7 @@ class UserSearch extends Component {
                         searchText=""
                     />
                 </Col>
-                <Col xs="6" className="search-user-result text-muted">
+                <Col xs="6" className="search-user-result">
                     {searchResult}
                 </Col>
             </Row>

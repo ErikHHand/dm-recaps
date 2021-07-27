@@ -4,11 +4,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
+import Badge from 'react-bootstrap/Badge'
 
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import UserSearch from '../UserSearch/UserSearch';
 
@@ -104,15 +106,40 @@ class CampaignSharing extends Component {
         --- FRONTEND ---
             I NEED:
             - ***DONE*** A BUTON FOR TURNING ON SHARING
-            - A SEARCH WINDOW
+            - ***DONE*** A SEARCH WINDOW
             - AN OVERVIEW OF WHICH USERS HAVE ACCESS TO THE CAMPAIGN
+			- A WAY TO REVOKE ACCESS FROM A USER
 
         --- BACKEND ---
             I NEED:
-            - ***DONE***A FIELD WITH BOOLEAN FOR IF SHARING IS TURNED ON
-            - LIST OF USERS WITH ACCESS
+            - ***DONE*** A FIELD WITH BOOLEAN FOR IF SHARING IS TURNED ON
+            - ***DONE*** LIST OF USERS WITH ACCESS
         */
 
+		let usersSharedWith = <></>;
+
+		let users = this.props.campaign.usersSharedWith;
+		
+
+		if(users && Object.keys(users).length !== 0) {
+			console.log(this.props.campaign.usersSharedWith)
+			usersSharedWith = Array.from(Object.keys(users)).map((userID) =>
+				<Row key={userID}>
+					<Col>
+						<Badge 
+							pill 
+							className="recap-tag" 
+						>
+							<FontAwesomeIcon icon={faUser} />
+							&nbsp;
+							{this.props.campaign.usersSharedWith[userID]}
+						</Badge>
+					</Col>
+					<Col>
+					</Col>
+				</Row>
+			);
+		}
 
 		return (
 			<div>
@@ -153,10 +180,16 @@ class CampaignSharing extends Component {
                                         />
                                     </Col>
 								</Row>
-								
 							</Popover.Title>
 							<Popover.Content>
-								<UserSearch/>
+								<UserSearch
+									campaignID = {this.props.campaignID}
+									campaign = {this.props.campaign}
+									campaigns = {this.props.campaigns}
+									handleCampaigns = {this.props.handleCampaigns}
+									campaignsRef = {this.props.campaignsRef}
+								/>
+								{usersSharedWith}
 							</Popover.Content>
 						</Popover>
 					)}
