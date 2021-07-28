@@ -90,7 +90,6 @@ class CampaignSharing extends Component {
 
         let campaignSharing = this;
 		let usersSharedWith = <></>;
-		let currentUser = this.props.firebase.auth.currentUser;
 
 		let usersList = Object.keys(this.props.campaign.usersSharedWith);
 		let coloursList = Object.values(COLOURS);
@@ -184,7 +183,7 @@ class CampaignSharing extends Component {
 										>
 											<FontAwesomeIcon icon={faUser} />
 											&nbsp;
-											{currentUser.displayName}
+											{this.props.campaign.ownerUsername}
 										</Badge>
 									</Col>
 									<Col xs="4" className="user-access-type text-muted">
