@@ -11,7 +11,7 @@ import SearchField from "react-search-field";
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 import { withFirebase } from '../Firebase/Firebase';
-
+import * as firebase from 'firebase'; // Do not remove
 
 class UserSearch extends Component {
 
@@ -60,6 +60,7 @@ class UserSearch extends Component {
        // Edit campaign document on Firestore
         this.props.campaignsRef.doc(this.props.campaignID).update({
             ['usersSharedWith.' + user.userID]: user.username, 
+            usersSharedWithList: firebase.firestore.FieldValue.arrayUnion(user.userID),
         }).then(() => {
             console.log("Document successfully updated!");
         }).catch((error) => {
