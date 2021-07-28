@@ -59,6 +59,7 @@ class UserSearch extends Component {
 
        // Edit campaign document on Firestore
         this.props.campaignsRef.doc(this.props.campaignID).update({
+            userLastHandled: user.userID,
             ['usersSharedWith.' + user.userID]: user.username, 
             usersSharedWithList: firebase.firestore.FieldValue.arrayUnion(user.userID),
         }).then(() => {
@@ -92,7 +93,6 @@ class UserSearch extends Component {
             }
         }
 
-        console.log(this.state)
         return (
             <Row className="border-bottom user-search">
                 <Col xs="6" className="filter-field">

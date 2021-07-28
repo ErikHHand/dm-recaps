@@ -77,6 +77,7 @@ class CampaignSharing extends Component {
 
        // Edit campaign document on Firestore
         this.props.campaignsRef.doc(this.props.campaignID).update({
+			userLastHandled: userID,
             ["usersSharedWith." + userID]: firebase.firestore.FieldValue.delete(),
 			usersSharedWithList: firebase.firestore.FieldValue.arrayRemove(userID)
         }).then(() => {

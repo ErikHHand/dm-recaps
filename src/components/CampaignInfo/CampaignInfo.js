@@ -135,6 +135,7 @@ class CampaignInfo extends Component {
 				sharingIsOn: false,
 				usersSharedWith: {},
 				usersSharedWithList: [],
+				userLastHandled: "",
 				tags: {},
 				selectedTag: "",
 				ownerUsername: this.props.firebase.auth.currentUser.displayName,
