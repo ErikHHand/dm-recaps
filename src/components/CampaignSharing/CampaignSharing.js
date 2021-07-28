@@ -18,6 +18,7 @@ import UserSearch from '../UserSearch/UserSearch';
 import { COLOURS } from '../../constants/colours.js';
 import { TEXTCOLOURS } from '../../constants/colours.js';
 
+import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
 
@@ -88,8 +89,8 @@ class CampaignSharing extends Component {
 	render() {
 
         let campaignSharing = this;
-
 		let usersSharedWith = <></>;
+		let currentUser = this.props.firebase.auth.currentUser;
 
 		let usersList = Object.keys(this.props.campaign.usersSharedWith);
 		let coloursList = Object.values(COLOURS);
@@ -174,6 +175,24 @@ class CampaignSharing extends Component {
 								<div className="user-list">
 
 								</div>
+								<Row>
+									<Col xs="6" className="center-vertically">
+										<Badge 
+											pill 
+											style={{ backgroundColor: coloursList[15]}} 
+											className={textColoursList[15] + " user-tag"}
+										>
+											<FontAwesomeIcon icon={faUser} />
+											&nbsp;
+											{currentUser.displayName}
+										</Badge>
+									</Col>
+									<Col xs="4" className="user-access-type text-muted">
+										Owner
+									</Col>
+									<Col xs="2" className="center-vertically">
+									</Col>
+								</Row>
 								{usersSharedWith}
 							</Popover.Content>
 						</Popover>
@@ -184,4 +203,4 @@ class CampaignSharing extends Component {
 	}
 }
 
-export default CampaignSharing
+export default withFirebase(CampaignSharing)

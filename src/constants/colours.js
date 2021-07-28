@@ -30,10 +30,10 @@ export const TEXTCOLOURS = {
 	limegreen: "text-white",
 	gold: "text-white",
 	orange: "text-white",
-	black: "text-white",
+	white: "text-black",
 	tan: "text-white",
 	grey: "text-white",
-	white: "text-black",
+	black: "text-white",
 };
 
 export const COLOURSRGB = {
