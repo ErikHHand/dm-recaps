@@ -43,7 +43,8 @@ class CampaignsPage extends Component {
 
         campaignsRef.where("ownerID", "==", this.props.firebase.auth.currentUser.uid).get()
 		.then((ownedCampaigns) => {
-			campaignsRef.where("usersSharedWithList", "array-contains", this.props.firebase.auth.currentUser.uid).get()
+			campaignsRef.where("usersSharedWithList", "array-contains", this.props.firebase.auth.currentUser.uid)
+			.where("sharingIsOn", "==", true).get()
 			.then((sharedWithCampaigns) => {
 
 				let campaigns = {};
