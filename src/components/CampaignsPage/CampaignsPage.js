@@ -41,20 +41,44 @@ class CampaignsPage extends Component {
 		// Query for getting the campaign collection from firestore
         let campaignsRef = this.props.firebase.db.collection("campaigns");
 
-        campaignsRef.where("ownerID", "==", this.props.firebase.auth.currentUser.uid).get().then((querySnapshot) => {
-            let campaigns = {};
+        campaignsRef.where("ownerID", "==", this.props.firebase.auth.currentUser.uid).get()
+		.then((ownedCampaigns) => {
+			campaignsRef.where("usersSharedWithList", "array-contains", this.props.firebase.auth.currentUser.uid)
+			.where("sharingIsOn", "==", true).get()
+			.then((sharedWithCampaigns) => {
 
-            // Get all entries in the campaign collection
-            querySnapshot.forEach((doc) => {
-                campaigns[doc.id] = doc.data();
-            });
-			
-			// Save the campaigns in the state
-            home.setState({
-				campaigns: campaigns,
-				status: "LOADED",
-			});
-						
+				let campaigns = {};
+
+				// Get all entries in the campaign collection
+				ownedCampaigns.forEach((doc) => {
+					campaigns[doc.id] = doc.data();
+				});
+
+				// Get all entries in the campaign collection
+				sharedWithCampaigns.forEach((doc) => {
+					campaigns[doc.id] = doc.data();
+				});
+				
+				// Save the campaigns in the state
+				home.setState({
+					campaigns: campaigns,
+					status: "LOADED",
+				});
+			}).catch((error) => {
+				console.log("Error getting document:", error);
+				let campaigns = {};
+
+				// Get all entries in the campaign collection
+				ownedCampaigns.forEach((doc) => {
+					campaigns[doc.id] = doc.data();
+				});
+				
+				// Save the campaigns in the state
+				home.setState({
+					campaigns: campaigns,
+					status: "LOADED",
+				});
+			});			
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
