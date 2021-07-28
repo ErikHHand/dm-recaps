@@ -95,8 +95,9 @@ class CampaignSharing extends Component {
 		let coloursList = Object.values(COLOURS);
 		let textColoursList = Object.values(TEXTCOLOURS);
 
+		let userIsOwner = this.props.firebase.auth.currentUser.uid === this.props.campaign.ownerID;
+
 		if(usersList && usersList.length !== 0) {
-			console.log(this.props.campaign.usersSharedWith)
 			usersSharedWith = usersList.map((userID) =>
 				<Row key={userID}>
 					<Col xs="6" className="center-vertically">
@@ -114,10 +115,14 @@ class CampaignSharing extends Component {
 						Write access
 					</Col>
 					<Col xs="2" className="center-vertically">
-						<CloseButton
-							className="user-sharing-remove"
-							onClick={() => this.removeUser(userID)}
-						/>
+						{
+							userIsOwner ?
+							<CloseButton
+								className="user-sharing-remove"
+								onClick={() => this.removeUser(userID)}
+							/> :
+							<></>
+						}
 					</Col>
 				</Row>
 			);
@@ -154,6 +159,7 @@ class CampaignSharing extends Component {
 									</Col>
                                     <Col xs="4" className="right-align">
                                         <BootstrapSwitchButton
+											disabled={!userIsOwner}
                                             checked={this.props.campaign.sharingIsOn}
                                             onstyle="info"
                                             offstyle="outline-info"
@@ -164,35 +170,38 @@ class CampaignSharing extends Component {
 								</Row>
 							</Popover.Title>
 							<Popover.Content>
-								<UserSearch
-									campaignID = {this.props.campaignID}
-									campaign = {this.props.campaign}
-									campaigns = {this.props.campaigns}
-									handleCampaigns = {this.props.handleCampaigns}
-									campaignsRef = {this.props.campaignsRef}
-								/>
+								{
+									userIsOwner ?
+									<UserSearch
+										campaignID = {this.props.campaignID}
+										campaign = {this.props.campaign}
+										campaigns = {this.props.campaigns}
+										handleCampaigns = {this.props.handleCampaigns}
+										campaignsRef = {this.props.campaignsRef}
+									/> :
+									<></>
+								}
 								<div className="user-list">
-
+									<Row>
+										<Col xs="6" className="center-vertically">
+											<Badge 
+												pill 
+												style={{ backgroundColor: coloursList[15]}} 
+												className={textColoursList[15] + " user-tag"}
+											>
+												<FontAwesomeIcon icon={faUser} />
+												&nbsp;
+												{this.props.campaign.ownerUsername}
+											</Badge>
+										</Col>
+										<Col xs="4" className="user-access-type text-muted">
+											Owner
+										</Col>
+										<Col xs="2" className="center-vertically">
+										</Col>
+									</Row>
+									{usersSharedWith}
 								</div>
-								<Row>
-									<Col xs="6" className="center-vertically">
-										<Badge 
-											pill 
-											style={{ backgroundColor: coloursList[15]}} 
-											className={textColoursList[15] + " user-tag"}
-										>
-											<FontAwesomeIcon icon={faUser} />
-											&nbsp;
-											{this.props.campaign.ownerUsername}
-										</Badge>
-									</Col>
-									<Col xs="4" className="user-access-type text-muted">
-										Owner
-									</Col>
-									<Col xs="2" className="center-vertically">
-									</Col>
-								</Row>
-								{usersSharedWith}
 							</Popover.Content>
 						</Popover>
 					)}
