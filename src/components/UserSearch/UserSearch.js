@@ -76,7 +76,7 @@ class UserSearch extends Component {
         if(this.state.searchResult) {
             searchResult = <Badge 
                                 pill 
-                                className="recap-tag" 
+                                className="user-tag-search-result" 
                                 onClick={this.shareWithUser}
                             >
                                 <FontAwesomeIcon icon={faUser} />

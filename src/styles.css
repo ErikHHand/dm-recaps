@@ -126,6 +126,13 @@ button:focus {
     text-align: center;
 }
 
+.center-vertically {
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+	text-align: center;
+}
+
 .column {
 	border: none;
 }
@@ -531,8 +538,56 @@ button:focus {
 	margin-bottom: 18px;
 }
 
+.user-access-type {
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+	text-align: center;
+	font-style: italic;
+}
+
+.user-list {
+	margin-top: 0.5rem;
+}
+
 .user-search {
 	padding-bottom: 0.6rem;
+}
+
+.user-sharing-remove {
+	font-size: 32px !important;
+	color:rgba(247, 55, 55, 0.836) !important;
+	cursor: pointer;
+}
+
+.user-sharing-remove:hover {
+	font-size: 32px;
+	color:rgb(252, 0, 0) !important;
+}
+
+.user-tag {
+	cursor: default;
+	width: 100%;
+	font-size: 16px !important;
+	margin: 0.4rem 0.1rem;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.user-tag-search-result {
+	border: 3px solid rgb(230, 230, 230);
+	cursor: pointer;
+	width: 100%;
+	font-size: 16px !important;
+	margin: 0.2rem 0.1rem;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.user-tag-search-result:hover {
+	border: 3px solid rgb(94, 94, 94);
 }
 
 .with-line-breaks {

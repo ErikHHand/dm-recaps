@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col'
 import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
 import Badge from 'react-bootstrap/Badge'
+import CloseButton from 'react-bootstrap/CloseButton'
 
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 
@@ -14,9 +15,14 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import UserSearch from '../UserSearch/UserSearch';
 
+import { COLOURS } from '../../constants/colours.js';
+import { TEXTCOLOURS } from '../../constants/colours.js';
+
+import * as firebase from 'firebase'; // Do not remove
+
 
 /*
-	
+	Component for campaign sharing
 */
 class CampaignSharing extends Component {
 
@@ -30,48 +36,10 @@ class CampaignSharing extends Component {
 		}
 
 		// Set the context for "this" for the following functions
-		this.onSubmit = this.onSubmit.bind(this);
-		this.onClick = this.onClick.bind(this);
 		this.changeWindow = this.changeWindow.bind(this);
 		this.changeCampaignSharingStatus = this.changeCampaignSharingStatus.bind(this);
+		this.removeUser = this.removeUser.bind(this);
 	}
-
-	// Triggers when changing tags
-	// Updates tags for this recap item
-	onClick(tagID) {
-    	let tags = this.state.tags;
-		tags[tagID] = !this.state.tags[tagID];
-
-		this.setState({
-			tags: tags,
-		});
-	};
-
-	// This function is called when a user submits changes to
-	// which tags are attached to the recap item
-	onSubmit() {
-
-		// Hide tag selection pop-up
-		this.setState({
-			showTagOverlay: false,
-		})
-
-		// Add tags with value True
-		let tags = [];
-		for (let tag in this.state.tags) {
-			if(this.state.tags[tag]){
-				tags.push(tag)
-			}	
-		}
-		
-		// Save previous tags to simplify removal of tags from the recap item
-		let previousTags = this.props.recapItem.tags;
-
-		// Update recap Item with potentially new text and tags
-		let recapItem = this.props.recapItem;
-		recapItem.tags = tags;
-		this.props.writeRecap(recapItem, previousTags);
-	};
 
 	// This function is called when changing visibility of the tag selection pop-up
 	// and the tag info component for adding new tags
@@ -98,44 +66,57 @@ class CampaignSharing extends Component {
         });
     }
 
+	removeUser(userID) {
+		console.log("Remove user")
+
+		// Change campaign sharing status locally
+        let campaigns = this.props.campaigns;
+        delete campaigns[this.props.campaignID].usersSharedWith[userID];
+        this.props.handleCampaigns(campaigns);
+
+       // Edit campaign document on Firestore
+        this.props.campaignsRef.doc(this.props.campaignID).update({
+            ["usersSharedWith." + userID]: firebase.firestore.FieldValue.delete(),
+        }).then(() => {
+            console.log("Document successfully updated!");
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+	}
+
 	render() {
 
         let campaignSharing = this;
 
-        /* 
-        --- FRONTEND ---
-            I NEED:
-            - ***DONE*** A BUTON FOR TURNING ON SHARING
-            - ***DONE*** A SEARCH WINDOW
-            - AN OVERVIEW OF WHICH USERS HAVE ACCESS TO THE CAMPAIGN
-			- A WAY TO REVOKE ACCESS FROM A USER
-
-        --- BACKEND ---
-            I NEED:
-            - ***DONE*** A FIELD WITH BOOLEAN FOR IF SHARING IS TURNED ON
-            - ***DONE*** LIST OF USERS WITH ACCESS
-        */
-
 		let usersSharedWith = <></>;
 
-		let users = this.props.campaign.usersSharedWith;
-		
+		let usersList = Object.keys(this.props.campaign.usersSharedWith);
+		let coloursList = Object.values(COLOURS);
+		let textColoursList = Object.values(TEXTCOLOURS);
 
-		if(users && Object.keys(users).length !== 0) {
+		if(usersList && usersList.length !== 0) {
 			console.log(this.props.campaign.usersSharedWith)
-			usersSharedWith = Array.from(Object.keys(users)).map((userID) =>
+			usersSharedWith = usersList.map((userID) =>
 				<Row key={userID}>
-					<Col>
+					<Col xs="6" className="center-vertically">
 						<Badge 
 							pill 
-							className="recap-tag" 
+							style={{ backgroundColor: coloursList[usersList.indexOf(userID)]}} 
+							className={textColoursList[usersList.indexOf(userID)] + " user-tag"}
 						>
 							<FontAwesomeIcon icon={faUser} />
 							&nbsp;
 							{this.props.campaign.usersSharedWith[userID]}
 						</Badge>
 					</Col>
-					<Col>
+					<Col xs="4" className="user-access-type text-muted">
+						Write access
+					</Col>
+					<Col xs="2" className="center-vertically">
+						<CloseButton
+							className="user-sharing-remove"
+							onClick={() => this.removeUser(userID)}
+						/>
 					</Col>
 				</Row>
 			);
@@ -189,6 +170,9 @@ class CampaignSharing extends Component {
 									handleCampaigns = {this.props.handleCampaigns}
 									campaignsRef = {this.props.campaignsRef}
 								/>
+								<div className="user-list">
+
+								</div>
 								{usersSharedWith}
 							</Popover.Content>
 						</Popover>
