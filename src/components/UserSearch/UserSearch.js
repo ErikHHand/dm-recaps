@@ -75,15 +75,21 @@ class UserSearch extends Component {
                             </div> 
 
         if(this.state.searchResult) {
-            searchResult = <Badge 
-                                pill 
-                                className="user-tag-search-result" 
-                                onClick={this.shareWithUser}
-                            >
-                                <FontAwesomeIcon icon={faUser} />
-                                &nbsp;
-						        {this.state.searchResult.username}
-                            </Badge>
+            if(this.state.searchResult.userID === this.props.firebase.auth.currentUser.uid) {
+                searchResult =  <div className="search-user-no-result text-muted">
+                                    Hey, that's you!
+                                </div> 
+            } else {
+                searchResult =  <Badge 
+                                    pill 
+                                    className="user-tag-search-result" 
+                                    onClick={this.shareWithUser}
+                                >
+                                    <FontAwesomeIcon icon={faUser} />
+                                    &nbsp;
+                                    {this.state.searchResult.username}
+                                </Badge>
+            }
         }
 
         console.log(this.state)
