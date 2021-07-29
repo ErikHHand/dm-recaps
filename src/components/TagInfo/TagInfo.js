@@ -118,7 +118,7 @@ class TagInfo extends Component {
 			return;
 		}
 
-		// Add session locally
+		// Add tag locally
 		tags[tagID] = tag;
 		this.props.handleTags(tags);
 
@@ -201,9 +201,9 @@ class TagInfo extends Component {
 				centered
 			>
 				<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
-					{title}
-				</Modal.Title>
+					<Modal.Title id="contained-modal-title-vcenter">
+						{title}
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Alert
