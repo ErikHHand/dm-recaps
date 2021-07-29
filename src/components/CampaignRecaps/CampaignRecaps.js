@@ -226,8 +226,6 @@ class CampaignRecaps extends Component {
 		// The id for this campaign
 		let campaignID = this.props.location.pathname.substring(11);
 
-		console.log(campaignID);
-
 		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
