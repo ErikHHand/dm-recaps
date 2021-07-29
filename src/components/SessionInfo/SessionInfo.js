@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert'
+
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,6 +24,7 @@ class SessionInfo extends Component {
 			error: null,
 			description: "",
 			date: new Date(),
+			showAlert: false,
 		}
 
 		// Set the context for "this" for the following function
@@ -64,8 +67,6 @@ class SessionInfo extends Component {
 	// Triggers when submitting session info
 	onSubmit(event){
 
-		// Hide the session info window
-		this.props.onHide();
 		event.preventDefault();
 
 		// The info to be saved with the session
@@ -94,7 +95,7 @@ class SessionInfo extends Component {
 		let sessionID = this.hashCode(sessionInfo.description).toString(); // TODO: Check for hashcode collisions
 
 		if(sessions[sessionID]) {
-			this.props.handleSelectedSession(sessionID);
+			this.setState({showAlert: true,})
 			return;
 		}
 
@@ -105,12 +106,22 @@ class SessionInfo extends Component {
 		// Write session info
 		this.editSessionInfo(sessionID, sessionInfo);
 
+		// Reset the state
+		this.setState({
+			error: null,
+			description: "",
+			date: new Date(),
+		});
+
 		this.props.handleSelectedSession(sessionID);
 	};
 
 	// Triggers when editing a session or just after a new session has been added.
 	// This function saves the session info locally and on Firestore
 	editSessionInfo(sessionID, sessionInfo) {
+
+		// Hide the session info window
+		this.props.onHide();
 
 		let campaign = this.props.campaign;
 
@@ -170,7 +181,10 @@ class SessionInfo extends Component {
 
 	// Triggers when changing the description
 	onChangeDescription(event){		
-    	this.setState({ description: event.target.value });
+    	this.setState({ 
+			description: event.target.value,
+			showAlert: false, 
+		});
   	};
 
 	render() {
@@ -203,7 +217,14 @@ class SessionInfo extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<h4>Hope you had a great adventure!</h4>
+					<Alert
+						dismissible
+						show={this.state.showAlert}
+						onClose={() => this.setState({showAlert: false,})}
+						variant="info"
+					>
+						A session with this description already exists!
+					</Alert>
 					<Form onSubmit={this.onSubmit}>
 						<Form.Group controlId="formSessionDate">
 							<Form.Label>Date</Form.Label>
