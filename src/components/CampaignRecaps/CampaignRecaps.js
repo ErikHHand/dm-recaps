@@ -52,7 +52,7 @@ class CampaignRecaps extends Component {
 		let campaign = this;
 
 		// The id for this campaign
-		let campaignID = this.props.location.state.id;
+		let campaignID = this.props.location.pathname.substring(11);
 
 		// Set the correct Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
@@ -110,7 +110,7 @@ class CampaignRecaps extends Component {
 		// Check if user is signed in
 		if(this.props.firebase.auth.currentUser) {
 			// The id for this campaign
-			let campaignID = this.props.location.state.id;
+			let campaignID = this.props.location.pathname.substring(11);
 
 			// The Firestore database reference for this campaign
 			let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
@@ -131,7 +131,7 @@ class CampaignRecaps extends Component {
 
 			userRef.update({
 				lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
-				lastCampaignID: this.props.location.state.id ? this.props.location.state.id: "",
+				lastCampaignID: campaignID,
 			}).then(function() {
 				console.log("Document successfully updated!");
 			}).catch(function(error) {
@@ -224,7 +224,9 @@ class CampaignRecaps extends Component {
 	render() {
 
 		// The id for this campaign
-		let campaignID = this.props.location.state.id;
+		let campaignID = this.props.location.pathname.substring(11);
+
+		console.log(campaignID);
 
 		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
