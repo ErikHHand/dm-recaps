@@ -32,11 +32,20 @@ class TagsPage extends Component {
 			showTagInfo: false,
 			filteredTags: [],
 			tagSort: 1,
+			windowHeight: 0,
 		};
 
 		// Set the context for "this" for the following functions
 		this.handleFilteredTags = this.handleFilteredTags.bind(this);
 		this.changeSort = this.changeSort.bind(this);
+	}
+
+	componentDidMount() {
+		window.addEventListener('resize', this.updateDimensions);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateDimensions);
 	}
 
 	// Triggers when props for component updates
@@ -65,11 +74,15 @@ class TagsPage extends Component {
 		}
 	}
 
+	updateDimensions = () => {
+		this.setState({ windowHeight: window.innerHeight });
+	};
+
 	// Handles changes to the tags shown based on filtering
 	handleFilteredTags(filteredTags) {
 		this.setState({
 			filteredTags: filteredTags,
-		})
+		});
 	}
 
 	// Change sorting of a list
