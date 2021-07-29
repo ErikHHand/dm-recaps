@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Badge from 'react-bootstrap/Badge'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -21,10 +22,10 @@ class UserSearch extends Component {
 		this.state = {
 			searchText: "",
             searchResult: null,
+            showAlert: false,
 		}
 
         this.shareWithUser = this.shareWithUser.bind(this);
-
     }
 
     componentWillUnmount() {
@@ -36,11 +37,13 @@ class UserSearch extends Component {
     searchAPIDebounced = AwesomeDebouncePromise(this.searchAPI, 500);
 
     async handleTextChange(searchText) {
-        this.setState({ searchText, searchResult: null });
+        this.setState({ 
+            searchText, 
+            searchResult: null,
+            showAlert: false,
+        });
         if(searchText) {
             const searchResult = await this.searchAPIDebounced(searchText);
-            console.log(searchResult.data())
-            console.log(searchResult.id)
             if(searchResult.exists) {
                 this.setState({ 
                     searchResult: {username: searchResult.id, userID: searchResult.data().uid} 
@@ -51,22 +54,27 @@ class UserSearch extends Component {
 
     shareWithUser() {
 
-        // Change campaign sharing status locally
-        let campaigns = this.props.campaigns;
-        let user = this.state.searchResult;
-        campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
-        this.props.handleCampaigns(campaigns);
+        if(this.props.campaign.usersSharedWithList.length >= 15) {
+            this.setState({showAlert: true});
+        } else {
 
-       // Edit campaign document on Firestore
-        this.props.campaignsRef.doc(this.props.campaignID).update({
-            userLastHandled: user.userID,
-            ['usersSharedWith.' + user.userID]: user.username, 
-            usersSharedWithList: firebase.firestore.FieldValue.arrayUnion(user.userID),
-        }).then(() => {
-            console.log("Document successfully updated!");
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
+            // Change campaign sharing status locally
+            let campaigns = this.props.campaigns;
+            let user = this.state.searchResult;
+            campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
+            this.props.handleCampaigns(campaigns);
+
+            // Edit campaign document on Firestore
+            this.props.campaignsRef.doc(this.props.campaignID).update({
+                userLastHandled: user.userID,
+                ['usersSharedWith.' + user.userID]: user.username, 
+                usersSharedWithList: firebase.firestore.FieldValue.arrayUnion(user.userID),
+            }).then(() => {
+                console.log("Document successfully updated!");
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+        }
     }
 
     render() {
@@ -94,18 +102,29 @@ class UserSearch extends Component {
         }
 
         return (
-            <Row className="border-bottom user-search">
-                <Col xs="6" className="filter-field">
-                    <SearchField
-                        placeholder="Search..."
-                        onChange={(value, event) => this.handleTextChange(value, event)}
-                        searchText=""
-                    />
-                </Col>
-                <Col xs="6" className="search-user-result">
-                    {searchResult}
-                </Col>
-            </Row>
+            <>
+                <Row className="border-bottom user-search">
+                    <Col xs="6" className="filter-field">
+                        <SearchField
+                            placeholder="Search..."
+                            onChange={(value, event) => this.handleTextChange(value, event)}
+                            searchText=""
+                        />
+                    </Col>
+                    <Col xs="6" className="search-user-result">
+                        {searchResult}
+                    </Col>
+                </Row>
+                <Alert
+                    dismissible
+                    show={this.state.showAlert}
+                    onClose={() => this.setState({showAlert: false})}
+                    variant="danger"
+                    className="alert-error"
+                >
+                    A maximum of 16 people already have access to this camapign!
+                </Alert>
+            </>
         );
     }
 }

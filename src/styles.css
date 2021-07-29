@@ -29,6 +29,10 @@ button:focus {
 	outline: none !important;
 }
 
+.alert-error {
+	margin-top: 0.5rem;
+}
+
 .App {
 	height: 100vh;
 }
@@ -554,6 +558,13 @@ button:focus {
 
 .user-list {
 	margin-top: 0.5rem;
+}
+
+.user-maximum-text {
+	text-align: center;
+	font-style: italic;
+	color: rgb(108, 117, 125);
+	padding-bottom: 0.5rem;
 }
 
 .user-search {

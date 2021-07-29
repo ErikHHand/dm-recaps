@@ -187,6 +187,11 @@ class CampaignSharing extends Component {
 								}
 								<div className="user-list">
 									<Row>
+										<Col className="user-maximum-text">
+											Campaigns can be shared between 16 people at most.
+										</Col>
+									</Row>
+									<Row>
 										<Col xs="6" className="center-vertically">
 											<Badge 
 												pill 
