@@ -96,11 +96,11 @@ button:focus {
 
 .campaign-sharing-icon-on {
 	cursor: pointer;
-	color: rgba(54, 179, 201, 0.863);
+	color: rgb(54, 179, 201);
 }
 
 .campaign-sharing-icon-on:hover {
-	color: rgba(39, 160, 180, 1);
+	color: rgba(61, 130, 148, 1);
 }
 
 .campaign-sharing-title {
