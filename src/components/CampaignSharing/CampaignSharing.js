@@ -96,7 +96,10 @@ class CampaignSharing extends Component {
 		let coloursList = Object.values(COLOURS);
 		let textColoursList = Object.values(TEXTCOLOURS);
 
-		let userIsOwner = this.props.firebase.auth.currentUser.uid === this.props.campaign.ownerID;
+		let userIsOwner = false;
+		if(this.props.firebase.auth.currentUser) {
+			userIsOwner = this.props.firebase.auth.currentUser.uid === this.props.campaign.ownerID;
+		}
 
 		if(usersList && usersList.length !== 0) {
 			usersSharedWith = usersList.map((userID) =>
