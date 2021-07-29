@@ -101,7 +101,7 @@ class CampaignSharing extends Component {
 		if(usersList && usersList.length !== 0) {
 			usersSharedWith = usersList.map((userID) =>
 				<Row key={userID}>
-					<Col xs="6" className="center-vertically">
+					<Col xs="6" className={this.props.campaign.sharingIsOn ? "center-vertically" : "center-vertically opacity-20"}>
 						<Badge 
 							pill 
 							style={{ backgroundColor: coloursList[usersList.indexOf(userID)]}} 
@@ -112,7 +112,7 @@ class CampaignSharing extends Component {
 							{this.props.campaign.usersSharedWith[userID]}
 						</Badge>
 					</Col>
-					<Col xs="4" className="user-access-type text-muted">
+					<Col xs="4" className={this.props.campaign.sharingIsOn ? "user-access-type" : "user-access-type opacity-20"}>
 						Write access
 					</Col>
 					<Col xs="2" className="center-vertically">
@@ -195,7 +195,7 @@ class CampaignSharing extends Component {
 												{this.props.campaign.ownerUsername}
 											</Badge>
 										</Col>
-										<Col xs="4" className="user-access-type text-muted">
+										<Col xs="4" className="user-access-type">
 											Owner
 										</Col>
 										<Col xs="2" className="center-vertically">

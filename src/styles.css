@@ -96,7 +96,7 @@ button:focus {
 
 .campaign-sharing-icon-on {
 	cursor: pointer;
-	color: rgba(54, 179, 201, 0.76);
+	color: rgba(54, 179, 201, 0.863);
 }
 
 .campaign-sharing-icon-on:hover {
@@ -261,6 +261,10 @@ button:focus {
 
 .nav-text-current {
 	font-weight: bold;
+}
+
+.opacity-20 {
+	opacity: 20%;
 }
 
 .react-search-field-input {
@@ -544,6 +548,7 @@ button:focus {
   	align-items: center;
 	text-align: center;
 	font-style: italic;
+	color: rgb(108, 117, 125);
 }
 
 .user-list {
