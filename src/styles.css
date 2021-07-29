@@ -496,6 +496,7 @@ button:focus {
 .tag-selector {
 	max-width: 36rem !important;
 	max-height: 90vh;
+	min-width: 24rem;
 }
 
 .tag-selector-tag {
