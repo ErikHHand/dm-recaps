@@ -257,7 +257,6 @@ class TagsPage extends Component {
 					campaignRef = {this.props.campaignRef}
 					edit = {false}
 					tagID = {null}
-					selectTag = {true}
 					handleSelectedTag = {this.props.handleSelectedTag}
 				/>
 			</>

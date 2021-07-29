@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { Form, Button } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert'
 
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
@@ -24,6 +25,7 @@ class TagInfo extends Component {
 			type: "Location",
 			colour: "red",
 			error: "",
+			showAlert: false,
 		}
 
 		// Set the context for "this" for the following function
@@ -82,8 +84,6 @@ class TagInfo extends Component {
 	onSubmit(event) {
 
 		event.preventDefault();
-		// Hide the tag info window
-		this.props.onHide();
 
 		// The info to be saved with the tag
 		let tagInfo = {
@@ -114,7 +114,7 @@ class TagInfo extends Component {
 		let tagID = this.hashCode(tagInfo.name).toString(); 
 
 		if(tags[tagID]) {
-			this.props.handleSelectedTag(tagID);
+			this.setState({showAlert: true,})
 			return;
 		}
 
@@ -124,7 +124,6 @@ class TagInfo extends Component {
 
 		// Write tag info
 		this.editTagInfo(tagID, tagInfo);
-		this.props.handleSelectedTag(tagID);
 
 		// Reset the state
 		this.setState({
@@ -133,11 +132,19 @@ class TagInfo extends Component {
 			colour: "red",
 			description: "",
 		});
+
+		if(this.props.doNotSelectTag) {
+			return;
+		}
+		this.props.handleSelectedTag(tagID);
 	};
 
 	// Triggers when editing a tag or just after a new tag has been added.
 	// This function saves the tag info locally and on Firestore
 	editTagInfo(tagID, tagInfo) {
+
+		// Hide the tag info window
+		this.props.onHide();
 
 		// Add tag in campaign document
 		this.props.campaignRef.update({
@@ -152,14 +159,14 @@ class TagInfo extends Component {
 		let campaign = this.props.campaign;
 		campaign.tags[tagID] = tagInfo;
 		this.props.handleCampaign(campaign);
-		if(this.props.selectTag) {
-			this.props.handleSelectedTag(tagID);
-		}
 	}
 	
 	// Triggers when changing tag name or tag description
 	onChange(event){
-    	this.setState({ [event.target.name]: event.target.value });
+    	this.setState({ [
+			event.target.name]: event.target.value,
+			showAlert: false,
+		});
   	};
 
 	  // Triggers when changing tag type or tag colour
@@ -199,6 +206,14 @@ class TagInfo extends Component {
 				</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
+					<Alert
+						dismissible
+						show={this.state.showAlert}
+						onClose={() => this.setState({showAlert: false,})}
+						variant="info"
+					>
+						A tag with this name already exists!
+					</Alert>
 					<Form onSubmit={this.onSubmit}>
 						<Form.Group controlId="formName">
 							<Form.Label>Name</Form.Label>

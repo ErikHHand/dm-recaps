@@ -51,7 +51,7 @@ class TagDescription extends Component {
 			// Add recap in sessions on Firestore
 			this.props.campaignRef.collection("recaps").doc(recapID).update(recapItem)
 			.then(() => {
-				console.log("Document successfully deleted!");
+				console.log("Document successfully updated!");
 			}).catch((error) => {
 				console.log("Error deleting document:", error);
 			});
@@ -84,7 +84,7 @@ class TagDescription extends Component {
 			this.props.campaignRef.update({
 				selectedTag: "",
 			}).then(() => {
-				console.log("Document successfully deleted!");
+				console.log("Document successfully updated!");
 			}).catch((error) => {
 				console.log("Error deleting document:", error);
 			});
