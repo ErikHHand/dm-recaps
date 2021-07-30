@@ -57,7 +57,9 @@ class CampaignInfo extends Component {
 
 	// Function for uploading a campaign from a JSON file
 	// NOTE: Campaign importing is currently disabled since there are no security
-	// checks in place for the files being imported 
+	// checks in place for the files being imported
+	// NOTE II: This function is using old backend structure and needs to be modified 
+	// to work properly
 	/*uploadCampaign(event) {
 		event.preventDefault();
 		this.props.onHide();
@@ -120,7 +122,8 @@ class CampaignInfo extends Component {
 
 		// Do different tasks depending on if editing an existing campaign
 		// or adding a new campaign
-		if(!this.props.edit) { // Add new campaign
+		if(!this.props.edit) {
+			// Add Campaign
 			// Create campaign info
 			let campaign = {
 				activeTab: "sessions",
@@ -152,20 +155,20 @@ class CampaignInfo extends Component {
 				// Add locally
 				campaigns[docRef.id] = campaign;
 				this.props.handleCampaigns(campaigns);
-			})
-			.catch(error => {
+			}).catch(error => {
 				console.error("Error writing document: ", error);
 			});
 		} else {
+			// Edit campaign
 			// Edit campaign document on Firestore
 			this.props.campaignsRef.doc(this.props.campaignID).update({
 				description: this.state.description,
 				name: this.state.name,
 				world: this.state.world,
 				setting: this.state.setting,
-			}).then(function() {
+			}).then(() => {
 				console.log("Document successfully updated!");
-			}).catch(function(error) {
+			}).catch((error) => {
 				console.log("Error getting document:", error);
 			});
 
