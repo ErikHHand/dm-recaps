@@ -45,7 +45,7 @@ class CampaignRecaps extends Component {
 
 
 	// When component mounts, get the Firestore reference for this campaign.
-	// Then get the campaign, the sessions and the tags and save in the state
+	// Then get the campaign, sessions, tags and recaps and save in the state
 	componentDidMount() {
 
 		let campaign = this;
