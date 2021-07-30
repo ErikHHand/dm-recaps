@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+import UserSearch from '../UserSearch/UserSearch';
+
+import { COLOURS } from '../../constants/colours.js';
+import { TEXTCOLOURS } from '../../constants/colours.js';
+
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Overlay from 'react-bootstrap/Overlay'
@@ -13,17 +18,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
-import UserSearch from '../UserSearch/UserSearch';
-
-import { COLOURS } from '../../constants/colours.js';
-import { TEXTCOLOURS } from '../../constants/colours.js';
-
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
-
 /*
-	Component for campaign sharing
+	This component holds the window for sharing the campaign with other users.
+	It handles turning campaign sharing on and off, showing which users have
+	access to the campaign and revoking access for users.
 */
 class CampaignSharing extends Component {
 
@@ -42,24 +43,24 @@ class CampaignSharing extends Component {
 		this.removeUser = this.removeUser.bind(this);
 	}
 
-	// This function is called when changing visibility of the tag selection pop-up
-	// and the tag info component for adding new tags
+	// This function is called when changing visibility for the campaign sharing window
 	changeWindow() {
 		this.setState({
 			showCampaignSharing: !this.state.showCampaignSharing,
 		});
 	}
 
-    changeCampaignSharingStatus(checked) {
+	// Handles turning campaign sharing on or off 
+    changeCampaignSharingStatus(campaignSharingStatus) {
 
         // Change campaign sharing status locally
         let campaigns = this.props.campaigns;
-        campaigns[this.props.campaignID].sharingIsOn = checked;
+        campaigns[this.props.campaignID].sharingIsOn = campaignSharingStatus;
         this.props.handleCampaigns(campaigns);
 
-       // Edit campaign document on Firestore
+       // Change campaign sharing status on Firestore
         this.props.campaignsRef.doc(this.props.campaignID).update({
-            sharingIsOn: checked,
+            sharingIsOn: campaignSharingStatus,
         }).then(() => {
             console.log("Document successfully updated!");
         }).catch((error) => {
@@ -67,15 +68,15 @@ class CampaignSharing extends Component {
         });
     }
 
+	// Triggers when revoking access to a campaign for a user
 	removeUser(userID) {
-		console.log("Remove user")
 
-		// Change campaign sharing status locally
+		// Revoke access locally
         let campaigns = this.props.campaigns;
         delete campaigns[this.props.campaignID].usersSharedWith[userID];
         this.props.handleCampaigns(campaigns);
 
-       // Edit campaign document on Firestore
+       // Revoke access on Firestore
         this.props.campaignsRef.doc(this.props.campaignID).update({
 			userLastHandled: userID,
             ["usersSharedWith." + userID]: firebase.firestore.FieldValue.delete(),
@@ -92,15 +93,22 @@ class CampaignSharing extends Component {
         let campaignSharing = this;
 		let usersSharedWith = <></>;
 
-		let usersList = Object.keys(this.props.campaign.usersSharedWith);
+		// Create lists from colour constans for user badges
 		let coloursList = Object.values(COLOURS);
 		let textColoursList = Object.values(TEXTCOLOURS);
 
+		// List of users with access to this campaign
+		let usersList = this.props.campaign.usersSharedWithList;
+
+		// Set if user is owner or not
 		let userIsOwner = false;
 		if(this.props.firebase.auth.currentUser) {
 			userIsOwner = this.props.firebase.auth.currentUser.uid === this.props.campaign.ownerID;
 		}
 
+		// Create rows for any users with access to this campaign, showing
+		// username, what type of access a user has, and if a user is owner
+		// an option for revoking access to campaign
 		if(usersList && usersList.length !== 0) {
 			usersSharedWith = usersList.map((userID) =>
 				<Row key={userID}>
@@ -143,7 +151,6 @@ class CampaignSharing extends Component {
                         className={this.props.campaign.sharingIsOn ? "campaign-sharing-icon-on" : "icon"}
                     />
                 </div>
-				
 				<Overlay 
 					target={this.state.target} 
 					show={this.state.showCampaignSharing ? true : false} 
