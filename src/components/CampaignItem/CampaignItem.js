@@ -15,7 +15,7 @@ import { withFirebase } from '../Firebase/Firebase';
 
 /*
 	This class holds the Campaign Items on the Campaign Page.
-	This class holds the layout as well as the function for deleting a campaign
+	This class holds the layout as well as the function for deleting a campaign.
 */
 class CampaignItem extends Component {
 
@@ -31,7 +31,7 @@ class CampaignItem extends Component {
 		this.deleteCampaign = this.deleteCampaign.bind(this);
 	}
 
-	// Function that is called when hovering over a campaign item
+	// Function called when hovering over a campaign item
 	// which will add a visible border to it.
 	addBorder() {
 		this.setState({
@@ -39,7 +39,7 @@ class CampaignItem extends Component {
 		});
 	}
 
-	// Function to remove border when oving cursor away from a campaign item
+	// Function to remove border when moving cursor away from a campaign item
 	removeBorder() {
 		this.setState({
 			border: ""
