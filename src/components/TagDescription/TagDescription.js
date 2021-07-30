@@ -34,7 +34,6 @@ class TagDescription extends Component {
 		// Set current tag to null
 		this.props.handleSelectedTag(null);
 
-		// Delete tag in session recaps locally and on Firestore
 		let sessions = this.props.sessions;
 		let tags = this.props.tags;
 		let tagRecaps = this.props.tags[this.props.tagID].recaps
@@ -45,10 +44,11 @@ class TagDescription extends Component {
 			let recapItem = this.props.tags[this.props.tagID].recaps[recapID];
 			let tagIndex = recapItem.tags.indexOf(this.props.tagID);
 
-			if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1); // Remove tag from recap item
-			sessions[recapItem.session].recaps[recapID] = recapItem; // Re-add the recap item without the tag
+			// Remove tag from recap item and re-add the recap item without the tag
+			if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1);
+			sessions[recapItem.session].recaps[recapID] = recapItem;
 
-			// Add recap in sessions on Firestore
+			// Update recap in recaps collection on Firestore
 			this.props.campaignRef.collection("recaps").doc(recapID).update(recapItem)
 			.then(() => {
 				console.log("Document successfully updated!");
@@ -59,7 +59,7 @@ class TagDescription extends Component {
 
 		this.props.handleSessions(sessions);
 
-		// Delete tag recaps locally
+		// Delete tag with recaps locally
 		delete tags[this.props.tagID];
 		this.props.handleTags(tags);
 
@@ -78,9 +78,10 @@ class TagDescription extends Component {
 		this.props.campaignRef.update({
 			["tags." + this.props.tagID]: firebase.firestore.FieldValue.delete(),
 			selectedTag: this.props.tagID,
-		})
-		.then(() => {
+		}).then(() => {
 			console.log("Document successfully deleted!");
+
+			// Set selected tag to empty string on Firestore
 			this.props.campaignRef.update({
 				selectedTag: "",
 			}).then(() => {
@@ -100,7 +101,8 @@ class TagDescription extends Component {
 			text: "Are you sure you want to delete this tag and remove it from all recaps?"
 		}
 
-		let noDescription = "This tag has no description"; // Placeholder description
+		// Placeholder description
+		let noDescription = "This tag has no description";
 
 		// Create background colour for the description box
 		let background = {backgroundColor: COLOURSRGB[this.props.tag.colour]}
