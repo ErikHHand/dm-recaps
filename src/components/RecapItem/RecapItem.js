@@ -34,8 +34,7 @@ class RecapItem extends Component {
 		this.writeRecap = this.writeRecap.bind(this);
 	}
 
-	// This function is called when adding a new recap
-	// or editing recap data
+	// This function is called when adding a new recap or editing recap data
 	writeRecap(recapItem, previousTags) {
 
 		// Remove edit text area if it was open
@@ -52,24 +51,23 @@ class RecapItem extends Component {
 		this.props.campaignRef.collection("recaps").doc(this.props.recapID).set(recapItem)
 		.then(() => {
 			console.log("Document successfully updated!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error getting document:", error);
 		});
 
-		// Add or delete locally based on
-		// which tags are attached to this recap item
+		// Add or delete locally based on which tags are attached to this recap item
 		let tags = this.props.tags;
 		
 		for (let tag in tags) {
 
-			// If tag has been added
+			// If tag has been added, add locally to tags object
 			if(recapItem.tags.includes(tag)){
-				tags[tag].recaps[this.props.recapID] = recapItem; // Add locally to tags
+				tags[tag].recaps[this.props.recapID] = recapItem;
 			}
 
-			// If tag has been removed
+			// If tag has been removed, delete locally from tags object
 			else if(!recapItem.tags.includes(tag) && previousTags.includes(tag)) {
-				delete tags[tag].recaps[this.props.recapID]; // Delete locally 
+				delete tags[tag].recaps[this.props.recapID];
 			}	
 		}
 		this.props.handleTags(tags);
@@ -107,7 +105,7 @@ class RecapItem extends Component {
 		})
 		.then(() => {
 			console.log("Document successfully updated!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error getting document:", error);
 		});
 
@@ -120,12 +118,11 @@ class RecapItem extends Component {
 		this.props.campaignRef.collection("recaps").doc(this.props.recapID).delete()
 		.then(() => {
 			console.log("Document successfully deleted!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error deleting document:", error);
 		});
 
-
-		// Delete recaps from tags locally and on firestore
+		// Delete recaps from tags locally
 		let tags = this.props.tags;
 
 		this.props.recapItem.tags.forEach(tag => {
@@ -164,9 +161,9 @@ class RecapItem extends Component {
 		this.props.campaignRef.update({
 			['sessions.' + session + '.recapOrder']: recapOrder,
 		})
-		.then(function() {
+		.then(() => {
 			console.log("Document successfully updated!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error getting document:", error);
 		});
 	}
@@ -210,9 +207,8 @@ class RecapItem extends Component {
 										className={"arrow icon"}
 									/>
 								</div> :	
-								<div></div>
+								<></>
 							}
-							
 						</Col>
 						<Col lg="10" md="8">
 							<div
@@ -232,7 +228,7 @@ class RecapItem extends Component {
 									delete = {this.deleteRecap}
 									deleteText = {deleteText}
 								/> :
-								<div></div>
+								<></>
 							}
 						</Col>
 					</Row>
