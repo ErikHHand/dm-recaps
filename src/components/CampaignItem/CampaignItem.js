@@ -51,9 +51,9 @@ class CampaignItem extends Component {
 
 		// Delete campaign on Firestore
 		this.props.campaignsRef.doc(this.props.campaignID).delete()
-		.then(function() {
+		.then(() => {
 			console.log("Document successfully deleted!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error deleting document:", error);
 		});
 
