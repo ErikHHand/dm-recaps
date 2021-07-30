@@ -87,13 +87,17 @@ class SessionInfo extends Component {
 	// This function saves the session locally and on Firestore
 	addNewSession(sessionInfo) {
 
+		// Create session
 		let session = {
 			recaps: {},
 		};
 
-		let sessions = this.props.sessions;
-		let sessionID = this.hashCode(sessionInfo.description).toString(); // TODO: Check for hashcode collisions
+		// Generate sesion ID
+		let sessionID = this.hashCode(sessionInfo.description).toString();
 
+		let sessions = this.props.sessions;
+
+		// Check if session with this description already exists
 		if(sessions[sessionID]) {
 			this.setState({showAlert: true,})
 			return;
@@ -127,16 +131,18 @@ class SessionInfo extends Component {
 
 		// Write data depending on whether or not this a new 
 		// session or an old session being edited
-		if(campaign.sessions[sessionID]) { // Session being edited
+		if(campaign.sessions[sessionID]) {
 
+			// Session being edited
 			sessionInfo.created = campaign.sessions[sessionID].created;
 			sessionInfo.recapOrder = campaign.sessions[sessionID].recapOrder;
 
 			// Remove the session from the session order array
 			let sessionIndex = campaign.sessionOrder.indexOf(sessionID);
 			if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
-		} else { // New session being added
+		} else {
 
+			// New session being added
 			sessionInfo.created = firebase.firestore.Timestamp.fromDate(new Date());
 			sessionInfo.recapOrder = [];
 		}
