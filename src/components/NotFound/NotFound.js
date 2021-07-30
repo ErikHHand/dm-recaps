@@ -10,7 +10,7 @@ class NotFound extends Component {
         return  (
             <Container>
                 <p className="h1">
-                    404.. This page is not found!
+                    404.. This page was not found!
                 </p>
                 <p>
                     So sorry about that!
