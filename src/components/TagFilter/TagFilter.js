@@ -14,8 +14,8 @@ import SearchField from "react-search-field";
 import { withFirebase } from '../Firebase/Firebase';
 
 /*
-	This component holds the filter/search bar in for tags. It is used both
-	on the tags page for the tag list, and in the tag selector pop-up.
+	This component holds the filter/search bar for tags. It is used both
+	for the tag list on the tags page, and in the tag selector pop-up.
 */
 class TagFilter extends Component {
 	constructor(props) {
@@ -101,7 +101,7 @@ class TagFilter extends Component {
 	}
 
 	// The function used for filtering
-	// This function currently just uses the text filter to check for appearence in the beginning of the tag name.
+	// It checks for occurance of the text from the text filter in both the tag name and the tag description
 	// It uses the type filter to match with the tag type, if type filter valut is not "All"
 	filter(key, index, keys) {
 		let textFilter = this.props.campaign.tags[key].name.toLowerCase().includes(this.state.textFilter);
@@ -109,7 +109,6 @@ class TagFilter extends Component {
 		let typeFilter = this.state.typeFilter !== "All" ? this.props.campaign.tags[key].type === this.state.typeFilter : true;
 		return (textFilter || textDescriptionFilter) && typeFilter;
 	}
-
 
 	render() {
 
@@ -119,7 +118,6 @@ class TagFilter extends Component {
 				<Badge 
 					pill 
 					className = "select-type"
-					
 				>
 					<FontAwesomeIcon icon={ICONS[type]} />
 					&nbsp;
@@ -151,14 +149,12 @@ class TagFilter extends Component {
 							<Badge
 								pill 
 								className = "select-type"
-								//onClick = {() => this.typeFilter(type)}
 							>
 								<FontAwesomeIcon icon={faFilter} />
 								&nbsp;
 								All
 							</Badge>
 						</Dropdown.Item>
-							
 						{typeFilterItems}
 					</DropdownButton>
 				</div> 
