@@ -24,6 +24,7 @@ class DeleteAccount extends Component {
 		this.state = {
             ...INITIAL_STATE,
 			showAlert: false,
+            readOnlyPassword: true,
 		}
 
 		// Set the context for "this" for the following function
@@ -55,6 +56,9 @@ class DeleteAccount extends Component {
         const { password, username, error } = this.state;
         const isInvalid = password === "" || username !== currentUsername;
 
+        let passwordClass = password.length > 0 ? "custom-password-type" : "";
+        let passwordPlaceholder = password.length > 0 ? "" : "Current Password";
+
 		return (
 			<Modal
 				show={this.props.show}
@@ -71,18 +75,6 @@ class DeleteAccount extends Component {
 				</Modal.Header>
 				<Modal.Body>
 					<Form onSubmit={this.onSubmit} autoComplete="off">
-                        <Form.Group 
-                            controlId="f***-you-google-autofill"
-                            style={{display: "none"}}
-                        >
-							<Form.Control 
-                                name="f***-you-google-autofill"
-                                value=""
-                                type="search"
-                                placeholder="f***-you-google-autofill"
-                                readOnly
-                            />
-						</Form.Group>
 						<Form.Group 
                             controlId="formPasswordForAccountDeletion" 
                             className="account-current-password border-bottom"
@@ -92,10 +84,10 @@ class DeleteAccount extends Component {
                                 name="password"
                                 value={password}
                                 onChange={this.onChange}
-                                type="password"
-                                placeholder="Current Password"
+                                type="text"
+                                placeholder={passwordPlaceholder}
                                 maxLength="100"
-                                autoComplete="new-password"
+                                className={passwordClass}
                             />
 						</Form.Group>
                         <Form.Group controlId="formNewUsername">

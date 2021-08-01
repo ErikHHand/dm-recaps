@@ -73,19 +73,8 @@ class ChangePassword extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form onSubmit={this.onSubmit} autoComplete="false">
-                        <Form.Group 
-                            controlId="f***-you-google-autofill"
-                            style={{display: "none"}}
-                        >
-							<Form.Control 
-                                name="f***-you-google-autofill"
-                                value=""
-                                type="search"
-                                placeholder="f***-you-google-autofill"
-                                readOnly
-                            />
-						</Form.Group>
+					<Form onSubmit={this.onSubmit} autoComplete="off">
+                        <input style={{display: "none"}} type="text" name="googlechromeautofillSUCKS" />
 						<Form.Group 
                             controlId="formPasswordForEmailChange" 
                             className="account-current-password border-bottom"
@@ -110,6 +99,7 @@ class ChangePassword extends Component {
                                 type="text"
                                 placeholder="New Email"
                                 maxLength="100"
+                                autoComplete="off"
                             />
                         </Form.Group>
 						<Button variant="success" type="submit" disabled={isInvalid}>

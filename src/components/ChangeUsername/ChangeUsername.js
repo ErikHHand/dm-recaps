@@ -121,20 +121,8 @@ class ChangeUsername extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form onSubmit={this.onSubmit} autoComplete="false">
-
-                        <Form.Group 
-                            controlId="f***-you-google-autofill"
-                            style={{display: "none"}}
-                        >
-							<Form.Control 
-                                name="f***-you-google-autofill"
-                                value=""
-                                type="search"
-                                placeholder="f***-you-google-autofill"
-                                readOnly
-                            />
-						</Form.Group>
+					<Form onSubmit={this.onSubmit} autoComplete="off">
+                        <input style={{display: "none"}} type="text" name="googlechromeautofillSUCKS" />
 						<Form.Group 
                             controlId="formPasswordForUsernameChange" 
                             className="account-current-password border-bottom"
@@ -159,7 +147,6 @@ class ChangeUsername extends Component {
                                 type="delete"
                                 placeholder="New Username"
                                 maxLength="100"
-                                autoComplete="off"
                             />
                         </Form.Group>
 						<Button variant="success" type="submit" disabled={isInvalid}>

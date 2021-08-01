@@ -92,6 +92,7 @@ class ChangePassword extends Component {
                                 type="password"
                                 placeholder="Current Password"
                                 maxLength="100"
+                                autoComplete="new-password"
                             />
 						</Form.Group>
 
@@ -106,6 +107,7 @@ class ChangePassword extends Component {
                                         type="password"
                                         placeholder="New Password"
                                         maxLength="100"
+                                        autoComplete="new-password"
                                     />
                                 </Form.Group>
                             </Col>
@@ -117,8 +119,9 @@ class ChangePassword extends Component {
                                         value={passwordTwo}
                                         onChange={this.onChange}
                                         type="password"
-                                        placeholder="Repeat new password"
+                                        placeholder="Repeat Password"
                                         maxLength="100"
+                                        autoComplete="new-password"
                                     />
                                 </Form.Group>
                             </Col>
