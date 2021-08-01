@@ -73,7 +73,19 @@ class ChangePassword extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form onSubmit={this.onSubmit}>
+					<Form onSubmit={this.onSubmit} autoComplete="false">
+                        <Form.Group 
+                            controlId="f***-you-google-autofill"
+                            style={{display: "none"}}
+                        >
+							<Form.Control 
+                                name="f***-you-google-autofill"
+                                value=""
+                                type="search"
+                                placeholder="f***-you-google-autofill"
+                                readOnly
+                            />
+						</Form.Group>
 						<Form.Group 
                             controlId="formPasswordForEmailChange" 
                             className="account-current-password border-bottom"
@@ -86,6 +98,7 @@ class ChangePassword extends Component {
                                 type="password"
                                 placeholder="Current Password"
                                 maxLength="100"
+                                autoComplete="new-password"
                             />
 						</Form.Group>
                         <Form.Group controlId="formNewEmail">

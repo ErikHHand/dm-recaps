@@ -79,7 +79,7 @@ class ChangePassword extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form onSubmit={this.onSubmit}>
+					<Form onSubmit={this.onSubmit} autoComplete="off">
 						<Form.Group 
                             controlId="formCurrentPassword" 
                             className="account-current-password border-bottom"

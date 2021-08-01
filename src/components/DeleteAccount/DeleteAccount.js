@@ -71,6 +71,18 @@ class DeleteAccount extends Component {
 				</Modal.Header>
 				<Modal.Body>
 					<Form onSubmit={this.onSubmit} autoComplete="off">
+                        <Form.Group 
+                            controlId="f***-you-google-autofill"
+                            style={{display: "none"}}
+                        >
+							<Form.Control 
+                                name="f***-you-google-autofill"
+                                value=""
+                                type="search"
+                                placeholder="f***-you-google-autofill"
+                                readOnly
+                            />
+						</Form.Group>
 						<Form.Group 
                             controlId="formPasswordForAccountDeletion" 
                             className="account-current-password border-bottom"
@@ -83,11 +95,12 @@ class DeleteAccount extends Component {
                                 type="password"
                                 placeholder="Current Password"
                                 maxLength="100"
+                                autoComplete="new-password"
                             />
 						</Form.Group>
                         <Form.Group controlId="formNewUsername">
                             <Form.Label>
-                                To confirm that you want to delete your account, type your username {currentUsername}
+                                To confirm that you want to delete your account, type your username: {currentUsername}
                             </Form.Label>
                             <Form.Control 
                                 name="username"

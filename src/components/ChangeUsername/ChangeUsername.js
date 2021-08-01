@@ -121,19 +121,33 @@ class ChangeUsername extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form onSubmit={this.onSubmit}>
+					<Form onSubmit={this.onSubmit} autoComplete="false">
+
+                        <Form.Group 
+                            controlId="f***-you-google-autofill"
+                            style={{display: "none"}}
+                        >
+							<Form.Control 
+                                name="f***-you-google-autofill"
+                                value=""
+                                type="search"
+                                placeholder="f***-you-google-autofill"
+                                readOnly
+                            />
+						</Form.Group>
 						<Form.Group 
                             controlId="formPasswordForUsernameChange" 
                             className="account-current-password border-bottom"
                         >
 							<Form.Label>Current Password</Form.Label>
 							<Form.Control 
-                                name="passwordForUsernameChange"
+                                name="password"
                                 value={password}
                                 onChange={this.onChange}
                                 type="password"
                                 placeholder="Current Password"
                                 maxLength="100"
+                                autoComplete="new-password"
                             />
 						</Form.Group>
                         <Form.Group controlId="formNewUsername">
@@ -142,9 +156,10 @@ class ChangeUsername extends Component {
                                 name="username"
                                 value={username}
                                 onChange={this.onChange}
-                                type="text"
+                                type="delete"
                                 placeholder="New Username"
                                 maxLength="100"
+                                autoComplete="off"
                             />
                         </Form.Group>
 						<Button variant="success" type="submit" disabled={isInvalid}>
