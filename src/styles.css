@@ -29,6 +29,30 @@ button:focus {
 	outline: none !important;
 }
 
+.account-current-password {
+	padding-bottom: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.account-page-row {
+	margin: 0 2rem 2rem 2rem !important;
+}
+
+.account-page-subtitle {
+	margin: 3rem 1rem 2rem 1rem !important;
+}
+
+.account-property-info {
+	font-weight: 400;
+	font-style: italic;
+	color: rgb(108, 117, 125);
+}
+
+.account-property-text {
+	margin-bottom: 0;
+	font-weight: 600;
+}
+
 .alert-error {
 	margin-top: 0.5rem;
 }
