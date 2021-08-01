@@ -18,7 +18,7 @@ import { withFirebase } from '../Firebase/Firebase';
 
 /*
 	This component holds the tags tab of the app. It handles dynamically updating the height of the
-	recap item list, as well as the rendring and sorting of recap item list and tag item list.
+	recap item list, as well as the rendering and sorting of recap item list and tag item list.
 */
 class TagsPage extends Component {
 
@@ -36,16 +36,19 @@ class TagsPage extends Component {
 		};
 
 		// Set the context for "this" for the following functions
+		this.updateDimension = this.updateDimension.bind(this);
 		this.handleFilteredTags = this.handleFilteredTags.bind(this);
 		this.changeSort = this.changeSort.bind(this);
 	}
 
 	componentDidMount() {
-		window.addEventListener('resize', this.updateDimensions);
+		// Add a listener for the window size for dynamically changing height of recap list
+		window.addEventListener('resize', this.updateDimension);
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('resize', this.updateDimensions);
+		// Remove listener
+		window.removeEventListener('resize', this.updateDimension);
 	}
 
 	// Triggers when props for component updates
@@ -74,7 +77,9 @@ class TagsPage extends Component {
 		}
 	}
 
-	updateDimensions = () => {
+	// Called when the listener detects a change in window height.
+	// Write that height to state and triggers a function update
+	updateDimension() {
 		this.setState({ windowHeight: window.innerHeight });
 	};
 
