@@ -83,7 +83,7 @@ class UserSearch extends Component {
             let campaigns = this.props.campaigns;
             let user = this.state.searchResult;
             campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
-            campaigns[this.props.campaignID].usersSharedWithList.push(user.username);
+            campaigns[this.props.campaignID].usersSharedWithList.push(user.userID);
             this.props.handleCampaigns(campaigns);
 
             // Edit list of users shared with on Firestore

@@ -74,6 +74,8 @@ class CampaignSharing extends Component {
 		// Revoke access locally
         let campaigns = this.props.campaigns;
         delete campaigns[this.props.campaignID].usersSharedWith[userID];
+		const index = campaigns[this.props.campaignID].usersSharedWithList.indexOf(userID);
+		if (index > -1) {campaigns[this.props.campaignID].usersSharedWithList.splice(index, 1);}
         this.props.handleCampaigns(campaigns);
 
        // Revoke access on Firestore
@@ -105,7 +107,7 @@ class CampaignSharing extends Component {
 		if(this.props.firebase.auth.currentUser) {
 			userIsOwner = this.props.firebase.auth.currentUser.uid === this.props.campaign.ownerID;
 		}
-
+		
 		// Create rows for any users with access to this campaign, showing
 		// username, what type of access a user has, and if a user is owner
 		// an option for revoking access to campaign
