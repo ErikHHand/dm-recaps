@@ -11,8 +11,8 @@ import Alert from 'react-bootstrap/Alert'
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
 /*
-	This component holds the pop-up window for when creating a new session
-	or editing an existing session.
+	This component holds the pop-up window for when creating a new tag
+	or editing an existing tag.
 */
 class TagInfo extends Component {
 
@@ -34,8 +34,8 @@ class TagInfo extends Component {
 		this.changeValue = this.changeValue.bind(this);
 	}
 
-	// Will be called when component mounts, and put necessary information in the state
-	// if a tag is being edited
+	// If a tag is being edited, the data from the tag will be put in the state and become
+	// visible in the form fields
 	componentDidMount() {
 		if(this.props.edit) {
 			this.setState({
@@ -63,7 +63,7 @@ class TagInfo extends Component {
 	}
 
 	// Function for hashing strings.
-	// Used to create ID:s for the recap Item
+	// Used to create ID:s for the Tag items
 	hashCode(string) {
 
 		let hash = 0;
@@ -85,7 +85,7 @@ class TagInfo extends Component {
 
 		event.preventDefault();
 
-		// The info to be saved with the tag
+		// The data to be saved with the tag
 		let tagInfo = {
 			name: this.state.name,
 			type: this.state.type,
@@ -94,7 +94,6 @@ class TagInfo extends Component {
 			created: firebase.firestore.Timestamp.fromDate(new Date()),
 		};
 
-		// If editing, only write to the tag field in the campaign object
 		if(this.props.edit) {
 			this.editTagInfo(this.props.tagID, tagInfo);
 		} else {
@@ -103,7 +102,8 @@ class TagInfo extends Component {
 	}
 
 	// Triggers when adding an entirely new tag
-	// This function saves the tag locally and on Firestore
+	// This function generates a new tag ID and
+	// saves the tag locally and on Firestore
 	addNewTag(tagInfo) {
 
 		let tag = {
@@ -113,6 +113,8 @@ class TagInfo extends Component {
 		let tags = this.props.tags;
 		let tagID = this.hashCode(tagInfo.name).toString(); 
 
+		// Check if a tag with this name already exists. If so,
+		// Show an alert insetad of creating a new tag
 		if(tags[tagID]) {
 			this.setState({showAlert: true,})
 			return;
@@ -133,6 +135,8 @@ class TagInfo extends Component {
 			description: "",
 		});
 
+		// If this tag is being added from the tag selector pop-up, 
+		// the tag should not be selected
 		if(this.props.doNotSelectTag) {
 			return;
 		}
@@ -140,7 +144,7 @@ class TagInfo extends Component {
 	};
 
 	// Triggers when editing a tag or just after a new tag has been added.
-	// This function saves the tag info locally and on Firestore
+	// This function saves the tag data locally and on Firestore
 	editTagInfo(tagID, tagInfo) {
 
 		// Hide the tag info window
