@@ -29,7 +29,8 @@ class UserSearch extends Component {
 		this.state = {
 			searchText: "",
             searchResult: null,
-            showAlert: false,
+            showAlreadyAddedAlert: false,
+            showMaxUserAlert: false,
 		}
 
         // Set the context for "this" for the following function
@@ -53,7 +54,8 @@ class UserSearch extends Component {
         this.setState({ 
             searchText, 
             searchResult: null,
-            showAlert: false,
+            showMaxUserAlert: false,
+            showAlreadyAddedAlert: false,
         });
         if(searchText) {
             const searchResult = await this.searchAPIDebounced(searchText);
@@ -69,15 +71,19 @@ class UserSearch extends Component {
     // on a users appearing as a result from a search
     shareWithUser() {
 
-        // Check that a campaign has not been shared with more than the maximum of allowed users
-        if(this.props.campaign.usersSharedWithList.length >= USERSHAREMAX) {
-            this.setState({showAlert: true});
+        if (this.props.campaign.usersSharedWith[this.state.searchResult.userID]) {
+            // Trigers when trying to add a user that is alreacy added
+            this.setState({showAlreadyAddedAlert: true})
+        } else if(this.props.campaign.usersSharedWithList.length >= USERSHAREMAX) {
+            // Trigers if a campaign is shared with the maximum amount of allowed users
+            this.setState({showMaxUserAlert: true});
         } else {
 
             // Edit list of users shared with locally
             let campaigns = this.props.campaigns;
             let user = this.state.searchResult;
             campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
+            campaigns[this.props.campaignID].usersSharedWithList.push(user.username);
             this.props.handleCampaigns(campaigns);
 
             // Edit list of users shared with on Firestore
@@ -136,8 +142,17 @@ class UserSearch extends Component {
                 </Row>
                 <Alert
                     dismissible
-                    show={this.state.showAlert}
-                    onClose={() => this.setState({showAlert: false})}
+                    show={this.state.showAlreadyAddedAlert}
+                    onClose={() => this.setState({showAlreadyAddedAlert: false})}
+                    variant="info"
+                    className="alert-error"
+                >
+                    {this.state.searchResult ? this.state.searchResult.username : ""} already has access to this campaign!
+                </Alert>
+                <Alert
+                    dismissible
+                    show={this.state.showMaxUserAlert}
+                    onClose={() => this.setState({showMaxUserAlert: false})}
                     variant="danger"
                     className="alert-error"
                 >
