@@ -53,7 +53,7 @@ class DeleteAccount extends Component {
             this.props.firebase.auth.currentUser.displayName : "username";
 
         const { password, username, error } = this.state;
-        const isInvalid = password === "" || username === currentUsername;
+        const isInvalid = password === "" || username !== currentUsername;
 
 		return (
 			<Modal
