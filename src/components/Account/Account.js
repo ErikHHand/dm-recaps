@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ChangePassword from '../ChangePassword/ChangePassword';
 import ChangeEmail from '../ChangeEmail/ChangeEmail';
 import ChangeUsername from '../ChangeUsername/ChangeUsername';
+import DeleteAccount from '../DeleteAccount/DeleteAccount';
 
 import { withFirebase } from '../Firebase/Firebase';
 import { withAuthorization } from '../Session/Session';
@@ -87,6 +88,26 @@ class Account extends Component {
                     </Col>
                 </Row>
 
+                <Row className="account-page-subtitle border-bottom">
+                    <Col>
+                        <h5>Account Termination</h5>
+                    </Col>
+                </Row>
+
+                <Row className="account-page-row">
+                    <Col md="9">
+                        <h6 className="account-property-text">Delete Account</h6>
+                        <p className="account-property-info">
+                            No going back
+                        </p>
+                    </Col>
+                    <Col md="3" className="right-align">
+                        <Button variant="outline-danger" onClick={() => this.setState({showDeleteAccount: true})}>
+                            Delete
+                        </Button>
+                    </Col>
+                </Row>
+
                 <ChangePassword
                     show = {this.state.showChangePassword}
 					onHide = {() => this.setState({ showChangePassword: false })}
@@ -98,6 +119,10 @@ class Account extends Component {
                 <ChangeUsername
                     show = {this.state.showChangeUsername}
 					onHide = {() => this.setState({ showChangeUsername: false })}
+                />
+                <DeleteAccount
+                    show = {this.state.showDeleteAccount}
+					onHide = {() => this.setState({ showDeleteAccount: false })}
                 />
             </Container>
         );

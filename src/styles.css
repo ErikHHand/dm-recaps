@@ -185,6 +185,14 @@ button:focus {
 	background-color:rgb(233, 236, 239)
 }
 
+.dark-background {
+	background-color: rgba(17, 15, 15, 0.836);
+}
+
+.delete-account {
+	background-color: rgba(202, 68, 74, 1);
+}
+
 .filter-bar {
 	padding: 0.5rem 0 0.5rem 31px;
 	min-height: 8%;
