@@ -18,12 +18,15 @@ const withAuthentication = Component => {
 			};
 		}
 
+		// When mounting, add listener that triggers when user signs in or signs out
 		componentDidMount() {
 			this.listener = this.props.firebase.auth.onAuthStateChanged(
 				authUser => {
 					if(authUser) {
+						// User signed in
 						this.setState({ authUser });
 					} else {
+						// User signed out
 						this.setState({ authUser: null });
 						this.props.history.push(ROUTES.LANDING);
 					}
@@ -31,6 +34,7 @@ const withAuthentication = Component => {
 			);
 		}
 
+		// Remove listener when unmounting
 		componentWillUnmount() {
 			this.listener();
 		}

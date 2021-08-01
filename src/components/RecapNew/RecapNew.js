@@ -70,7 +70,6 @@ class RecapNew extends Component {
 			}
 
 			campaign.recaps = recaps;
-
 			this.props.handleCampaign(campaign);
 
 			// Add to Firestore recap order array
@@ -84,7 +83,6 @@ class RecapNew extends Component {
 			}).catch((error) => {
 				console.log("Error getting document:", error);
 			});
-
 			console.log("Document successfully updated!");
 		}).catch((error) => {
 			console.log("Error getting document:", error);

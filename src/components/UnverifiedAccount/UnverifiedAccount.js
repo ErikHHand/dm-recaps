@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 
 import * as ROUTES from '../../constants/routes';
 
-// Component that is rendered in case of 404 Not Found
+// NOTE: THIS COMPONENT IS NOT CURRENTLY IN USE AND IS NOT FULLY FUNTIONAL
+// Component that is rendered in case of Unverified account
 class UnverifiedAccount extends Component {
     render() {
         return  (

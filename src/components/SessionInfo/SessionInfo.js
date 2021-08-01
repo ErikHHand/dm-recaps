@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert'
+
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,6 +24,7 @@ class SessionInfo extends Component {
 			error: null,
 			description: "",
 			date: new Date(),
+			showAlert: false,
 		}
 
 		// Set the context for "this" for the following function
@@ -64,8 +67,6 @@ class SessionInfo extends Component {
 	// Triggers when submitting session info
 	onSubmit(event){
 
-		// Hide the session info window
-		this.props.onHide();
 		event.preventDefault();
 
 		// The info to be saved with the session
@@ -86,15 +87,19 @@ class SessionInfo extends Component {
 	// This function saves the session locally and on Firestore
 	addNewSession(sessionInfo) {
 
+		// Create session
 		let session = {
 			recaps: {},
 		};
 
-		let sessions = this.props.sessions;
-		let sessionID = this.hashCode(sessionInfo.description).toString(); // TODO: Check for hashcode collisions
+		// Generate sesion ID
+		let sessionID = this.hashCode(sessionInfo.description).toString();
 
+		let sessions = this.props.sessions;
+
+		// Check if session with this description already exists
 		if(sessions[sessionID]) {
-			this.props.handleSelectedSession(sessionID);
+			this.setState({showAlert: true,})
 			return;
 		}
 
@@ -105,6 +110,13 @@ class SessionInfo extends Component {
 		// Write session info
 		this.editSessionInfo(sessionID, sessionInfo);
 
+		// Reset the state
+		this.setState({
+			error: null,
+			description: "",
+			date: new Date(),
+		});
+
 		this.props.handleSelectedSession(sessionID);
 	};
 
@@ -112,20 +124,25 @@ class SessionInfo extends Component {
 	// This function saves the session info locally and on Firestore
 	editSessionInfo(sessionID, sessionInfo) {
 
+		// Hide the session info window
+		this.props.onHide();
+
 		let campaign = this.props.campaign;
 
 		// Write data depending on whether or not this a new 
 		// session or an old session being edited
-		if(campaign.sessions[sessionID]) { // Session being edited
+		if(campaign.sessions[sessionID]) {
 
+			// Session being edited
 			sessionInfo.created = campaign.sessions[sessionID].created;
 			sessionInfo.recapOrder = campaign.sessions[sessionID].recapOrder;
 
 			// Remove the session from the session order array
 			let sessionIndex = campaign.sessionOrder.indexOf(sessionID);
 			if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
-		} else { // New session being added
+		} else {
 
+			// New session being added
 			sessionInfo.created = firebase.firestore.Timestamp.fromDate(new Date());
 			sessionInfo.recapOrder = [];
 		}
@@ -170,7 +187,10 @@ class SessionInfo extends Component {
 
 	// Triggers when changing the description
 	onChangeDescription(event){		
-    	this.setState({ description: event.target.value });
+    	this.setState({ 
+			description: event.target.value,
+			showAlert: false, 
+		});
   	};
 
 	render() {
@@ -203,7 +223,14 @@ class SessionInfo extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<h4>Hope you had a great adventure!</h4>
+					<Alert
+						dismissible
+						show={this.state.showAlert}
+						onClose={() => this.setState({showAlert: false,})}
+						variant="info"
+					>
+						A session with this description already exists!
+					</Alert>
 					<Form onSubmit={this.onSubmit}>
 						<Form.Group controlId="formSessionDate">
 							<Form.Label>Date</Form.Label>

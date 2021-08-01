@@ -285,7 +285,8 @@ class RecapTagSelector extends Component {
 					edit = {false}
 					tagID = {null}
 					tag = {this.state.tag}
-					selectTag = {false}
+					doNotSelectTag = {true}
+					handleSelectedTag = {this.props.handleSelectedTag}
 				/>
 			</div>
 		)

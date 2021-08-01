@@ -29,6 +29,10 @@ button:focus {
 	outline: none !important;
 }
 
+.alert-error {
+	margin-top: 0.5rem;
+}
+
 .App {
 	height: 100vh;
 }
@@ -96,11 +100,11 @@ button:focus {
 
 .campaign-sharing-icon-on {
 	cursor: pointer;
-	color: rgba(54, 179, 201, 0.76);
+	color: rgb(54, 179, 201);
 }
 
 .campaign-sharing-icon-on:hover {
-	color: rgba(39, 160, 180, 1);
+	color: rgba(61, 130, 148, 1);
 }
 
 .campaign-sharing-title {
@@ -261,6 +265,10 @@ button:focus {
 
 .nav-text-current {
 	font-weight: bold;
+}
+
+.opacity-20 {
+	opacity: 20%;
 }
 
 .react-search-field-input {
@@ -492,6 +500,7 @@ button:focus {
 .tag-selector {
 	max-width: 36rem !important;
 	max-height: 90vh;
+	min-width: 24rem;
 }
 
 .tag-selector-tag {
@@ -544,10 +553,18 @@ button:focus {
   	align-items: center;
 	text-align: center;
 	font-style: italic;
+	color: rgb(108, 117, 125);
 }
 
 .user-list {
 	margin-top: 0.5rem;
+}
+
+.user-maximum-text {
+	text-align: center;
+	font-style: italic;
+	color: rgb(108, 117, 125);
+	padding-bottom: 0.5rem;
 }
 
 .user-search {
@@ -556,8 +573,10 @@ button:focus {
 
 .user-sharing-remove {
 	font-size: 32px !important;
-	color:rgba(247, 55, 55, 0.836) !important;
+	color:rgb(247, 55, 55) !important;
 	cursor: pointer;
+	position: relative;
+	bottom: 4px;
 }
 
 .user-sharing-remove:hover {

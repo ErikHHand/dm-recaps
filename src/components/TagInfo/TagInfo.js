@@ -6,12 +6,13 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { Form, Button } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert'
 
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
 /*
-	This component holds the pop-up window for when creating a new session
-	or editing an existing session.
+	This component holds the pop-up window for when creating a new tag
+	or editing an existing tag.
 */
 class TagInfo extends Component {
 
@@ -24,6 +25,7 @@ class TagInfo extends Component {
 			type: "Location",
 			colour: "red",
 			error: "",
+			showAlert: false,
 		}
 
 		// Set the context for "this" for the following function
@@ -32,8 +34,8 @@ class TagInfo extends Component {
 		this.changeValue = this.changeValue.bind(this);
 	}
 
-	// Will be called when component mounts, and put necessary information in the state
-	// if a tag is being edited
+	// If a tag is being edited, the data from the tag will be put in the state and become
+	// visible in the form fields
 	componentDidMount() {
 		if(this.props.edit) {
 			this.setState({
@@ -61,7 +63,7 @@ class TagInfo extends Component {
 	}
 
 	// Function for hashing strings.
-	// Used to create ID:s for the recap Item
+	// Used to create ID:s for the Tag items
 	hashCode(string) {
 
 		let hash = 0;
@@ -82,10 +84,8 @@ class TagInfo extends Component {
 	onSubmit(event) {
 
 		event.preventDefault();
-		// Hide the tag info window
-		this.props.onHide();
 
-		// The info to be saved with the tag
+		// The data to be saved with the tag
 		let tagInfo = {
 			name: this.state.name,
 			type: this.state.type,
@@ -94,7 +94,6 @@ class TagInfo extends Component {
 			created: firebase.firestore.Timestamp.fromDate(new Date()),
 		};
 
-		// If editing, only write to the tag field in the campaign object
 		if(this.props.edit) {
 			this.editTagInfo(this.props.tagID, tagInfo);
 		} else {
@@ -103,7 +102,8 @@ class TagInfo extends Component {
 	}
 
 	// Triggers when adding an entirely new tag
-	// This function saves the tag locally and on Firestore
+	// This function generates a new tag ID and
+	// saves the tag locally and on Firestore
 	addNewTag(tagInfo) {
 
 		let tag = {
@@ -113,18 +113,19 @@ class TagInfo extends Component {
 		let tags = this.props.tags;
 		let tagID = this.hashCode(tagInfo.name).toString(); 
 
+		// Check if a tag with this name already exists. If so,
+		// Show an alert insetad of creating a new tag
 		if(tags[tagID]) {
-			this.props.handleSelectedTag(tagID);
+			this.setState({showAlert: true,})
 			return;
 		}
 
-		// Add session locally
+		// Add tag locally
 		tags[tagID] = tag;
 		this.props.handleTags(tags);
 
 		// Write tag info
 		this.editTagInfo(tagID, tagInfo);
-		this.props.handleSelectedTag(tagID);
 
 		// Reset the state
 		this.setState({
@@ -133,11 +134,21 @@ class TagInfo extends Component {
 			colour: "red",
 			description: "",
 		});
+
+		// If this tag is being added from the tag selector pop-up, 
+		// the tag should not be selected
+		if(this.props.doNotSelectTag) {
+			return;
+		}
+		this.props.handleSelectedTag(tagID);
 	};
 
 	// Triggers when editing a tag or just after a new tag has been added.
-	// This function saves the tag info locally and on Firestore
+	// This function saves the tag data locally and on Firestore
 	editTagInfo(tagID, tagInfo) {
+
+		// Hide the tag info window
+		this.props.onHide();
 
 		// Add tag in campaign document
 		this.props.campaignRef.update({
@@ -152,14 +163,14 @@ class TagInfo extends Component {
 		let campaign = this.props.campaign;
 		campaign.tags[tagID] = tagInfo;
 		this.props.handleCampaign(campaign);
-		if(this.props.selectTag) {
-			this.props.handleSelectedTag(tagID);
-		}
 	}
 	
 	// Triggers when changing tag name or tag description
 	onChange(event){
-    	this.setState({ [event.target.name]: event.target.value });
+    	this.setState({ [
+			event.target.name]: event.target.value,
+			showAlert: false,
+		});
   	};
 
 	  // Triggers when changing tag type or tag colour
@@ -194,11 +205,19 @@ class TagInfo extends Component {
 				centered
 			>
 				<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
-					{title}
-				</Modal.Title>
+					<Modal.Title id="contained-modal-title-vcenter">
+						{title}
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
+					<Alert
+						dismissible
+						show={this.state.showAlert}
+						onClose={() => this.setState({showAlert: false,})}
+						variant="info"
+					>
+						A tag with this name already exists!
+					</Alert>
 					<Form onSubmit={this.onSubmit}>
 						<Form.Group controlId="formName">
 							<Form.Label>Name</Form.Label>

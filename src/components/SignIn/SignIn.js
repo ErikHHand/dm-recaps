@@ -17,7 +17,8 @@ const INITIAL_STATE = {
 };
 
 /*
-	This class holds the sign in window
+	This class holds the sign in window as well as the window
+	for filling in email when you have forgotten your password.
 */
 class SignInFormBase extends Component {
   	constructor(props) {
@@ -36,6 +37,7 @@ class SignInFormBase extends Component {
 		this.changeWindow = this.changeWindow.bind(this);
   	}
 
+	// Triggers when a users submits credidentials for signing in
   	onSubmit(event) {
     	const { email, password } = this.state;
 
@@ -43,18 +45,20 @@ class SignInFormBase extends Component {
 		.then(() => {
 			this.setState({ ...INITIAL_STATE });
 			this.props.history.push(ROUTES.HOME);
-		})
-		.catch(error => {
+		}).catch(error => {
 			this.setState({ error });
 		});
 
     	event.preventDefault();
   	};
 
+	// Triggers when editing a field in the sign in window 
+	// or in the forgot password window
   	onChange(event) {
     	this.setState({ [event.target.name]: event.target.value });
   	};
 
+	// Triggers when submitting email in the forgot password window
 	onSubmitForgotPassword(event) {
 		const { email } = this.state;
 
@@ -64,11 +68,12 @@ class SignInFormBase extends Component {
 				...INITIAL_STATE,
 				showConfirm: true,
 			});
-
 		});
 		event.preventDefault();
 	}
 
+	// Triggers when switching between the sign in and
+	// the forgot password window
 	changeWindow() {
 		this.setState({
 			signIn: !this.state.signIn,
@@ -164,7 +169,6 @@ class SignInFormBase extends Component {
 					</Alert>
 					{error && <p>{error.message}</p>}
 				</Form>
-				
 			</>;
 
     	return (

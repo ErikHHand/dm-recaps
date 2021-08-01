@@ -20,12 +20,10 @@ class NavbarBase extends Component {
 			lastCampaignName: "",
             lastCampaignID: ""
 		};
-
 	}
 
     componentDidMount() {
-        let userRef = this.props.firebase.db.collection("users")
-		.doc(this.props.firebase.auth.currentUser.uid);
+        let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
 
         userRef.get().then((doc) => {
 
@@ -45,7 +43,6 @@ class NavbarBase extends Component {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-
     }
 
     render() {
@@ -64,9 +61,7 @@ class NavbarBase extends Component {
         } else if (pathName.substring(0,11) === '/campaigns/') {
             navClasses[2] += " nav-text-current";
             colClasses[2] += " column-current";
-
         }
-
         
         return  (
             <Row className="top-bar border-bottom" noGutters={true}>

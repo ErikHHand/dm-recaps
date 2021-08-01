@@ -38,9 +38,10 @@ class CampaignsPage extends Component {
 
 		let home = this;
 
-		// Query for getting the campaign collection from firestore
+		// Reference for the campaigns collection on firestore
         let campaignsRef = this.props.firebase.db.collection("campaigns");
 
+		// First get campaigns owned by the user, then get campaigns shared with the user
         campaignsRef.where("ownerID", "==", this.props.firebase.auth.currentUser.uid).get()
 		.then((ownedCampaigns) => {
 			campaignsRef.where("usersSharedWithList", "array-contains", this.props.firebase.auth.currentUser.uid)
@@ -49,12 +50,12 @@ class CampaignsPage extends Component {
 
 				let campaigns = {};
 
-				// Get all entries in the campaign collection
+				// Add campaigns owned by user to campaigns object
 				ownedCampaigns.forEach((doc) => {
 					campaigns[doc.id] = doc.data();
 				});
 
-				// Get all entries in the campaign collection
+				// Add campaigns shared with user to campaigns object
 				sharedWithCampaigns.forEach((doc) => {
 					campaigns[doc.id] = doc.data();
 				});
@@ -65,10 +66,12 @@ class CampaignsPage extends Component {
 					status: "LOADED",
 				});
 			}).catch((error) => {
+
+				// Case when there are no campaigns shared with user
 				console.log("Error getting document:", error);
 				let campaigns = {};
 
-				// Get all entries in the campaign collection
+				// Add campaigns owned by user to campaigns object
 				ownedCampaigns.forEach((doc) => {
 					campaigns[doc.id] = doc.data();
 				});
@@ -93,18 +96,17 @@ class CampaignsPage extends Component {
 
 	render() {
 
-		// Save the query reference for campaigns
-        let campaignsRef = this.props.firebase.db.collection("campaigns");
-
-		let campaigns = null;
+		let campaigns = <></>;;
+		let alert = <></>;;
 
 		let currentUser = this.props.firebase.auth.currentUser;
+		let campaignsRef = this.props.firebase.db.collection("campaigns");
 
 		let timeSinceAccountCreation = (Date.now() - Date.parse(currentUser.metadata.creationTime));
-		let alert;
-
+	
+		// Render an alert depending on whether of not the user has verified the email for this account
 		if(timeSinceAccountCreation < 86400000 || currentUser.emailVerified) {
-			alert = <div></div>;
+			alert = <></>;
 		} else if (timeSinceAccountCreation < 1209600000) {
 			alert = <Alert variant="info">
 						Remember to verify the email for this account!  &nbsp;
@@ -124,11 +126,12 @@ class CampaignsPage extends Component {
 
 		switch (this.state.status) {
 			case "LOADING":
+				// Create spinner
 				campaigns = <div className="loading-spinner">
-					<Spinner animation="grow" variant="info" role="status">
-						<span className="sr-only">Loading...</span>
-					</Spinner>
-				</div>
+								<Spinner animation="grow" variant="info" role="status">
+									<span className="sr-only">Loading...</span>
+								</Spinner>
+							</div>
 				break;
 			case "LOADED":
 				// Fill campaign list

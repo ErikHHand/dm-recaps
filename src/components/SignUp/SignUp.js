@@ -32,18 +32,23 @@ class SignUpFormBase extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
   	}
 
+	// Triggers when submitting fields for creating a new user
 	onSubmit(event) {
 		const { username, email, passwordOne } = this.state;
 
 		let usernameRef = this.props.firebase.db.collection("usernames").doc(username);
 
+		// First check if the username is taken
+		// If the username is not taken a new user is created
 		usernameRef.get().then((usernameDoc) => {
 			if(!usernameDoc.exists) {
 				this.props.firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
 				.then(authUser => {
 
+					// Send email for verifying the account
 					authUser.user.sendEmailVerification();
 
+					// Add the user to the users collection
 					this.props.firebase.db.collection("users").doc(authUser.user.uid).set({
 						username: username,
 					}).then(
@@ -52,6 +57,7 @@ class SignUpFormBase extends Component {
 						console.error("Error adding document: ", error);
 					});
 
+					// Add user to the usernames collection 
 					this.props.firebase.db.collection("usernames").doc(username).set({
 						uid: authUser.user.uid,
 					}).then(
@@ -60,6 +66,7 @@ class SignUpFormBase extends Component {
 						console.error("Error adding document: ", error);
 					});
 
+					// Update the displayName field on the user object
 					authUser.user.updateProfile({
 						displayName: username,
 					}).then(() => {
@@ -69,6 +76,8 @@ class SignUpFormBase extends Component {
 					});  
 					
 				}).then(authUser => {
+
+					// Reset state and navigaete to the campaigns pags
 					this.setState({ ...INITIAL_STATE });
 					this.props.history.push(ROUTES.HOME);
 				}).catch(error => {
@@ -85,6 +94,7 @@ class SignUpFormBase extends Component {
 		event.preventDefault();
 	}
 
+	// Triggers when editing a field in the sign up window
 	onChange(event) {
 		this.setState({ [event.target.name]: event.target.value });
 	};
