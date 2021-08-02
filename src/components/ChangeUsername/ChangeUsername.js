@@ -34,79 +34,97 @@ class ChangeUsername extends Component {
     // Function called when submitting a new username
     onSubmit(event) {
 
-        const { username } = this.state;
-
-        let usernameRef = this.props.firebase.db.collection("usernames").doc(username);
-
-        // First check is the submitted username is already taken.
-        usernameRef.get().then((usernameDoc) => {
-            if(!usernameDoc.exists) {
-
-                // Username is not taken
-
-                let oldUsername = this.props.firebase.auth.currentUser.displayName;
-
-                // Change username in the users collection on Firestore
-                this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-                .update({
-                    username: username,
-                }).then(() => {
-                    console.log("Document successfully updated!");
-                }).catch((error) => {
-                    console.log("Error updating document:", error);
-                });
-                
-                // Change displayName property in the auth profile on Firestore
-                this.props.firebase.auth.currentUser.updateProfile({
-                    displayName: username,
-                }).then(() => {
-                    console.log("Document successfully updated!");
-                    this.setState({ ...INITIAL_STATE });
-                }).catch((error) => {
-                    console.log("Error updating displayName:", error);
-                });
-
-                // Delete old username document from usernames collection
-                this.props.firebase.db.collection("usernames").doc(oldUsername).delete()
-                .then(() => {
-                    console.log("Document successfully deleted!");
-                }).catch((error) => {
-                    console.log("Error deleting document:", error);
-                });
-
-                // Write new username document in usernames collection
-                this.props.firebase.db.collection("usernames").doc(username).set({
-                    uid: this.props.firebase.auth.currentUser.uid,
-                }).then(
-                    console.log("Document written with ID: ", username)
-                ).catch((error) => {
-                    console.error("Error adding document: ", error);
-                });
-
-                if(this.props.ownedCampaigns) {
-                    let campaignsRef = this.props.firebase.db.collection("campaigns");
-                    for(let i = 0; i < this.props.ownedCampaigns.length; i++) {
-                        campaignsRef.doc(this.props.ownedCampaigns[i])
-                        .update({
-                            ownerUsername: username,
-                        }).then(() => {
-                            console.log("Document successfully updated!");
-                        }).catch((error) => {
-                            console.log("Error updating document:", error);
-                        });
-                    }
-                }
-
-            } else {
-                // Username is taken
-                this.setState({ 
-                    error: {message: "Username is not available. Please choose a different username."}, 
-                });
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });	
         event.preventDefault();
+
+        const { username, password } = this.state;
+
+        const user = this.props.firebase.auth.currentUser;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            user.email, 
+            password,
+        );
+
+        // Reauthenticate user
+        user.reauthenticateWithCredential(credential)
+        .then((authUser) => {
+
+            let usernameRef = this.props.firebase.db.collection("usernames").doc(username);
+
+            // First check is the submitted username is already taken.
+            usernameRef.get().then((usernameDoc) => {
+                if(!usernameDoc.exists) {
+
+                    // Username is not taken
+
+                    let oldUsername = this.props.firebase.auth.currentUser.displayName;
+
+                    // Change username in the users collection on Firestore
+                    this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+                    .update({
+                        username: username,
+                    }).then(() => {
+                        console.log("Document successfully updated!");
+                    }).catch((error) => {
+                        console.log("Error updating document:", error);
+                    });
+                    
+                    // Change displayName property in the auth profile on Firestore
+                    this.props.firebase.auth.currentUser.updateProfile({
+                        displayName: username,
+                    }).then(() => {
+                        console.log("Document successfully updated!");
+                        this.setState({ ...INITIAL_STATE });
+                    }).catch((error) => {
+                        console.log("Error updating displayName:", error);
+                    });
+
+                    // Delete old username document from usernames collection
+                    this.props.firebase.db.collection("usernames").doc(oldUsername).delete()
+                    .then(() => {
+                        console.log("Document successfully deleted!");
+                    }).catch((error) => {
+                        console.log("Error deleting document:", error);
+                    });
+
+                    // Write new username document in usernames collection
+                    this.props.firebase.db.collection("usernames").doc(username).set({
+                        uid: this.props.firebase.auth.currentUser.uid,
+                    }).then(
+                        console.log("Document written with ID: ", username)
+                    ).catch((error) => {
+                        console.error("Error adding document: ", error);
+                    });
+
+                    if(this.props.ownedCampaigns) {
+                        let campaignsRef = this.props.firebase.db.collection("campaigns");
+                        for(let i = 0; i < this.props.ownedCampaigns.length; i++) {
+                            campaignsRef.doc(this.props.ownedCampaigns[i])
+                            .update({
+                                ownerUsername: username,
+                            }).then(() => {
+                                console.log("Document successfully updated!");
+                            }).catch((error) => {
+                                console.log("Error updating document:", error);
+                            });
+                        }
+                    }
+
+                } else {
+                    // Username is taken
+                    this.setState({ 
+                        error: {message: "Username is not available. Please choose a different username."}, 
+                    });
+                }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });	
+        }).catch(error => {
+            console.log("Reauthentication failed");
+            this.setState({ 
+                error: error,
+                showAlert: true,
+            });
+        });
     }
 
 	// Triggers when changing values in the form
