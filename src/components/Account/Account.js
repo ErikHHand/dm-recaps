@@ -28,7 +28,22 @@ class Account extends Component {
             showChangeEmail: false,
             showChangeUsername: false,
             showDeleteAccount: false,
+            ownedCampaigns: [],
         };
+    }
+
+    componentDidMount() {
+        let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
+
+        userRef.get().then((doc) => {
+            if (doc.exists) {
+                this.setState({
+                    ownedCampaigns: doc.data().ownedCampaigns,
+                });
+            }			
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
     }
 
     render() {
@@ -119,6 +134,7 @@ class Account extends Component {
                 <ChangeUsername
                     show = {this.state.showChangeUsername}
 					onHide = {() => this.setState({ showChangeUsername: false })}
+                    ownedCampaigns = {this.state.ownedCampaigns}
                 />
                 <DeleteAccount
                     show = {this.state.showDeleteAccount}

@@ -82,6 +82,21 @@ class ChangeUsername extends Component {
                 ).catch((error) => {
                     console.error("Error adding document: ", error);
                 });
+
+                if(this.props.ownedCampaigns) {
+                    let campaignsRef = this.props.firebase.db.collection("campaigns");
+                    for(let i = 0; i < this.props.ownedCampaigns.length; i++) {
+                        campaignsRef.doc(this.props.ownedCampaigns[i])
+                        .update({
+                            ownerUsername: username,
+                        }).then(() => {
+                            console.log("Document successfully updated!");
+                        }).catch((error) => {
+                            console.log("Error updating document:", error);
+                        });
+                    }
+                }
+
             } else {
                 // Username is taken
                 this.setState({ 
