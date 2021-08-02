@@ -37,8 +37,6 @@ class DeleteAccount extends Component {
 
         event.preventDefault();
 
-        console.log("Delete account")
-
         const user = this.props.firebase.auth.currentUser;
         const credential = firebase.auth.EmailAuthProvider.credential(
             user.email, 
