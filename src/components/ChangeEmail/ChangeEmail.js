@@ -34,16 +34,33 @@ class ChangePassword extends Component {
     // Function called when submitting a new email
     onSubmit(event) {
 
-        const { email } = this.state;
+		event.preventDefault();
 
-        // Change email in the auth profile on Firestore
-        this.props.firebase.auth.currentUser.updateEmail(email)
+        const { email, password } = this.state;
+
+        const user = this.props.firebase.auth.currentUser;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            user.email, 
+            password,
+        );
+
+        // Reauthenticate user
+        user.reauthenticateWithCredential(credential)
         .then(() => {
-            console.log("Email successfully updated!");
-        }).catch((error) => {
-			console.log("Error getting document:", error);
-		});
-        event.preventDefault();
+			// Change email in the auth profile on Firestore
+			this.props.firebase.auth.currentUser.updateEmail(email)
+			.then(() => {
+				console.log("Email successfully updated!");
+			}).catch((error) => {
+				console.log("Error getting document:", error);
+			});
+		}).catch(error => {
+            console.log("Reauthentication failed");
+            this.setState({ 
+                error: error,
+                showAlert: true,
+            });
+        });
     }
 
 	// Triggers when changing values in the form
