@@ -1,3 +1,10 @@
+@font-face {
+	font-family: 'password';
+	font-style: normal;
+	font-weight: 400;
+	src: url(https://jsbin-user-assets.s3.amazonaws.com/rafaelcastrocouto/password.ttf);
+}
+
 a {
 	color: inherit !important; 
 	text-decoration: inherit !important; 
@@ -27,6 +34,30 @@ button:active {
 
 button:focus {
 	outline: none !important;
+}
+
+.account-current-password {
+	padding-bottom: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.account-page-row {
+	margin: 0 2rem 2rem 2rem !important;
+}
+
+.account-page-subtitle {
+	margin: 3rem 1rem 2rem 1rem !important;
+}
+
+.account-property-info {
+	font-weight: 400;
+	font-style: italic;
+	color: rgb(108, 117, 125);
+}
+
+.account-property-text {
+	margin-bottom: 0;
+	font-weight: 600;
 }
 
 .alert-error {
@@ -159,6 +190,18 @@ button:focus {
 	height: 98vh;
 	margin: 0 auto 2vh auto !important;
 	background-color:rgb(233, 236, 239)
+}
+
+.dark-background {
+	background-color: rgba(17, 15, 15, 0.836);
+}
+
+.delete-account {
+	background-color: rgba(202, 68, 74, 1);
+}
+
+.custom-password-type {
+	font-family: 'password';
 }
 
 .filter-bar {
