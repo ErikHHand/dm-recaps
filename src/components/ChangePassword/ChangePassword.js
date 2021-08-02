@@ -36,20 +36,37 @@ class ChangePassword extends Component {
 
     // Function called when submitting a new password
     onSubmit(event) {
-        const { passwordOne } = this.state;
-     
-        // Write new password to backend, then reset the state
-        this.props.firebase.doPasswordUpdate(passwordOne)
+        event.preventDefault();
+
+        const { passwordOne, currentPassword } = this.state;
+
+        const user = this.props.firebase.auth.currentUser;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            user.email, 
+            currentPassword,
+        );
+
+        // Reauthenticate user
+        user.reauthenticateWithCredential(credential)
+        .then(() => {
+			// Write new password to backend, then reset the state
+            this.props.firebase.doPasswordUpdate(passwordOne)
             .then(() => {
                 this.setState({ ...INITIAL_STATE });
+                console.log("Password updated");
             }).catch(error => {
                 this.setState({ 
                     error: error,
                     showAlert: true,
                 });
             });
-     
-        event.preventDefault();
+		}).catch(error => {
+            console.log("Reauthentication failed");
+            this.setState({ 
+                error: error,
+                showAlert: true,
+            });
+        });
     }
 
 	// Triggers when changing values in the form
