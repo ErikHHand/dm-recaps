@@ -48,14 +48,9 @@ class Account extends Component {
 
     render() {
 
-        // Checks if displayName is set for profile, and also handles if currentUser is null
-        let displayNameTitle = this.props.firebase.auth.currentUser.displayName ? 
-            this.props.firebase.auth.currentUser.displayName + "'s Account" : "Account";
-
         return (
             <Container>
                 <Navbar/>
-                <h1 className="border-bottom">{displayNameTitle}</h1>
                 <Row className="account-page-subtitle border-bottom">
                     <Col>
                         <h5>Account Settings</h5>
