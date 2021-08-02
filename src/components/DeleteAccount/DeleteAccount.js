@@ -35,9 +35,46 @@ class DeleteAccount extends Component {
     // Function called when submitting a new username
     onSubmit(event) {
 
+        event.preventDefault();
+
         console.log("Delete account")
 
-        event.preventDefault();
+        const user = this.props.firebase.auth.currentUser;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            user.email, 
+            this.state.password,
+        );
+
+        // Reauthenticate user
+        user.reauthenticateWithCredential(credential)
+        .then((authUser) => {
+
+            // Delete account
+            // This currently does not delete campaigns owned by the user
+
+            // Delete username document from usernames collection
+            this.props.firebase.db.collection("usernames").doc(authUser.user.displayName).delete()
+            .then(() => {
+                console.log("Document successfully deleted!");
+
+                // Delete user document from users collection
+                this.props.firebase.db.collection("users").doc(authUser.user.uid).delete()
+                .then(() => {
+                    console.log("Document successfully deleted!");
+                    authUser.user.delete();
+                }).catch((error) => {
+                    console.log("Error deleting document:", error);
+                });
+            }).catch((error) => {
+                console.log("Error deleting document:", error);
+            });
+        }).catch(error => {
+            console.log("Reauthentication failed");
+            this.setState({ 
+                error: error,
+                showAlert: true,
+            });
+        });
     }
 
 	// Triggers when changing values in the form
