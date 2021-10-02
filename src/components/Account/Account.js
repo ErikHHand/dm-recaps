@@ -1,205 +1,140 @@
 import React, { Component } from 'react';
 
+import ChangePassword from '../ChangePassword/ChangePassword';
+import ChangeEmail from '../ChangeEmail/ChangeEmail';
+import ChangeUsername from '../ChangeUsername/ChangeUsername';
+import DeleteAccount from '../DeleteAccount/DeleteAccount';
+
 import { withFirebase } from '../Firebase/Firebase';
 import { withAuthorization } from '../Session/Session';
 
 import Navbar from '../Navbar/Navbar';
 
-import { Form, Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
-
-const INITIAL_STATE = {
-    currentUsername: '',
-    email: '',
-    username: '',
-    passwordOne: '',
-    passwordTwo: '',
-    error: null,
-};
-
+/*
+    This class hold the account page of the app. This is where a user can update 
+    account details. 
+*/
 class Account extends Component {
     constructor(props) {
         super(props);
      
-        this.state = { ...INITIAL_STATE };
-
-        // Set the context for "this" for the following functions
-		this.onChange = this.onChange.bind(this);
-		this.onChangePassword = this.onChangePassword.bind(this);
-		this.onChangeUsername = this.onChangeUsername.bind(this);
-		this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.state = { 
+            showChangePassword: false,
+            showChangeEmail: false,
+            showChangeUsername: false,
+            showDeleteAccount: false,
+            ownedCampaigns: [],
+        };
     }
 
-    /*
     componentDidMount() {
+        let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
 
-		let account = this;
-
-		// Query for getting the campaign collection from firestore
-        var accountRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-        accountRef.get().then((user) => {
-			
-            account.setState({
-				currentUsername: user.data().username,
-			});
-						
+        userRef.get().then((doc) => {
+            if (doc.exists) {
+                this.setState({
+                    ownedCampaigns: doc.data().ownedCampaigns,
+                });
+            }			
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-	}
-    */
-
-    onChangePassword(event) {
-        const { passwordOne } = this.state;
-     
-        this.props.firebase
-            .doPasswordUpdate(passwordOne)
-            .then(() => {
-                this.setState({ ...INITIAL_STATE });
-            })
-            .catch(error => {
-                this.setState({ error });
-            });
-     
-        event.preventDefault();
-    }
-
-    onChangeUsername(event) {
-
-        const { username } = this.state;
-
-        // Change username on Firestore
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.update({
-			username: username,
-		})
-		.then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
-        
-        this.props.firebase.auth.currentUser.updateProfile({
-            displayName: username,
-          }).then(() => {
-            console.log("Document successfully updated!");
-          }).catch((error) => {
-            console.log("Error updating document:", error);
-          }); 
-     
-        event.preventDefault();
-    }
-
-    onChangeEmail(event) {
-
-        const { email } = this.state;
-
-        // Change email on Firestore
-		this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
-		.update({
-			email: email,
-		})
-		.then(function() {
-			console.log("Document successfully updated!");
-		}).catch(function(error) {
-			console.log("Error getting document:", error);
-		});
-     
-        event.preventDefault();
-    }
-
-    onChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
     }
 
     render() {
 
-        const { passwordOne, passwordTwo, username, email, error } = this.state;
-     
-        const isPasswordInvalid =
-            passwordOne !== passwordTwo || passwordOne === '';
-
-        const isUsernameInvalid = username === '';
-
-        const isEmailInvalid = email === '';
-
-        let displayNameTitle = this.props.firebase.auth.currentUser.displayName ? 
-            this.props.firebase.auth.currentUser.displayName + "'s Account" : "Account";
-
         return (
             <Container>
                 <Navbar/>
-                <h1 className="border-bottom">{displayNameTitle}</h1>
-                <h4>Change Password</h4>
-                <Form onSubmit={this.onChangePassword}>
-                    <Form.Group controlId="passwordOne">
-                        <Form.Control 
-                            name="passwordOne"
-                            value={passwordOne}
-                            onChange={this.onChange}
-                            type="password"
-                            placeholder="New Password"
-                            maxLength="100"
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="passwordTwo">
-                        <Form.Control 
-                            name="passwordTwo"
-                            value={passwordTwo}
-                            onChange={this.onChange}
-                            type="password"
-                            placeholder="Confirm New Password"
-                            maxLength="100"                            
-                        />
-                    </Form.Group>
-                    
-                    <Button variant="success" type="submit" disabled={isPasswordInvalid}>
-                        Change My Password
-                    </Button>
-            
-                    {error && <p>{error.message}</p>}
-                </Form>
-                
-                <h4>Change Username</h4>
-                <Form onSubmit={this.onChangeUsername}>
-                    <Form.Group controlId="username">
-                        <Form.Control 
-                            name="username"
-                            value={username}
-                            onChange={this.onChange}
-                            type="text"
-                            placeholder="New Username"
-                            maxLength="25"
-                        />
-                    </Form.Group>
-                    
-                    <Button variant="success" type="submit" disabled={isUsernameInvalid}>
-                        Change My Username
-                    </Button>
-            
-                    {error && <p>{error.message}</p>}
-                </Form>
+                <Row className="account-page-subtitle border-bottom">
+                    <Col>
+                        <h5>Account Settings</h5>
+                    </Col>
+                </Row>
+                <Row className="account-page-row">
+                    <Col md="9">
+                        <h6 className="account-property-text">Password</h6>
+                        <p className="account-property-info">
+                            Insert password requirements here.
+                        </p>
+                    </Col>
+                    <Col md="3" className="right-align">
+                        <Button variant="outline-info" onClick={() => this.setState({showChangePassword: true})}>
+                            Change
+                        </Button>
+                    </Col>
+                </Row>
 
-                <h4>Change Email</h4>
-                <Form onSubmit={this.onChangeEmail}>
-                    <Form.Group controlId="email">
-                        <Form.Control 
-                            name="email"
-                            value={email}
-                            onChange={this.onChange}
-                            type="text"
-                            placeholder="New Email"
-                            maxLength="25"
-                        />
-                    </Form.Group>
-                    
-                    <Button variant="success" type="submit" disabled={isEmailInvalid}>
-                        Change My Email
-                    </Button>
-            
-                    {error && <p>{error.message}</p>}
-                </Form>
+                <Row className="account-page-row">
+                    <Col md="9">
+                        <h6 className="account-property-text">Email address</h6>
+                        <p className="account-property-info">
+                            {this.props.firebase.auth.currentUser.email}
+                        </p>
+                    </Col>
+                    <Col md="3" className="right-align">
+                        <Button variant="outline-info" onClick={() => this.setState({showChangeEmail: true})}>
+                            Change
+                        </Button>
+                    </Col>
+                </Row>
+
+                <Row className="account-page-row">
+                    <Col md="9">
+                        <h6 className="account-property-text">Username</h6>
+                        <p className="account-property-info">
+                            {this.props.firebase.auth.currentUser.displayName}
+                        </p>
+                    </Col>
+                    <Col md="3" className="right-align">
+                        <Button variant="outline-info" onClick={() => this.setState({showChangeUsername: true})}>
+                            Change
+                        </Button>
+                    </Col>
+                </Row>
+
+                <Row className="account-page-subtitle border-bottom">
+                    <Col>
+                        <h5>Account Termination</h5>
+                    </Col>
+                </Row>
+
+                <Row className="account-page-row">
+                    <Col md="9">
+                        <h6 className="account-property-text">Delete Account</h6>
+                        <p className="account-property-info">
+                            No going back
+                        </p>
+                    </Col>
+                    <Col md="3" className="right-align">
+                        <Button variant="outline-danger" onClick={() => this.setState({showDeleteAccount: true})}>
+                            Delete
+                        </Button>
+                    </Col>
+                </Row>
+
+                <ChangePassword
+                    show = {this.state.showChangePassword}
+					onHide = {() => this.setState({ showChangePassword: false })}
+                />
+                <ChangeEmail
+                    show = {this.state.showChangeEmail}
+					onHide = {() => this.setState({ showChangeEmail: false })}
+                />
+                <ChangeUsername
+                    show = {this.state.showChangeUsername}
+					onHide = {() => this.setState({ showChangeUsername: false })}
+                    ownedCampaigns = {this.state.ownedCampaigns}
+                />
+                <DeleteAccount
+                    show = {this.state.showDeleteAccount}
+					onHide = {() => this.setState({ showDeleteAccount: false })}
+                />
             </Container>
         );
     }

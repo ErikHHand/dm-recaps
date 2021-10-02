@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import ItemMenu from '../ItemMenu/ItemMenu';
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
+import CampaignSharing from '../CampaignSharing/CampaignSharing';
+
 
 import { Link } from "react-router-dom";
 
@@ -13,7 +15,7 @@ import { withFirebase } from '../Firebase/Firebase';
 
 /*
 	This class holds the Campaign Items on the Campaign Page.
-	This class holds the layout as well as the function for deleting a campaign
+	This class holds the layout as well as the function for deleting a campaign.
 */
 class CampaignItem extends Component {
 
@@ -29,7 +31,7 @@ class CampaignItem extends Component {
 		this.deleteCampaign = this.deleteCampaign.bind(this);
 	}
 
-	// Function that is called when hovering over a campaign item
+	// Function called when hovering over a campaign item
 	// which will add a visible border to it.
 	addBorder() {
 		this.setState({
@@ -37,7 +39,7 @@ class CampaignItem extends Component {
 		});
 	}
 
-	// Function to remove border when oving cursor away from a campaign item
+	// Function to remove border when moving cursor away from a campaign item
 	removeBorder() {
 		this.setState({
 			border: ""
@@ -49,9 +51,9 @@ class CampaignItem extends Component {
 
 		// Delete campaign on Firestore
 		this.props.campaignsRef.doc(this.props.campaignID).delete()
-		.then(function() {
+		.then(() => {
 			console.log("Document successfully deleted!");
-		}).catch(function(error) {
+		}).catch((error) => {
 			console.log("Error deleting document:", error);
 		});
 
@@ -104,7 +106,15 @@ class CampaignItem extends Component {
 				>
 					<Card.Header>
 						<Row>
-							<Col md="1"></Col>
+							<Col md="1">
+								<CampaignSharing
+									campaignID = {this.props.campaignID}
+									campaign = {this.props.campaign}
+									campaigns = {this.props.campaigns}
+									handleCampaigns = {this.props.handleCampaigns}
+									campaignsRef = {this.props.campaignsRef}
+								/>
+							</Col>
 							<Col md="10" className="text-muted">
 								{this.props.campaign.world}
 							</Col>

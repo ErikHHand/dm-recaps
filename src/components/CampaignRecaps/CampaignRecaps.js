@@ -29,7 +29,6 @@ class CampaignRecaps extends Component {
 			campaign: {},
 			sessions: {},
 			tags: {},
-			activeTab: this.props.location.state ? this.props.location.state.activeTab : "sessions",
 			selectedSession: null,
 			selectedTag: null,
 		};
@@ -46,24 +45,29 @@ class CampaignRecaps extends Component {
 
 
 	// When component mounts, get the Firestore reference for this campaign.
-	// Then get the campaign, the sessions and the tags and save in the state
+	// Then get the campaign, sessions, tags and recaps and save in the state
 	componentDidMount() {
 
 		let campaign = this;
 
-		// The id for this campaign
-		let campaignID = this.props.location.state.id;
+		// The id for this campaign, talen from the pathname
+		let campaignID = this.props.location.pathname.substring(11);
 
 		// Set the correct Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
 		// Get the campaign for Firestore and save in the state
+		// This is done by getting all recap docuements from the recaps collection
+		// and then sorting them into both session and tag objects based on what session the
+		// recap belongs to and what tags are atached to it
 		campaignRef.get().then((campaginDoc) => {
 			campaignRef.collection("recaps").get().then((querySnapshot) => {
 				let sessions = {};
 				let tags = {};
 				let recaps = {};
 
+				// Fill tag and session objects with empty objects in preparation for
+				// copying over recaps
 				for (let tagID in campaginDoc.data().tags) {
 					tags[tagID] = {};
 					tags[tagID]["recaps"] = {};
@@ -74,31 +78,25 @@ class CampaignRecaps extends Component {
 					sessions[sessionID]["recaps"] = {};
 				}
 
-				// Get all entries in the sessions collection
+				// Loop over all recaps and put them in sessions, tags and recaps objects
 				querySnapshot.forEach((doc) => {
 					sessions[doc.data().session].recaps[doc.id] = doc.data();
 					for (let i = 0; i < doc.data().tags.length; i++) {
 						tags[doc.data().tags[i]].recaps[doc.id] = doc.data();
 					}
-				});
-
-				// Get all entries in the recaps collection
-				querySnapshot.forEach((doc) => {
 					recaps[doc.id] = doc.data();
 				});
 
-				// Save the tags, sessions and campaign in the state
+				// Save data in the state and set status to "LOADED"
 				campaign.setState({
 					status: "LOADED",
 					recaps: recaps,
 					sessions: sessions,
 					tags: tags,
 					campaign: campaginDoc.data(),
-					activeTab: campaginDoc.data().activeTab ? campaginDoc.data().activeTab : "sessions",
 					selectedSession: campaginDoc.data().selectedSession,
 					selectedTag: campaginDoc.data().selectedTag,
 				});
-
 			}).catch((error) => {
 				console.log("Error getting document:", error);
 			});	
@@ -110,7 +108,7 @@ class CampaignRecaps extends Component {
 		// Check if user is signed in
 		if(this.props.firebase.auth.currentUser) {
 			// The id for this campaign
-			let campaignID = this.props.location.state.id;
+			let campaignID = this.props.location.pathname.substring(11);
 
 			// The Firestore database reference for this campaign
 			let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
@@ -118,23 +116,24 @@ class CampaignRecaps extends Component {
 			let userRef = this.props.firebase.db.collection("users")
 			.doc(this.props.firebase.auth.currentUser.uid);
 
-			// Add info about active tab and session to backend
+			// Update info about active tab and selected session/tag to backend
 			campaignRef.update({
-				activeTab: this.state.activeTab, 
+				activeTab: this.state.campaign.activeTab, 
 				selectedSession: this.state.selectedSession ? this.state.selectedSession : "",
 				selectedTag: this.state.selectedTag ? this.state.selectedTag : "",
-			}).then(function() {
+			}).then(() => {
 				console.log("Document successfully updated!");
-			}).catch(function(error) {
+			}).catch((error) => {
 				console.log("Error getting document:", error);
 			});
 
+			// Update info about last visited campaign to backend
 			userRef.update({
 				lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
-				lastCampaignID: this.props.location.state.id ? this.props.location.state.id: "",
-			}).then(function() {
+				lastCampaignID: campaignID,
+			}).then(() => {
 				console.log("Document successfully updated!");
-			}).catch(function(error) {
+			}).catch((error) => {
 				console.log("Error getting document:", error);
 			});
 		}
@@ -170,14 +169,14 @@ class CampaignRecaps extends Component {
 		})
 	}
 
-	// Handles changes to session recap data
+	// Handles changes to session recaps data
 	handleSessions(sessions) {
 		this.setState({
 			sessions: sessions,
 		})
 	}
 
-	// Handles changes to session recap data
+	// Handles changes to tag recaps data
 	handleTags(tags) {
 		this.setState({
 			tags: tags,
@@ -189,10 +188,8 @@ class CampaignRecaps extends Component {
 		let campaign = this.state.campaign;
 		campaign.activeTab = tab;
 		this.setState({
-			activeTab: tab,
 			campaign: campaign,
 		});
-		
 	}
 
 	// Handles changing which session is the selected session
@@ -201,7 +198,6 @@ class CampaignRecaps extends Component {
 			let campaign = this.state.campaign;
 			campaign.activeTab = "sessions";
 			this.setState({
-				activeTab: "sessions",
 				selectedSession: sessionID,
 				campaign: campaign,
 			});
@@ -218,7 +214,6 @@ class CampaignRecaps extends Component {
 			let campaign = this.state.campaign;
 			campaign.activeTab = "tags";
 			this.setState({
-				activeTab: "tags",
 				selectedTag: tagID,
 				campaign: campaign,
 			});
@@ -228,26 +223,26 @@ class CampaignRecaps extends Component {
 	render() {
 
 		// The id for this campaign
-		console.log(this.props.location);
-		let campaignID = this.props.location.state.id;
+		let campaignID = this.props.location.pathname.substring(11);
 
 		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
 		let title = this.state.campaign ? this.state.campaign.name : "";
+		let activeTab = this.state.campaign ? this.state.campaign.activeTab : "sessions";
 
 		return (
 			<Container>
 				<Navbar
 					title = {title}
 				/>
-				<Tab.Container activeKey={this.state.activeTab} transition={false}>
+				<Tab.Container activeKey={activeTab} transition={false}>
 					<Row className="tab-nav">
-						<Col>
+						<Col className="tab-nav-col">
 							<Nav 
 								variant="tabs" 
 								className="justify-content-center"
-								activeKey={this.state.activeTab}
+								activeKey={activeTab}
 							>
 								<Nav.Item>
 									<Nav.Link 
@@ -279,7 +274,7 @@ class CampaignRecaps extends Component {
 								handleCampaign = {this.handleCampaign}
 								handleTags = {this.handleTags}
 								campaignRef = {campaignRef}
-								activeTab = {this.state.activeTab}
+								activeTab = {activeTab}
 								selectedSession = {this.state.selectedSession}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
@@ -295,7 +290,7 @@ class CampaignRecaps extends Component {
 								handleSessions = {this.handleSessions}
 								handleTags = {this.handleTags}
 								campaignRef = {campaignRef}
-								activeTab = {this.state.activeTab}
+								activeTab = {activeTab}
 								selectedTag = {this.state.selectedTag}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}

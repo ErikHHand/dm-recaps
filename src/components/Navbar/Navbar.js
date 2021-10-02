@@ -20,12 +20,10 @@ class NavbarBase extends Component {
 			lastCampaignName: "",
             lastCampaignID: ""
 		};
-
 	}
 
     componentDidMount() {
-        let userRef = this.props.firebase.db.collection("users")
-		.doc(this.props.firebase.auth.currentUser.uid);
+        let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
 
         userRef.get().then((doc) => {
 
@@ -45,7 +43,6 @@ class NavbarBase extends Component {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-
     }
 
     render() {
@@ -64,14 +61,12 @@ class NavbarBase extends Component {
         } else if (pathName.substring(0,11) === '/campaigns/') {
             navClasses[2] += " nav-text-current";
             colClasses[2] += " column-current";
-
         }
-
         
         return  (
-            <Row className="top-bar" noGutters={true}>
+            <Row className="top-bar border-bottom" noGutters={true}>
                 <Col md={2} lg={2} className={colClasses[0]}>
-                    <p className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</p>
+                    <div className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</div>
                 </Col>
                 <Col md={3} lg={3} className={colClasses[2]}>
                     <Link to={{
@@ -86,10 +81,12 @@ class NavbarBase extends Component {
                     <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
                 <Col md={{span:2, offset:3}} lg={{span: 1, offset: 5}} className={colClasses[1]}>
-                    <p className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</p>
+                    <div className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</div>
                 </Col>
                 <Col md={"auto"} lg={1} className="right-align column">
-                    <p className="nav-text" onClick={this.props.firebase.doSignOut}>Sign out</p>
+                    <div className="nav-text" onClick={this.props.firebase.doSignOut}>
+                        Sign out
+                    </div>
                 </Col>
             </Row>
         )

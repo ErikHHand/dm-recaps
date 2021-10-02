@@ -31,25 +31,21 @@ class SessionItem extends Component {
 
 	// Triggers when deleting a session
 	deleteSession() {
-		console.log("hello from deleteSession()!")
-		// Delete recaps from tags locally and on Firestore
+    
+		// Delete recaps from tags locally and from recaps collection on Firestore
 		let tags = this.props.tags;
 		let recaps = this.props.sessions[this.props.sessionID].recaps
 		let campaign = this.props.campaign;
 
 		for(let recap in recaps) {
 
-			console.log(campaign.recaps)
-
-			// Delete in recaps array in campaign
+			// Delete in recaps list in campaign
 			let index = campaign.recaps.indexOf(recap);
 			if (index > -1) {
 				campaign.recaps.splice(index, 1);
 			}
 
-			console.log(campaign.recaps)
-
-			// Delete from tags
+			// Delete from tags locally
 			recaps[recap].tags.forEach(tag => {
 				delete tags[tag].recaps[recap];
 			});
@@ -83,19 +79,17 @@ class SessionItem extends Component {
 			sessionOrder: campaign.sessionOrder,
 			selectedSession: this.props.sessionID,
 			recaps: campaign.recaps
-		})
-		.then(() => {
+		}).then(() => {
 			console.log("Document successfully deleted!");
 
-			// Update selected session
+			// Update selected session to the last session chronologically
 			let latestSession = campaign.sessionOrder[campaign.sessionOrder.length - 1] ? 
 				campaign.sessionOrder[campaign.sessionOrder.length - 1] : "";
 			this.props.handleSelectedSession(latestSession);
 
 			this.props.campaignRef.update({
 				selectedSession: latestSession,
-			})
-			.then(() => {
+			}).then(() => {
 				console.log("Document successfully deleted!");
 			}).catch((error) => {
 				console.log("Error deleting document:", error);
@@ -103,8 +97,6 @@ class SessionItem extends Component {
 		}).catch((error) => {
 			console.log("Error deleting document:", error);
 		});
-
-		
 	}
 
 	render() {

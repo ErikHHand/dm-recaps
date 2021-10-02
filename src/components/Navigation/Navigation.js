@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import Landing from '../Landing/Landing';
 import NotFound from '../NotFound/NotFound';
-import CampaignPage from '../CampaignPage/CampaignPage';
+import CampaignsPage from '../CampaignsPage/CampaignsPage';
 import CampaignRecaps from '../CampaignRecaps/CampaignRecaps';
 import Account from '../Account/Account';
 
@@ -22,7 +22,7 @@ class Navigation extends Component {
         let nonAuthUserNav = (
             <Switch>
                 <Route exact path="/" component={Landing}/>
-                <Route path='*' component={NotFound}/>                        
+                <Route path='*' component={NotFound}/>                                         
             </Switch>
         );
 
@@ -37,7 +37,7 @@ class Navigation extends Component {
                 />
                 <Route
                     exact path="/campaigns"
-                    render = { (props) => <CampaignPage {...props}/> }
+                    render = { (props) => <CampaignsPage {...props}/> }
                 />
                 <Route
                     path = "/campaigns/:id"
