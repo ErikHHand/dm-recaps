@@ -64,10 +64,6 @@ button:focus {
   margin-top: 0.5rem;
 }
 
-.alert-error {
-	margin-top: 0.5rem;
-}
-
 .App {
 	height: 100vh;
 }
