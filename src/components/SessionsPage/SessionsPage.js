@@ -69,7 +69,6 @@ class SessionsPage extends Component {
 				</div>
 				break;
 			case "LOADED":
-				{console.log(this.props.selectedSession)}
 				recapNew = <RecapNew 
 					session = {this.props.selectedSession}
 					sessions = {this.props.sessions}

@@ -1,4 +1,4 @@
-import { faExclamationCircle, fas } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle} from '@fortawesome/free-solid-svg-icons';
 import { faRing } from '@fortawesome/free-solid-svg-icons';
 import { faDragon } from '@fortawesome/free-solid-svg-icons';
 import { faDungeon } from '@fortawesome/free-solid-svg-icons';

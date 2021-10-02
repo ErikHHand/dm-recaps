@@ -29,6 +29,10 @@ button:focus {
 	outline: none !important;
 }
 
+.alert-custom {
+	margin-top: 0.5rem;
+}
+
 .App {
 	height: 98vh;
 }
