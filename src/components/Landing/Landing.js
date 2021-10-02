@@ -34,7 +34,7 @@ class Landing extends Component {
 		let title = "Dungeon Master Recaps"
 
 		return (
-			<Row>
+			<Row noGutters={true}>
 				<Col xs={0} md={3}></Col>
 				<Col xs={12} md={6}>
 					<h1 className="center"> {title} </h1>
