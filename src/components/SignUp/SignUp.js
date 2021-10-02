@@ -51,6 +51,8 @@ class SignUpFormBase extends Component {
 					// Add the user to the users collection
 					this.props.firebase.db.collection("users").doc(authUser.user.uid).set({
 						username: username,
+						campaignLastHandled: "",
+						campaignsSharedWith: [],
 					}).then(
 						console.log("Document written with ID: ", authUser.user.uid)
 					).catch((error) => {

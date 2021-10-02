@@ -78,7 +78,7 @@ class CampaignSharing extends Component {
 		if (index > -1) {campaigns[this.props.campaignID].usersSharedWithList.splice(index, 1);}
         this.props.handleCampaigns(campaigns);
 
-       // Revoke access on Firestore
+       // Remove user from campaign document on Firestore 
         this.props.campaignsRef.doc(this.props.campaignID).update({
 			userLastHandled: userID,
             ["usersSharedWith." + userID]: firebase.firestore.FieldValue.delete(),

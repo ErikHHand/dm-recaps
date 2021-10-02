@@ -85,7 +85,7 @@ class UserSearch extends Component {
             campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
             campaigns[this.props.campaignID].usersSharedWithList.push(user.userID);
             this.props.handleCampaigns(campaigns);
-
+            
             // Edit list of users shared with on Firestore
             this.props.campaignsRef.doc(this.props.campaignID).update({
                 userLastHandled: user.userID,
@@ -96,6 +96,16 @@ class UserSearch extends Component {
             }).catch((error) => {
                 console.log("Error getting document:", error);
             });
+            /*
+            // Write shared campaign to user document on Firestore
+            this.props.firebase.db.collection("users").doc(user.userID).update({
+                campaignLastHandled: this.props.campaignID,
+                campaignsSharedWith: firebase.firestore.FieldValue.arrayUnion(this.props.campaignID),
+            }).then(() => {
+                console.log("Document successfully updated!");
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });*/
         }
     }
 
