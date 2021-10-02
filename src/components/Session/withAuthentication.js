@@ -27,8 +27,11 @@ const withAuthentication = Component => {
 						this.setState({ authUser });
 					} else {
 						// User signed out
-						this.setState({ authUser: null });
-						this.props.history.push(ROUTES.LANDING);
+						this.setState({
+							authUser: null
+						}, () => {
+							this.props.history.push(ROUTES.LANDING);
+						});
 					}
 				}
 			);

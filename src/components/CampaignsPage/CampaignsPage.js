@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
 import CampaignItem from '../CampaignItem/CampaignItem';
-import Navbar from '../Navbar/Navbar';
 
-import Container from 'react-bootstrap/Container'
 import Spinner from 'react-bootstrap/Spinner'
 import Alert from 'react-bootstrap/Alert'
 
@@ -153,8 +151,7 @@ class CampaignsPage extends Component {
 		
 		
 		return (
-			<Container>				
-				<Navbar/>
+			<>
 				<div className="campaign-list remove-scroll-bar">
 					{alert}
 					<div 
@@ -175,7 +172,7 @@ class CampaignsPage extends Component {
 					edit = {false}
 					campaignID = {this.state.campaignID}
 				/>
-			</Container>
+			</>
 		);
 	}
 }

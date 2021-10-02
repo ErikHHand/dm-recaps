@@ -8,10 +8,7 @@ import DeleteAccount from '../DeleteAccount/DeleteAccount';
 import { withFirebase } from '../Firebase/Firebase';
 import { withAuthorization } from '../Session/Session';
 
-import Navbar from '../Navbar/Navbar';
-
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
@@ -49,8 +46,7 @@ class Account extends Component {
     render() {
 
         return (
-            <Container>
-                <Navbar/>
+            <>
                 <Row className="account-page-subtitle border-bottom">
                     <Col>
                         <h5>Account Settings</h5>
@@ -135,7 +131,7 @@ class Account extends Component {
                     show = {this.state.showDeleteAccount}
 					onHide = {() => this.setState({ showDeleteAccount: false })}
                 />
-            </Container>
+            </>
         );
     }
 }

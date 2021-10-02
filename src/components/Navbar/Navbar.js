@@ -45,7 +45,18 @@ class NavbarBase extends Component {
         });
     }
 
+    componentDidUpdate() {
+        if(this.props.location.state && this.props.location.state.id !== this.state.lastCampaignID) {
+            this.setState({
+				lastCampaignName: this.props.location.state.campaign.name,
+                lastCampaignID: this.props.location.state.id,
+			});
+        }
+    }
+
     render() {
+
+        console.log(this)
 
         const pathName = this.props.location.pathname;
 
@@ -69,16 +80,9 @@ class NavbarBase extends Component {
                     <div className={navClasses[0]} onClick={() => this.props.history.push(ROUTES.HOME)}>Campaigns</div>
                 </Col>
                 <Col md={3} lg={3} className={colClasses[2]}>
-                    <Link to={{
-						pathname: "/campaigns/"+ this.state.lastCampaignID,
-						state: {
-							id: this.state.lastCampaignID ? this.state.lastCampaignID: "",
-						}
-					}}>
-                        <div className={navClasses[2]} >{this.props.title ? this.props.title : this.state.lastCampaignName }</div>
+                    <Link to={{ pathname: "/campaigns/"+ this.state.lastCampaignID }}>
+                        <div className={navClasses[2]} >{this.state.lastCampaignName}</div>
                     </Link>
-                    {/* Disabled download functionality
-                    <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
                 <Col md={{span:2, offset:3}} lg={{span: 1, offset: 5}} className={colClasses[1]}>
                     <div className={navClasses[1]} onClick={() => this.props.history.push(ROUTES.ACCOUNT)}>Account</div>
@@ -87,6 +91,8 @@ class NavbarBase extends Component {
                     <div className="nav-text" onClick={this.props.firebase.doSignOut}>
                         Sign out
                     </div>
+                    {/* Disabled download functionality
+                    <Button variant="outline-info" onClick={this.downloadCampaign}>Download</Button> */}
                 </Col>
             </Row>
         )

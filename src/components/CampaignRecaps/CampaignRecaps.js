@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 
 import SessionsPage from '../SessionsPage/SessionsPage';
 import TagsPage from '../TagsPage/TagsPage';
-import Navbar from '../Navbar/Navbar';
 
 import Tab from 'react-bootstrap/Tab'
-import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
@@ -119,8 +117,8 @@ class CampaignRecaps extends Component {
 			// Update info about active tab and selected session/tag to backend
 			campaignRef.update({
 				activeTab: this.state.campaign.activeTab, 
-				selectedSession: this.state.selectedSession ? this.state.selectedSession : "",
-				selectedTag: this.state.selectedTag ? this.state.selectedTag : "",
+				selectedSession: this.state.campaign.selectedSession ? this.state.campaign.selectedSession : "",
+				selectedTag: this.state.campaign.selectedTag ? this.state.campaign.selectedTag : "",
 			}).then(() => {
 				console.log("Document successfully updated!");
 			}).catch((error) => {
@@ -194,18 +192,14 @@ class CampaignRecaps extends Component {
 
 	// Handles changing which session is the selected session
 	handleSelectedSession(sessionID) {
+		let campaign = this.state.campaign;
 		if(sessionID === "" || this.state.sessions[sessionID]) {
-			let campaign = this.state.campaign;
 			campaign.activeTab = "sessions";
-			this.setState({
-				selectedSession: sessionID,
-				campaign: campaign,
-			});
+			campaign.selectedSession = sessionID;
 		} else {
-			this.setState({
-				selectedSession: "",
-			});
+			campaign.selectedSession = "";
 		}
+		this.setState({ campaign: campaign });
 	}
 
 	// Handles changing which tag is the selected tag
@@ -213,10 +207,8 @@ class CampaignRecaps extends Component {
 		if(tagID === null || this.state.tags[tagID]) {
 			let campaign = this.state.campaign;
 			campaign.activeTab = "tags";
-			this.setState({
-				selectedTag: tagID,
-				campaign: campaign,
-			});
+			campaign.selectedTag = tagID;
+			this.setState({ campaign: campaign });
 		}
 	}
 
@@ -228,78 +220,72 @@ class CampaignRecaps extends Component {
 		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
-		let title = this.state.campaign ? this.state.campaign.name : "";
 		let activeTab = this.state.campaign ? this.state.campaign.activeTab : "sessions";
 
 		return (
-			<Container>
-				<Navbar
-					title = {title}
-				/>
-				<Tab.Container activeKey={activeTab} transition={false}>
-					<Row className="tab-nav">
-						<Col className="tab-nav-col">
-							<Nav 
-								variant="tabs" 
-								className="justify-content-center"
-								activeKey={activeTab}
-							>
-								<Nav.Item>
-									<Nav.Link 
-										eventKey="sessions"
-										onSelect={() => this.setActiveTab("sessions")}
-									>
-										Sessions
-									</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link 
-										eventKey="tags"
-										onSelect={() => this.setActiveTab("tags")}
-									>
-										Tags
-									</Nav.Link>
-								</Nav.Item>
-							</Nav>
-						</Col>
-					</Row>
-					
-					<Tab.Content>
-						<Tab.Pane eventKey="sessions">
-							<SessionsPage
-								campaign = {this.state.campaign}
-								sessions = {this.state.sessions}
-								tags = {this.state.tags}
-								handleSessions = {this.handleSessions}
-								handleCampaign = {this.handleCampaign}
-								handleTags = {this.handleTags}
-								campaignRef = {campaignRef}
-								activeTab = {activeTab}
-								selectedSession = {this.state.selectedSession}
-								handleSelectedSession = {this.handleSelectedSession}
-								handleSelectedTag = {this.handleSelectedTag}
-								status = {this.state.status}
-							/>
-						</Tab.Pane>
-						<Tab.Pane eventKey="tags">
-							<TagsPage
-								campaign = {this.state.campaign}
-								sessions = {this.state.sessions}
-								tags = {this.state.tags}
-								handleCampaign = {this.handleCampaign}
-								handleSessions = {this.handleSessions}
-								handleTags = {this.handleTags}
-								campaignRef = {campaignRef}
-								activeTab = {activeTab}
-								selectedTag = {this.state.selectedTag}
-								handleSelectedSession = {this.handleSelectedSession}
-								handleSelectedTag = {this.handleSelectedTag}
-								status = {this.state.status}
-							/>
-						</Tab.Pane>
-					</Tab.Content>
-				</Tab.Container>
-			</Container>
+			<Tab.Container activeKey={activeTab} transition={false}>
+				<Row className="tab-nav">
+					<Col className="tab-nav-col">
+						<Nav 
+							variant="tabs" 
+							className="justify-content-center"
+							activeKey={activeTab}
+						>
+							<Nav.Item>
+								<Nav.Link 
+									eventKey="sessions"
+									onSelect={() => this.setActiveTab("sessions")}
+								>
+									Sessions
+								</Nav.Link>
+							</Nav.Item>
+							<Nav.Item>
+								<Nav.Link 
+									eventKey="tags"
+									onSelect={() => this.setActiveTab("tags")}
+								>
+									Tags
+								</Nav.Link>
+							</Nav.Item>
+						</Nav>
+					</Col>
+				</Row>
+				
+				<Tab.Content>
+					<Tab.Pane eventKey="sessions">
+						<SessionsPage
+							campaign = {this.state.campaign}
+							sessions = {this.state.sessions}
+							tags = {this.state.tags}
+							handleSessions = {this.handleSessions}
+							handleCampaign = {this.handleCampaign}
+							handleTags = {this.handleTags}
+							campaignRef = {campaignRef}
+							activeTab = {activeTab}
+							selectedSession = {this.state.campaign.selectedSession}
+							handleSelectedSession = {this.handleSelectedSession}
+							handleSelectedTag = {this.handleSelectedTag}
+							status = {this.state.status}
+						/>
+					</Tab.Pane>
+					<Tab.Pane eventKey="tags">
+						<TagsPage
+							campaign = {this.state.campaign}
+							sessions = {this.state.sessions}
+							tags = {this.state.tags}
+							handleCampaign = {this.handleCampaign}
+							handleSessions = {this.handleSessions}
+							handleTags = {this.handleTags}
+							campaignRef = {campaignRef}
+							activeTab = {activeTab}
+							selectedTag = {this.state.campaign.selectedTag}
+							handleSelectedSession = {this.handleSelectedSession}
+							handleSelectedTag = {this.handleSelectedTag}
+							status = {this.state.status}
+						/>
+					</Tab.Pane>
+				</Tab.Content>
+			</Tab.Container>
 		)
 	}
 }
