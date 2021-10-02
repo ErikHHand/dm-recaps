@@ -60,6 +60,10 @@ button:focus {
 	font-weight: 600;
 }
 
+.alert-custom {
+  margin-top: 0.5rem;
+}
+
 .alert-error {
 	margin-top: 0.5rem;
 }

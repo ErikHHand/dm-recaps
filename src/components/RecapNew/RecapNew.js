@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import Form from 'react-bootstrap/Form'
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase';
@@ -94,6 +95,8 @@ class RecapNew extends Component {
 		const { text, error} = this.state;
 
 		let recapNew = this;
+		let noSessions = this.props.campaign.sessionOrder.length === 0;
+		let noSessionSelected = !this.props.session;
 
 		return (
 			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
@@ -107,7 +110,7 @@ class RecapNew extends Component {
 								recapNew.form.dispatchEvent(new Event('submit'))
 							}}}
 						onChange={this.onChange}
-						disabled={!this.props.session}
+						disabled={noSessions || noSessionSelected}
 						type="text"
 						as="textarea"
 						placeholder="Write something that happened..."
@@ -115,7 +118,13 @@ class RecapNew extends Component {
 						maxLength="4000" 
 					/>
 				</Form.Group>
-				<p hidden={this.props.session}>Select a session before writing a recap!</p>
+				<Alert 
+					show={noSessions || noSessionSelected} 
+					variant="warning"
+					className="alert-custom"
+				>
+					{noSessions ? "Create" : "Select"} a session before writing a recap!
+				</Alert>
 				{error && <p>{error.message}</p>}
 			</Form>
 		);
