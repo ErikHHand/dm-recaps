@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
 
 import AuthUserContext from './context';
+import UserDataContext from './userDataContext';
 import { withFirebase } from '../Firebase/Firebase';
 
 const withAuthentication = Component => {
@@ -15,6 +16,7 @@ const withAuthentication = Component => {
 	  
 			this.state = {
 			  	authUser: "WAITING",
+				  userData: null,
 			};
 		}
 
@@ -25,6 +27,14 @@ const withAuthentication = Component => {
 					if(authUser) {
 						// User signed in
 						this.setState({ authUser });
+						this.props.firebase.db.collection("users").doc(authUser.uid).get()
+						.then((doc) => {
+							if (doc.exists) {
+								this.setState({
+									userData: doc.data(),
+								});
+							}
+						});
 					} else {
 						// User signed out
 						this.setState({
@@ -44,9 +54,11 @@ const withAuthentication = Component => {
 
 		render() {
 			return (
-				<AuthUserContext.Provider value={this.state.authUser}>
-				  	<Component {...this.props} />
-				</AuthUserContext.Provider>
+				<UserDataContext.Provider value={this.state.userData}>
+					<AuthUserContext.Provider value={this.state.authUser}>
+						<Component {...this.props} />
+					</AuthUserContext.Provider>
+				</UserDataContext.Provider>
 			);
 		}
 	}

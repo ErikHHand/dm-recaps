@@ -56,8 +56,6 @@ class NavbarBase extends Component {
 
     render() {
 
-        console.log(this)
-
         const pathName = this.props.location.pathname;
 
         var navClasses = ["nav-text", "nav-text", "nav-text"]; // [campaigns, account, current/last visited campaign]
