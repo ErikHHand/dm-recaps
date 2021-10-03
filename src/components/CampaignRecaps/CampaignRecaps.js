@@ -130,15 +130,24 @@ class CampaignRecaps extends Component {
 				});
 			}
 
-			// Update info about last visited campaign to backend
-			userRef.update({
-				lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
-				lastCampaignID: campaignID,
-			}).then(() => {
-				console.log("Document successfully updated!");
-			}).catch((error) => {
-				console.log("Error getting document:", error);
-			});
+			// Only update user data if this wasn't the last visited campaign
+			if(this.props.userDataContext.userData.lastCampaignID !== campaignID) {
+				// Update info about last visited campaign locally
+				let userData = this.props.userDataContext.userData;
+				userData.lastCampaignID = campaignID;
+				userData.lastCampaignName = this.state.campaign.name;
+				this.props.userDataContext.updateUserData(userData);
+
+				// Update info about last visited campaign to backend
+				userRef.update({
+					lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
+					lastCampaignID: campaignID,
+				}).then(() => {
+					console.log("Document successfully updated!");
+				}).catch((error) => {
+					console.log("Error getting document:", error);
+				});
+			}
 		}
 	}
 

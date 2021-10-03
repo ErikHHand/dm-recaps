@@ -13,12 +13,21 @@ const withAuthentication = Component => {
 
 		constructor(props) {
 			super(props);
+
+			this.updateUserData = (userData) => {
+				this.setState({
+					userData: userData,
+				})
+			}
 	  
 			this.state = {
 			  	authUser: "WAITING",
-				  userData: null,
+				userData: null,
+				updateUserData: this.updateUserData,
 			};
 		}
+
+		
 
 		// When mounting, add listener that triggers when user signs in or signs out
 		componentDidMount() {
@@ -53,8 +62,14 @@ const withAuthentication = Component => {
 		}
 
 		render() {
+
+			let userDataContext = {
+				userData: this.state.userData,
+				updateUserData: this.state.updateUserData,
+			}
+
 			return (
-				<UserDataContext.Provider value={this.state.userData}>
+				<UserDataContext.Provider value={userDataContext}>
 					<AuthUserContext.Provider value={this.state.authUser}>
 						<Component {...this.props} />
 					</AuthUserContext.Provider>

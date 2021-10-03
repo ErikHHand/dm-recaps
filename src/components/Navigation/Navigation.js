@@ -34,7 +34,7 @@ class Navigation extends Component {
         // Navigation if a user is signed in
         let authUserNav = (
             <UserDataContext.Consumer>
-                {userData => (
+                {userDataContext => (
                     <Router>
                         <Container>
                             <Navbar/>
@@ -51,11 +51,11 @@ class Navigation extends Component {
                                 />
                                 <Route
                                     path = "/campaigns/:id"
-                                    render = { (props) => <CampaignRecaps {...props}/> }
+                                    render = { (props) => <CampaignRecaps {...props} userDataContext={userDataContext}/> }
                                 />
                                 <Route
                                     path = "/account/"
-                                    render = { (props) => <Account {...props} userData={userData}/> }
+                                    render = { (props) => <Account {...props} userDataContext={userDataContext}/> }
                                 />
                                 <Route path='*' component={NotFound} />                        
                             </Switch>
