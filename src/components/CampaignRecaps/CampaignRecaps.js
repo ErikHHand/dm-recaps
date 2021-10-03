@@ -106,7 +106,6 @@ class CampaignRecaps extends Component {
 
 		// Check if user is signed in
 		if(this.props.firebase.auth.currentUser) {
-			console.log(this)
 			// The id for this campaign
 			let campaignID = this.props.location.pathname.substring(11);
 

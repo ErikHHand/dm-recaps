@@ -61,7 +61,6 @@ class NavbarBase extends Component {
         switch(pathName.substring(0,11)) {
             case "/campaigns":
                 activePage = "campaignsPage";
-                console.log(activePage)
                 break;
             case "/campaigns/":
                 activePage = "campaignRecaps";

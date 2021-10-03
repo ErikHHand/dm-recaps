@@ -58,14 +58,23 @@ class RecapTagSelector extends Component {
 	// This is used to handle a change in number of tags caused by 
 	// adding or deleting tags from the campaign
 	componentDidUpdate() {
+
+		let oldKeys = Object.keys(this.state.tags);
+		let newKeys = Object.keys(this.props.campaign.tags);
 		
 		// Check if the number of tags has changed
-		if(Object.keys(this.state.tags).length !== Object.keys(this.props.campaign.tags).length) {
+		if(oldKeys.length !== newKeys.length) {
 			let tags = {};
 			for (let tag in this.props.campaign.tags) {
-				tags[tag] = this.props.recapItem.tags.includes(tag);			
+				tags[tag] = this.props.recapItem.tags.includes(tag) || this.state.tags[tag];			
 			}
 
+			// Add newly created tag from tag selector pop-up
+			let newTag = newKeys.filter(x => !oldKeys.includes(x))[0];
+			if(newTag) {
+				tags[newTag] = true && this.state.showTagOverlay;
+			}
+			
 			this.setState({
 				tags: tags,
 			});
