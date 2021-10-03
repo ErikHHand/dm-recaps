@@ -35,6 +35,7 @@ class ChangeUsername extends Component {
     onSubmit(event) {
 
         event.preventDefault();
+        let changeUsername = this;
 
         const { username, password } = this.state;
 
@@ -50,18 +51,24 @@ class ChangeUsername extends Component {
 
             let usernameRef = this.props.firebase.db.collection("usernames").doc(username);
 
-            // First check is the submitted username is already taken.
+            // First check if the submitted username is already taken.
             usernameRef.get().then((usernameDoc) => {
                 if(!usernameDoc.exists) {
 
                     // Username is not taken
 
+                    // Update locally
+                    let user = this.props.user;
+                    user.username = username;
+                    this.props.handleUser(user);
+
                     let oldUsername = this.props.firebase.auth.currentUser.displayName;
 
                     // Change username in the users collection on Firestore
-                    this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid)
+                    this.props.firebase.db.collection("users").doc(authUser.user.uid)
                     .update({
                         username: username,
+                        usernameLastChanged: firebase.firestore.Timestamp.fromDate(new Date()),
                     }).then(() => {
                         console.log("Document successfully updated!");
                     }).catch((error) => {
@@ -95,8 +102,9 @@ class ChangeUsername extends Component {
                         console.error("Error adding document: ", error);
                     });
 
+                    // Write username in owned campaigns
+                    let campaignsRef = this.props.firebase.db.collection("campaigns");
                     if(this.props.ownedCampaigns) {
-                        let campaignsRef = this.props.firebase.db.collection("campaigns");
                         for(let i = 0; i < this.props.ownedCampaigns.length; i++) {
                             campaignsRef.doc(this.props.ownedCampaigns[i])
                             .update({
@@ -108,7 +116,27 @@ class ChangeUsername extends Component {
                             });
                         }
                     }
+                    
+                    // Write username in campaigns shared with user
+                    campaignsRef.where("usersSharedWithList", "array-contains", authUser.user.uid)
+                    .where("sharingIsOn", "==", true).get().then((sharedWithCampaigns) => {
 
+                        sharedWithCampaigns.forEach((doc) => {
+                            console.log(doc.id)
+                            campaignsRef.doc(doc.id).update({
+                                ["usersSharedWith." + authUser.user.uid]: username
+                            })
+                            .then(() => {
+                                console.log("Document successfully updated!");
+                            }).catch((error) => {
+                                console.log("Error updating document:", error);
+                            });
+                        });
+                    }).catch((error) => {
+                        console.log("Error updating document:", error);
+                    });
+                    changeUsername.props.onHide();
+        
                 } else {
                     // Username is taken
                     this.setState({ 

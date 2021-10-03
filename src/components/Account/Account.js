@@ -27,6 +27,9 @@ class Account extends Component {
             showDeleteAccount: false,
             userData: null,
         };
+
+        // Set the context for "this" for the following function
+		this.handleUser = this.handleUser.bind(this);
     }
 
     componentDidMount() {
@@ -43,21 +46,27 @@ class Account extends Component {
         });
     }
 
+    handleUser(user) {
+        this.setState({
+            userData: user,
+        });
+    }
+
     render() {
 
         let daysSinceUsernameChange = 0;
         let canChangeUsername = true;
         let changeUsernameText = "";
+        let userData = this.state.userData;
 
-        if (this.state.userData) {
-            let milliSinceUsernameChange = Date.now() - this.state.userData.usernameLastChanged.toDate();
+        if (userData) {
+            let milliSinceUsernameChange = Date.now() - userData.usernameLastChanged.toDate();
             daysSinceUsernameChange = Math.ceil(Math.abs(milliSinceUsernameChange) / (1000 * 60 * 60 * 24));
-            console.log(daysSinceUsernameChange);
             canChangeUsername = daysSinceUsernameChange > 60 ? true : false;
             changeUsernameText = canChangeUsername ? "" : " - Can change username in " + (60 - daysSinceUsernameChange) + " days";
         }
 
-        let ownedCampaigns = this.state.userData ? this.state.userData.ownedCampaigns : [];
+        let ownedCampaigns = userData ? userData.ownedCampaigns : [];
 
         return (
             <>
@@ -98,7 +107,7 @@ class Account extends Component {
                     <Col md="9">
                         <h6 className="account-property-text">Username</h6>
                         <p className="account-property-info">
-                            {this.props.firebase.auth.currentUser.displayName + changeUsernameText}
+                            {userData ? userData.username + changeUsernameText : this.props.firebase.auth.currentUser.displayName}
                         </p>
                     </Col>
                     <Col md="3" className="right-align">
@@ -135,11 +144,14 @@ class Account extends Component {
                 <ChangeEmail
                     show = {this.state.showChangeEmail}
 					onHide = {() => this.setState({ showChangeEmail: false })}
+                    handleUser = {this.handleUser}
                 />
                 <ChangeUsername
                     show = {this.state.showChangeUsername}
 					onHide = {() => this.setState({ showChangeUsername: false })}
                     ownedCampaigns = {ownedCampaigns}
+                    user = {userData}
+                    handleUser = {this.handleUser}
                 />
                 <DeleteAccount
                     show = {this.state.showDeleteAccount}
