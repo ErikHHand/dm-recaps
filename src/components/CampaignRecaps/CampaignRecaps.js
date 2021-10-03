@@ -29,6 +29,7 @@ class CampaignRecaps extends Component {
 			tags: {},
 			selectedSession: null,
 			selectedTag: null,
+			updateCampaign: false,
 		};
 
 		// Set the context for "this" for the following functions
@@ -105,6 +106,7 @@ class CampaignRecaps extends Component {
 
 		// Check if user is signed in
 		if(this.props.firebase.auth.currentUser) {
+			console.log(this)
 			// The id for this campaign
 			let campaignID = this.props.location.pathname.substring(11);
 
@@ -114,16 +116,19 @@ class CampaignRecaps extends Component {
 			let userRef = this.props.firebase.db.collection("users")
 			.doc(this.props.firebase.auth.currentUser.uid);
 
-			// Update info about active tab and selected session/tag to backend
-			campaignRef.update({
-				activeTab: this.state.campaign.activeTab, 
-				selectedSession: this.state.campaign.selectedSession ? this.state.campaign.selectedSession : "",
-				selectedTag: this.state.campaign.selectedTag ? this.state.campaign.selectedTag : "",
-			}).then(() => {
-				console.log("Document successfully updated!");
-			}).catch((error) => {
-				console.log("Error getting document:", error);
-			});
+			// Only update selected session, tag and tab on firestore if changes have been made
+			if(this.state.updateCampaign) {
+				// Update info about active tab and selected session/tag to backend
+				campaignRef.update({
+					activeTab: this.state.campaign.activeTab, 
+					selectedSession: this.state.campaign.selectedSession ? this.state.campaign.selectedSession : "",
+					selectedTag: this.state.campaign.selectedTag ? this.state.campaign.selectedTag : "",
+				}).then(() => {
+					console.log("Document successfully updated!");
+				}).catch((error) => {
+					console.log("Error getting document:", error);
+				});
+			}
 
 			// Update info about last visited campaign to backend
 			userRef.update({
@@ -187,6 +192,7 @@ class CampaignRecaps extends Component {
 		campaign.activeTab = tab;
 		this.setState({
 			campaign: campaign,
+			updateCampaign: true,
 		});
 	}
 
@@ -199,7 +205,10 @@ class CampaignRecaps extends Component {
 		} else {
 			campaign.selectedSession = "";
 		}
-		this.setState({ campaign: campaign });
+		this.setState({ 
+			campaign: campaign,
+			updateCampaign: true,
+		});
 	}
 
 	// Handles changing which tag is the selected tag
@@ -208,7 +217,10 @@ class CampaignRecaps extends Component {
 			let campaign = this.state.campaign;
 			campaign.activeTab = "tags";
 			campaign.selectedTag = tagID;
-			this.setState({ campaign: campaign });
+			this.setState({ 
+				campaign: campaign,
+				updateCampaign: true,
+			});
 		}
 	}
 
