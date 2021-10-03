@@ -10,6 +10,21 @@ a {
 	text-decoration: inherit !important; 
 }
 
+a.active {
+	font-weight: bold;
+}
+
+a.nav-link {
+	cursor: pointer;
+	font-size: 18px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: baseline;
+	max-width: 20vw
+}
+
 body  {
 	background-image: url("./images/smaller_sword.jpeg"); 
     -webkit-background-size: cover;
@@ -168,28 +183,16 @@ button:focus {
 	text-align: center;
 }
 
-.column {
-	border: none;
-}
-
-.column:hover {
-	border-bottom: 2px solid gray;
-}
-
-.column-current {
-	border-bottom: 2px solid black;
-}
-
-.column-current:hover {
-	border-bottom: 2px solid black;
-}
-
-.container {
+.container-app {
 	opacity: 0.97;
 	border-radius: 4px;
 	height: 98vh;
 	margin: 0 auto 2vh auto !important;
 	background-color:rgb(233, 236, 239)
+}
+
+.container-nav {
+
 }
 
 .dark-background {
@@ -294,6 +297,30 @@ button:focus {
     align-items: center;
 	justify-content: center;
 	margin-top: 4rem;
+}
+
+.navbar-responsive {
+	width: 100%;
+}
+
+.nav-item {
+	border-bottom: 2px solid rgba(255, 255, 255, 0);
+}
+
+.nav-item:hover {
+	border-bottom: 2px solid rgba(151, 146, 146, 0.835);
+}
+
+.nav-item-active {
+	border-bottom: 2px solid black;
+}
+
+.nav-item-active:hover {
+	border-bottom: 2px solid black;
+}
+
+.nav-link {
+	cursor: pointer;
 }
 
 .nav-text {

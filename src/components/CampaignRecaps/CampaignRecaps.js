@@ -256,6 +256,7 @@ class CampaignRecaps extends Component {
 								<Nav.Link 
 									eventKey="sessions"
 									onSelect={() => this.setActiveTab("sessions")}
+									as="div"
 								>
 									Sessions
 								</Nav.Link>
@@ -264,6 +265,7 @@ class CampaignRecaps extends Component {
 								<Nav.Link 
 									eventKey="tags"
 									onSelect={() => this.setActiveTab("tags")}
+									as="div"
 								>
 									Tags
 								</Nav.Link>
