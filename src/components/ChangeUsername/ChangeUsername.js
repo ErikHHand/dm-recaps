@@ -108,7 +108,7 @@ class ChangeUsername extends Component {
                         for(let i = 0; i < this.props.ownedCampaigns.length; i++) {
                             campaignsRef.doc(this.props.ownedCampaigns[i])
                             .update({
-                                operation: "update-owner-username",
+                                operation: "owner-username-update",
                                 ownerUsername: username,
                             }).then(() => {
                                 console.log("Document successfully updated!");
@@ -125,7 +125,7 @@ class ChangeUsername extends Component {
                         sharedWithCampaigns.forEach((doc) => {
                             console.log(doc.id)
                             campaignsRef.doc(doc.id).update({
-                                operation: "update-shared-username",
+                                operation: "shared-username-update",
                                 ["usersSharedWith." + authUser.user.uid]: username
                             })
                             .then(() => {

@@ -96,7 +96,7 @@ class RecapItem extends Component {
 
 		// Delete from Firestore Recap order
 		this.props.campaignRef.update({
-			operation: "delete-recap",
+			operation: "recap-delete",
 			['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
 			selectedSession: this.props.recapItem.session,
 		}).then(() => {
@@ -155,7 +155,7 @@ class RecapItem extends Component {
 		
 		// Write changes on Firestore
 		this.props.campaignRef.update({
-			operation: "move-recap",
+			operation: "recap-move",
 			['sessions.' + session + '.recapOrder']: recapOrder,
 		})
 		.then(() => {

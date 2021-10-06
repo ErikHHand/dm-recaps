@@ -150,7 +150,7 @@ class TagInfo extends Component {
 		// Hide the tag info window
 		this.props.onHide();
 
-		let operation = this.props.edit ? "edit-tag" : "add-tag";
+		let operation = this.props.edit ? "tag-edit" : "tag-add";
 
 		// Add tag in campaign document
 		this.props.campaignRef.update({

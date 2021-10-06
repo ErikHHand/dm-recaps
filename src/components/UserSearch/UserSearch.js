@@ -88,7 +88,7 @@ class UserSearch extends Component {
             
             // Edit list of users shared with on Firestore
             this.props.campaignsRef.doc(this.props.campaignID).update({
-                operation: "share",
+                operation: "sharing-add-user",
                 userLastHandled: user.userID,
                 ['usersSharedWith.' + user.userID]: user.username, 
                 usersSharedWithList: firebase.firestore.FieldValue.arrayUnion(user.userID),

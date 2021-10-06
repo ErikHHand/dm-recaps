@@ -168,7 +168,7 @@ class SessionInfo extends Component {
 		campaign.sessions[sessionID] = sessionInfo;
 		this.props.handleCampaign(campaign);
 
-		let operation = this.props.edit ? "edit-session" : "add-session";
+		let operation = this.props.edit ? "session-edit" : "session-add";
 
 		// Add session in campaign document
 		this.props.campaignRef.update({

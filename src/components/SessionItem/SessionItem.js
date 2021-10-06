@@ -69,7 +69,7 @@ class SessionItem extends Component {
 
 		// Delete session info on Firestore
 		this.props.campaignRef.update({
-			operation: "delete-session",
+			operation: "session-delete",
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
 			sessionOrder: campaign.sessionOrder,
 			selectedSession: this.props.sessionID,
@@ -82,7 +82,7 @@ class SessionItem extends Component {
 			this.props.handleSelectedSession(latestSession);
 
 			this.props.campaignRef.update({
-				operation: "update-selected-session",
+				operation: "selected-session-update",
 				selectedSession: latestSession,
 			}).then(() => {
 				console.log("Document successfully deleted!");
