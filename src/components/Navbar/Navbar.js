@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 
 import * as ROUTES from '../../constants/routes';
 
-import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 

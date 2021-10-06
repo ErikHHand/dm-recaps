@@ -76,6 +76,7 @@ class TagDescription extends Component {
 
 		// Delete tag info on Firestore
 		this.props.campaignRef.update({
+			operation: "delete-tag",
 			["tags." + this.props.tagID]: firebase.firestore.FieldValue.delete(),
 			selectedTag: this.props.tagID,
 		}).then(() => {
@@ -83,6 +84,7 @@ class TagDescription extends Component {
 
 			// Set selected tag to empty string on Firestore
 			this.props.campaignRef.update({
+				operation: "update-selected-tag",
 				selectedTag: "",
 			}).then(() => {
 				console.log("Document successfully updated!");

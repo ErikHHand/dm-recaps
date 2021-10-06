@@ -119,6 +119,7 @@ class CampaignRecaps extends Component {
 			if(this.state.updateCampaign) {
 				// Update info about active tab and selected session/tag to backend
 				campaignRef.update({
+					operation: "set-active-item",
 					activeTab: this.state.campaign.activeTab, 
 					selectedSession: this.state.campaign.selectedSession ? this.state.campaign.selectedSession : "",
 					selectedTag: this.state.campaign.selectedTag ? this.state.campaign.selectedTag : "",
