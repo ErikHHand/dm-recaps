@@ -94,7 +94,10 @@ class NavbarBase extends Component {
                                 {this.state.lastCampaignName}
                             </Nav.Link>
                         </Nav.Item>
-                        <Col md={2} lg={3} xl={4}>&nbsp;</Col>
+                        <Nav.Item className="nav-air">
+                            <Nav.Link >
+                            </Nav.Link>
+                        </Nav.Item>
                         <Nav.Item className={activePage === "account" ? "nav-item-active" : ""}>
                             <Nav.Link 
                                 eventKey="account" 
@@ -103,7 +106,7 @@ class NavbarBase extends Component {
                                 Account
                             </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
+                        <Nav.Item className="">
                             <Nav.Link onClick={this.props.firebase.doSignOut}>Sign out</Nav.Link>
                         </Nav.Item>
                     </Nav>

@@ -11,7 +11,7 @@ a {
 }
 
 a.active {
-	font-weight: bold;
+	font-weight: 500;
 }
 
 a.nav-link {
@@ -22,7 +22,7 @@ a.nav-link {
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: baseline;
-	max-width: 20vw
+	max-width: 20vw;
 }
 
 body  {
@@ -299,8 +299,8 @@ button:focus {
 	margin-top: 4rem;
 }
 
-.navbar-responsive {
-	width: 100%;
+.nav-air {
+	width: auto!important;
 }
 
 .nav-item {
@@ -321,6 +321,10 @@ button:focus {
 
 .nav-link {
 	cursor: pointer;
+}
+
+.nav-right {
+	float: right;
 }
 
 .nav-text {
