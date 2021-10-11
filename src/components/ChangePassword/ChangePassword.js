@@ -52,9 +52,13 @@ class ChangePassword extends Component {
 			// Write new password to backend, then reset the state
             this.props.firebase.doPasswordUpdate(passwordOne)
             .then(() => {
-                this.setState({ ...INITIAL_STATE });
+                this.setState({ 
+                    ...INITIAL_STATE,
+                    showAlert: true,
+                });
                 console.log("Password updated");
             }).catch(error => {
+                console.log("Error chaning password");
                 this.setState({ 
                     error: error,
                     showAlert: true,
@@ -73,7 +77,8 @@ class ChangePassword extends Component {
 	onChange(event){		
     	this.setState({ 
 			[event.target.name]: event.target.value,
-			showAlert: false, 
+			showAlert: false,
+            error: null,
 		});
   	};
 
@@ -96,6 +101,15 @@ class ChangePassword extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
+                    <Alert
+                        dismissible
+                        show={this.state.showAlert}
+                        onClose={() => this.setState({showAlert: false,})}
+                        variant={this.state.error ? "danger" : "success" }
+                    >
+                        {error && <div>Could not change password: {error.message}</div>}
+                        {!error && <div>Password changed successfully!</div>}
+                    </Alert>
 					<Form onSubmit={this.onSubmit} autoComplete="off">
 						<Form.Group 
                             controlId="formCurrentPassword" 
@@ -146,15 +160,6 @@ class ChangePassword extends Component {
 						<Button variant="success" type="submit" disabled={isInvalid}>
 							Save New Password
 						</Button>
-
-                        <Alert
-                            dismissible
-                            show={this.state.showAlert}
-                            onClose={() => this.setState({showAlert: false,})}
-                            variant="danger"
-                        >
-                            {error && <div>{error.message}</div>}
-                        </Alert>
 					</Form>
 				</Modal.Body>
 			</Modal>

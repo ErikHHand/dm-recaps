@@ -80,7 +80,10 @@ class ChangeUsername extends Component {
                         displayName: username,
                     }).then(() => {
                         console.log("Document successfully updated!");
-                        this.setState({ ...INITIAL_STATE });
+                        this.setState({
+                            ...INITIAL_STATE,
+                            showAlert: true,
+                        });
                     }).catch((error) => {
                         console.log("Error updating displayName:", error);
                     });
@@ -135,7 +138,7 @@ class ChangeUsername extends Component {
                             });
                         });
                     }).catch((error) => {
-                        console.log("Error updating document:", error);
+                        console.log("Error updating username in shared camapiagn:", error);
                     });
                     changeUsername.props.onHide();
         
@@ -146,7 +149,11 @@ class ChangeUsername extends Component {
                     });
                 }
             }).catch((error) => {
-                console.log("Error getting document:", error);
+                console.log("Error getting username document:", error);
+                this.setState({ 
+                    error: error,
+                    showAlert: true,
+                });
             });	
         }).catch(error => {
             console.log("Reauthentication failed");
@@ -184,6 +191,15 @@ class ChangeUsername extends Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
+                    <Alert
+                        dismissible
+                        show={this.state.showAlert}
+                        onClose={() => this.setState({showAlert: false,})}
+                        variant={this.state.error ? "danger" : "success" }
+                    >
+                        {error && <div>Could not change username: {error.message}</div>}
+                        {!error && <div>Username changed successfully!</div>}
+                    </Alert>
 					<Form onSubmit={this.onSubmit} autoComplete="off">
                         <input style={{display: "none"}} type="text" name="googlechromeautofillSUCKS" />
 						<Form.Group 
@@ -215,15 +231,6 @@ class ChangeUsername extends Component {
 						<Button variant="success" type="submit" disabled={isInvalid}>
 							Save New Username
 						</Button>
-
-                        <Alert
-                            dismissible
-                            show={this.state.showAlert}
-                            onClose={() => this.setState({showAlert: false,})}
-                            variant="danger"
-                        >
-                            {error && <div>{error.message}</div>}
-                        </Alert>
 					</Form>
 				</Modal.Body>
 			</Modal>

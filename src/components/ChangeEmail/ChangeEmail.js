@@ -51,9 +51,16 @@ class ChangeEmail extends Component {
 			this.props.firebase.auth.currentUser.updateEmail(email)
 			.then(() => {
 				console.log("Email successfully updated!");
-				this.props.onHide();
+				this.setState({
+					...INITIAL_STATE, 
+					showAlert: true,
+				});
 			}).catch((error) => {
-				console.log("Error getting document:", error);
+				console.log("Error changing email:", error);
+				this.setState({ 
+					error: error,
+					showAlert: true,
+				});
 			});
 		}).catch(error => {
             console.log("Reauthentication failed");
@@ -69,6 +76,7 @@ class ChangeEmail extends Component {
     	this.setState({ 
 			[event.target.name]: event.target.value,
 			showAlert: false, 
+			error: null,
 		});
   	};
 
@@ -92,6 +100,15 @@ class ChangeEmail extends Component {
 				</Modal.Header>
 				<Modal.Body>
 					<Form onSubmit={this.onSubmit} autoComplete="off">
+						<Alert
+							dismissible
+							show={this.state.showAlert}
+							onClose={() => this.setState({showAlert: false,})}
+							variant={this.state.error ? "danger" : "success" }
+						>
+							{error && <div>Could not change email: {error.message}</div>}
+							{!error && <div>Email changed successfully!</div>}
+						</Alert>
                         <input style={{display: "none"}} type="text" name="googlechromeautofillSUCKS" />
 						<Form.Group 
                             controlId="formPasswordForEmailChange" 
@@ -123,15 +140,6 @@ class ChangeEmail extends Component {
 						<Button variant="success" type="submit" disabled={isInvalid}>
 							Save New Email
 						</Button>
-
-                        <Alert
-                            dismissible
-                            show={this.state.showAlert}
-                            onClose={() => this.setState({showAlert: false,})}
-                            variant="danger"
-                        >
-                            {error && <div>{error.message}</div>}
-                        </Alert>
 					</Form>
 				</Modal.Body>
 			</Modal>
