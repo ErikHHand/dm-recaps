@@ -26,10 +26,14 @@ class CampaignsPage extends Component {
 			showCampaignInfo: false,
 			campaignID: null,
 			campaign: {name: "", description: "", world: "", setting: ""},
+			showAlert: false,
+			error: "",
+			errorMessage: "",
 		};
 
-		// Set the context for "this" for the following function
+		// Set the context for "this" for the following functions
 		this.handleCampaigns = this.handleCampaigns.bind(this);
+		this.handleError = this.handleError.bind(this);
 	}
 
 	componentDidMount() {
@@ -67,6 +71,7 @@ class CampaignsPage extends Component {
 
 				// Case when there are no campaigns shared with user
 				console.log("Error getting document:", error);
+				console.log("No campaigns shared with user");
 				let campaigns = {};
 
 				// Add campaigns owned by user to campaigns object
@@ -81,7 +86,11 @@ class CampaignsPage extends Component {
 				});
 			});			
         }).catch((error) => {
-            console.log("Error getting document:", error);
+            console.log("Error getting campaigns:", error);
+			this.handleError(error, "Could not load campaigns")
+			home.setState({
+				status: "ERROR",
+			});
         });
 	}
 
@@ -89,13 +98,22 @@ class CampaignsPage extends Component {
 	handleCampaigns(campaigns) {
 		this.setState({
 			campaigns: campaigns,
-		})
+		});
+	}
+
+	// Handles saving errors to state for displaying
+	handleError(error, errorMessage) {
+		this.setState({
+			error: error,
+			errorMessage: errorMessage,
+			showAlert: true,
+		});
 	}
 
 	render() {
 
 		let campaigns = <></>;;
-		let alert = <></>;;
+		let unverifiedAccountAlert = <></>;;
 
 		let currentUser = this.props.firebase.auth.currentUser;
 		let campaignsRef = this.props.firebase.db.collection("campaigns");
@@ -104,22 +122,24 @@ class CampaignsPage extends Component {
 	
 		// Render an alert depending on whether of not the user has verified the email for this account
 		if(timeSinceAccountCreation < 86400000 || currentUser.emailVerified) {
-			alert = <></>;
+			unverifiedAccountAlert = <></>;
 		} else if (timeSinceAccountCreation < 1209600000) {
-			alert = <Alert variant="info">
-						Remember to verify the email for this account!  &nbsp;
-						<Alert.Link onClick={() => currentUser.sendEmailVerification()}>
-							Send verification email again
-						</Alert.Link>
-					</Alert>
+			unverifiedAccountAlert = 
+				<Alert variant="info">
+					Remember to verify the email for this account!  &nbsp;
+					<Alert.Link onClick={() => currentUser.sendEmailVerification()}>
+						Send verification email again
+					</Alert.Link>
+				</Alert>
 		} else {
-			alert = <Alert variant="danger">
-						WARNING! You have not yet verified the email for this account! 
-						This account could be deleted if it is not verified soon! &nbsp;
-						<Alert.Link onClick={() => currentUser.sendEmailVerification()}>
-							Send verification email again
-						</Alert.Link>
-					</Alert>
+			unverifiedAccountAlert = 
+				<Alert variant="danger">
+					WARNING! You have not yet verified the email for this account! 
+					This account could be deleted if it is not verified soon! &nbsp;
+					<Alert.Link onClick={() => currentUser.sendEmailVerification()}>
+						Send verification email again
+					</Alert.Link>
+				</Alert>
 		}
 
 		switch (this.state.status) {
@@ -141,19 +161,31 @@ class CampaignsPage extends Component {
 						campaigns = {this.state.campaigns}
 						handleCampaigns = {this.handleCampaigns}
 						campaignsRef = {campaignsRef}
+						handleError = {this.handleError}
 					/>
 				);
 				break;
 			default:
-				campaigns = <p>Failed to load data, please reload the page or check your internet connection.</p>
+				campaigns = <></>
 				break;
 		}
 		
-		
 		return (
 			<>
-				<div className="campaign-list remove-scroll-bar">
-					{alert}
+				<Alert
+					dismissible
+					show={this.state.showAlert}
+					onClose={() => this.setState({showAlert: false,})}
+					variant="danger"
+					className="alert-fixed"
+				>
+					{this.state.error && <div>{this.state.errorMessage + ": " + this.state.error.message}</div>}
+				</Alert>
+				<div 
+					className="campaign-list remove-scroll-bar" 
+					style={this.state.showAlert ? {maxHeight: "calc(96.5vh - 126px)"} : {}}
+				>
+					{unverifiedAccountAlert}
 					<div 
 						className="campaign-add-button item-add-button" 
 						onClick={() => this.setState({showCampaignInfo: true})}
@@ -171,6 +203,7 @@ class CampaignsPage extends Component {
 					campaignsRef = {campaignsRef}
 					edit = {false}
 					campaignID = {this.state.campaignID}
+					handleError = {this.handleError}
 				/>
 			</>
 		);

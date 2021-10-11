@@ -156,7 +156,8 @@ class CampaignInfo extends Component {
 				campaigns[docRef.id] = campaign;
 				this.props.handleCampaigns(campaigns);
 			}).catch(error => {
-				console.error("Error writing document: ", error);
+				console.error("Error adding campaign: ", error);
+				this.props.handleError(error, "Could not add campaign");
 			});
 		} else {
 			// Edit campaign
@@ -169,20 +170,20 @@ class CampaignInfo extends Component {
 				setting: this.state.setting,
 			}).then(() => {
 				console.log("Document successfully updated!");
+				// Edit locally
+				let campaign = this.props.campaigns[this.props.campaignID];
+				campaign["name"] = this.state.name;
+				campaign["description"] = this.state.description;
+				campaign["world"] = this.state.world;
+				campaign["setting"] = this.state.setting;
+
+				let campaigns = this.props.campaigns;
+				campaigns[this.props.campaignID] = campaign;
+				this.props.handleCampaigns(campaigns);
 			}).catch((error) => {
-				console.log("Error getting document:", error);
+				console.log("Error editing campaign:", error);
+				this.props.handleError(error, "Could not edit campaign");
 			});
-
-			// Edit locally
-			let campaign = this.props.campaigns[this.props.campaignID];
-			campaign["name"] = this.state.name;
-			campaign["description"] = this.state.description;
-			campaign["world"] = this.state.world;
-			campaign["setting"] = this.state.setting;
-
-			let campaigns = this.props.campaigns;
-			campaigns[this.props.campaignID] = campaign;
-			this.props.handleCampaigns(campaigns);
 		}
 	};
 	  

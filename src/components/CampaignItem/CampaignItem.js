@@ -53,14 +53,14 @@ class CampaignItem extends Component {
 		this.props.campaignsRef.doc(this.props.campaignID).delete()
 		.then(() => {
 			console.log("Document successfully deleted!");
+			// Delete campaign locally
+			let campaigns = this.props.campaigns;
+			delete campaigns[this.props.campaignID];
+			this.props.handleCampaigns(campaigns);
 		}).catch((error) => {
-			console.log("Error deleting document:", error);
+			console.log("Error deleting campaign:", error);
+			this.props.handleError(error, "Could not delete campaign");
 		});
-
-		// Delete campaign locally
-		let campaigns = this.props.campaigns;
-		delete campaigns[this.props.campaignID];
-		this.props.handleCampaigns(campaigns);
 	}
 
 	render() {
@@ -154,6 +154,7 @@ class CampaignItem extends Component {
 					handleCampaigns = {this.props.handleCampaigns}
 					campaignsRef = {this.props.campaignsRef}
 					edit = {true}
+					handleError = {this.props.handleError}
 				/>
 			</>
 		);
