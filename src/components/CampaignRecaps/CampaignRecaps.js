@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import SessionsPage from '../SessionsPage/SessionsPage';
 import TagsPage from '../TagsPage/TagsPage';
 
-import Tab from 'react-bootstrap/Tab'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Nav from 'react-bootstrap/Nav'
+import Tab from 'react-bootstrap/Tab';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
+import Alert from 'react-bootstrap/Alert';
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -30,6 +31,7 @@ class CampaignRecaps extends Component {
 			selectedSession: null,
 			selectedTag: null,
 			updateCampaign: false,
+			showAlert: false,
 		};
 
 		// Set the context for "this" for the following functions
@@ -98,6 +100,10 @@ class CampaignRecaps extends Component {
 				});
 			}).catch((error) => {
 				console.log("Error getting document:", error);
+				this.setState({ 
+					error: error,
+					showAlert: true,
+				});
 			});	
 		});	
 	}
@@ -244,71 +250,81 @@ class CampaignRecaps extends Component {
 		let activeTab = this.state.campaign ? this.state.campaign.activeTab : "sessions";
 
 		return (
-			<Tab.Container activeKey={activeTab} transition={false}>
-				<Row className="tab-nav">
-					<Col className="tab-nav-col">
-						<Nav 
-							variant="tabs" 
-							className="justify-content-center"
-							activeKey={activeTab}
-						>
-							<Nav.Item>
-								<Nav.Link 
-									eventKey="sessions"
-									onSelect={() => this.setActiveTab("sessions")}
-									as="div"
-								>
-									Sessions
-								</Nav.Link>
-							</Nav.Item>
-							<Nav.Item>
-								<Nav.Link 
-									eventKey="tags"
-									onSelect={() => this.setActiveTab("tags")}
-									as="div"
-								>
-									Tags
-								</Nav.Link>
-							</Nav.Item>
-						</Nav>
-					</Col>
-				</Row>
-				
-				<Tab.Content>
-					<Tab.Pane eventKey="sessions">
-						<SessionsPage
-							campaign = {this.state.campaign}
-							sessions = {this.state.sessions}
-							tags = {this.state.tags}
-							handleSessions = {this.handleSessions}
-							handleCampaign = {this.handleCampaign}
-							handleTags = {this.handleTags}
-							campaignRef = {campaignRef}
-							activeTab = {activeTab}
-							selectedSession = {this.state.campaign.selectedSession}
-							handleSelectedSession = {this.handleSelectedSession}
-							handleSelectedTag = {this.handleSelectedTag}
-							status = {this.state.status}
-						/>
-					</Tab.Pane>
-					<Tab.Pane eventKey="tags">
-						<TagsPage
-							campaign = {this.state.campaign}
-							sessions = {this.state.sessions}
-							tags = {this.state.tags}
-							handleCampaign = {this.handleCampaign}
-							handleSessions = {this.handleSessions}
-							handleTags = {this.handleTags}
-							campaignRef = {campaignRef}
-							activeTab = {activeTab}
-							selectedTag = {this.state.campaign.selectedTag}
-							handleSelectedSession = {this.handleSelectedSession}
-							handleSelectedTag = {this.handleSelectedTag}
-							status = {this.state.status}
-						/>
-					</Tab.Pane>
-				</Tab.Content>
-			</Tab.Container>
+			<>
+				<Alert
+					dismissible
+					show={this.state.showAlert}
+					onClose={() => this.setState({showAlert: false,})}
+					variant="danger"
+				>
+					{this.state.error && <div>Error loading campaign: {this.state.error.message}</div>}
+				</Alert>
+				<Tab.Container activeKey={activeTab} transition={false}>
+					<Row className="tab-nav">
+						<Col className="tab-nav-col">
+							<Nav 
+								variant="tabs" 
+								className="justify-content-center"
+								activeKey={activeTab}
+							>
+								<Nav.Item>
+									<Nav.Link 
+										eventKey="sessions"
+										onSelect={() => this.setActiveTab("sessions")}
+										as="div"
+									>
+										Sessions
+									</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link 
+										eventKey="tags"
+										onSelect={() => this.setActiveTab("tags")}
+										as="div"
+									>
+										Tags
+									</Nav.Link>
+								</Nav.Item>
+							</Nav>
+						</Col>
+					</Row>
+					
+					<Tab.Content>
+						<Tab.Pane eventKey="sessions">
+							<SessionsPage
+								campaign = {this.state.campaign}
+								sessions = {this.state.sessions}
+								tags = {this.state.tags}
+								handleSessions = {this.handleSessions}
+								handleCampaign = {this.handleCampaign}
+								handleTags = {this.handleTags}
+								campaignRef = {campaignRef}
+								activeTab = {activeTab}
+								selectedSession = {this.state.campaign.selectedSession}
+								handleSelectedSession = {this.handleSelectedSession}
+								handleSelectedTag = {this.handleSelectedTag}
+								status = {this.state.status}
+							/>
+						</Tab.Pane>
+						<Tab.Pane eventKey="tags">
+							<TagsPage
+								campaign = {this.state.campaign}
+								sessions = {this.state.sessions}
+								tags = {this.state.tags}
+								handleCampaign = {this.handleCampaign}
+								handleSessions = {this.handleSessions}
+								handleTags = {this.handleTags}
+								campaignRef = {campaignRef}
+								activeTab = {activeTab}
+								selectedTag = {this.state.campaign.selectedTag}
+								handleSelectedSession = {this.handleSelectedSession}
+								handleSelectedTag = {this.handleSelectedTag}
+								status = {this.state.status}
+							/>
+						</Tab.Pane>
+					</Tab.Content>
+				</Tab.Container>
+			</>
 		)
 	}
 }
