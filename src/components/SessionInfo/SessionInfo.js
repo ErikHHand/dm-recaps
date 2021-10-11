@@ -87,25 +87,14 @@ class SessionInfo extends Component {
 	// This function saves the session locally and on Firestore
 	addNewSession(sessionInfo) {
 
-		// Create session
-		let session = {
-			recaps: {},
-		};
-
 		// Generate sesion ID
 		let sessionID = this.hashCode(sessionInfo.description).toString();
 
-		let sessions = this.props.sessions;
-
 		// Check if session with this description already exists
-		if(sessions[sessionID]) {
+		if(this.props.sessions[sessionID]) {
 			this.setState({showAlert: true,})
 			return;
 		}
-
-		// Add session locally
-		sessions[sessionID] = session;
-		this.props.handleSessions(sessions);
 
 		// Write session info
 		this.editSessionInfo(sessionID, sessionInfo);
@@ -116,8 +105,6 @@ class SessionInfo extends Component {
 			description: "",
 			date: new Date(),
 		});
-
-		this.props.handleSelectedSession(sessionID);
 	};
 
 	// Triggers when editing a session or just after a new session has been added.
@@ -128,6 +115,8 @@ class SessionInfo extends Component {
 		this.props.onHide();
 
 		let campaign = this.props.campaign;
+		let sessions = this.props.sessions;
+		let sessionOrder = [...campaign.sessionOrder];
 
 		// Write data depending on whether or not this a new 
 		// session or an old session being edited
@@ -138,8 +127,8 @@ class SessionInfo extends Component {
 			sessionInfo.recapOrder = campaign.sessions[sessionID].recapOrder;
 
 			// Remove the session from the session order array
-			let sessionIndex = campaign.sessionOrder.indexOf(sessionID);
-			if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
+			let sessionIndex = sessionOrder.indexOf(sessionID);
+			if (sessionIndex !== -1) sessionOrder.splice(sessionIndex, 1);
 		} else {
 
 			// New session being added
@@ -148,25 +137,21 @@ class SessionInfo extends Component {
 		}
 
 		// Sort session in chronological order and add it to the session order array
-		if(campaign.sessionOrder.length === 0 
-			|| campaign.sessions[campaign.sessionOrder[campaign.sessionOrder.length - 1]].date.toDate() > sessionInfo.date.toDate()) {
+		if(sessionOrder.length === 0 
+			|| campaign.sessions[sessionOrder[sessionOrder.length - 1]].date.toDate() > sessionInfo.date.toDate()) {
 
 			// Session is the first session chronologically
-			campaign.sessionOrder.splice(campaign.sessionOrder.length, 0, sessionID);
+			sessionOrder.splice(sessionOrder.length, 0, sessionID);
 		} else {
-			for(let i = 0; i < campaign.sessionOrder.length; i++) {
-				let session = campaign.sessions[campaign.sessionOrder[i]];
+			for(let i = 0; i < sessionOrder.length; i++) {
+				let session = campaign.sessions[sessionOrder[i]];
 				
 				if(session.date.toDate().getTime() <= sessionInfo.date.toDate().getTime()) {
-					campaign.sessionOrder.splice(i, 0, sessionID);
+					sessionOrder.splice(i, 0, sessionID);
 					break;
 				}
 			}
 		}
-		
-		// Add session locally
-		campaign.sessions[sessionID] = sessionInfo;
-		this.props.handleCampaign(campaign);
 
 		let operation = this.props.edit ? "session-edit" : "session-add";
 
@@ -175,11 +160,23 @@ class SessionInfo extends Component {
 			operation: operation,
 			selectedSession: sessionID,
 			['sessions.' + sessionID]: sessionInfo, 
-			sessionOrder: campaign.sessionOrder,
+			sessionOrder: sessionOrder,
 		}).then(() => {
 			console.log("Document successfully updated!");
+			// Add session data locally
+			campaign.sessions[sessionID] = sessionInfo;
+			campaign.sessionOrder = sessionOrder;
+			this.props.handleCampaign(campaign);
+
+			if(!this.props.edit) {
+				// Add session for recaps locally
+				sessions[sessionID] = {recaps: {}};
+				this.props.handleSessions(sessions);
+				this.props.handleSelectedSession(sessionID);
+			}
 		}).catch((error) => {
-			console.log("Error getting document:", error);
+			console.log("Error writing session:", error);
+			this.props.handleError(error, "Could not save session");
 		});
 	}
 	

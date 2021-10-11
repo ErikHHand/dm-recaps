@@ -34,7 +34,7 @@ class SessionItem extends Component {
     
 		// Delete recaps from tags locally and from recaps collection on Firestore
 		let tags = this.props.tags;
-		let recaps = this.props.sessions[this.props.sessionID].recaps
+		let recaps = this.props.sessions[this.props.sessionID].recaps;
 		let campaign = this.props.campaign;
 
 		for(let recap in recaps) {
@@ -43,54 +43,56 @@ class SessionItem extends Component {
 			recaps[recap].tags.forEach(tag => {
 				delete tags[tag].recaps[recap];
 			});
-
+			
 			// Delete on Firestore
 			this.props.campaignRef.collection("recaps").doc(recap).delete()
 			.then(() => {
-				console.log("Document successfully deleted!");
+				console.log("Recap successfully deleted!");
 			}).catch((error) => {
-				console.log("Error deleting document:", error);
+				console.log("Error deleting recap:", error);
 			});
 		}
 		this.props.handleTags(tags);
 
-		// Delete session recaps locally
-		let sessions = this.props.sessions;
-		delete sessions[this.props.sessionID];
-		this.props.handleSessions(sessions);		
-
-		// Delete session info locally
-		delete campaign.sessions[this.props.sessionID];
-
 		// Delete session from the session order list
-		let sessionIndex = campaign.sessionOrder.indexOf(this.props.sessionID);
-		if (sessionIndex !== -1) campaign.sessionOrder.splice(sessionIndex, 1);
-		this.props.handleCampaign(campaign);
+		let sessionOrder = [...campaign.sessionOrder];
+		let sessionIndex = sessionOrder.indexOf(this.props.sessionID);
+		if (sessionIndex !== -1) sessionOrder.splice(sessionIndex, 1);
 
 		// Delete session info on Firestore
 		this.props.campaignRef.update({
 			operation: "session-delete",
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
-			sessionOrder: campaign.sessionOrder,
+			sessionOrder: sessionOrder,
 			selectedSession: this.props.sessionID,
 		}).then(() => {
-			console.log("Document successfully deleted!");
+			console.log("Session successfully deleted!");
+
+			// Delete session recaps locally
+			let sessions = this.props.sessions;
+			delete sessions[this.props.sessionID];
+			this.props.handleSessions(sessions);		
+
+			// Delete session info locally
+			delete campaign.sessions[this.props.sessionID];
+			campaign.sessionOrder = sessionOrder;
+			this.props.handleCampaign(campaign);
 
 			// Update selected session to the last session chronologically
-			let latestSession = campaign.sessionOrder[campaign.sessionOrder.length - 1] ? 
-				campaign.sessionOrder[campaign.sessionOrder.length - 1] : "";
+			let latestSession = sessionOrder[0] ? sessionOrder[0] : "";
 			this.props.handleSelectedSession(latestSession);
 
 			this.props.campaignRef.update({
 				operation: "selected-session-update",
 				selectedSession: latestSession,
 			}).then(() => {
-				console.log("Document successfully deleted!");
+				console.log("Selected session successfully updated");
 			}).catch((error) => {
-				console.log("Error deleting document:", error);
+				console.log("Error updating selected session:", error);
 			});
 		}).catch((error) => {
-			console.log("Error deleting document:", error);
+			console.log("Error deleting session:", error);
+			this.props.handleError(error, "Could not delete session")
 		});
 	}
 
@@ -151,6 +153,7 @@ class SessionItem extends Component {
 					campaign = {this.props.campaign}
 					handleSessions = {this.props.handleSessions}
 					handleCampaign = {this.props.handleCampaign}
+					handleError = {this.props.handleError}
 					campaignRef = {this.props.campaignRef}
 					edit = {true}
 					session = {session}

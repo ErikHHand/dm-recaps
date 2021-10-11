@@ -32,6 +32,8 @@ class CampaignRecaps extends Component {
 			selectedTag: null,
 			updateCampaign: false,
 			showAlert: false,
+			error: null,
+			errorMessage: "",
 		};
 
 		// Set the context for "this" for the following functions
@@ -42,6 +44,7 @@ class CampaignRecaps extends Component {
 		this.setActiveTab = this.setActiveTab.bind(this);
 		this.handleSelectedSession = this.handleSelectedSession.bind(this);
 		this.handleSelectedTag = this.handleSelectedTag.bind(this);
+		this.handleError = this.handleError.bind(this);
 	}
 
 
@@ -99,11 +102,9 @@ class CampaignRecaps extends Component {
 					selectedTag: campaginDoc.data().selectedTag,
 				});
 			}).catch((error) => {
-				console.log("Error getting document:", error);
-				this.setState({ 
-					error: error,
-					showAlert: true,
-				});
+				console.log("Error getting campaign data:", error);
+				this.handleError(error, "Could not load campaign")
+				this.setState({ status: "ERROR"});
 			});	
 		});	
 	}
@@ -239,6 +240,15 @@ class CampaignRecaps extends Component {
 		}
 	}
 
+	// Handles saving errors to state for displaying
+	handleError(error, errorMessage) {
+		this.setState({
+			error: error,
+			errorMessage: errorMessage,
+			showAlert: true,
+		});
+	}
+
 	render() {
 
 		// The id for this campaign
@@ -257,7 +267,7 @@ class CampaignRecaps extends Component {
 					onClose={() => this.setState({showAlert: false,})}
 					variant="danger"
 				>
-					{this.state.error && <div>Error loading campaign: {this.state.error.message}</div>}
+					{this.state.error && <div>{this.state.errorMessage + ": " + this.state.error.message}</div>}
 				</Alert>
 				<Tab.Container activeKey={activeTab} transition={false}>
 					<Row className="tab-nav">
@@ -289,7 +299,7 @@ class CampaignRecaps extends Component {
 						</Col>
 					</Row>
 					
-					<Tab.Content>
+					<Tab.Content style={this.state.showAlert ? {maxHeight: "calc(96.5vh - 168px)"} : {}}>
 						<Tab.Pane eventKey="sessions">
 							<SessionsPage
 								campaign = {this.state.campaign}
@@ -303,6 +313,7 @@ class CampaignRecaps extends Component {
 								selectedSession = {this.state.campaign.selectedSession}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
+								handleError = {this.handleError}
 								status = {this.state.status}
 							/>
 						</Tab.Pane>
@@ -319,6 +330,7 @@ class CampaignRecaps extends Component {
 								selectedTag = {this.state.campaign.selectedTag}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
+								handleError = {this.handleError}
 								status = {this.state.status}
 							/>
 						</Tab.Pane>

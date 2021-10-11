@@ -27,7 +27,7 @@ class CampaignsPage extends Component {
 			campaignID: null,
 			campaign: {name: "", description: "", world: "", setting: ""},
 			showAlert: false,
-			error: "",
+			error: null,
 			errorMessage: "",
 		};
 
@@ -177,7 +177,6 @@ class CampaignsPage extends Component {
 					show={this.state.showAlert}
 					onClose={() => this.setState({showAlert: false,})}
 					variant="danger"
-					className="alert-fixed"
 				>
 					{this.state.error && <div>{this.state.errorMessage + ": " + this.state.error.message}</div>}
 				</Alert>

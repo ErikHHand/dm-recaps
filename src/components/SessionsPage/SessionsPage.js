@@ -103,6 +103,7 @@ class SessionsPage extends Component {
 							handleTags = {this.props.handleTags}
 							handleCampaign = {this.props.handleCampaign}
 							handleSelectedSession = {this.props.handleSelectedSession}
+							handleError = {this.props.handleError}
 							isSelectedSession = {this.props.selectedSession === sessionID}
 							campaignRef = {this.props.campaignRef}
 							click = {() => this.props.handleSelectedSession(sessionID)}
@@ -193,6 +194,7 @@ class SessionsPage extends Component {
 					handleSessions = {this.props.handleSessions}
 					handleCampaign = {this.props.handleCampaign}
 					handleSelectedSession = {this.props.handleSelectedSession}
+					handleError = {this.props.handleError}
 					campaignRef = {this.props.campaignRef}
 					edit = {false}
 				/>
