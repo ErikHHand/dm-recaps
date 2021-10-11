@@ -8,10 +8,7 @@ import DeleteAccount from '../DeleteAccount/DeleteAccount';
 import { withFirebase } from '../Firebase/Firebase';
 import { withAuthorization } from '../Session/Session';
 
-import Navbar from '../Navbar/Navbar';
-
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
@@ -28,8 +25,11 @@ class Account extends Component {
             showChangeEmail: false,
             showChangeUsername: false,
             showDeleteAccount: false,
-            ownedCampaigns: [],
+            userData: null,
         };
+
+        // Set the context for "this" for the following function
+		this.handleUser = this.handleUser.bind(this);
     }
 
     componentDidMount() {
@@ -38,7 +38,7 @@ class Account extends Component {
         userRef.get().then((doc) => {
             if (doc.exists) {
                 this.setState({
-                    ownedCampaigns: doc.data().ownedCampaigns,
+                    userData: doc.data(),
                 });
             }			
         }).catch((error) => {
@@ -46,11 +46,30 @@ class Account extends Component {
         });
     }
 
+    handleUser(user) {
+        this.setState({
+            userData: user,
+        });
+    }
+
     render() {
 
+        let daysSinceUsernameChange = 0;
+        let canChangeUsername = true;
+        let changeUsernameText = "";
+        let userData = this.state.userData;
+
+        if (userData) {
+            let milliSinceUsernameChange = Date.now() - userData.usernameLastChanged.toDate();
+            daysSinceUsernameChange = Math.ceil(Math.abs(milliSinceUsernameChange) / (1000 * 60 * 60 * 24));
+            canChangeUsername = daysSinceUsernameChange > 60 ? true : false;
+            changeUsernameText = canChangeUsername ? "" : " - Can change username in " + (60 - daysSinceUsernameChange) + " days";
+        }
+
+        let ownedCampaigns = userData ? userData.ownedCampaigns : [];
+
         return (
-            <Container>
-                <Navbar/>
+            <>
                 <Row className="account-page-subtitle border-bottom">
                     <Col>
                         <h5>Account Settings</h5>
@@ -88,11 +107,11 @@ class Account extends Component {
                     <Col md="9">
                         <h6 className="account-property-text">Username</h6>
                         <p className="account-property-info">
-                            {this.props.firebase.auth.currentUser.displayName}
+                            {userData ? userData.username + changeUsernameText : this.props.firebase.auth.currentUser.displayName}
                         </p>
                     </Col>
                     <Col md="3" className="right-align">
-                        <Button variant="outline-info" onClick={() => this.setState({showChangeUsername: true})}>
+                        <Button variant="outline-info" onClick={() => this.setState({showChangeUsername: true})} disabled={!canChangeUsername}>
                             Change
                         </Button>
                     </Col>
@@ -125,17 +144,20 @@ class Account extends Component {
                 <ChangeEmail
                     show = {this.state.showChangeEmail}
 					onHide = {() => this.setState({ showChangeEmail: false })}
+                    handleUser = {this.handleUser}
                 />
                 <ChangeUsername
                     show = {this.state.showChangeUsername}
 					onHide = {() => this.setState({ showChangeUsername: false })}
-                    ownedCampaigns = {this.state.ownedCampaigns}
+                    ownedCampaigns = {ownedCampaigns}
+                    user = {userData}
+                    handleUser = {this.handleUser}
                 />
                 <DeleteAccount
                     show = {this.state.showDeleteAccount}
 					onHide = {() => this.setState({ showDeleteAccount: false })}
                 />
-            </Container>
+            </>
         );
     }
 }

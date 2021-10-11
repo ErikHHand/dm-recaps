@@ -63,23 +63,14 @@ class RecapNew extends Component {
 
 			campaign.sessions[sessionID].recapOrder.push(recapRef.id);
 
-			// Create recaps array
-			let recaps = [];
-
-			for (let session in campaign.sessions) {
-				recaps = recaps.concat(campaign.sessions[session].recapOrder)
-			}
-
-			campaign.recaps = recaps;
 			this.props.handleCampaign(campaign);
 
 			// Add to Firestore recap order array
 			this.props.campaignRef.update({
+				operation: "recap-add",
 				['sessions.' + sessionID + '.recapOrder']: firebase.firestore.FieldValue.arrayUnion(recapRef.id),
 				selectedSession: sessionID,
-				recaps: recaps,
-			})
-			.then(() => {
+			}).then(() => {
 				console.log("Document successfully updated!");
 			}).catch((error) => {
 				console.log("Error getting document:", error);

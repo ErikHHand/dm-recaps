@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 
 import SessionsPage from '../SessionsPage/SessionsPage';
 import TagsPage from '../TagsPage/TagsPage';
-import Navbar from '../Navbar/Navbar';
 
-import Tab from 'react-bootstrap/Tab'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Nav from 'react-bootstrap/Nav'
+import Tab from 'react-bootstrap/Tab';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
+import Alert from 'react-bootstrap/Alert';
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -31,6 +30,8 @@ class CampaignRecaps extends Component {
 			tags: {},
 			selectedSession: null,
 			selectedTag: null,
+			updateCampaign: false,
+			showAlert: false,
 		};
 
 		// Set the context for "this" for the following functions
@@ -99,6 +100,10 @@ class CampaignRecaps extends Component {
 				});
 			}).catch((error) => {
 				console.log("Error getting document:", error);
+				this.setState({ 
+					error: error,
+					showAlert: true,
+				});
 			});	
 		});	
 	}
@@ -116,26 +121,39 @@ class CampaignRecaps extends Component {
 			let userRef = this.props.firebase.db.collection("users")
 			.doc(this.props.firebase.auth.currentUser.uid);
 
-			// Update info about active tab and selected session/tag to backend
-			campaignRef.update({
-				activeTab: this.state.campaign.activeTab, 
-				selectedSession: this.state.selectedSession ? this.state.selectedSession : "",
-				selectedTag: this.state.selectedTag ? this.state.selectedTag : "",
-			}).then(() => {
-				console.log("Document successfully updated!");
-			}).catch((error) => {
-				console.log("Error getting document:", error);
-			});
+			// Only update selected session, tag and tab on firestore if changes have been made
+			if(this.state.updateCampaign) {
+				// Update info about active tab and selected session/tag to backend
+				campaignRef.update({
+					operation: "active-item-set",
+					activeTab: this.state.campaign.activeTab, 
+					selectedSession: this.state.campaign.selectedSession ? this.state.campaign.selectedSession : "",
+					selectedTag: this.state.campaign.selectedTag ? this.state.campaign.selectedTag : "",
+				}).then(() => {
+					console.log("Document successfully updated!");
+				}).catch((error) => {
+					console.log("Error getting document:", error);
+				});
+			}
 
-			// Update info about last visited campaign to backend
-			userRef.update({
-				lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
-				lastCampaignID: campaignID,
-			}).then(() => {
-				console.log("Document successfully updated!");
-			}).catch((error) => {
-				console.log("Error getting document:", error);
-			});
+			// Only update user data if this wasn't the last visited campaign
+			if(this.props.userDataContext.userData.lastCampaignID !== campaignID) {
+				// Update info about last visited campaign locally
+				let userData = this.props.userDataContext.userData;
+				userData.lastCampaignID = campaignID;
+				userData.lastCampaignName = this.state.campaign.name;
+				this.props.userDataContext.updateUserData(userData);
+
+				// Update info about last visited campaign to backend
+				userRef.update({
+					lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
+					lastCampaignID: campaignID,
+				}).then(() => {
+					console.log("Document successfully updated!");
+				}).catch((error) => {
+					console.log("Error getting document:", error);
+				});
+			}
 		}
 	}
 
@@ -189,23 +207,23 @@ class CampaignRecaps extends Component {
 		campaign.activeTab = tab;
 		this.setState({
 			campaign: campaign,
+			updateCampaign: true,
 		});
 	}
 
 	// Handles changing which session is the selected session
 	handleSelectedSession(sessionID) {
+		let campaign = this.state.campaign;
 		if(sessionID === "" || this.state.sessions[sessionID]) {
-			let campaign = this.state.campaign;
 			campaign.activeTab = "sessions";
-			this.setState({
-				selectedSession: sessionID,
-				campaign: campaign,
-			});
+			campaign.selectedSession = sessionID;
 		} else {
-			this.setState({
-				selectedSession: "",
-			});
+			campaign.selectedSession = "";
 		}
+		this.setState({ 
+			campaign: campaign,
+			updateCampaign: true,
+		});
 	}
 
 	// Handles changing which tag is the selected tag
@@ -213,9 +231,10 @@ class CampaignRecaps extends Component {
 		if(tagID === null || this.state.tags[tagID]) {
 			let campaign = this.state.campaign;
 			campaign.activeTab = "tags";
-			this.setState({
-				selectedTag: tagID,
+			campaign.selectedTag = tagID;
+			this.setState({ 
 				campaign: campaign,
+				updateCampaign: true,
 			});
 		}
 	}
@@ -228,14 +247,18 @@ class CampaignRecaps extends Component {
 		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
-		let title = this.state.campaign ? this.state.campaign.name : "";
 		let activeTab = this.state.campaign ? this.state.campaign.activeTab : "sessions";
 
 		return (
-			<Container>
-				<Navbar
-					title = {title}
-				/>
+			<>
+				<Alert
+					dismissible
+					show={this.state.showAlert}
+					onClose={() => this.setState({showAlert: false,})}
+					variant="danger"
+				>
+					{this.state.error && <div>Error loading campaign: {this.state.error.message}</div>}
+				</Alert>
 				<Tab.Container activeKey={activeTab} transition={false}>
 					<Row className="tab-nav">
 						<Col className="tab-nav-col">
@@ -248,6 +271,7 @@ class CampaignRecaps extends Component {
 									<Nav.Link 
 										eventKey="sessions"
 										onSelect={() => this.setActiveTab("sessions")}
+										as="div"
 									>
 										Sessions
 									</Nav.Link>
@@ -256,6 +280,7 @@ class CampaignRecaps extends Component {
 									<Nav.Link 
 										eventKey="tags"
 										onSelect={() => this.setActiveTab("tags")}
+										as="div"
 									>
 										Tags
 									</Nav.Link>
@@ -275,7 +300,7 @@ class CampaignRecaps extends Component {
 								handleTags = {this.handleTags}
 								campaignRef = {campaignRef}
 								activeTab = {activeTab}
-								selectedSession = {this.state.selectedSession}
+								selectedSession = {this.state.campaign.selectedSession}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
 								status = {this.state.status}
@@ -291,7 +316,7 @@ class CampaignRecaps extends Component {
 								handleTags = {this.handleTags}
 								campaignRef = {campaignRef}
 								activeTab = {activeTab}
-								selectedTag = {this.state.selectedTag}
+								selectedTag = {this.state.campaign.selectedTag}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
 								status = {this.state.status}
@@ -299,7 +324,7 @@ class CampaignRecaps extends Component {
 						</Tab.Pane>
 					</Tab.Content>
 				</Tab.Container>
-			</Container>
+			</>
 		)
 	}
 }

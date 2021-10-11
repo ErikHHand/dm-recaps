@@ -39,12 +39,6 @@ class SessionItem extends Component {
 
 		for(let recap in recaps) {
 
-			// Delete in recaps list in campaign
-			let index = campaign.recaps.indexOf(recap);
-			if (index > -1) {
-				campaign.recaps.splice(index, 1);
-			}
-
 			// Delete from tags locally
 			recaps[recap].tags.forEach(tag => {
 				delete tags[tag].recaps[recap];
@@ -75,10 +69,10 @@ class SessionItem extends Component {
 
 		// Delete session info on Firestore
 		this.props.campaignRef.update({
+			operation: "session-delete",
 			["sessions." + this.props.sessionID]: firebase.firestore.FieldValue.delete(),
 			sessionOrder: campaign.sessionOrder,
 			selectedSession: this.props.sessionID,
-			recaps: campaign.recaps
 		}).then(() => {
 			console.log("Document successfully deleted!");
 
@@ -88,6 +82,7 @@ class SessionItem extends Component {
 			this.props.handleSelectedSession(latestSession);
 
 			this.props.campaignRef.update({
+				operation: "selected-session-update",
 				selectedSession: latestSession,
 			}).then(() => {
 				console.log("Document successfully deleted!");

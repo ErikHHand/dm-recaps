@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch} from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import Landing from '../Landing/Landing';
 import NotFound from '../NotFound/NotFound';
 import CampaignsPage from '../CampaignsPage/CampaignsPage';
 import CampaignRecaps from '../CampaignRecaps/CampaignRecaps';
 import Account from '../Account/Account';
+import Navbar from '../Navbar/Navbar';
 
 import { AuthUserContext } from '../Session/Session';
+import { UserDataContext } from '../Session/Session';
+
+import Container from 'react-bootstrap/Container'
 
 /*
     This class holds the main navigation of the app.
@@ -28,32 +33,41 @@ class Navigation extends Component {
 
         // Navigation if a user is signed in
         let authUserNav = (
-            <Switch>
-                <Route
-                    exact path="/"
-                    render={ () => (
-                        <Redirect to="/campaigns"/>
-                        )}
-                />
-                <Route
-                    exact path="/campaigns"
-                    render = { (props) => <CampaignsPage {...props}/> }
-                />
-                <Route
-                    path = "/campaigns/:id"
-                    render = { (props) => <CampaignRecaps {...props}/> }
-                />
-                <Route
-                    path = "/account/"
-                    render = { (props) => <Account {...props}/> }
-                />
-                <Route path='*' component={NotFound} />                        
-            </Switch>
+            <UserDataContext.Consumer>
+                {userDataContext => (
+                    <Router>
+                        <Container className="container-app">
+                            <Navbar/>
+                            <Switch>
+                                <Route
+                                    exact path="/"
+                                    render={ () => (
+                                        <Redirect to="/campaigns"/>
+                                        )}
+                                />
+                                <Route
+                                    exact path="/campaigns"
+                                    render = { (props) => <CampaignsPage {...props}/> }
+                                />
+                                <Route
+                                    path = "/campaigns/:id"
+                                    render = { (props) => <CampaignRecaps {...props} userDataContext={userDataContext}/> }
+                                />
+                                <Route
+                                    path = "/account/"
+                                    render = { (props) => <Account {...props} userDataContext={userDataContext}/> }
+                                />
+                                <Route path='*' component={NotFound} />                        
+                            </Switch>
+                        </Container>
+                    </Router>
+                )}
+            </UserDataContext.Consumer>
         );
 
         return (
-            <AuthUserContext.Consumer>{
-                authUser => {
+            <AuthUserContext.Consumer>
+                {authUser => {
                     // Wait for login response before rendering any components
                     switch(authUser){
                         case "WAITING":
@@ -63,8 +77,8 @@ class Navigation extends Component {
                         default:
                             return authUserNav;
                     }
-                }
-            }</AuthUserContext.Consumer>
+                }}
+            </AuthUserContext.Consumer>
         );
     }
 }

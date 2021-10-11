@@ -126,12 +126,12 @@ class CampaignInfo extends Component {
 			// Add Campaign
 			// Create campaign info
 			let campaign = {
+				operation: "campaign-create",
 				activeTab: "sessions",
 				description: this.state.description,
 				name: this.state.name,
 				world: this.state.world,
 				setting: this.state.setting,
-				recaps: [],
 				sessionOrder: [],
 				sessions: {},
 				selectedSession: "",
@@ -162,6 +162,7 @@ class CampaignInfo extends Component {
 			// Edit campaign
 			// Edit campaign document on Firestore
 			this.props.campaignsRef.doc(this.props.campaignID).update({
+				operation: "campaign-info-update",
 				description: this.state.description,
 				name: this.state.name,
 				world: this.state.world,

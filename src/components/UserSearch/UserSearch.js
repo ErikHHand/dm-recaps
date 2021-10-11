@@ -85,9 +85,10 @@ class UserSearch extends Component {
             campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
             campaigns[this.props.campaignID].usersSharedWithList.push(user.userID);
             this.props.handleCampaigns(campaigns);
-
+            
             // Edit list of users shared with on Firestore
             this.props.campaignsRef.doc(this.props.campaignID).update({
+                operation: "sharing-add-user",
                 userLastHandled: user.userID,
                 ['usersSharedWith.' + user.userID]: user.username, 
                 usersSharedWithList: firebase.firestore.FieldValue.arrayUnion(user.userID),
@@ -96,6 +97,16 @@ class UserSearch extends Component {
             }).catch((error) => {
                 console.log("Error getting document:", error);
             });
+            /*
+            // Write shared campaign to user document on Firestore
+            this.props.firebase.db.collection("users").doc(user.userID).update({
+                campaignLastHandled: this.props.campaignID,
+                campaignsSharedWith: firebase.firestore.FieldValue.arrayUnion(this.props.campaignID),
+            }).then(() => {
+                console.log("Document successfully updated!");
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });*/
         }
     }
 
@@ -145,7 +156,7 @@ class UserSearch extends Component {
                     show={this.state.showAlreadyAddedAlert}
                     onClose={() => this.setState({showAlreadyAddedAlert: false})}
                     variant="info"
-                    className="alert-error"
+                    className="alert-custom"
                 >
                     {this.state.searchResult ? this.state.searchResult.username : ""} already has access to this campaign!
                 </Alert>
@@ -154,7 +165,7 @@ class UserSearch extends Component {
                     show={this.state.showMaxUserAlert}
                     onClose={() => this.setState({showMaxUserAlert: false})}
                     variant="danger"
-                    className="alert-error"
+                    className="alert-custom"
                 >
                     A maximum of {USERSHAREMAX + 1} people already have access to this camapign!
                 </Alert>

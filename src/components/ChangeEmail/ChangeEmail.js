@@ -14,9 +14,9 @@ const INITIAL_STATE = {
 };
 
 /*
-	Change Password component
+	Change Email component
 */
-class ChangePassword extends Component {
+class ChangeEmail extends Component {
 
 	constructor(props) {
 		super(props);
@@ -51,6 +51,7 @@ class ChangePassword extends Component {
 			this.props.firebase.auth.currentUser.updateEmail(email)
 			.then(() => {
 				console.log("Email successfully updated!");
+				this.props.onHide();
 			}).catch((error) => {
 				console.log("Error getting document:", error);
 			});
@@ -138,4 +139,4 @@ class ChangePassword extends Component {
 	}
 }
 
-export default withFirebase(ChangePassword);
+export default withFirebase(ChangeEmail);

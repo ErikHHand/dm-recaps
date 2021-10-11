@@ -92,18 +92,14 @@ class RecapItem extends Component {
 		let indexRecapOrder = campaign.sessions[session].recapOrder.indexOf(this.props.recapID);
 		if (indexRecapOrder !== -1) campaign.sessions[session].recapOrder.splice(indexRecapOrder, 1);
 
-		let indexRecaps = campaign.recaps.indexOf(this.props.recapID);
-		if (indexRecaps !== -1) campaign.recaps.splice(indexRecaps, 1);
-
 		this.props.handleCampaign(campaign);
 
 		// Delete from Firestore Recap order
 		this.props.campaignRef.update({
+			operation: "recap-delete",
 			['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
 			selectedSession: this.props.recapItem.session,
-			recaps: campaign.recaps,
-		})
-		.then(() => {
+		}).then(() => {
 			console.log("Document successfully updated!");
 		}).catch((error) => {
 			console.log("Error getting document:", error);
@@ -159,7 +155,9 @@ class RecapItem extends Component {
 		
 		// Write changes on Firestore
 		this.props.campaignRef.update({
+			operation: "recap-move",
 			['sessions.' + session + '.recapOrder']: recapOrder,
+			selectedSession: session,
 		})
 		.then(() => {
 			console.log("Document successfully updated!");

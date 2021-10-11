@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
 
 import AuthUserContext from './context';
+import UserDataContext from './userDataContext';
 import { withFirebase } from '../Firebase/Firebase';
 
 const withAuthentication = Component => {
@@ -12,11 +13,21 @@ const withAuthentication = Component => {
 
 		constructor(props) {
 			super(props);
+
+			this.updateUserData = (userData) => {
+				this.setState({
+					userData: userData,
+				})
+			}
 	  
 			this.state = {
 			  	authUser: "WAITING",
+				userData: null,
+				updateUserData: this.updateUserData,
 			};
 		}
+
+		
 
 		// When mounting, add listener that triggers when user signs in or signs out
 		componentDidMount() {
@@ -25,10 +36,21 @@ const withAuthentication = Component => {
 					if(authUser) {
 						// User signed in
 						this.setState({ authUser });
+						this.props.firebase.db.collection("users").doc(authUser.uid).get()
+						.then((doc) => {
+							if (doc.exists) {
+								this.setState({
+									userData: doc.data(),
+								});
+							}
+						});
 					} else {
 						// User signed out
-						this.setState({ authUser: null });
-						this.props.history.push(ROUTES.LANDING);
+						this.setState({
+							authUser: null
+						}, () => {
+							this.props.history.push(ROUTES.LANDING);
+						});
 					}
 				}
 			);
@@ -40,10 +62,18 @@ const withAuthentication = Component => {
 		}
 
 		render() {
+
+			let userDataContext = {
+				userData: this.state.userData,
+				updateUserData: this.state.updateUserData,
+			}
+
 			return (
-				<AuthUserContext.Provider value={this.state.authUser}>
-				  	<Component {...this.props} />
-				</AuthUserContext.Provider>
+				<UserDataContext.Provider value={userDataContext}>
+					<AuthUserContext.Provider value={this.state.authUser}>
+						<Component {...this.props} />
+					</AuthUserContext.Provider>
+				</UserDataContext.Provider>
 			);
 		}
 	}

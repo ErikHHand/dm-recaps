@@ -60,6 +60,7 @@ class CampaignSharing extends Component {
 
        // Change campaign sharing status on Firestore
         this.props.campaignsRef.doc(this.props.campaignID).update({
+			operation: "sharing-change-status",
             sharingIsOn: campaignSharingStatus,
         }).then(() => {
             console.log("Document successfully updated!");
@@ -78,8 +79,9 @@ class CampaignSharing extends Component {
 		if (index > -1) {campaigns[this.props.campaignID].usersSharedWithList.splice(index, 1);}
         this.props.handleCampaigns(campaigns);
 
-       // Revoke access on Firestore
+       // Remove user from campaign document on Firestore 
         this.props.campaignsRef.doc(this.props.campaignID).update({
+			operation: "sharing-remove-user",
 			userLastHandled: userID,
             ["usersSharedWith." + userID]: firebase.firestore.FieldValue.delete(),
 			usersSharedWithList: firebase.firestore.FieldValue.arrayRemove(userID)
