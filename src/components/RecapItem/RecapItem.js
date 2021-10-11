@@ -157,6 +157,7 @@ class RecapItem extends Component {
 		this.props.campaignRef.update({
 			operation: "recap-move",
 			['sessions.' + session + '.recapOrder']: recapOrder,
+			selectedSession: session,
 		})
 		.then(() => {
 			console.log("Document successfully updated!");
