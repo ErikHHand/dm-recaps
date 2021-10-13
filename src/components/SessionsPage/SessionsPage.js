@@ -79,6 +79,7 @@ class SessionsPage extends Component {
 						campaign = {this.props.campaign}
 						handleSessions = {this.props.handleSessions}
 						handleCampaign = {this.props.handleCampaign}
+						handleError = {this.props.handleError}
 						campaignRef = {this.props.campaignRef}
 					/>
 
@@ -141,6 +142,7 @@ class SessionsPage extends Component {
 							handleTags = {this.props.handleTags}
 							handleSelectedSession = {this.props.handleSelectedSession}
 							handleSelectedTag = {this.props.handleSelectedTag}
+							handleError = {this.props.handleError}
 							campaignRef = {this.props.campaignRef}
 						/>
 					);

@@ -60,6 +60,7 @@ class RecapNew extends Component {
 
 			// Add locally to recap order array
 			let campaign = this.props.campaign;
+			let recapOrder = [...campaign.sessions[sessionID].recapOrder];
 
 			campaign.sessions[sessionID].recapOrder.push(recapRef.id);
 
@@ -74,10 +75,18 @@ class RecapNew extends Component {
 				console.log("Document successfully updated!");
 			}).catch((error) => {
 				console.log("Error getting document:", error);
+				this.props.handleError(error, "Error occurred when trying to save recap");
+
+				// Restore local data
+				campaign.sessions[sessionID].recapOrder = recapOrder;
+				this.props.handleCampaign(campaign);
+				delete sessions[sessionID].recaps[recapRef.id];
+				this.props.handleSessions(sessions);
 			});
 			console.log("Document successfully updated!");
 		}).catch((error) => {
 			console.log("Error getting document:", error);
+			this.props.handleError(error, "Could not save recap");
 		});
 	};
 

@@ -196,11 +196,13 @@ class TagsPage extends Component {
 							campaign = {this.props.campaign}
 							sessions = {this.props.sessions}
 							tags = {this.props.tags}
+							selectedTag = {this.props.selectedTag}
 							handleCampaign = {this.props.handleCampaign}
 							handleSessions = {this.props.handleSessions}
 							handleTags = {this.props.handleTags}
 							handleSelectedSession = {this.props.handleSelectedSession}
 							handleSelectedTag = {this.props.handleSelectedTag}
+							handleError = {this.props.handleError}
 							campaignRef = {this.props.campaignRef}
 						/>
 					);
