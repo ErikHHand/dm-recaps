@@ -59,7 +59,7 @@ class Account extends Component {
         let changeUsernameText = "";
         let userData = this.state.userData;
 
-        if (userData) {
+        if (userData && userData.usernameLastChanged) {
             let milliSinceUsernameChange = Date.now() - userData.usernameLastChanged.toDate();
             daysSinceUsernameChange = Math.ceil(Math.abs(milliSinceUsernameChange) / (1000 * 60 * 60 * 24));
             canChangeUsername = daysSinceUsernameChange > 60 ? true : false;

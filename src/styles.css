@@ -79,6 +79,10 @@ button:focus {
   margin-top: 0.5rem;
 }
 
+.alert-margin-top {
+	margin-top: 1rem;
+}
+
 .App {
 	height: 100vh;
 }
@@ -189,10 +193,6 @@ button:focus {
 	height: 98vh;
 	margin: 0 auto 2vh auto !important;
 	background-color:rgb(233, 236, 239)
-}
-
-.container-nav {
-
 }
 
 .dark-background {
@@ -431,10 +431,6 @@ button:focus {
 .remove-scroll-bar {
 	-ms-overflow-style: none;
 	scrollbar-width: none; /* Firefox 64 */
-}
-
-.reset-email-alert {
-	margin-top: 1rem;
 }
 
 .right-align {

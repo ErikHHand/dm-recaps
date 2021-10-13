@@ -8,6 +8,7 @@ import * as ROUTES from '../../constants/routes';
 import { Form, Button } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
 
 const INITIAL_STATE = {
 	username: '',
@@ -25,7 +26,10 @@ class SignUpFormBase extends Component {
   	constructor(props) {
 		super(props);
 		
-		this.state = { ...INITIAL_STATE };
+		this.state = { 
+			...INITIAL_STATE,
+			showError: false,
+		};
 
 		// Set the context for "this" for the following functions
 		this.onChange = this.onChange.bind(this);
@@ -51,8 +55,9 @@ class SignUpFormBase extends Component {
 					// Add the user to the users collection
 					this.props.firebase.db.collection("users").doc(authUser.user.uid).set({
 						username: username,
-						campaignLastHandled: "",
-						campaignsSharedWith: [],
+						lastCampaignID: "",
+						lastCampaignName: "",
+						ownedCampaigns: [],
 					}).then(
 						console.log("Document written with ID: ", authUser.user.uid)
 					).catch((error) => {
@@ -83,22 +88,34 @@ class SignUpFormBase extends Component {
 					this.setState({ ...INITIAL_STATE });
 					this.props.history.push(ROUTES.HOME);
 				}).catch(error => {
-					this.setState({ error });
+					console.log("Error creating account:", error);
+					this.setState({ 
+						error: error,
+						showError: true,
+					});
 				});
 			} else {
 				this.setState({ 
-					error: {message: "Username is not available. Please choose a different username."}, 
+					error: {message: "Username is not available. Please choose a different username."},
+					showError: true,
 				});
 			}
 		}).catch((error) => {
-			console.log("Error getting document:", error);
+			console.log("Error creating account:", error);
+			this.setState({ 
+				error: error,
+				showError: true,
+			});
 		});	
 		event.preventDefault();
 	}
 
 	// Triggers when editing a field in the sign up window
 	onChange(event) {
-		this.setState({ [event.target.name]: event.target.value });
+		this.setState({ 
+			[event.target.name]: event.target.value,
+			showError: false,
+		});
 	};
 
 	render() {
@@ -179,7 +196,15 @@ class SignUpFormBase extends Component {
 							</Button>
 						</Col>
 					</Row>
-					{error && <p>{error.message}</p>}
+					<Alert
+						className="alert-margin-top"
+						variant="danger" 
+						show={this.state.showError} 
+						onClose={() => this.setState({showError: false})} 
+						dismissible
+					>
+						{error && <p>{error.message}</p>}
+					</Alert>
 				</Form>
 			</>
 		);
