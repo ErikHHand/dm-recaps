@@ -457,11 +457,11 @@ button:focus {
 	margin: 0.2rem 0.35rem;
 	cursor: pointer;
 	border-width: 1px;
-	border: solid rgb(230, 230, 230);
+	border: solid rgb(230, 230, 230, 0);
 }
 
 .select-badge:hover {
-	border: solid rgb(94, 94, 94);
+	border: solid rgb(94, 94, 94) !important;
 }
 
 .select-border {
