@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase';
 
 /*
 	This component holds the pop-up window for editing campaign info,
@@ -150,11 +151,20 @@ class CampaignInfo extends Component {
 			// Add to Firestore, which will generate an id, then add localy using the id
 			this.props.campaignsRef.add(campaign)
 			.then((docRef) => {
-				console.log("Document successfully written! DocRef: ", docRef);
+				console.log("Campaign successfully added! DocRef: ", docRef);
 
 				// Add locally
 				campaigns[docRef.id] = campaign;
 				this.props.handleCampaigns(campaigns);
+
+				// Add campaign to owned campaigns list on user document
+				this.props.firebase.db.collection("users").doc(campaign.ownerID).update({
+					ownedCampaigns: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+				}).then(() => {
+					console.log("Campaign successfully added to user document!");
+				}).catch((error) => {
+					console.log("Error adding campaign to user document:", error);
+				});
 			}).catch(error => {
 				console.error("Error adding campaign: ", error);
 				this.props.handleError(error, "Could not add campaign");
@@ -169,7 +179,7 @@ class CampaignInfo extends Component {
 				world: this.state.world,
 				setting: this.state.setting,
 			}).then(() => {
-				console.log("Document successfully updated!");
+				console.log("Campaign successfully updated!");
 				// Edit locally
 				let campaign = this.props.campaigns[this.props.campaignID];
 				campaign["name"] = this.state.name;
