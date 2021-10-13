@@ -395,7 +395,7 @@ button:focus {
 	margin: 0 0.1rem;
 	cursor: pointer;
 	border-width: 1px;
-	border: solid rgb(230, 230, 230);
+	border: solid rgba(255, 255, 255, 0);
 	max-width: 20rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -556,7 +556,7 @@ button:focus {
 }
 
 .tag-item-selected {
-	border: 5px solid rgba(0, 0, 0, 0);
+	border: 5px solid rgb(56, 56, 56);
 }
 
 .tag-list-column {
@@ -565,6 +565,8 @@ button:focus {
 
 .tag-not-selected {
 	opacity: 0.5;
+	border: solid rgb(230, 230, 230) !important;
+	color: black !important;
 }
 
 .tag-selector {
@@ -578,7 +580,7 @@ button:focus {
 	margin-bottom: 0.1rem;
 	cursor: pointer;
 	border-width: 1px;
-	border: solid rgb(230, 230, 230);
+	border: solid rgb(56, 56, 56);
 	max-width: 100%;
 	white-space: nowrap;
   	overflow: hidden;
@@ -586,7 +588,7 @@ button:focus {
 }
 
 .tag-selector-tag:hover {
-	border: solid rgb(94, 94, 94);
+	border: solid rgb(94, 94, 94) !important;
 }
 
 .tag-selector-tag-field {
