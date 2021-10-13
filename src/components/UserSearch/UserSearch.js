@@ -78,13 +78,8 @@ class UserSearch extends Component {
             // Trigers if a campaign is shared with the maximum amount of allowed users
             this.setState({showMaxUserAlert: true});
         } else {
-
-            // Edit list of users shared with locally
             let campaigns = this.props.campaigns;
             let user = this.state.searchResult;
-            campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
-            campaigns[this.props.campaignID].usersSharedWithList.push(user.userID);
-            this.props.handleCampaigns(campaigns);
             
             // Edit list of users shared with on Firestore
             this.props.campaignsRef.doc(this.props.campaignID).update({
@@ -93,9 +88,15 @@ class UserSearch extends Component {
                 ['usersSharedWith.' + user.userID]: user.username, 
                 usersSharedWithList: firebase.firestore.FieldValue.arrayUnion(user.userID),
             }).then(() => {
-                console.log("Document successfully updated!");
+                console.log("Campaign successfully shared!");
+
+                // Edit list of users shared with locally
+                campaigns[this.props.campaignID].usersSharedWith[user.userID] = user.username;
+                campaigns[this.props.campaignID].usersSharedWithList.push(user.userID);
+                this.props.handleCampaigns(campaigns);
             }).catch((error) => {
-                console.log("Error getting document:", error);
+                console.log("Error sharing campaign:", error);
+                this.props.handleError(error, "Could not share campaign");
             });
             /*
             // Write shared campaign to user document on Firestore

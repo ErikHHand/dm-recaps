@@ -113,6 +113,7 @@ class CampaignItem extends Component {
 									campaigns = {this.props.campaigns}
 									handleCampaigns = {this.props.handleCampaigns}
 									campaignsRef = {this.props.campaignsRef}
+									handleError = {this.props.handleError}
 								/>
 							</Col>
 							<Col md="10" className="text-muted">
