@@ -253,6 +253,7 @@ class TagsPage extends Component {
 									handleCampaign = {this.props.handleCampaign}
 									handleSelectedTag = {this.props.handleSelectedTag}
 									handleFilteredTags = {this.handleFilteredTags}
+									handleError = {this.props.handleError}
 									campaignRef = {this.props.campaignRef}
 								/> : null}
 						</div>
@@ -276,8 +277,10 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					campaignRef = {this.props.campaignRef}
 					edit = {false}
+					selectTag = {true}
 					tagID = {null}
 					handleSelectedTag = {this.props.handleSelectedTag}
+					handleError = {this.props.handleError}
 				/>
 			</>
 		)

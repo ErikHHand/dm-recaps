@@ -162,7 +162,7 @@ class SessionInfo extends Component {
 			['sessions.' + sessionID]: sessionInfo, 
 			sessionOrder: sessionOrder,
 		}).then(() => {
-			console.log("Document successfully updated!");
+			console.log("Session successfully updated!");
 			// Add session data locally
 			campaign.sessions[sessionID] = sessionInfo;
 			campaign.sessionOrder = sessionOrder;

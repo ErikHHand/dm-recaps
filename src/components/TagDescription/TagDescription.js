@@ -51,28 +51,13 @@ class TagDescription extends Component {
 			// Update recap in recaps collection on Firestore
 			this.props.campaignRef.collection("recaps").doc(recapID).update(recapItem)
 			.then(() => {
-				console.log("Document successfully updated!");
+				console.log("Recap successfully updated!");
 			}).catch((error) => {
-				console.log("Error deleting document:", error);
+				console.log("Error updating recap:", error);
 			});
 		}
 
 		this.props.handleSessions(sessions);
-
-		// Delete tag with recaps locally
-		delete tags[this.props.tagID];
-		this.props.handleTags(tags);
-
-		// Delete tag info locally
-		let campaign = this.props.campaign;
-		delete campaign.tags[this.props.tagID];
-		this.props.handleCampaign(campaign);
-
-		// Delete tag from filtered Tags array
-		let filteredTags = this.props.filteredTags;
-		let index = filteredTags.indexOf(this.props.tagID);
-		if(index !== -1) filteredTags.splice(index, 1);
-		this.props.handleFilteredTags(filteredTags);
 
 		// Delete tag info on Firestore
 		this.props.campaignRef.update({
@@ -80,19 +65,35 @@ class TagDescription extends Component {
 			["tags." + this.props.tagID]: firebase.firestore.FieldValue.delete(),
 			selectedTag: this.props.tagID,
 		}).then(() => {
-			console.log("Document successfully deleted!");
+			console.log("Tag successfully deleted!");
+
+			// Delete tag from filtered Tags array
+			let filteredTags = this.props.filteredTags;
+			let index = filteredTags.indexOf(this.props.tagID);
+			if(index !== -1) filteredTags.splice(index, 1);
+			this.props.handleFilteredTags(filteredTags);
+
+			// Delete tag info locally
+			let campaign = this.props.campaign;
+			delete campaign.tags[this.props.tagID];
+			this.props.handleCampaign(campaign);
+
+			// Delete tag with recaps locally
+			delete tags[this.props.tagID];
+			this.props.handleTags(tags);
 
 			// Set selected tag to empty string on Firestore
 			this.props.campaignRef.update({
 				operation: "selected-tag-update",
 				selectedTag: "",
 			}).then(() => {
-				console.log("Document successfully updated!");
+				console.log("Successfully updated selected tag!");
 			}).catch((error) => {
-				console.log("Error deleting document:", error);
+				console.log("Error updating selected tag:", error);
 			});
 		}).catch((error) => {
-			console.log("Error deleting document:", error);
+			console.log("Error deleting tag:", error);
+			this.props.handleError(error, "Could not delete tag")
 		});
 	}
 
@@ -142,6 +143,7 @@ class TagDescription extends Component {
 					tagID = {this.props.tagID}
 					tag = {this.props.tag}
 					handleSelectedTag = {this.props.handleSelectedTag}
+					handleError = {this.props.handleError}
 				/>
 			</>
 		);
