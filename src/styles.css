@@ -547,9 +547,9 @@ button:focus {
 .tag-item {
 	width: 100%;
 	font-size: 18px !important;
-	margin: 0.04rem 0.35rem;
+	margin: 0.2rem 0.35rem;
 	cursor: pointer;
-	border: 5px solid rgba(235, 235, 235, 1);
+	border: 5px solid rgba(235, 235, 235, 0);
 	white-space: nowrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
@@ -565,7 +565,7 @@ button:focus {
 
 .tag-not-selected {
 	opacity: 0.5;
-	border: solid rgb(230, 230, 230) !important;
+	border: solid rgba(230, 230, 230, 0) !important;
 	color: black !important;
 }
 
