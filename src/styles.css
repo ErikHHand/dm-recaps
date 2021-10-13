@@ -555,6 +555,10 @@ button:focus {
   	text-overflow: ellipsis;
 }
 
+.tag-item:hover {
+	border: 5px solid rgb(94, 94, 94) !important;
+}
+
 .tag-item-selected {
 	border: 5px solid rgb(56, 56, 56);
 }
