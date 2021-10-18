@@ -98,7 +98,14 @@ class RecapNew extends Component {
 		}).catch((error) => {
 			console.log("Error updating recap order:", error);
 			if(attempted) {
+				console.log("Deleting recap from recaps collection");
 				this.props.handleError(error, "Error occurred when trying to save recap");
+				this.props.campaignRef.collection("recaps").doc(recapID).delete()
+				.then(() => {
+					console.log("Recap successfully deleted!");
+				}).catch((error) => {
+					console.log("ERROR DELETING RECAP:", error);
+				});
 			} else {
 				console.log("Reading and reattempting");
 				this.props.loadCampaign(
