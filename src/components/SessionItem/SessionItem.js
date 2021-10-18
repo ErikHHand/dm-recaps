@@ -30,29 +30,31 @@ class SessionItem extends Component {
 	}
 
 	// Triggers when deleting a session
-	deleteSession() {
+	deleteSession(attempted) {
     
 		// Delete recaps from tags locally and from recaps collection on Firestore
 		let tags = this.props.tags;
 		let recaps = this.props.sessions[this.props.sessionID].recaps;
 		let campaign = this.props.campaign;
 
-		for(let recap in recaps) {
+		if(!attempted) {
+			for(let recap in recaps) {
 
-			// Delete from tags locally
-			recaps[recap].tags.forEach(tag => {
-				delete tags[tag].recaps[recap];
-			});
-			
-			// Delete on Firestore
-			this.props.campaignRef.collection("recaps").doc(recap).delete()
-			.then(() => {
-				console.log("Recap successfully deleted!");
-			}).catch((error) => {
-				console.log("Error deleting recap:", error);
-			});
+				// Delete from tags locally
+				recaps[recap].tags.forEach(tag => {
+					delete tags[tag].recaps[recap];
+				});
+				
+				// Delete on Firestore
+				this.props.campaignRef.collection("recaps").doc(recap).delete()
+				.then(() => {
+					console.log("Recap successfully deleted!");
+				}).catch((error) => {
+					console.log("Error deleting recap:", error);
+				});
+			}
+			this.props.handleTags(tags);
 		}
-		this.props.handleTags(tags);
 
 		// Delete session from the session order list
 		let sessionOrder = [...campaign.sessionOrder];
@@ -92,7 +94,14 @@ class SessionItem extends Component {
 			});
 		}).catch((error) => {
 			console.log("Error deleting session:", error);
-			this.props.handleError(error, "Could not delete session")
+			if(attempted) {
+				this.props.handleError(error, "Could not delete session")
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.deleteSession(true)}
+				);
+			}
 		});
 	}
 
@@ -132,7 +141,7 @@ class SessionItem extends Component {
 										this.state.showIcons ?
 										<ItemMenu
 											edit = {() => this.setState({ showSessionInfo: true})}
-											delete = {this.deleteSession}
+											delete = {() => this.deleteSession(false)}
 											deleteText = {deleteText}
 										/> :
 										<div></div>
@@ -158,6 +167,7 @@ class SessionItem extends Component {
 					edit = {true}
 					session = {session}
 					sessionID = {this.props.sessionID}
+					loadCampaign = {this.props.loadCampaign}
 				/>
 			</>
 		);

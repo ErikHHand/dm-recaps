@@ -77,7 +77,7 @@ class SessionInfo extends Component {
 
 		// If editing, only writing to the session field in the campaign object
 		if(this.props.edit) {
-			this.editSessionInfo(this.props.sessionID, sessionInfo);
+			this.editSessionInfo(false, this.props.sessionID, sessionInfo);
 		} else {
 			this.addNewSession(sessionInfo);
 		}
@@ -97,7 +97,7 @@ class SessionInfo extends Component {
 		}
 
 		// Write session info
-		this.editSessionInfo(sessionID, sessionInfo);
+		this.editSessionInfo(false, sessionID, sessionInfo);
 
 		// Reset the state
 		this.setState({
@@ -109,7 +109,7 @@ class SessionInfo extends Component {
 
 	// Triggers when editing a session or just after a new session has been added.
 	// This function saves the session info locally and on Firestore
-	editSessionInfo(sessionID, sessionInfo) {
+	editSessionInfo(attempted, sessionID, sessionInfo) {
 
 		// Hide the session info window
 		this.props.onHide();
@@ -176,7 +176,14 @@ class SessionInfo extends Component {
 			}
 		}).catch((error) => {
 			console.log("Error writing session:", error);
-			this.props.handleError(error, "Could not save session");
+			if(attempted) {
+				this.props.handleError(error, "Could not save session");
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.editSessionInfo(true, sessionID, sessionInfo)}
+				);
+			}
 		});
 	}
 	
