@@ -204,6 +204,7 @@ class TagsPage extends Component {
 							handleSelectedTag = {this.props.handleSelectedTag}
 							handleError = {this.props.handleError}
 							campaignRef = {this.props.campaignRef}
+							loadCampaign = {this.props.loadCampaign}
 						/>
 					);
 				}

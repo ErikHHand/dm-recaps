@@ -92,7 +92,7 @@ class RecapItem extends Component {
 	}
 	
 	// Function for deleting a recap item
-	deleteRecap() {
+	deleteRecap(attempted) {
 
 		let session = this.props.recapItem.session;
 
@@ -152,7 +152,15 @@ class RecapItem extends Component {
 			});
 		}).catch((error) => {
 			console.log("Error deleting recap from recap order list:", error);
-			this.props.handleError(error, "Could not delete recap");
+			if(attempted) {
+				this.props.handleError(error, "Could not delete recap");;
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.deleteRecap(true)}
+				);
+			}
+			
 		});
 	}
 
@@ -254,7 +262,7 @@ class RecapItem extends Component {
 								this.state.showIcons ?
 								<ItemMenu
 									edit = {this.editRecap}
-									delete = {this.deleteRecap}
+									delete = {() => this.deleteRecap(false)}
 									deleteText = {deleteText}
 								/> :
 								<></>
