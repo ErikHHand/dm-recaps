@@ -132,6 +132,8 @@ class CampaignInfo extends Component {
 				description: this.state.description,
 				name: this.state.name,
 				world: this.state.world,
+				recapID: "",
+				recapOrder: [],
 				setting: this.state.setting,
 				sessionOrder: [],
 				sessions: {},

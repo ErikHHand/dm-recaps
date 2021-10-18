@@ -44,51 +44,69 @@ class RecapNew extends Component {
 		this.setState({
 			text: "",
 		});
-		
+
+		this.writeToRecaps(false, recap);
+	};
+
+	writeToRecaps(attempted, recap) {
+
 		// Add to Firestore Recaps collection
 		this.props.campaignRef.collection("recaps").add(recap)
 		.then((recapRef) => {
+			console.log("Recap successfully written!");
+			this.writeToCampaign(false, recapRef.id, recap);
+		}).catch((error) => {
+			console.log("Error writing recap:", error);
+			if(attempted) {
+				this.props.handleError(error, "Could not save recap");
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.writeToRecaps(true, recap)}
+				);
+			}
+		});
+	}
+
+	writeToCampaign(attempted, recapID, recap) {
+
+		let sessions = this.props.sessions;
+		let sessionID = this.props.session;
+		let session = sessions[sessionID];
+		let campaign = this.props.campaign;
+		let recapOrder = [...campaign.sessions[sessionID].recapOrder];
+		recapOrder.push(recapID);
+
+		// Add to Firestore recap order array
+		this.props.campaignRef.update({
+			operation: "recap-add",
+			recapID: recapID,
+			recapOrder: recapOrder,
+			['sessions.' + sessionID + '.recapOrder']: firebase.firestore.FieldValue.arrayUnion(recapID),
+			selectedSession: sessionID,
+		}).then(() => {
+			console.log("Recap order successfully updated!");
 
 			// Add locally
-			let sessions = this.props.sessions;
-			let sessionID = this.props.session;
-			let session = sessions[sessionID];			
-
-			session.recaps[recapRef.id] = recap;
+			session.recaps[recapID] = recap;
 			sessions[sessionID] = session;
 			this.props.handleSessions(sessions);
 
 			// Add locally to recap order array
-			let campaign = this.props.campaign;
-			let recapOrder = [...campaign.sessions[sessionID].recapOrder];
-
-			campaign.sessions[sessionID].recapOrder.push(recapRef.id);
-
+			campaign.sessions[sessionID].recapOrder = recapOrder;
 			this.props.handleCampaign(campaign);
-
-			// Add to Firestore recap order array
-			this.props.campaignRef.update({
-				operation: "recap-add",
-				['sessions.' + sessionID + '.recapOrder']: firebase.firestore.FieldValue.arrayUnion(recapRef.id),
-				selectedSession: sessionID,
-			}).then(() => {
-				console.log("Document successfully updated!");
-			}).catch((error) => {
-				console.log("Error getting document:", error);
-				this.props.handleError(error, "Error occurred when trying to save recap");
-
-				// Restore local data
-				campaign.sessions[sessionID].recapOrder = recapOrder;
-				this.props.handleCampaign(campaign);
-				delete sessions[sessionID].recaps[recapRef.id];
-				this.props.handleSessions(sessions);
-			});
-			console.log("Document successfully updated!");
 		}).catch((error) => {
-			console.log("Error getting document:", error);
-			this.props.handleError(error, "Could not save recap");
+			console.log("Error updating recap order:", error);
+			if(attempted) {
+				this.props.handleError(error, "Error occurred when trying to save recap");
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.writeToCampaign(true, recapID, recap)}
+				);
+			}
 		});
-	};
+	}
 
 	render() {
 

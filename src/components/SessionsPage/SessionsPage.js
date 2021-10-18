@@ -81,6 +81,7 @@ class SessionsPage extends Component {
 						handleCampaign = {this.props.handleCampaign}
 						handleError = {this.props.handleError}
 						campaignRef = {this.props.campaignRef}
+						loadCampaign = {this.props.loadCampaign}
 					/>
 
 				if(!this.props.campaign.sessions) {

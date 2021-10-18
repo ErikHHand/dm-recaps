@@ -106,6 +106,8 @@ class RecapItem extends Component {
 		// Delete from Firestore Recap order
 		this.props.campaignRef.update({
 			operation: "recap-delete",
+			recapID: this.props.recapID,
+			recapOrder: recapOrder,
 			['sessions.' + session + '.recapOrder']: recapOrder,
 			selectedSession: this.props.recapItem.session,
 		}).then(() => {
@@ -138,6 +140,8 @@ class RecapItem extends Component {
 				this.props.handleError(error, "Could not delete recap");
 				this.props.campaignRef.update({
 					operation: "recap-add",
+					recapID: this.props.recapID,
+					recapOrder: campaign.sessions[session].recapOrder,
 					['sessions.' + session + '.recapOrder']: campaign.sessions[session].recapOrder,
 					selectedSession: this.props.recapItem.session,
 				}).then(() => {
@@ -158,6 +162,14 @@ class RecapItem extends Component {
 		let recapOrder = [...this.props.campaign.sessions[session].recapOrder];
 		let index = recapOrder.indexOf(this.props.recapID);
 
+		// Move the recap item in the desired direction
+		recapOrder.splice(index, 1);
+		if(direction === "up") {
+			recapOrder.splice(index - 1, 0, this.props.recapID)
+		} else if (direction === "down") {
+			recapOrder.splice(index + 1, 0, this.props.recapID)
+		}
+
 		// Check that it is possible to move item in that direction
 		if((direction === "up" && index === 0) ||
 			(direction === "down" && index === recapOrder.length - 1)) {
@@ -167,26 +179,20 @@ class RecapItem extends Component {
 		// Write changes on Firestore
 		this.props.campaignRef.update({
 			operation: "recap-move",
+			recapID: this.props.recapID,
+			recapOrder: recapOrder,
 			['sessions.' + session + '.recapOrder']: recapOrder,
 			selectedSession: session,
 		})
 		.then(() => {
-			console.log("Document successfully updated!");
-
-			// Move the recap item in the desired direction
-			recapOrder.splice(index, 1);
-			if(direction === "up") {
-				recapOrder.splice(index - 1, 0, this.props.recapID)
-			} else if (direction === "down") {
-				recapOrder.splice(index + 1, 0, this.props.recapID)
-			}
+			console.log("Recap order successfully changed");
 
 			// Write changes locally
 			let campaign = this.props.campaign;
 			campaign.sessions[session].recapOrder = recapOrder;
 			this.props.handleCampaign(campaign);
 		}).catch((error) => {
-			console.log("Error getting document:", error);
+			console.log("Error changing recap order:", error);
 			this.props.handleError(error, "Could not move recap")
 		});
 	}
