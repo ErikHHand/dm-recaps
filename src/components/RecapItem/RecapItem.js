@@ -208,7 +208,6 @@ class RecapItem extends Component {
 					() => {this.changeRecapOrder(true, direction)}
 				);
 			}
-			
 		});
 	}
 
