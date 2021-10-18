@@ -153,19 +153,18 @@ class RecapItem extends Component {
 		}).catch((error) => {
 			console.log("Error deleting recap from recap order list:", error);
 			if(attempted) {
-				this.props.handleError(error, "Could not delete recap");;
+				this.props.handleError(error, "Could not delete recap");
 			} else {
 				console.log("Reading and reattempting");
 				this.props.loadCampaign(
 					() => {this.deleteRecap(true)}
 				);
 			}
-			
 		});
 	}
 
 	// Moves the recap item up or down one place in the recap order array
-	changeRecapOrder(direction) {
+	changeRecapOrder(attempted, direction) {
 		let session = this.props.recapItem.session;
 		let recapOrder = [...this.props.campaign.sessions[session].recapOrder];
 		let index = recapOrder.indexOf(this.props.recapID);
@@ -201,7 +200,15 @@ class RecapItem extends Component {
 			this.props.handleCampaign(campaign);
 		}).catch((error) => {
 			console.log("Error changing recap order:", error);
-			this.props.handleError(error, "Could not move recap")
+			if(attempted) {
+				this.props.handleError(error, "Could not move recap");
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.changeRecapOrder(true, direction)}
+				);
+			}
+			
 		});
 	}
 
@@ -235,12 +242,12 @@ class RecapItem extends Component {
 								<div>
 									<FontAwesomeIcon 
 										icon={faArrowUp} 
-										onClick={() => this.changeRecapOrder("up")}
+										onClick={() => this.changeRecapOrder(false, "up")}
 										className={"arrow icon"}
 									/>
 									<FontAwesomeIcon 
 										icon={faArrowDown} 
-										onClick={() => this.changeRecapOrder("down")}
+										onClick={() => this.changeRecapOrder(false, "down")}
 										className={"arrow icon"}
 									/>
 								</div> :	
