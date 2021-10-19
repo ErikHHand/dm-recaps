@@ -108,6 +108,7 @@ class TagsPage extends Component {
 		let tagFilter;
 		let tagItems;
 		let recapItems;
+		console.log(this.props.selectedTag);
 
 		switch (this.props.status) {
 			case "LOADING":
@@ -147,13 +148,15 @@ class TagsPage extends Component {
 					}
 					
 					// Render tag items
-					tagItems = sortedKeys.map((tag)=>
+					tagItems = sortedKeys.map((tag) =>
+						this.props.campaign.tags[tag] ?
 						<TagItem 
 							key = {tag}
 							tagInfo = {this.props.campaign.tags[tag]}
 							isSelected = {this.props.selectedTag === tag}
 							handleClick = {() => this.props.handleSelectedTag(tag)}
-						/>
+						/> :
+						<></>
 					);
 				}
 
@@ -256,6 +259,7 @@ class TagsPage extends Component {
 									handleFilteredTags = {this.handleFilteredTags}
 									handleError = {this.props.handleError}
 									campaignRef = {this.props.campaignRef}
+									loadCampaign = {this.props.loadCampaign}
 								/> : null}
 						</div>
 						<SortArrowsColumn
@@ -282,6 +286,7 @@ class TagsPage extends Component {
 					tagID = {null}
 					handleSelectedTag = {this.props.handleSelectedTag}
 					handleError = {this.props.handleError}
+					loadCampaign = {this.props.loadCampaign}
 				/>
 			</>
 		)

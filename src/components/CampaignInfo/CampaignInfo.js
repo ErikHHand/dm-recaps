@@ -146,6 +146,7 @@ class CampaignInfo extends Component {
 				selectedTag: "",
 				ownerUsername: this.props.firebase.auth.currentUser.displayName,
 				ownerID: this.props.firebase.auth.currentUser.uid,
+				numberOfKeys: 0,
 			};
 
 			let campaigns = this.props.campaigns;		

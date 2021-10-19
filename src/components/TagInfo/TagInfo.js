@@ -95,7 +95,7 @@ class TagInfo extends Component {
 		};
 
 		if(this.props.edit) {
-			this.editTagInfo(this.props.tagID, tagInfo);
+			this.editTagInfo(false, this.props.tagID, tagInfo);
 		} else {
 			this.addNewTag(tagInfo);
 		}
@@ -116,7 +116,7 @@ class TagInfo extends Component {
 		}
 
 		// Write tag info
-		this.editTagInfo(tagID, tagInfo);
+		this.editTagInfo(false, tagID, tagInfo);
 
 		// Reset the state
 		this.setState({
@@ -129,7 +129,7 @@ class TagInfo extends Component {
 
 	// Triggers when editing a tag or just after a new tag has been added.
 	// This function saves the tag data locally and on Firestore
-	editTagInfo(tagID, tagInfo) {
+	editTagInfo(attempted, tagID, tagInfo) {
 
 		let tags = this.props.tags;
 		let campaign = this.props.campaign;
@@ -138,19 +138,21 @@ class TagInfo extends Component {
 		this.props.onHide();
 
 		let operation = this.props.edit ? "tag-edit" : "tag-add";
+		let numberOfKeys = this.props.edit ? Object.keys(campaign.tags).length : Object.keys(campaign.tags).length + 1;
 
 		// Add tag in campaign document
 		this.props.campaignRef.update({
 			operation: operation,
 			selectedTag: tagID,
 			['tags.' + tagID]: tagInfo,
+			numberOfKeys: numberOfKeys,
 		}).then(() => {
 			console.log("Tag successfully updated!");
 
 			campaign.tags[tagID] = tagInfo;
 			this.props.handleCampaign(campaign);
-
-			if(!this.props.edit) {
+			
+			if(!this.props.edit && !tags[tagID]) {
 				// Add tag locally
 				tags[tagID] = { recaps: {}};
 				this.props.handleTags(tags);
@@ -162,7 +164,15 @@ class TagInfo extends Component {
 			}
 		}).catch((error) => {
 			console.log("Error writing tag:", error);
-			this.props.handleError(error, "Could not save tag")
+			
+			if(attempted) {
+				this.props.handleError(error, "Could not save tag")
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.editTagInfo(true, tagID, tagInfo)}
+				);
+			}
 		});
 	}
 	
