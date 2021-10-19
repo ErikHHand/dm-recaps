@@ -23,12 +23,19 @@ class RecapEditText extends Component {
 
 	componentWillUnmount() {
 		if(this.state.text !== this.props.recapItem.text) {
+
+			let oldRecap = {
+				tags: this.props.recapItem.tags,
+				text: (" " + this.props.recapItem.text).slice(1),
+				session: this.props.recapItem.session,
+			};
+	
 			// Save text in recapItem locally
 			let recap = this.props.recapItem;
 			recap.text = this.state.text;
 			
 			// Call function in parent to add changes to Firestore
-			this.props.writeRecap(recap, recap.tags);
+			this.props.writeRecap(recap, oldRecap);
 		}
 	}
 	
@@ -41,12 +48,18 @@ class RecapEditText extends Component {
 	onSubmit(event) {
 		event.preventDefault();
 
+		let oldRecap = {
+			tags: this.props.recapItem.tags,
+			text: (" " + this.props.recapItem.text).slice(1),
+			session: this.props.recapItem.session,
+		};
+
 		// Save text in recapItem locally
 		let recap = this.props.recapItem;
 		recap.text = this.state.text;
 		
 		// Call function in parent to add changes to Firestore
-		this.props.writeRecap(recap, recap.tags);
+		this.props.writeRecap(recap, oldRecap);
 	};
 
 	render() {

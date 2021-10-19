@@ -28,6 +28,7 @@ class SignInFormBase extends Component {
 			...INITIAL_STATE,
 			signIn: true,
 			showConfirm: false,
+			showError: false,
 		};
 		
 		// Set the context for "this" for the following functions
@@ -40,22 +41,27 @@ class SignInFormBase extends Component {
 	// Triggers when a users submits credidentials for signing in
   	onSubmit(event) {
     	const { email, password } = this.state;
+		event.preventDefault();
 
     	this.props.firebase.doSignInWithEmailAndPassword(email, password)
 		.then(() => {
 			this.setState({ ...INITIAL_STATE });
 			this.props.history.push(ROUTES.HOME);
 		}).catch(error => {
-			this.setState({ error });
+			this.setState({ 
+				error: error,
+				showError: true,
+			});
 		});
-
-    	event.preventDefault();
   	};
 
 	// Triggers when editing a field in the sign in window 
 	// or in the forgot password window
   	onChange(event) {
-    	this.setState({ [event.target.name]: event.target.value });
+    	this.setState({ 
+			[event.target.name]: event.target.value,
+			showError: false,
+		});
   	};
 
 	// Triggers when submitting email in the forgot password window
@@ -67,6 +73,11 @@ class SignInFormBase extends Component {
 			this.setState({ 
 				...INITIAL_STATE,
 				showConfirm: true,
+			});
+		}).catch(error => {
+			this.setState({ 
+				error: error,
+				showError: true,
 			});
 		});
 		event.preventDefault();
@@ -119,7 +130,6 @@ class SignInFormBase extends Component {
 							<Button variant="success" type="submit" disabled={isSignInInvalid}>
 								Sign in
 							</Button>
-							<p className="forgot-password-text" onClick={this.changeWindow}>Forgot password?</p>
 						</Col>
 						<Col className="right-align">
 							<Button variant="primary" onClick={this.props.changeWindow}>
@@ -127,7 +137,15 @@ class SignInFormBase extends Component {
 							</Button>
 						</Col>
 					</Row>
-					{error && <p>{error.message}</p>}
+					<p className="forgot-password-text" onClick={this.changeWindow}>Forgot password?</p>
+					<Alert 
+						variant="danger" 
+						show={this.state.showError} 
+						onClose={() => this.setState({showError: false})} 
+						dismissible
+					>
+						{error && <p>{error.message}</p>}
+					</Alert>
 				</Form>
 			</>;
 
@@ -159,7 +177,7 @@ class SignInFormBase extends Component {
 						</Col>
 					</Row>
 					<Alert 
-						className="reset-email-alert"
+						className="alert-margin-top"
 						variant="info" 
 						show={this.state.showConfirm} 
 						onClose={() => this.setState({showConfirm: false})} 
@@ -167,7 +185,15 @@ class SignInFormBase extends Component {
 					>
 						Email with instructions on how to reset password has been sent to your email.
 					</Alert>
-					{error && <p>{error.message}</p>}
+					<Alert
+						className="alert-margin-top"
+						variant="danger" 
+						show={this.state.showError} 
+						onClose={() => this.setState({showError: false})} 
+						dismissible
+					>
+						{error && <p>{error.message}</p>}
+					</Alert>
 				</Form>
 			</>;
 

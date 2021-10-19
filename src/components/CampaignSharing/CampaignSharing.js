@@ -53,31 +53,25 @@ class CampaignSharing extends Component {
 	// Handles turning campaign sharing on or off 
     changeCampaignSharingStatus(campaignSharingStatus) {
 
-        // Change campaign sharing status locally
-        let campaigns = this.props.campaigns;
-        campaigns[this.props.campaignID].sharingIsOn = campaignSharingStatus;
-        this.props.handleCampaigns(campaigns);
-
        // Change campaign sharing status on Firestore
         this.props.campaignsRef.doc(this.props.campaignID).update({
 			operation: "sharing-change-status",
             sharingIsOn: campaignSharingStatus,
         }).then(() => {
-            console.log("Document successfully updated!");
+            console.log("Sharing statue successfully changed!");
+
+			// Change campaign sharing status locally
+			let campaigns = this.props.campaigns;
+			campaigns[this.props.campaignID].sharingIsOn = campaignSharingStatus;
+			this.props.handleCampaigns(campaigns);
         }).catch((error) => {
-            console.log("Error getting document:", error);
+            console.log("Could not change sharing status:", error);
+			this.props.handleError(error, "Could not change campaign sharing")
         });
     }
 
 	// Triggers when revoking access to a campaign for a user
 	removeUser(userID) {
-
-		// Revoke access locally
-        let campaigns = this.props.campaigns;
-        delete campaigns[this.props.campaignID].usersSharedWith[userID];
-		const index = campaigns[this.props.campaignID].usersSharedWithList.indexOf(userID);
-		if (index > -1) {campaigns[this.props.campaignID].usersSharedWithList.splice(index, 1);}
-        this.props.handleCampaigns(campaigns);
 
        // Remove user from campaign document on Firestore 
         this.props.campaignsRef.doc(this.props.campaignID).update({
@@ -86,9 +80,17 @@ class CampaignSharing extends Component {
             ["usersSharedWith." + userID]: firebase.firestore.FieldValue.delete(),
 			usersSharedWithList: firebase.firestore.FieldValue.arrayRemove(userID)
         }).then(() => {
-            console.log("Document successfully updated!");
+            console.log("User successfully removed from sharing");
+
+			// Revoke access locally
+			let campaigns = this.props.campaigns;
+			delete campaigns[this.props.campaignID].usersSharedWith[userID];
+			const index = campaigns[this.props.campaignID].usersSharedWithList.indexOf(userID);
+			if (index > -1) {campaigns[this.props.campaignID].usersSharedWithList.splice(index, 1);}
+			this.props.handleCampaigns(campaigns);
         }).catch((error) => {
-            console.log("Error getting document:", error);
+            console.log("Error removing user from sharing:", error);
+			this.props.handleError(error, "Could not change campaign sharing")
         });
 	}
 
@@ -192,6 +194,7 @@ class CampaignSharing extends Component {
 										campaign = {this.props.campaign}
 										campaigns = {this.props.campaigns}
 										handleCampaigns = {this.props.handleCampaigns}
+										handleError = {this.props.handleError}
 										campaignsRef = {this.props.campaignsRef}
 									/> :
 									<></>

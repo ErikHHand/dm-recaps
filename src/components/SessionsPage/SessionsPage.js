@@ -79,7 +79,9 @@ class SessionsPage extends Component {
 						campaign = {this.props.campaign}
 						handleSessions = {this.props.handleSessions}
 						handleCampaign = {this.props.handleCampaign}
+						handleError = {this.props.handleError}
 						campaignRef = {this.props.campaignRef}
+						loadCampaign = {this.props.loadCampaign}
 					/>
 
 				if(!this.props.campaign.sessions) {
@@ -103,8 +105,10 @@ class SessionsPage extends Component {
 							handleTags = {this.props.handleTags}
 							handleCampaign = {this.props.handleCampaign}
 							handleSelectedSession = {this.props.handleSelectedSession}
+							handleError = {this.props.handleError}
 							isSelectedSession = {this.props.selectedSession === sessionID}
 							campaignRef = {this.props.campaignRef}
+							loadCampaign = {this.props.loadCampaign}
 							click = {() => this.props.handleSelectedSession(sessionID)}
 						/>
 					);
@@ -140,7 +144,9 @@ class SessionsPage extends Component {
 							handleTags = {this.props.handleTags}
 							handleSelectedSession = {this.props.handleSelectedSession}
 							handleSelectedTag = {this.props.handleSelectedTag}
+							handleError = {this.props.handleError}
 							campaignRef = {this.props.campaignRef}
+							loadCampaign = {this.props.loadCampaign}
 						/>
 					);
 				}
@@ -193,8 +199,10 @@ class SessionsPage extends Component {
 					handleSessions = {this.props.handleSessions}
 					handleCampaign = {this.props.handleCampaign}
 					handleSelectedSession = {this.props.handleSelectedSession}
+					handleError = {this.props.handleError}
 					campaignRef = {this.props.campaignRef}
 					edit = {false}
+					loadCampaign = {this.props.loadCampaign}
 				/>
 			</>
 		);

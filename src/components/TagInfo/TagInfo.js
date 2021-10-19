@@ -95,7 +95,7 @@ class TagInfo extends Component {
 		};
 
 		if(this.props.edit) {
-			this.editTagInfo(this.props.tagID, tagInfo);
+			this.editTagInfo(false, this.props.tagID, tagInfo);
 		} else {
 			this.addNewTag(tagInfo);
 		}
@@ -106,26 +106,17 @@ class TagInfo extends Component {
 	// saves the tag locally and on Firestore
 	addNewTag(tagInfo) {
 
-		let tag = {
-			recaps: {},
-		}
-
-		let tags = this.props.tags;
 		let tagID = this.hashCode(tagInfo.name).toString(); 
 
 		// Check if a tag with this name already exists. If so,
 		// Show an alert insetad of creating a new tag
-		if(tags[tagID]) {
+		if(this.props.tags[tagID]) {
 			this.setState({showAlert: true,})
 			return;
 		}
 
-		// Add tag locally
-		tags[tagID] = tag;
-		this.props.handleTags(tags);
-
 		// Write tag info
-		this.editTagInfo(tagID, tagInfo);
+		this.editTagInfo(false, tagID, tagInfo);
 
 		// Reset the state
 		this.setState({
@@ -134,38 +125,55 @@ class TagInfo extends Component {
 			colour: "red",
 			description: "",
 		});
-
-		// If this tag is being added from the tag selector pop-up, 
-		// the tag should not be selected
-		if(this.props.doNotSelectTag) {
-			return;
-		}
-		this.props.handleSelectedTag(tagID);
 	};
 
 	// Triggers when editing a tag or just after a new tag has been added.
 	// This function saves the tag data locally and on Firestore
-	editTagInfo(tagID, tagInfo) {
+	editTagInfo(attempted, tagID, tagInfo) {
+
+		let tags = this.props.tags;
+		let campaign = this.props.campaign;
 
 		// Hide the tag info window
 		this.props.onHide();
 
 		let operation = this.props.edit ? "tag-edit" : "tag-add";
+		let numberOfKeys = this.props.edit ? Object.keys(campaign.tags).length : Object.keys(campaign.tags).length + 1;
 
 		// Add tag in campaign document
 		this.props.campaignRef.update({
 			operation: operation,
 			selectedTag: tagID,
 			['tags.' + tagID]: tagInfo,
+			numberOfKeys: numberOfKeys,
 		}).then(() => {
-			console.log("Document successfully updated!");
-		}).catch((error) => {
-			console.log("Error getting document:", error);
-		});
+			console.log("Tag successfully updated!");
 
-		let campaign = this.props.campaign;
-		campaign.tags[tagID] = tagInfo;
-		this.props.handleCampaign(campaign);
+			campaign.tags[tagID] = tagInfo;
+			this.props.handleCampaign(campaign);
+			
+			if(!this.props.edit && !tags[tagID]) {
+				// Add tag locally
+				tags[tagID] = { recaps: {}};
+				this.props.handleTags(tags);
+				// If this tag is being added from the tag selector pop-up, 
+				// the tag should not be selected
+				if(this.props.selectTag) {
+					this.props.handleSelectedTag(tagID);
+				}
+			}
+		}).catch((error) => {
+			console.log("Error writing tag:", error);
+			
+			if(attempted) {
+				this.props.handleError(error, "Could not save tag")
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.editTagInfo(true, tagID, tagInfo)}
+				);
+			}
+		});
 	}
 	
 	// Triggers when changing tag name or tag description

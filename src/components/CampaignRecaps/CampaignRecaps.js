@@ -32,6 +32,8 @@ class CampaignRecaps extends Component {
 			selectedTag: null,
 			updateCampaign: false,
 			showAlert: false,
+			error: null,
+			errorMessage: "",
 		};
 
 		// Set the context for "this" for the following functions
@@ -42,6 +44,8 @@ class CampaignRecaps extends Component {
 		this.setActiveTab = this.setActiveTab.bind(this);
 		this.handleSelectedSession = this.handleSelectedSession.bind(this);
 		this.handleSelectedTag = this.handleSelectedTag.bind(this);
+		this.handleError = this.handleError.bind(this);
+		this.loadCampaign = this.loadCampaign.bind(this);
 	}
 
 
@@ -49,63 +53,7 @@ class CampaignRecaps extends Component {
 	// Then get the campaign, sessions, tags and recaps and save in the state
 	componentDidMount() {
 
-		let campaign = this;
-
-		// The id for this campaign, talen from the pathname
-		let campaignID = this.props.location.pathname.substring(11);
-
-		// Set the correct Firestore database reference for this campaign
-		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
-
-		// Get the campaign for Firestore and save in the state
-		// This is done by getting all recap docuements from the recaps collection
-		// and then sorting them into both session and tag objects based on what session the
-		// recap belongs to and what tags are atached to it
-		campaignRef.get().then((campaginDoc) => {
-			campaignRef.collection("recaps").get().then((querySnapshot) => {
-				let sessions = {};
-				let tags = {};
-				let recaps = {};
-
-				// Fill tag and session objects with empty objects in preparation for
-				// copying over recaps
-				for (let tagID in campaginDoc.data().tags) {
-					tags[tagID] = {};
-					tags[tagID]["recaps"] = {};
-					
-				}
-				for (let sessionID in campaginDoc.data().sessions) {
-					sessions[sessionID] = {};
-					sessions[sessionID]["recaps"] = {};
-				}
-
-				// Loop over all recaps and put them in sessions, tags and recaps objects
-				querySnapshot.forEach((doc) => {
-					sessions[doc.data().session].recaps[doc.id] = doc.data();
-					for (let i = 0; i < doc.data().tags.length; i++) {
-						tags[doc.data().tags[i]].recaps[doc.id] = doc.data();
-					}
-					recaps[doc.id] = doc.data();
-				});
-
-				// Save data in the state and set status to "LOADED"
-				campaign.setState({
-					status: "LOADED",
-					recaps: recaps,
-					sessions: sessions,
-					tags: tags,
-					campaign: campaginDoc.data(),
-					selectedSession: campaginDoc.data().selectedSession,
-					selectedTag: campaginDoc.data().selectedTag,
-				});
-			}).catch((error) => {
-				console.log("Error getting document:", error);
-				this.setState({ 
-					error: error,
-					showAlert: true,
-				});
-			});	
-		});	
+		this.loadCampaign();
 	}
 
 	componentWillUnmount() {
@@ -155,6 +103,67 @@ class CampaignRecaps extends Component {
 				});
 			}
 		}
+	}
+
+	loadCampaign(retry) {
+		// The id for this campaign, talen from the pathname
+		let campaignID = this.props.location.pathname.substring(11);
+
+		// Set the correct Firestore database reference for this campaign
+		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
+
+		// Get the campaign for Firestore and save in the state
+		// This is done by getting all recap docuements from the recaps collection
+		// and then sorting them into both session and tag objects based on what session the
+		// recap belongs to and what tags are atached to it
+		campaignRef.get().then((campaginDoc) => {
+			campaignRef.collection("recaps").get().then((querySnapshot) => {
+				let sessions = {};
+				let tags = {};
+				let recaps = {};
+
+				// Fill tag and session objects with empty objects in preparation for
+				// copying over recaps
+				for (let tagID in campaginDoc.data().tags) {
+					tags[tagID] = {};
+					tags[tagID]["recaps"] = {};
+				}
+				for (let sessionID in campaginDoc.data().sessions) {
+					sessions[sessionID] = {};
+					sessions[sessionID]["recaps"] = {};
+				}
+
+				// Loop over all recaps and put them in sessions, tags and recaps objects
+				querySnapshot.forEach((doc) => {
+					sessions[doc.data().session].recaps[doc.id] = doc.data();
+					for (let i = 0; i < doc.data().tags.length; i++) {
+						tags[doc.data().tags[i]].recaps[doc.id] = doc.data();
+					}
+					recaps[doc.id] = doc.data();
+				});
+
+				// Save data in the state and set status to "LOADED"
+				this.setState({
+					status: "LOADED",
+					recaps: recaps,
+					sessions: sessions,
+					tags: tags,
+					campaign: campaginDoc.data(),
+					selectedSession: campaginDoc.data().selectedSession,
+					selectedTag: campaginDoc.data().selectedTag,
+				}, () => {
+					if(retry) retry();
+				});
+			}).catch((error) => {
+				console.log("Error getting campaign data:", error);
+				this.handleError(error, "Could not load campaign")
+				this.setState({ status: "ERROR"});
+			});	
+		}).catch((error) => {
+			console.log("Error getting campaign data:", error);
+			this.handleError(error, "Could not load campaign")
+			this.setState({ status: "ERROR"});
+		});
 	}
 
 	// Function for downloading all campaign, tag and session data
@@ -239,6 +248,15 @@ class CampaignRecaps extends Component {
 		}
 	}
 
+	// Handles saving errors to state for displaying
+	handleError(error, errorMessage) {
+		this.setState({
+			error: error,
+			errorMessage: errorMessage,
+			showAlert: true,
+		});
+	}
+
 	render() {
 
 		// The id for this campaign
@@ -257,7 +275,7 @@ class CampaignRecaps extends Component {
 					onClose={() => this.setState({showAlert: false,})}
 					variant="danger"
 				>
-					{this.state.error && <div>Error loading campaign: {this.state.error.message}</div>}
+					{this.state.error && <div>{this.state.errorMessage + ": " + this.state.error.message}</div>}
 				</Alert>
 				<Tab.Container activeKey={activeTab} transition={false}>
 					<Row className="tab-nav">
@@ -289,7 +307,7 @@ class CampaignRecaps extends Component {
 						</Col>
 					</Row>
 					
-					<Tab.Content>
+					<Tab.Content style={this.state.showAlert ? {maxHeight: "calc(96.5vh - 168px)"} : {}}>
 						<Tab.Pane eventKey="sessions">
 							<SessionsPage
 								campaign = {this.state.campaign}
@@ -303,7 +321,9 @@ class CampaignRecaps extends Component {
 								selectedSession = {this.state.campaign.selectedSession}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
+								handleError = {this.handleError}
 								status = {this.state.status}
+								loadCampaign = {this.loadCampaign}
 							/>
 						</Tab.Pane>
 						<Tab.Pane eventKey="tags">
@@ -319,7 +339,9 @@ class CampaignRecaps extends Component {
 								selectedTag = {this.state.campaign.selectedTag}
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
+								handleError = {this.handleError}
 								status = {this.state.status}
+								loadCampaign = {this.loadCampaign}
 							/>
 						</Tab.Pane>
 					</Tab.Content>

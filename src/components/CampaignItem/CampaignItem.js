@@ -12,6 +12,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase';
 
 /*
 	This class holds the Campaign Items on the Campaign Page.
@@ -53,14 +54,24 @@ class CampaignItem extends Component {
 		this.props.campaignsRef.doc(this.props.campaignID).delete()
 		.then(() => {
 			console.log("Document successfully deleted!");
-		}).catch((error) => {
-			console.log("Error deleting document:", error);
-		});
 
-		// Delete campaign locally
-		let campaigns = this.props.campaigns;
-		delete campaigns[this.props.campaignID];
-		this.props.handleCampaigns(campaigns);
+			// Delete campaign from user document
+			this.props.firebase.db.collection("users").doc(this.props.campaign.ownerID).update({
+				ownedCampaigns: firebase.firestore.FieldValue.arrayRemove(this.props.campaignID)
+			}).then(() => {
+				console.log("Campaign successfully deleted from user document!");
+			}).catch((error) => {
+				console.log("Error deleting campaign from user document:", error);
+			});
+
+			// Delete campaign locally
+			let campaigns = this.props.campaigns;
+			delete campaigns[this.props.campaignID];
+			this.props.handleCampaigns(campaigns);
+		}).catch((error) => {
+			console.log("Error deleting campaign:", error);
+			this.props.handleError(error, "Could not delete campaign");
+		});
 	}
 
 	render() {
@@ -113,6 +124,7 @@ class CampaignItem extends Component {
 									campaigns = {this.props.campaigns}
 									handleCampaigns = {this.props.handleCampaigns}
 									campaignsRef = {this.props.campaignsRef}
+									handleError = {this.props.handleError}
 								/>
 							</Col>
 							<Col md="10" className="text-muted">
@@ -154,6 +166,7 @@ class CampaignItem extends Component {
 					handleCampaigns = {this.props.handleCampaigns}
 					campaignsRef = {this.props.campaignsRef}
 					edit = {true}
+					handleError = {this.props.handleError}
 				/>
 			</>
 		);

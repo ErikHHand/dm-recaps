@@ -116,13 +116,17 @@ class RecapTagSelector extends Component {
 			}	
 		}
 		
-		// Save previous tags to simplify removal of tags from the recap item
-		let previousTags = this.props.recapItem.tags;
+		// Save old recap to simplify removal of tags from the recap item
+		let oldRecap = {
+			tags: [...this.props.recapItem.tags],
+			text: this.props.recapItem.text,
+			session: this.props.recapItem.session,
+		};
 
 		// Update recap Item with potentially new text and tags
 		let recapItem = this.props.recapItem;
 		recapItem.tags = tags;
-		this.props.writeRecap(recapItem, previousTags);
+		this.props.writeRecap(recapItem, oldRecap);
 	};
 
 	// This function is called when changing visibility of the tag selection pop-up
@@ -294,8 +298,9 @@ class RecapTagSelector extends Component {
 					edit = {false}
 					tagID = {null}
 					tag = {this.state.tag}
-					doNotSelectTag = {true}
+					selectTag = {false}
 					handleSelectedTag = {this.props.handleSelectedTag}
+					handleError = {this.props.handleError}
 				/>
 			</div>
 		)

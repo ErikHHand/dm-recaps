@@ -79,6 +79,10 @@ button:focus {
   margin-top: 0.5rem;
 }
 
+.alert-margin-top {
+	margin-top: 1rem;
+}
+
 .App {
 	height: 100vh;
 }
@@ -189,10 +193,6 @@ button:focus {
 	height: 98vh;
 	margin: 0 auto 2vh auto !important;
 	background-color:rgb(233, 236, 239)
-}
-
-.container-nav {
-
 }
 
 .dark-background {
@@ -395,7 +395,7 @@ button:focus {
 	margin: 0 0.1rem;
 	cursor: pointer;
 	border-width: 1px;
-	border: solid rgb(230, 230, 230);
+	border: solid rgba(255, 255, 255, 0);
 	max-width: 20rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -433,10 +433,6 @@ button:focus {
 	scrollbar-width: none; /* Firefox 64 */
 }
 
-.reset-email-alert {
-	margin-top: 1rem;
-}
-
 .right-align {
 	text-align: right;
 }
@@ -461,11 +457,11 @@ button:focus {
 	margin: 0.2rem 0.35rem;
 	cursor: pointer;
 	border-width: 1px;
-	border: solid rgb(230, 230, 230);
+	border: solid rgb(230, 230, 230, 0);
 }
 
 .select-badge:hover {
-	border: solid rgb(94, 94, 94);
+	border: solid rgb(94, 94, 94) !important;
 }
 
 .select-border {
@@ -551,16 +547,20 @@ button:focus {
 .tag-item {
 	width: 100%;
 	font-size: 18px !important;
-	margin: 0.04rem 0.35rem;
+	margin: 0.2rem 0.35rem;
 	cursor: pointer;
-	border: 5px solid rgba(235, 235, 235, 1);
+	border: 5px solid rgba(235, 235, 235, 0);
 	white-space: nowrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
 }
 
+.tag-item:hover {
+	border: 5px solid rgb(94, 94, 94) !important;
+}
+
 .tag-item-selected {
-	border: 5px solid rgba(0, 0, 0, 0);
+	border: 5px solid rgb(56, 56, 56);
 }
 
 .tag-list-column {
@@ -569,6 +569,8 @@ button:focus {
 
 .tag-not-selected {
 	opacity: 0.5;
+	border: solid rgba(230, 230, 230, 0) !important;
+	color: black !important;
 }
 
 .tag-selector {
@@ -582,7 +584,7 @@ button:focus {
 	margin-bottom: 0.1rem;
 	cursor: pointer;
 	border-width: 1px;
-	border: solid rgb(230, 230, 230);
+	border: solid rgb(56, 56, 56);
 	max-width: 100%;
 	white-space: nowrap;
   	overflow: hidden;
@@ -590,7 +592,7 @@ button:focus {
 }
 
 .tag-selector-tag:hover {
-	border: solid rgb(94, 94, 94);
+	border: solid rgb(94, 94, 94) !important;
 }
 
 .tag-selector-tag-field {

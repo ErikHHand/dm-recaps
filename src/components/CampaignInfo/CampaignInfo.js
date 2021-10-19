@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import { Form, Button } from 'react-bootstrap';
 
 import { withFirebase } from '../Firebase/Firebase';
+import * as firebase from 'firebase';
 
 /*
 	This component holds the pop-up window for editing campaign info,
@@ -131,6 +132,8 @@ class CampaignInfo extends Component {
 				description: this.state.description,
 				name: this.state.name,
 				world: this.state.world,
+				recapID: "",
+				recapOrder: [],
 				setting: this.state.setting,
 				sessionOrder: [],
 				sessions: {},
@@ -143,6 +146,7 @@ class CampaignInfo extends Component {
 				selectedTag: "",
 				ownerUsername: this.props.firebase.auth.currentUser.displayName,
 				ownerID: this.props.firebase.auth.currentUser.uid,
+				numberOfKeys: 0,
 			};
 
 			let campaigns = this.props.campaigns;		
@@ -150,13 +154,23 @@ class CampaignInfo extends Component {
 			// Add to Firestore, which will generate an id, then add localy using the id
 			this.props.campaignsRef.add(campaign)
 			.then((docRef) => {
-				console.log("Document successfully written! DocRef: ", docRef);
+				console.log("Campaign successfully added! DocRef: ", docRef);
 
 				// Add locally
 				campaigns[docRef.id] = campaign;
 				this.props.handleCampaigns(campaigns);
+
+				// Add campaign to owned campaigns list on user document
+				this.props.firebase.db.collection("users").doc(campaign.ownerID).update({
+					ownedCampaigns: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+				}).then(() => {
+					console.log("Campaign successfully added to user document!");
+				}).catch((error) => {
+					console.log("Error adding campaign to user document:", error);
+				});
 			}).catch(error => {
-				console.error("Error writing document: ", error);
+				console.error("Error adding campaign: ", error);
+				this.props.handleError(error, "Could not add campaign");
 			});
 		} else {
 			// Edit campaign
@@ -168,21 +182,21 @@ class CampaignInfo extends Component {
 				world: this.state.world,
 				setting: this.state.setting,
 			}).then(() => {
-				console.log("Document successfully updated!");
+				console.log("Campaign successfully updated!");
+				// Edit locally
+				let campaign = this.props.campaigns[this.props.campaignID];
+				campaign["name"] = this.state.name;
+				campaign["description"] = this.state.description;
+				campaign["world"] = this.state.world;
+				campaign["setting"] = this.state.setting;
+
+				let campaigns = this.props.campaigns;
+				campaigns[this.props.campaignID] = campaign;
+				this.props.handleCampaigns(campaigns);
 			}).catch((error) => {
-				console.log("Error getting document:", error);
+				console.log("Error editing campaign:", error);
+				this.props.handleError(error, "Could not edit campaign");
 			});
-
-			// Edit locally
-			let campaign = this.props.campaigns[this.props.campaignID];
-			campaign["name"] = this.state.name;
-			campaign["description"] = this.state.description;
-			campaign["world"] = this.state.world;
-			campaign["setting"] = this.state.setting;
-
-			let campaigns = this.props.campaigns;
-			campaigns[this.props.campaignID] = campaign;
-			this.props.handleCampaigns(campaigns);
 		}
 	};
 	  

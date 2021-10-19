@@ -29,74 +29,84 @@ class TagDescription extends Component {
 	}
 
 	// Triggers when deleting a tag
-	deleteTag() {
-	
-		// Set current tag to null
-		this.props.handleSelectedTag(null);
+	deleteTag(attempted) {
 
 		let sessions = this.props.sessions;
 		let tags = this.props.tags;
 		let tagRecaps = this.props.tags[this.props.tagID].recaps
+		let campaign = this.props.campaign;
 
 		// Iterate over all recap items this tag is attached to
-		for(let recapID in tagRecaps) {
+		if(!attempted) {
+			for(let recapID in tagRecaps) {
 
-			let recapItem = this.props.tags[this.props.tagID].recaps[recapID];
-			let tagIndex = recapItem.tags.indexOf(this.props.tagID);
-
-			// Remove tag from recap item and re-add the recap item without the tag
-			if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1);
-			sessions[recapItem.session].recaps[recapID] = recapItem;
-
-			// Update recap in recaps collection on Firestore
-			this.props.campaignRef.collection("recaps").doc(recapID).update(recapItem)
-			.then(() => {
-				console.log("Document successfully updated!");
-			}).catch((error) => {
-				console.log("Error deleting document:", error);
-			});
+				let recapItem = this.props.tags[this.props.tagID].recaps[recapID];
+				let tagIndex = recapItem.tags.indexOf(this.props.tagID);
+	
+				// Remove tag from recap item and re-add the recap item without the tag
+				if (tagIndex !== -1) recapItem.tags.splice(tagIndex, 1);
+				sessions[recapItem.session].recaps[recapID] = recapItem;
+	
+				// Update recap in recaps collection on Firestore
+				this.props.campaignRef.collection("recaps").doc(recapID).update(recapItem)
+				.then(() => {
+					console.log("Recap successfully updated!");
+				}).catch((error) => {
+					console.log("Error updating recap:", error);
+				});
+			}
+			this.props.handleSessions(sessions);
 		}
-
-		this.props.handleSessions(sessions);
-
-		// Delete tag with recaps locally
-		delete tags[this.props.tagID];
-		this.props.handleTags(tags);
-
-		// Delete tag info locally
-		let campaign = this.props.campaign;
-		delete campaign.tags[this.props.tagID];
-		this.props.handleCampaign(campaign);
-
-		// Delete tag from filtered Tags array
-		let filteredTags = this.props.filteredTags;
-		let index = filteredTags.indexOf(this.props.tagID);
-		if(index !== -1) filteredTags.splice(index, 1);
-		this.props.handleFilteredTags(filteredTags);
 
 		// Delete tag info on Firestore
 		this.props.campaignRef.update({
 			operation: "tag-delete",
 			["tags." + this.props.tagID]: firebase.firestore.FieldValue.delete(),
 			selectedTag: this.props.tagID,
+			numberOfKeys: Object.keys(campaign.tags).length - 1,
 		}).then(() => {
-			console.log("Document successfully deleted!");
+			console.log("Tag successfully deleted!");
+
+			// Set current tag to null
+			this.props.handleSelectedTag(null);
+
+			// Delete tag from filtered Tags array
+			let filteredTags = this.props.filteredTags;
+			let index = filteredTags.indexOf(this.props.tagID);
+			if(index !== -1) filteredTags.splice(index, 1);
+			this.props.handleFilteredTags(filteredTags);
+
+			// Delete tag info locally
+			delete campaign.tags[this.props.tagID];
+			this.props.handleCampaign(campaign);
+
+			// Delete tag with recaps locally
+			delete tags[this.props.tagID];
+			this.props.handleTags(tags);
 
 			// Set selected tag to empty string on Firestore
 			this.props.campaignRef.update({
 				operation: "selected-tag-update",
 				selectedTag: "",
 			}).then(() => {
-				console.log("Document successfully updated!");
+				console.log("Successfully updated selected tag!");
 			}).catch((error) => {
-				console.log("Error deleting document:", error);
+				console.log("Error updating selected tag:", error);
 			});
 		}).catch((error) => {
-			console.log("Error deleting document:", error);
+			console.log("Error deleting tag:", error);
+			if(attempted) {
+				this.props.handleError(error, "Could not delete tag")
+			} else {
+				console.log("Reading and reattempting");
+				this.props.loadCampaign(
+					() => {this.deleteTag(true)}
+				);
+			}
 		});
 	}
 
-	render() {	
+	render() {
 
 		const deleteText = {
 			title: "Delete Tag",
@@ -119,7 +129,7 @@ class TagDescription extends Component {
 								<Col lg="1" md="2" className="right-align item-menu-pos">
 									<ItemMenu
 										edit = {() => this.setState({ showTagInfo: true})}
-										delete = {this.deleteTag}
+										delete = {() => this.deleteTag(false)}
 										deleteText = {deleteText}
 									/>
 								</Col>
@@ -142,6 +152,8 @@ class TagDescription extends Component {
 					tagID = {this.props.tagID}
 					tag = {this.props.tag}
 					handleSelectedTag = {this.props.handleSelectedTag}
+					handleError = {this.props.handleError}
+					loadCampaign = {this.props.loadCampaign}
 				/>
 			</>
 		);

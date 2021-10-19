@@ -147,13 +147,15 @@ class TagsPage extends Component {
 					}
 					
 					// Render tag items
-					tagItems = sortedKeys.map((tag)=>
+					tagItems = sortedKeys.map((tag) =>
+						this.props.campaign.tags[tag] ?
 						<TagItem 
 							key = {tag}
 							tagInfo = {this.props.campaign.tags[tag]}
 							isSelected = {this.props.selectedTag === tag}
 							handleClick = {() => this.props.handleSelectedTag(tag)}
-						/>
+						/> :
+						<></>
 					);
 				}
 
@@ -196,12 +198,15 @@ class TagsPage extends Component {
 							campaign = {this.props.campaign}
 							sessions = {this.props.sessions}
 							tags = {this.props.tags}
+							selectedTag = {this.props.selectedTag}
 							handleCampaign = {this.props.handleCampaign}
 							handleSessions = {this.props.handleSessions}
 							handleTags = {this.props.handleTags}
 							handleSelectedSession = {this.props.handleSelectedSession}
 							handleSelectedTag = {this.props.handleSelectedTag}
+							handleError = {this.props.handleError}
 							campaignRef = {this.props.campaignRef}
+							loadCampaign = {this.props.loadCampaign}
 						/>
 					);
 				}
@@ -251,7 +256,9 @@ class TagsPage extends Component {
 									handleCampaign = {this.props.handleCampaign}
 									handleSelectedTag = {this.props.handleSelectedTag}
 									handleFilteredTags = {this.handleFilteredTags}
+									handleError = {this.props.handleError}
 									campaignRef = {this.props.campaignRef}
+									loadCampaign = {this.props.loadCampaign}
 								/> : null}
 						</div>
 						<SortArrowsColumn
@@ -274,8 +281,11 @@ class TagsPage extends Component {
 					handleCampaign = {this.props.handleCampaign}
 					campaignRef = {this.props.campaignRef}
 					edit = {false}
+					selectTag = {true}
 					tagID = {null}
 					handleSelectedTag = {this.props.handleSelectedTag}
+					handleError = {this.props.handleError}
+					loadCampaign = {this.props.loadCampaign}
 				/>
 			</>
 		)
