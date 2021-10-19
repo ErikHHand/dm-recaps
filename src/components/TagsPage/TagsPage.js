@@ -108,7 +108,6 @@ class TagsPage extends Component {
 		let tagFilter;
 		let tagItems;
 		let recapItems;
-		console.log(this.props.selectedTag);
 
 		switch (this.props.status) {
 			case "LOADING":

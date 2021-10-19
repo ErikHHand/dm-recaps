@@ -58,9 +58,6 @@ class TagDescription extends Component {
 			this.props.handleSessions(sessions);
 		}
 
-		console.log(Object.keys(this.props.campaign.tags).length - 1);
-		console.log(this.props);
-
 		// Delete tag info on Firestore
 		this.props.campaignRef.update({
 			operation: "tag-delete",
@@ -110,8 +107,6 @@ class TagDescription extends Component {
 	}
 
 	render() {
-
-		console.log(this.props);
 
 		const deleteText = {
 			title: "Delete Tag",
