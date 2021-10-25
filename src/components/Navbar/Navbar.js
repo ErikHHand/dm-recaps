@@ -75,7 +75,7 @@ class NavbarBase extends Component {
             <Navbar collapseOnSelect expand="md" variant="light" className="top-bar border-bottom">
                 <Navbar.Brand>RPG Recaps</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
+                <Navbar.Collapse className="w-100" id="responsive-navbar-nav">
                     <Nav justify className="ms-auto w-100" activeKey={activePage}>
                         <Nav.Item className={activePage === "campaignsPage" ? "nav-item-active" : ""}>
                             <Nav.Link 

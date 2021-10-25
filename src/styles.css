@@ -11,7 +11,7 @@ a {
 }
 
 a.active {
-	font-weight: 500;
+	font-weight: 600;
 }
 
 a.nav-link {
@@ -23,6 +23,13 @@ a.nav-link {
     white-space: nowrap;
     vertical-align: baseline;
 	max-width: 20vw;
+}
+
+@media only screen and (max-width: 768px) {
+	a.nav-link {
+		text-align: left;
+		max-width: 100vw;
+	}
 }
 
 body  {
@@ -303,6 +310,17 @@ button:focus {
 	width: auto!important;
 }
 
+.nav-air:hover {
+	width: auto!important;
+	border-bottom: 2px solid rgba(255, 255, 255, 0) !important;
+}
+
+@media only screen and (max-width: 768px) {
+	.nav-air {
+		display: none;
+	}
+}
+
 .nav-item {
 	border-bottom: 2px solid rgba(255, 255, 255, 0);
 }
@@ -339,6 +357,11 @@ button:focus {
 
 .nav-text-current {
 	font-weight: bold;
+}
+
+.navbar-toggler-icon {
+	width: 1.3em !important;
+	height: 1.3em !important;
 }
 
 .opacity-20 {
@@ -618,9 +641,21 @@ button:focus {
 
 /* Total height is 60px */
 .top-bar {
+	right: 15px;
 	height: 42px;
+	width: calc(100% + 30px);
 	padding: 10px 0 0 0;
 	margin-bottom: 18px;
+	background-color: rgba(210, 210, 210, 0.4);
+	border-radius: 0.35rem
+}
+
+@media only screen and (max-width: 768px) {
+	.top-bar {
+		height: auto;
+		padding: 10px 0 0 0;
+		margin-bottom: 18px;
+	}
 }
 
 .user-access-type {
