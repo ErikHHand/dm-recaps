@@ -23,6 +23,7 @@ a.nav-link {
     white-space: nowrap;
     vertical-align: baseline;
 	max-width: 20vw;
+	padding-bottom: 2px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -150,7 +151,7 @@ button:focus {
 
 .campaign-list {
 	overflow: scroll;
-	max-height: calc(96.5vh - 60px);
+	max-height: calc(96.5vh - 58px);
 	margin: 1.5vh 0 0 0;
 	padding: 0.5rem 0;
 }
@@ -315,7 +316,7 @@ button:focus {
 	border-bottom: 2px solid rgba(255, 255, 255, 0) !important;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
 	.nav-air {
 		display: none;
 	}
@@ -362,6 +363,10 @@ button:focus {
 .navbar-toggler-icon {
 	width: 1.3em !important;
 	height: 1.3em !important;
+}
+
+.navbar-brand {
+	height: 39px;
 }
 
 .opacity-20 {
@@ -542,7 +547,7 @@ button:focus {
 }
 
 .tab-content {
-	height: calc(96.5vh - 42px - 60px);
+	height: calc(96.5vh - 42px - 58px);
 	margin-bottom: 1.5vh;
 }
 
@@ -641,19 +646,8 @@ button:focus {
 
 /* Total height is 60px */
 .top-bar {
-	right: 15px;
-	height: 42px;
-	width: calc(100% + 30px);
-	padding: 10px 0 0 0;
+	padding: 0 16px !important;
 	margin-bottom: 18px;
-}
-
-@media only screen and (max-width: 768px) {
-	.top-bar {
-		height: auto;
-		padding: 10px 0 0 0;
-		margin-bottom: 18px;
-	}
 }
 
 .user-access-type {
