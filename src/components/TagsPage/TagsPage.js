@@ -220,7 +220,7 @@ class TagsPage extends Component {
 		return (
 			<>
 				<Row noGutters={true} className="height-100">
-					<Col lg={3} md={4} className="remove-padding height-100">
+					<Col lg={3} md={4} sm={5} className="remove-padding height-100">
 						<div className="filter-bar filter-bar-width border-bottom border-right">
 							{tagFilter}
 						</div>
@@ -241,7 +241,7 @@ class TagsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col lg={9} md={8} className="remove-padding height-100" ref={ref => (this.recapItemColumn = ref)}>
+					<Col lg={9} md={8} sm={7} className="remove-padding height-100" ref={ref => (this.recapItemColumn = ref)}>
 						<div ref={ref => (this.tagDescription = ref)}>
 							{this.props.selectedTag ? 
 								<TagDescription 
