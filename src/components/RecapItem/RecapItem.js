@@ -234,7 +234,7 @@ class RecapItem extends Component {
 					onMouseLeave={() => this.setState({showIcons: false})}
 						>
 					<Row noGutters={true}>
-						<Col lg="1" md="2">
+						<Col lg="1" xs="2">
 							{
 								(this.state.showIcons &&
 									this.props.campaign.activeTab === "sessions" )?
@@ -253,7 +253,7 @@ class RecapItem extends Component {
 								<></>
 							}
 						</Col>
-						<Col lg="10" md="8">
+						<Col lg="10" xs="9">
 							<div
 								onClick={() => this.props.handleSelectedSession(this.props.recapItem.session)}
 								className="session-info-text recap-session-info-text"
@@ -263,7 +263,7 @@ class RecapItem extends Component {
 								{this.props.campaign.sessions[this.props.recapItem.session].description}
 							</div>
 						</Col>
-						<Col lg="1" md="2" className="right-align">
+						<Col lg="1" xs="1" className="right-align">
 							{
 								this.state.showIcons ?
 								<ItemMenu
