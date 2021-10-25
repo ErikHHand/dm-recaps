@@ -126,7 +126,6 @@ class ChangeUsername extends Component {
                     .where("sharingIsOn", "==", true).get().then((sharedWithCampaigns) => {
 
                         sharedWithCampaigns.forEach((doc) => {
-                            console.log(doc.id)
                             campaignsRef.doc(doc.id).update({
                                 operation: "shared-username-update",
                                 ["usersSharedWith." + authUser.user.uid]: username
