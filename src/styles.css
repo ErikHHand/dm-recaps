@@ -216,7 +216,7 @@ button:focus {
 
 .filter-bar {
 	padding: 0.5rem 0 0.5rem 31px;
-	min-height: 8%;
+	height: 52px;
 }
 
 .filter-field {
