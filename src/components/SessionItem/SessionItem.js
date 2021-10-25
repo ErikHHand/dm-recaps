@@ -133,10 +133,10 @@ class SessionItem extends Component {
 					<Card.Body >
 						<Card.Title>
 							<Row>
-								<Col md={9} className="item-title">
+								<Col xs={10} sm={9} className="item-title">
 									{session.description}
 								</Col>
-								<Col md={3} className="center item-menu-pos">
+								<Col xs={2} sm={3} className="center item-menu-pos">
 									{
 										this.state.showIcons ?
 										<ItemMenu
