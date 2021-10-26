@@ -158,7 +158,7 @@ class SessionsPage extends Component {
 
 		return (
 			<>
-				<Row noGutters={true} className="height-100">
+				<Row className="remove-margin height-100">
 					<Col lg={3} md={4} sm={5} className="remove-padding height-100">
 						<div className="border-right height-100">
 							<SortArrowsColumn

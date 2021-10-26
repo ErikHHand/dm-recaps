@@ -125,7 +125,7 @@ class DeleteAccount extends Component {
                                 className={passwordClass}
                             />
 						</Form.Group>
-                        <Form.Group controlId="formNewUsername">
+                        <Form.Group className="mb-3" controlId="formNewUsername">
                             <Form.Label>
                                 To confirm that you want to delete your account, type your username: {currentUsername}
                             </Form.Label>

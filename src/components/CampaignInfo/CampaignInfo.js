@@ -242,7 +242,7 @@ class CampaignInfo extends Component {
 				<Modal.Body>
 					<h4>Of to new adventures!</h4>
 					<Form onSubmit={this.onSubmit}>
-						<Form.Group controlId="formCampaignName">
+						<Form.Group className="mb-3" controlId="formCampaignName">
 							<Form.Label>Campaign Name</Form.Label>
 							<Form.Control 
 								name="name"
@@ -257,7 +257,7 @@ class CampaignInfo extends Component {
 							</Form.Text>
 						</Form.Group>
 
-						<Form.Group controlId="formDescription">
+						<Form.Group className="mb-3" controlId="formDescription">
 							<Form.Label>Campaign Description</Form.Label>
 							<Form.Control 
 								name="description"
@@ -273,7 +273,7 @@ class CampaignInfo extends Component {
 							</Form.Text>
 						</Form.Group>
 
-						<Form.Group controlId="formWorld">
+						<Form.Group className="mb-3" controlId="formWorld">
 							<Form.Label>World</Form.Label>
 							<Form.Control 
 								name="world"
@@ -288,7 +288,7 @@ class CampaignInfo extends Component {
 							</Form.Text>
 						</Form.Group>
 
-						<Form.Group controlId="formSetting">
+						<Form.Group className="mb-3" controlId="formSetting">
 							<Form.Label>Setting</Form.Label>
 							<Form.Control 
 								name="setting"

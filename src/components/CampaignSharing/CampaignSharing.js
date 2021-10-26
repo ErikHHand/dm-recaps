@@ -123,6 +123,7 @@ class CampaignSharing extends Component {
 							pill 
 							style={{ backgroundColor: coloursList[usersList.indexOf(userID)]}} 
 							className={textColoursList[usersList.indexOf(userID)] + " user-tag"}
+							bg="bullshit"
 						>
 							<FontAwesomeIcon icon={faUser} />
 							&nbsp;
@@ -164,12 +165,9 @@ class CampaignSharing extends Component {
 					rootClose={true}
 					onHide={() => campaignSharing.setState({showCampaignSharing: false})}
 				>
-					{({
-						show: _show,
-						...props
-					}) => (
+					{({ show: _show,...props }) => (
 						<Popover id="popover-basic" {...props} className="campaign-sharing-window">
-							<Popover.Title>
+							<Popover.Header>
 								<Row>
 									<Col xs="8" className="campaign-sharing-title">
                                         Campaign Sharing
@@ -185,8 +183,8 @@ class CampaignSharing extends Component {
                                         />
                                     </Col>
 								</Row>
-							</Popover.Title>
-							<Popover.Content>
+							</Popover.Header>
+							<Popover.Body>
 								{
 									userIsOwner ?
 									<UserSearch
@@ -211,6 +209,7 @@ class CampaignSharing extends Component {
 												pill 
 												style={{ backgroundColor: coloursList[15]}} 
 												className={textColoursList[15] + " user-tag"}
+												bg="bullshit"
 											>
 												<FontAwesomeIcon icon={faUser} />
 												&nbsp;
@@ -225,7 +224,7 @@ class CampaignSharing extends Component {
 									</Row>
 									{usersSharedWith}
 								</div>
-							</Popover.Content>
+							</Popover.Body>
 						</Popover>
 					)}
 				</Overlay>

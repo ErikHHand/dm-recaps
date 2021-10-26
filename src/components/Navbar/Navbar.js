@@ -6,6 +6,7 @@ import * as ROUTES from '../../constants/routes';
 
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import Offcanvas from 'react-bootstrap/Offcanvas'
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -77,7 +78,7 @@ class NavbarBase extends Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse className="w-100" id="responsive-navbar-nav">
                     <Nav justify className="ms-auto w-100" activeKey={activePage}>
-                        <Nav.Item className={activePage === "campaignsPage" ? "nav-item-active" : ""}>
+                        <Nav.Item className={activePage === "campaignsPage" ? "nav-item-active" : "nav-item-custom"}>
                             <Nav.Link 
                                 eventKey="campaignsPage" 
                                 onClick={() => this.props.history.push(ROUTES.HOME)}
@@ -85,7 +86,7 @@ class NavbarBase extends Component {
                                 Campaigns
                             </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item className={activePage === "campaignRecaps" ? "nav-item-active" : ""}>
+                        <Nav.Item className={activePage === "campaignRecaps" ? "nav-item-active" : "nav-item-custom"}>
                             <Nav.Link 
                                 eventKey="campaignRecaps" 
                                 onClick={() => this.props.history.push("/campaigns/" + this.state.lastCampaignID)}
@@ -97,7 +98,7 @@ class NavbarBase extends Component {
                             <Nav.Link >
                             </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item className={activePage === "account" ? "nav-item-active" : ""}>
+                        <Nav.Item className={activePage === "account" ? "nav-item-active" : "nav-item-custom"}>
                             <Nav.Link 
                                 eventKey="account" 
                                 onClick={() => this.props.history.push(ROUTES.ACCOUNT)}

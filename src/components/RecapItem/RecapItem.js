@@ -233,7 +233,7 @@ class RecapItem extends Component {
 					onMouseEnter={() => this.setState({showIcons: true})} 
 					onMouseLeave={() => this.setState({showIcons: false})}
 						>
-					<Row noGutters={true}>
+					<Row className="remove-margin">
 						<Col lg="1" xs="2">
 							{
 								(this.state.showIcons &&

@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import SignIn from "./../SignIn/SignIn";
 import SignUp from "./../SignUp/SignUp";
-import Jumbotron from 'react-bootstrap/Jumbotron';
+import Container from 'react-bootstrap/Container';
 
 import './../../styles.css';
 
@@ -34,16 +34,16 @@ class Landing extends Component {
 		let title = "Dungeon Master Recaps"
 
 		return (
-			<Row noGutters={true}>
+			<Row>
 				<Col xs={0} md={3}></Col>
 				<Col xs={12} md={6}>
 					<h1 className="center"> {title} </h1>
-					<Jumbotron className="jumbotron-box">
+					<Container fluid="lg" className="container-app">
 						{this.state.signIn ?
 							<SignIn changeWindow = {this.changeWindow}/> : 
 							<SignUp changeWindow = {this.changeWindow}/> 
 						}
-					</Jumbotron> 
+					</Container> 
 				</Col>
 				<Col xs={0} md={3}></Col>
 			</Row>

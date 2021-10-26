@@ -143,7 +143,7 @@ class ChangePassword extends Component {
                                 </Form.Group>
                             </Col>
                             <Col md>
-                                <Form.Group controlId="formPasswordTwo">
+                                <Form.Group className="mb-3" controlId="formPasswordTwo">
                                     <Form.Label>Repeat new password</Form.Label>
                                     <Form.Control 
                                         name="passwordTwo"

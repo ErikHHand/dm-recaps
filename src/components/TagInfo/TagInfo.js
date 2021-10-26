@@ -230,7 +230,7 @@ class TagInfo extends Component {
 						A tag with this name already exists!
 					</Alert>
 					<Form onSubmit={this.onSubmit}>
-						<Form.Group controlId="formName">
+						<Form.Group className="mb-3" controlId="formName">
 							<Form.Label>Name</Form.Label>
 							<Form.Control 
 								name="name"
@@ -245,7 +245,7 @@ class TagInfo extends Component {
 							</Form.Text>
 						</Form.Group>
 
-						<Form.Group controlId="formDescription">
+						<Form.Group className="mb-3" controlId="formDescription">
 							<Form.Label>Description</Form.Label>
 							<Form.Control 
 								name="description"
@@ -260,15 +260,15 @@ class TagInfo extends Component {
 								For example "Misty Mountains".
 							</Form.Text>
 						</Form.Group>
-						<Row className="select-row">
-							<Col>
+						<Row className="mb-3">
+							<Col md>
 								<FormSelectBadge
 									name = "type"
 									value = {type}
 									changeValue = {(name, value) => this.changeValue(name, value)}
 								/>
 							</Col>
-							<Col>
+							<Col md>
 								<FormSelectBadge
 									name = "colour"
 									value = {colour}

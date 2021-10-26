@@ -7,7 +7,9 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 import Overlay from 'react-bootstrap/Overlay'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
+import Tooltip from 'react-bootstrap/Tooltip'
 import { Button } from 'react-bootstrap';
 
 import { COLOURS } from '../../constants/colours.js';
@@ -180,6 +182,7 @@ class RecapTagSelector extends Component {
 									(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
 								}
 								onClick={() => this.onClick(tagID)}
+								bg="bullshit"
 							>
 								<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
 								&nbsp;
@@ -204,6 +207,7 @@ class RecapTagSelector extends Component {
 						key={this.props.recapItem.tags.indexOf(tagID)}
 						className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag"}
 						onClick={() => this.props.handleSelectedTag(tagID)}
+						bg="bullshit"
 					>
 						<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
 						&nbsp;
@@ -222,6 +226,7 @@ class RecapTagSelector extends Component {
 					pill 
 					className="recap-add-tag" 
 					onClick={() => this.setState({ showTagOverlay: !this.state.showTagOverlay })}
+					bg="bullshit"
 					ref={this.attachRef}
 				>
 					<FontAwesomeIcon icon={faPlus} />
@@ -233,20 +238,17 @@ class RecapTagSelector extends Component {
 					rootClose={true}
 					onHide={() => recapTagSelector.setState({showTagOverlay: false})}
 				>
-					{({
-						show: _show,
-						...props
-					}) => (
+					{({ show: _show, ...props }) => (
 						<Popover id="popover-basic" {...props} className="tag-selector">
-							<Popover.Title>
+							<Popover.Header>
 								<Row>
 									<Col className="regular-text tag-selector-text remove-scroll-bar with-line-breaks">
 										{this.props.recapItem.text}
 									</Col>
 								</Row>
 								
-							</Popover.Title>
-							<Popover.Content>
+							</Popover.Header>
+							<Popover.Body>
 								<Row>
 									<Col>
 										<div className="select-filter-bar center">
@@ -268,12 +270,9 @@ class RecapTagSelector extends Component {
 									</Col>
 								</Row>
 								
-								<Row className="button-row" noGutters={true}>
+								<Row className="button-row">
 									<Col md={4}>
-										<Button 
-											variant="success" 
-											onClick={this.changeWindow}
-										>
+										<Button variant="success" onClick={this.changeWindow}>
 											New Tag
 										</Button>
 									</Col>
@@ -283,10 +282,11 @@ class RecapTagSelector extends Component {
 										<Button variant="info" onClick={this.onSubmit}>Done</Button>
 									</Col>
 								</Row>
-							</Popover.Content>
+							</Popover.Body>
 						</Popover>
 					)}
 				</Overlay>
+				
 				<TagInfo 
 					show = {this.state.showTagInfo}
 					onHide = {this.changeWindow}
@@ -308,3 +308,7 @@ class RecapTagSelector extends Component {
 }
 
 export default RecapTagSelector
+
+/*
+
+*/

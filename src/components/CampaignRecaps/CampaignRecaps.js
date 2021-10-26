@@ -277,27 +277,31 @@ class CampaignRecaps extends Component {
 				>
 					{this.state.error && <div>{this.state.errorMessage + ": " + this.state.error.message}</div>}
 				</Alert>
-				<Tab.Container activeKey={activeTab} transition={false}>
-					<Row className="tab-nav">
-						<Col className="tab-nav-col">
+				<Tab.Container 
+					activeKey={activeTab}
+					onSelect={(key) => this.setActiveTab(key)}
+				>
+					<Row className="remove-margin tab-nav">
+						<Col className="remove-padding tab-nav-col">
 							<Nav 
 								variant="tabs" 
 								className="justify-content-center"
 								activeKey={activeTab}
+								onSelect={(key) => this.setActiveTab(key)}
 							>
 								<Nav.Item>
-									<Nav.Link 
+									<Nav.Link
+										className="tab-nav-item"
 										eventKey="sessions"
-										onSelect={() => this.setActiveTab("sessions")}
 										as="div"
 									>
 										Sessions
 									</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link 
+									<Nav.Link
+										className="tab-nav-item"
 										eventKey="tags"
-										onSelect={() => this.setActiveTab("tags")}
 										as="div"
 									>
 										Tags
@@ -345,7 +349,7 @@ class CampaignRecaps extends Component {
 							/>
 						</Tab.Pane>
 					</Tab.Content>
-				</Tab.Container>
+				</Tab.Container>		
 			</>
 		)
 	}

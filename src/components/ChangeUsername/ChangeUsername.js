@@ -216,7 +216,7 @@ class ChangeUsername extends Component {
                                 autoComplete="new-password"
                             />
 						</Form.Group>
-                        <Form.Group controlId="formNewUsername">
+                        <Form.Group className="mb-3" controlId="formNewUsername">
                             <Form.Label>New Username</Form.Label>
                             <Form.Control 
                                 name="username"

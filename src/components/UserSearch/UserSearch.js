@@ -130,6 +130,7 @@ class UserSearch extends Component {
                                     pill 
                                     className="user-tag-search-result" 
                                     onClick={this.shareWithUser}
+                                    bg="bullshit"
                                 >
                                     <FontAwesomeIcon icon={faUser} />
                                     &nbsp;

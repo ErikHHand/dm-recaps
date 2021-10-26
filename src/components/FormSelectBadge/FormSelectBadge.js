@@ -59,6 +59,7 @@ class FormSelectBadge extends Component {
 					key = {colour}
 					className = {TEXTCOLOURS[colour] + " select-badge"}
 					onClick={() => this.changeValue(colour)}
+					bg="bullshit"
 				>
 					TAG
 				</Badge>
@@ -70,6 +71,7 @@ class FormSelectBadge extends Component {
 					key = {type}
 					className = "select-type select-badge"
 					onClick={() => this.changeValue(type)}
+					bg="bullshit"
 				>
 					<FontAwesomeIcon icon={ICONS[type]}/>
 					&nbsp;
@@ -93,6 +95,7 @@ class FormSelectBadge extends Component {
 							pill 
 							style = {{ backgroundColor: COLOURS[this.props.value]}} 
 							className = {TEXTCOLOURS[this.props.value] + " select-badge"}
+							bg="bullshit"
 						>
 							TAG
 						</Badge>;
@@ -100,6 +103,7 @@ class FormSelectBadge extends Component {
 						value = <Badge 
 							pill 
 							className = "select-type select-badge"
+							bg="bullshit"
 						>
 							<FontAwesomeIcon icon={ICONS[this.props.value]} />
 							&nbsp;

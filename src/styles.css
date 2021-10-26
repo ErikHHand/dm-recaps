@@ -33,6 +33,13 @@ a.nav-link {
 	}
 }
 
+ul.nav.nav-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 body  {
 	background-image: url("./images/smaller_sword.jpeg"); 
     -webkit-background-size: cover;
@@ -296,10 +303,6 @@ button:focus {
 	text-overflow: ellipsis;
 }
 
-.jumbotron-box {
-	opacity: 0.95;
-}
-
 .loading-spinner {
 	display: flex;
     align-items: center;
@@ -322,11 +325,11 @@ button:focus {
 	}
 }
 
-.nav-item {
+.nav-item-custom {
 	border-bottom: 2px solid rgba(255, 255, 255, 0);
 }
 
-.nav-item:hover {
+.nav-item-custom:hover {
 	border-bottom: 2px solid rgba(151, 146, 146, 0.835);
 }
 
@@ -336,10 +339,6 @@ button:focus {
 
 .nav-item-active:hover {
 	border-bottom: 2px solid black;
-}
-
-.nav-link {
-	cursor: pointer;
 }
 
 .nav-right {
@@ -371,6 +370,10 @@ button:focus {
 
 .opacity-20 {
 	opacity: 20%;
+}
+
+.react-datepicker-wrapper {
+	display: block !important;
 }
 
 .react-search-field-input {
@@ -514,12 +517,9 @@ button:focus {
 	cursor: default;
 }
 
-.select-row {
-	margin-bottom: 2rem;
-}
-
 .select-type {
 	font-size: 14px !important;
+	color: rgb(33, 37, 41);
 	border-width: 1px;
 	border: solid rgb(230, 230, 230);
 }
@@ -553,6 +553,18 @@ button:focus {
 
 .tab-nav { /* Do not remove */
 	height: 42px;
+}
+
+.tab-nav-item {
+	cursor: pointer;
+	color: inherit !important;
+}
+
+.tab-nav-item:hover {
+	border: 1px solid rgb(222, 226, 230) !important;
+    border-top-left-radius: .25rem !important;
+    border-top-right-radius: .25rem !important;
+	background-color: rgba(243, 243, 243, 0.336);
 }
 
 .tab-pane {
