@@ -261,20 +261,20 @@ class TagInfo extends Component {
 							</Form.Text>
 						</Form.Group>
 						<Row className="mb-3">
-							<Col md>
+							<Form.Group className="col-md">
 								<FormSelectBadge
 									name = "type"
 									value = {type}
 									changeValue = {(name, value) => this.changeValue(name, value)}
 								/>
-							</Col>
-							<Col md>
+							</Form.Group>
+							<Form.Group className="col-md">
 								<FormSelectBadge
 									name = "colour"
 									value = {colour}
 									changeValue = {(name, value) => this.changeValue(name, value)}
 								/>
-							</Col>
+							</Form.Group>
 						</Row>
 						<div>
 							<Button variant="success" type="submit" disabled={isInvalid} >

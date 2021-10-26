@@ -8,6 +8,7 @@ import { ICONS } from '../../constants/types.js';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
+import Form from 'react-bootstrap/Form'
 import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
 
@@ -81,14 +82,14 @@ class FormSelectBadge extends Component {
 		}
 	
 		// Set form field name, with first lettter to upper case
-		let name = this.props.name.charAt(0).toUpperCase() + this.props.name.slice(1) + ":";
+		let name = this.props.name.charAt(0).toUpperCase() + this.props.name.slice(1);
 
 		let value = "Select..."; // Placeholder value
 
 		// Create the badge shown as the currently selected alternative, with different
 		// styles depending on if selecting colour or type
 		if(this.props.value) {
-			for(let option in options) { // Why for-loop here?
+			for(let option in options) { 
 				if(options[option].key === this.props.value) {
 					if(this.props.name === "colour") {
 						value = <Badge 
@@ -117,21 +118,18 @@ class FormSelectBadge extends Component {
 
 		return (
 			<>
-				<Row onClick={() => this.setState({ show: !show })} xs={12}>
-					<Col xs={2}>			
-						<div className = "select-label right-align">{name}</div>
-					</Col>
-					<Col xs={10} className="remove-padding">
-						<div className = "select-border">
-							<div 
-								ref={this.attachRef}
-								className = "select-tag"
-							>
-								{value}
-							</div>
-						</div>
-					</Col>
-				</Row>
+				<Form.Label>
+					{name}
+				</Form.Label>
+				<div 
+					onClick={() => this.setState({ show: !show })}
+					className="form-control remove-padding"
+				>
+					<div ref={this.attachRef} className = "select-tag">
+						{value}
+					</div>
+				</div>
+				
 				<Overlay 
 					target={target} 
 					show={show ? true : false} 
@@ -139,10 +137,7 @@ class FormSelectBadge extends Component {
 					rootClose={true}
 					onHide={() => formSelectBadge.setState({show: false})}
 				>
-					{({
-						show: _show,
-						...props
-					}) => (
+					{({ show: _show,...props }) => (
 						<Popover id="popover-basic" title={"Choose " + this.props.name}  {...props}>
 								{options}
 						</Popover>
@@ -154,3 +149,18 @@ class FormSelectBadge extends Component {
 }
 
 export default FormSelectBadge
+
+/*
+<Row onClick={() => this.setState({ show: !show })} xs={12}>
+					<Col xs={2}>			
+						<div className = "select-label right-align">{name}</div>
+					</Col>
+					<Col xs={10} className="remove-padding">
+						<div className = "select-border">
+							<div ref={this.attachRef} className = "select-tag">
+								{value}
+							</div>
+						</div>
+					</Col>
+				</Row>
+*/

@@ -308,7 +308,3 @@ class RecapTagSelector extends Component {
 }
 
 export default RecapTagSelector
-
-/*
-
-*/
