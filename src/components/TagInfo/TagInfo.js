@@ -260,7 +260,7 @@ class TagInfo extends Component {
 							</Form.Text>
 						</Form.Group>
 						<Row className="mb-3">
-							<Form.Group className="col-md">
+							<Form.Group className="col-md form-control-margin-bottom">
 								<FormSelectBadge
 									name = "type"
 									value = {type}

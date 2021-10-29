@@ -121,7 +121,7 @@ class FormSelectBadge extends Component {
 				</Form.Label>
 				<div 
 					onClick={() => this.setState({ show: !show })}
-					className="form-control remove-padding"
+					className="form-control remove-padding form-control-custom"
 				>
 					<div ref={this.attachRef} className = "select-tag">
 						{value}
