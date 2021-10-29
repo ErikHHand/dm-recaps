@@ -4,7 +4,6 @@ import FormSelectBadge from '../FormSelectBadge/FormSelectBadge';
 
 import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import { Form, Button } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert'
 

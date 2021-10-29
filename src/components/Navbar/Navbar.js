@@ -6,7 +6,6 @@ import * as ROUTES from '../../constants/routes';
 
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import Offcanvas from 'react-bootstrap/Offcanvas'
 
 import { withFirebase } from '../Firebase/Firebase';
 

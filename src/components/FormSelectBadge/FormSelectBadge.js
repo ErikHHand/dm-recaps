@@ -5,8 +5,6 @@ import { TEXTCOLOURS } from '../../constants/colours.js';
 import { TYPES } from '../../constants/types.js';
 import { ICONS } from '../../constants/types.js';
 
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 import Form from 'react-bootstrap/Form'
 import Overlay from 'react-bootstrap/Overlay'
