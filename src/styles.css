@@ -122,6 +122,11 @@ button:focus {
 	border-width: 0 0 1px 0;
 }
 
+.border-left{
+	border: solid rgba(134, 134, 134, 0.1);
+	border-width: 0 0 0 1px;
+}
+
 .border-right{
 	border: solid rgba(134, 134, 134, 0.1);
 	border-width: 0 1px 0 0;
@@ -625,9 +630,8 @@ button:focus {
 }
 
 .tag-selector {
-	max-width: 36rem !important;
+	max-width: min(36rem, 78vw) !important;
 	max-height: 90vh;
-	min-width: 24rem;
 }
 
 .tag-selector-tag {
@@ -648,12 +652,12 @@ button:focus {
 
 .tag-selector-tag-field {
 	overflow: scroll;
-	max-height: 50vh;
+	max-height: calc(65vh - 16px - 43px - 16px - 38px);
 }
 
 .tag-selector-text {
 	overflow: scroll;
-	max-height: 20vh;
+	max-height: calc(25vh - 33px);
 	font-style: italic;
 	margin: 0.5rem 0.8rem;
 	text-align: center;
