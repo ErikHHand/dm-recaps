@@ -71,6 +71,13 @@ button:focus {
 	margin-bottom: 1rem;
 }
 
+.account-page {
+	overflow: scroll;
+	max-height: calc(96.5vh - 58px);
+	margin: 1.5vh 0 0 0;
+	padding: 0.5rem 0;
+}
+
 .account-page-row {
 	margin: 0 2rem 2rem 2rem !important;
 }
