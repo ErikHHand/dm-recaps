@@ -341,8 +341,13 @@ button:focus {
 	}
 }
 
+.nav-brand {
+	margin-bottom: -1px;
+}
+
 .nav-item-custom {
 	border-bottom: 2px solid rgba(255, 255, 255, 0);
+	margin-bottom: -1px;
 }
 
 .nav-item-custom:hover {
@@ -351,6 +356,7 @@ button:focus {
 
 .nav-item-active {
 	border-bottom: 2px solid black;
+	margin-bottom: -1px;
 }
 
 .nav-item-active:hover {
@@ -376,8 +382,8 @@ button:focus {
 }
 
 .navbar-toggler-icon {
-	width: 1.3em !important;
-	height: 1.3em !important;
+	width: 1em !important;
+	height: 1em !important;
 }
 
 .navbar-brand {

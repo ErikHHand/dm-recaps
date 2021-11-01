@@ -4,8 +4,10 @@ import { compose } from 'recompose';
 
 import * as ROUTES from '../../constants/routes';
 
+import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import Offcanvas from 'react-bootstrap/Offcanvas'
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -16,8 +18,11 @@ class NavbarBase extends Component {
 
 		this.state = {
 			lastCampaignName: "",
-            lastCampaignID: ""
+            lastCampaignID: "",
+            show: false,
 		};
+
+        this.updateDimension = this.updateDimension.bind(this);
 	}
 
     componentDidMount() {
@@ -41,6 +46,9 @@ class NavbarBase extends Component {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
+
+        // Add a listener for the window size
+		window.addEventListener('resize', this.updateDimension);
     }
 
     componentDidUpdate() {
@@ -51,6 +59,15 @@ class NavbarBase extends Component {
 			});
         }
     }
+
+    componentWillUnmount() {
+		// Remove listener
+		window.removeEventListener('resize', this.updateDimension);
+	}
+
+    updateDimension() {
+		this.setState({ windowWidth: window.innerWidth });
+	}
 
     render() {
 
@@ -70,46 +87,80 @@ class NavbarBase extends Component {
             default:
                 activePage = "";
         }
+
+
+        // Hack for what navbar to render
+        let navbarContainer = <></>;
+        const navbar = (
+            <Nav justify className="ms-auto w-100" activeKey={activePage}>
+                <Nav.Item className={activePage === "campaignsPage" ? "nav-item-active" : "nav-item-custom"}>
+                    <Nav.Link 
+                        eventKey="campaignsPage" 
+                        onClick={() => this.props.history.push(ROUTES.HOME)}
+                        >
+                        Campaigns
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className={activePage === "campaignRecaps" ? "nav-item-active" : "nav-item-custom"}>
+                    <Nav.Link 
+                        eventKey="campaignRecaps" 
+                        onClick={() => this.props.history.push("/campaigns/" + this.state.lastCampaignID)}
+                        >
+                        {this.state.lastCampaignName}
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="nav-air">
+                    <Nav.Link >
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className={activePage === "account" ? "nav-item-active" : "nav-item-custom"}>
+                    <Nav.Link 
+                        eventKey="account" 
+                        onClick={() => this.props.history.push(ROUTES.ACCOUNT)}
+                    >
+                        Account
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="nav-item-custom">
+                    <Nav.Link onClick={this.props.firebase.doSignOut}>Sign out</Nav.Link>
+                </Nav.Item>
+            </Nav>
+        );
+
+        if(window.innerWidth < 768) {
+            navbarContainer = (
+                <Container fluid>
+                    <Navbar.Brand className="nav-brand">RPG Recaps</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="offcanvasNavbar"/>
+                    <Navbar.Offcanvas
+                        id="offcanvasNavbar"
+                        aria-labelledby="offcanvasNavbarLabel"
+                        placement="end"
+                    >
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title id="offcanvasNavbarLabel">RPG Recaps</Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            {navbar}
+                        </Offcanvas.Body>
+                    </Navbar.Offcanvas>
+                </Container>
+            );
+        } else {
+            navbarContainer = (
+                <Container>
+                    <Navbar.Brand className="nav-brand">RPG Recaps</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse id="responsive-navbar-nav">
+                        {navbar}
+                    </Navbar.Collapse>
+                </Container>
+            )
+        }
         
         return  (
-            <Navbar collapseOnSelect expand="md" variant="light" className="top-bar border-bottom">
-                <Navbar.Brand>RPG Recaps</Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse className="w-100" id="responsive-navbar-nav">
-                    <Nav justify className="ms-auto w-100" activeKey={activePage}>
-                        <Nav.Item className={activePage === "campaignsPage" ? "nav-item-active" : "nav-item-custom"}>
-                            <Nav.Link 
-                                eventKey="campaignsPage" 
-                                onClick={() => this.props.history.push(ROUTES.HOME)}
-                                >
-                                Campaigns
-                            </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item className={activePage === "campaignRecaps" ? "nav-item-active" : "nav-item-custom"}>
-                            <Nav.Link 
-                                eventKey="campaignRecaps" 
-                                onClick={() => this.props.history.push("/campaigns/" + this.state.lastCampaignID)}
-                                >
-                                {this.state.lastCampaignName}
-                            </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item className="nav-air">
-                            <Nav.Link >
-                            </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item className={activePage === "account" ? "nav-item-active" : "nav-item-custom"}>
-                            <Nav.Link 
-                                eventKey="account" 
-                                onClick={() => this.props.history.push(ROUTES.ACCOUNT)}
-                            >
-                                Account
-                            </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item className="">
-                            <Nav.Link onClick={this.props.firebase.doSignOut}>Sign out</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
-                </Navbar.Collapse>
+            <Navbar expand="md" variant="light" className="top-bar border-bottom" collapseOnSelect={true}>
+                {navbarContainer}
             </Navbar>
         )
     }
