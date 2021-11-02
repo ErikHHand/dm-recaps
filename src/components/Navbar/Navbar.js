@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 
 import * as ROUTES from '../../constants/routes';
 
-import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Offcanvas from 'react-bootstrap/Offcanvas'
@@ -129,7 +128,7 @@ class NavbarBase extends Component {
 
         if(window.innerWidth < 768) {
             navbarContainer = (
-                <Container fluid>
+                <>
                     <Navbar.Brand className="nav-brand">RPG Recaps</Navbar.Brand>
                     <Navbar.Toggle aria-controls="offcanvasNavbar"/>
                     <Navbar.Offcanvas
@@ -144,17 +143,17 @@ class NavbarBase extends Component {
                             {navbar}
                         </Offcanvas.Body>
                     </Navbar.Offcanvas>
-                </Container>
+                </>
             );
         } else {
             navbarContainer = (
-                <Container>
+                <>
                     <Navbar.Brand className="nav-brand">RPG Recaps</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         {navbar}
                     </Navbar.Collapse>
-                </Container>
+                </>
             )
         }
         
