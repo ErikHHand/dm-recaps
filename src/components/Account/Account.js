@@ -11,7 +11,6 @@ import { withAuthorization } from '../Session/Session';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container'
 
 /*
     This class hold the account page of the app. This is where a user can update 

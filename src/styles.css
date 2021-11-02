@@ -222,6 +222,16 @@ button:focus {
 	background-color:rgb(233, 236, 239)
 }
 
+.container-landing {
+	opacity: 0.97;
+	border-radius: 4px;
+	height: min(98vh, auto);
+	width: min(100vw, 600px);
+	margin: 0 auto 2vh auto !important;
+	padding: 1rem;
+	background-color:rgb(233, 236, 239)
+}
+
 .dark-background {
 	background-color: rgba(17, 15, 15, 0.836);
 }
@@ -324,6 +334,10 @@ button:focus {
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.landing-subtitle {
+	margin: 2rem 0 1rem 0 !important;
 }
 
 .loading-spinner {

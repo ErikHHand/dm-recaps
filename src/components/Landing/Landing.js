@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'react-bootstrap';
 
 import SignIn from "./../SignIn/SignIn";
 import SignUp from "./../SignUp/SignUp";
@@ -31,22 +30,16 @@ class Landing extends Component {
 	}
 	  
 	render() {
-		let title = "Dungeon Master Recaps"
+		let title = "RPG Recaps"
 
 		return (
-			<Row>
-				<Col xs={0} md={3}></Col>
-				<Col xs={12} md={6}>
-					<h1 className="center"> {title} </h1>
-					<Container fluid="lg" className="container-app">
-						{this.state.signIn ?
-							<SignIn changeWindow = {this.changeWindow}/> : 
-							<SignUp changeWindow = {this.changeWindow}/> 
-						}
-					</Container> 
-				</Col>
-				<Col xs={0} md={3}></Col>
-			</Row>
+			<Container fluid="sm" className="container-landing">
+				<h1 className="center border-bottom"> {title} </h1>
+				{this.state.signIn ?
+					<SignIn changeWindow = {this.changeWindow}/> : 
+					<SignUp changeWindow = {this.changeWindow}/> 
+				}
+			</Container> 
 		)
 	}
 }

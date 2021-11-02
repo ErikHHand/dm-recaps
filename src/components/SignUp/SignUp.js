@@ -135,9 +135,9 @@ class SignUpFormBase extends Component {
 
 		return (
 			<>
-				<h1>Sign up</h1>
+				<h3 className="landing-subtitle">Sign up</h3>
 				<Form onSubmit={this.onSubmit}>
-					<Form.Group controlId="formBasicUsername">
+					<Form.Group controlId="formBasicUsername" className="mb-3">
 						<Form.Label>Username</Form.Label>
 						<Form.Control 
 							name="username"
@@ -148,7 +148,7 @@ class SignUpFormBase extends Component {
 							maxLength="25"
 						/>
 					</Form.Group>
-					<Form.Group controlId="formBasicEmail">
+					<Form.Group controlId="formBasicEmail" className="mb-3">
 						<Form.Label>Email address</Form.Label>
 						<Form.Control 
 							name="email"
@@ -158,11 +158,8 @@ class SignUpFormBase extends Component {
 							placeholder="Email address"
 							maxLength="100"
 						/>
-						<Form.Text className="text-muted">
-							Your email address will never be shared with anyone else.
-						</Form.Text>
 					</Form.Group>
-					<Form.Group controlId="formBasicPassword">
+					<Form.Group controlId="formBasicPassword" className="mb-3">
 						<Form.Label>Password</Form.Label>
 						<Form.Control 
 							name="passwordOne"
@@ -173,18 +170,18 @@ class SignUpFormBase extends Component {
 							maxLength="100"
 						/>
 					</Form.Group>
-					<Form.Group controlId="formBasicPassword2">
-						<Form.Label>Password</Form.Label>
+					<Form.Group controlId="formBasicPassword2" className="mb-3">
+						<Form.Label>Repeat Password</Form.Label>
 						<Form.Control 
 							name="passwordTwo"
 							value={passwordTwo}
 							onChange={this.onChange}
 							type="password"
-							placeholder="Confirm Password"
+							placeholder="Type password again"
 							maxLength="100"
 						/>
 					</Form.Group>
-					<Row>
+					<Row className="button-row">
 						<Col>
 							<Button variant="success" type="submit" disabled={isInvalid}>
 								Sign up

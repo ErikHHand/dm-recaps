@@ -101,9 +101,9 @@ class SignInFormBase extends Component {
 
 		let signInForm = 
 			<>
-				<h1>Sign in</h1>
+				<h3 className="landing-subtitle">Sign in</h3>
 				<Form onSubmit={this.onSubmit}>
-					<Form.Group controlId="formBasicEmail">
+					<Form.Group controlId="formBasicEmail" className="mb-3">
 						<Form.Label>Email address</Form.Label>
 						<Form.Control 
 							name="email"
@@ -114,7 +114,7 @@ class SignInFormBase extends Component {
 						/>
 					</Form.Group>
 
-					<Form.Group controlId="formBasicPassword">
+					<Form.Group controlId="formBasicPassword" className="mb-3">
 						<Form.Label>Password</Form.Label>
 						<Form.Control 
 							name="password"
@@ -125,7 +125,7 @@ class SignInFormBase extends Component {
 						/>
 					</Form.Group>
 					
-					<Row>
+					<Row className="button-row">
 						<Col>
 							<Button variant="success" type="submit" disabled={isSignInInvalid}>
 								Sign in
@@ -151,9 +151,9 @@ class SignInFormBase extends Component {
 
 		let forgotPasswordForm = 
 			<>
-				<h1>Forgot Password</h1>
+				<h3 className="landing-subtitle">Forgot Password</h3>
 				<Form onSubmit={this.onSubmitForgotPassword}>
-					<Form.Group controlId="formBasicEmail">
+					<Form.Group controlId="formBasicEmail" className="mb-3">
 						<Form.Label>Email address</Form.Label>
 						<Form.Control 
 							name="email"
@@ -164,7 +164,7 @@ class SignInFormBase extends Component {
 						/>
 					</Form.Group>
 					
-					<Row>
+					<Row className="button-row">
 						<Col>
 							<Button variant="success" type="submit" disabled={isResetInvalid}>
 								Reset Password
