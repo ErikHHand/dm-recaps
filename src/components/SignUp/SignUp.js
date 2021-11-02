@@ -6,6 +6,7 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as ROUTES from '../../constants/routes';
 
 import { Form, Button } from 'react-bootstrap';
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Alert from 'react-bootstrap/Alert'
@@ -137,8 +138,7 @@ class SignUpFormBase extends Component {
 			<>
 				<h3 className="landing-subtitle">Sign up</h3>
 				<Form onSubmit={this.onSubmit}>
-					<Form.Group controlId="formBasicUsername" className="mb-3">
-						<Form.Label>Username</Form.Label>
+					<FloatingLabel controlId="formBasicUsername" className="mb-3" label="Username">
 						<Form.Control 
 							name="username"
 							value={username}
@@ -147,9 +147,8 @@ class SignUpFormBase extends Component {
 							placeholder="Username"
 							maxLength="25"
 						/>
-					</Form.Group>
-					<Form.Group controlId="formBasicEmail" className="mb-3">
-						<Form.Label>Email address</Form.Label>
+					</FloatingLabel>
+					<FloatingLabel controlId="formBasicEmail" className="mb-3" label="Email address">
 						<Form.Control 
 							name="email"
 							value={email}
@@ -158,9 +157,8 @@ class SignUpFormBase extends Component {
 							placeholder="Email address"
 							maxLength="100"
 						/>
-					</Form.Group>
-					<Form.Group controlId="formBasicPassword" className="mb-3">
-						<Form.Label>Password</Form.Label>
+					</FloatingLabel>
+					<FloatingLabel controlId="formBasicPassword" className="mb-3" label="Password">
 						<Form.Control 
 							name="passwordOne"
 							value={passwordOne}
@@ -169,9 +167,8 @@ class SignUpFormBase extends Component {
 							placeholder="Password"
 							maxLength="100"
 						/>
-					</Form.Group>
-					<Form.Group controlId="formBasicPassword2" className="mb-3">
-						<Form.Label>Repeat Password</Form.Label>
+					</FloatingLabel>
+					<FloatingLabel controlId="formBasicPassword2" className="mb-3" label="Repeat Password">
 						<Form.Control 
 							name="passwordTwo"
 							value={passwordTwo}
@@ -180,7 +177,7 @@ class SignUpFormBase extends Component {
 							placeholder="Type password again"
 							maxLength="100"
 						/>
-					</Form.Group>
+					</FloatingLabel>
 					<Row className="button-row">
 						<Col>
 							<Button variant="success" type="submit" disabled={isInvalid}>

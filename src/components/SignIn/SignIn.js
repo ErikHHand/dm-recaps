@@ -6,6 +6,7 @@ import { withFirebase } from '../Firebase/Firebase';
 import * as ROUTES from '../../constants/routes';
 
 import { Form, Button } from 'react-bootstrap';
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Alert from 'react-bootstrap/Alert'
@@ -103,8 +104,7 @@ class SignInFormBase extends Component {
 			<>
 				<h3 className="landing-subtitle">Sign in</h3>
 				<Form onSubmit={this.onSubmit}>
-					<Form.Group controlId="formBasicEmail" className="mb-3">
-						<Form.Label>Email address</Form.Label>
+					<FloatingLabel controlId="formBasicEmail" className="mb-3" label="Email address">
 						<Form.Control 
 							name="email"
 							value={email}
@@ -112,10 +112,9 @@ class SignInFormBase extends Component {
 							type="email"
 							placeholder="Email Address" 
 						/>
-					</Form.Group>
+					</FloatingLabel>
 
-					<Form.Group controlId="formBasicPassword" className="mb-3">
-						<Form.Label>Password</Form.Label>
+					<FloatingLabel controlId="formBasicPassword" className="mb-3" label="password">
 						<Form.Control 
 							name="password"
 							value={password}
@@ -123,7 +122,7 @@ class SignInFormBase extends Component {
 							type="password"
 							placeholder="Password"
 						/>
-					</Form.Group>
+					</FloatingLabel>
 					
 					<Row className="button-row">
 						<Col>
@@ -153,8 +152,7 @@ class SignInFormBase extends Component {
 			<>
 				<h3 className="landing-subtitle">Forgot Password</h3>
 				<Form onSubmit={this.onSubmitForgotPassword}>
-					<Form.Group controlId="formBasicEmail" className="mb-3">
-						<Form.Label>Email address</Form.Label>
+					<FloatingLabel controlId="formBasicEmail" className="mb-3" label="Email address">
 						<Form.Control 
 							name="email"
 							value={email}
@@ -162,7 +160,7 @@ class SignInFormBase extends Component {
 							type="email"
 							placeholder="Email address for password reset link" 
 						/>
-					</Form.Group>
+					</FloatingLabel>
 					
 					<Row className="button-row">
 						<Col>
