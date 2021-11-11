@@ -447,6 +447,13 @@ button:focus {
 	padding: 0.6em 1em 0.6em 1em !important;
 }
 
+@media only screen and (max-width: 575px) {
+	.recaps-column {
+		left: 100vw;
+		bottom: calc(96.5vh - 42px - 58px);
+	}
+}
+
 .recap-session-info-text {
 	display: -webkit-box;
 	-webkit-line-clamp: 1;
@@ -574,13 +581,94 @@ button:focus {
 	cursor: pointer;
 }
 
+.tab-back-to-list {
+	display: none;
+}
+
+.tab-back-to-list-container {
+	display: none;
+}
+
+@media only screen and (max-width: 575px) {
+	.tab-back-to-list {
+		
+		display: inline-flex;
+		align-items: center;
+		font-size: 18px;
+		font-weight: 500;
+		cursor: pointer;
+	}
+
+	.tab-back-to-list-container {
+		display: flex;
+		position: relative;
+		left: 100vw;
+		bottom: calc(28px + 0.5rem);
+		padding-left: 30px;
+		padding-bottom: 0.5rem;
+	}
+}
+
+@media only screen and (max-width: 575px) {
+	.slide-to-recaps {
+		animation: 0.5s slide-to-recaps;
+	}
+
+	@keyframes slide-to-recaps {
+		from {
+			right: 0vw;
+		}
+	  
+		to {
+			right: 100vw;
+		}
+	}
+
+	.recaps-view {
+		right: 100vw;
+	}
+
+	.slide-from-recaps {
+		animation: 0.5s slide-from-recaps;
+	}
+
+	@keyframes slide-from-recaps {
+		from {
+			right: 100vw;
+		}
+	  
+		to {
+			right: 0vw;
+		}
+	}
+}
+
 .tab-content {
 	height: calc(96.5vh - 42px - 58px);
 	margin-bottom: 1.5vh;
 }
 
-.tab-nav { /* Do not remove */
+
+@media only screen and (max-width: 575px) {
+	.tab-content {
+		overflow-x: hidden;
+	}
+}
+
+
+.tab-nav {
 	height: 42px;
+	position: relative;
+}
+
+.tab-nav-col {
+	height: 42px;
+}
+
+@media only screen and (max-width: 575px) {
+	.tab-nav {
+		overflow-x: hidden;
+	}
 }
 
 .tab-nav-item {
@@ -597,6 +685,7 @@ button:focus {
 
 .tab-pane {
 	height: 100%;
+	position: relative;
 }
 
 .tag-add-button {

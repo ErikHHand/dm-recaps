@@ -153,7 +153,10 @@ class TagsPage extends Component {
 							key = {tag}
 							tagInfo = {this.props.campaign.tags[tag]}
 							isSelected = {this.props.selectedTag === tag}
-							handleClick = {() => this.props.handleSelectedTag(tag)}
+							handleClick = {() => {
+								this.props.handleSelectedTag(tag);
+								this.props.handleTransition("slide-to-recaps");
+							}}
 						/> :
 						<></>
 					);
@@ -241,7 +244,7 @@ class TagsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col lg={9} md={8} sm={7} className="remove-padding height-100" ref={ref => (this.recapItemColumn = ref)}>
+					<Col lg={9} md={8} sm={7} className="remove-padding height-100 recaps-column" ref={ref => (this.recapItemColumn = ref)}>
 						<div ref={ref => (this.tagDescription = ref)}>
 							{this.props.selectedTag ? 
 								<TagDescription 

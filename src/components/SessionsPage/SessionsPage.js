@@ -109,7 +109,10 @@ class SessionsPage extends Component {
 							isSelectedSession = {this.props.selectedSession === sessionID}
 							campaignRef = {this.props.campaignRef}
 							loadCampaign = {this.props.loadCampaign}
-							click = {() => this.props.handleSelectedSession(sessionID)}
+							click = {() => {
+								this.props.handleSelectedSession(sessionID);
+								this.props.handleTransition("slide-to-recaps");
+							}}
 						/>
 					);
 				}
@@ -159,7 +162,7 @@ class SessionsPage extends Component {
 		return (
 			<>
 				<Row className="remove-margin height-100">
-					<Col lg={3} md={4} sm={5} className="remove-padding height-100">
+					<Col lg={3} md={4} sm={5} xs={12} className="remove-padding height-100">
 						<div className="border-right height-100">
 							<SortArrowsColumn
 								status = {this.state.sessionSortDescending}
@@ -177,7 +180,7 @@ class SessionsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col lg={9} md={8} sm={7} className="remove-padding height-100">
+					<Col lg={9} md={8} sm={7} xs={12} className="remove-padding height-100 recaps-column">
 						<SortArrowsColumn
 							status = {this.state.recapSortDescending}
 							changeSort = {() => this.changeSort("recapSortDescending")}

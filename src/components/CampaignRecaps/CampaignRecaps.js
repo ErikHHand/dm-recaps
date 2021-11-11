@@ -11,6 +11,9 @@ import Alert from 'react-bootstrap/Alert';
 
 import { withFirebase } from '../Firebase/Firebase';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons';
+
 
 /*
 	This class holds the global state for this App.
@@ -28,10 +31,9 @@ class CampaignRecaps extends Component {
 			campaign: {},
 			sessions: {},
 			tags: {},
-			selectedSession: null,
-			selectedTag: null,
 			updateCampaign: false,
 			showAlert: false,
+			tabClasses: "",
 			error: null,
 			errorMessage: "",
 		};
@@ -45,7 +47,9 @@ class CampaignRecaps extends Component {
 		this.handleSelectedSession = this.handleSelectedSession.bind(this);
 		this.handleSelectedTag = this.handleSelectedTag.bind(this);
 		this.handleError = this.handleError.bind(this);
+		this.handleTransition = this.handleTransition.bind(this);
 		this.loadCampaign = this.loadCampaign.bind(this);
+		this.animationEnd = this.animationEnd.bind(this);
 	}
 
 
@@ -54,9 +58,14 @@ class CampaignRecaps extends Component {
 	componentDidMount() {
 
 		this.loadCampaign();
+		this.sessionTab.addEventListener("animationend", this.animationEnd);
+		this.tagTab.addEventListener("animationend", this.animationEnd);
 	}
 
 	componentWillUnmount() {
+
+		this.sessionTab.removeEventListener("animationend", this.animationEnd);
+		this.tagTab.removeEventListener("animationend", this.animationEnd);
 
 		// Check if user is signed in
 		if(this.props.firebase.auth.currentUser) {
@@ -149,8 +158,6 @@ class CampaignRecaps extends Component {
 					sessions: sessions,
 					tags: tags,
 					campaign: campaginDoc.data(),
-					selectedSession: campaginDoc.data().selectedSession,
-					selectedTag: campaginDoc.data().selectedTag,
 				}, () => {
 					if(retry) retry();
 				});
@@ -257,6 +264,18 @@ class CampaignRecaps extends Component {
 		});
 	}
 
+	handleTransition(transition) {
+		this.setState({tabClasses: transition});
+	}
+
+	animationEnd(event) {
+		if(event.animationName === "slide-to-recaps") {
+			this.setState({tabClasses: "recaps-view"})
+		} else if(event.animationName === "slide-from-recaps") {
+			this.setState({tabClasses: "session/tag-view"})
+		}
+	}
+
 	render() {
 
 		// The id for this campaign
@@ -265,7 +284,14 @@ class CampaignRecaps extends Component {
 		// The Firestore database reference for this campaign
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
-		let activeTab = this.state.campaign ? this.state.campaign.activeTab : "sessions";
+		let activeTab = this.state.campaign.activeTab ? this.state.campaign.activeTab : "sessions";
+		let backButtonText = "";
+
+		/*
+		if(this.state.campaign.sessions) {
+			backButtonText = activeTab === "sessions" ? " - " + 
+				this.state.campaign.sessions[this.state.campaign.selectedSession].description : "";
+		} */
 
 		return (
 			<>
@@ -281,8 +307,8 @@ class CampaignRecaps extends Component {
 					activeKey={activeTab}
 					onSelect={(key) => this.setActiveTab(key)}
 				>
-					<Row className="remove-margin tab-nav">
-						<Col className="remove-padding tab-nav-col">
+					<Row className={"remove-margin tab-nav " }>
+						<Col className={"remove-padding tab-nav-col " + this.state.tabClasses}>
 							<Nav 
 								variant="tabs" 
 								className="justify-content-center"
@@ -308,11 +334,20 @@ class CampaignRecaps extends Component {
 									</Nav.Link>
 								</Nav.Item>
 							</Nav>
+							<div className="tab-back-to-list-container border-bottom">
+								<div 
+									className={"tab-back-to-list " + this.state.tabClasses}
+									onClick={() => this.handleTransition("slide-from-recaps")}
+								>
+									<FontAwesomeIcon icon={faLongArrowAltLeft}/>
+									&nbsp; {activeTab.charAt(0).toUpperCase() + activeTab.slice(1) + backButtonText}
+								</div>
+							</div>
 						</Col>
 					</Row>
 					
 					<Tab.Content style={this.state.showAlert ? {maxHeight: "calc(96.5vh - 168px)"} : {}}>
-						<Tab.Pane eventKey="sessions">
+						<Tab.Pane eventKey="sessions" className={this.state.tabClasses} ref={ref => (this.sessionTab = ref)}>
 							<SessionsPage
 								campaign = {this.state.campaign}
 								sessions = {this.state.sessions}
@@ -326,11 +361,12 @@ class CampaignRecaps extends Component {
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
 								handleError = {this.handleError}
+								handleTransition = {this.handleTransition}
 								status = {this.state.status}
 								loadCampaign = {this.loadCampaign}
 							/>
 						</Tab.Pane>
-						<Tab.Pane eventKey="tags">
+						<Tab.Pane eventKey="tags" className={this.state.tabClasses} ref={ref => (this.tagTab = ref)}>
 							<TagsPage
 								campaign = {this.state.campaign}
 								sessions = {this.state.sessions}
@@ -344,6 +380,7 @@ class CampaignRecaps extends Component {
 								handleSelectedSession = {this.handleSelectedSession}
 								handleSelectedTag = {this.handleSelectedTag}
 								handleError = {this.handleError}
+								handleTransition = {this.handleTransition}
 								status = {this.state.status}
 								loadCampaign = {this.loadCampaign}
 							/>
