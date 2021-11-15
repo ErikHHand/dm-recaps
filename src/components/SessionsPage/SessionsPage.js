@@ -162,7 +162,7 @@ class SessionsPage extends Component {
 		return (
 			<>
 				<Row className="remove-margin height-100">
-					<Col lg={3} md={4} sm={5} xs={12} className="remove-padding height-100">
+					<Col xl={3} md={4} sm={5} xs={12} className="remove-padding height-100">
 						<div className="border-right height-100">
 							<SortArrowsColumn
 								status = {this.state.sessionSortDescending}
@@ -180,7 +180,7 @@ class SessionsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col lg={9} md={8} sm={7} xs={12} className="remove-padding height-100 recaps-column">
+					<Col xl={9} md={8} sm={7} xs={12} className="remove-padding height-100 recaps-column">
 						<SortArrowsColumn
 							status = {this.state.recapSortDescending}
 							changeSort = {() => this.changeSort("recapSortDescending")}
