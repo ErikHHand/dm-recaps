@@ -114,14 +114,14 @@ class UserSearch extends Component {
     render() {
 
         // Set the default no results text
-        let searchResult =  <div className="search-user-no-result text-muted">
+        let searchResult =  <div className="user-search-no-result text-muted">
                                 No results
                             </div> 
 
         if(this.state.searchResult) {
             if(this.state.searchResult.userID === this.props.firebase.auth.currentUser.uid) {
                 // A users has search for him/her/themselves
-                searchResult =  <div className="search-user-no-result text-muted">
+                searchResult =  <div className="user-search-no-result text-muted">
                                     Hey, that's you!
                                 </div> 
             } else {
@@ -130,6 +130,7 @@ class UserSearch extends Component {
                                     pill 
                                     className="user-tag-search-result" 
                                     onClick={this.shareWithUser}
+                                    bg="bullshit"
                                 >
                                     <FontAwesomeIcon icon={faUser} />
                                     &nbsp;
@@ -148,7 +149,7 @@ class UserSearch extends Component {
                             searchText=""
                         />
                     </Col>
-                    <Col xs="6" className="search-user-result">
+                    <Col xs="6" className="user-search-result">
                         {searchResult}
                     </Col>
                 </Row>

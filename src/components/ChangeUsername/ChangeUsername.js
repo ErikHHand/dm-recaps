@@ -126,7 +126,6 @@ class ChangeUsername extends Component {
                     .where("sharingIsOn", "==", true).get().then((sharedWithCampaigns) => {
 
                         sharedWithCampaigns.forEach((doc) => {
-                            console.log(doc.id)
                             campaignsRef.doc(doc.id).update({
                                 operation: "shared-username-update",
                                 ["usersSharedWith." + authUser.user.uid]: username
@@ -217,7 +216,7 @@ class ChangeUsername extends Component {
                                 autoComplete="new-password"
                             />
 						</Form.Group>
-                        <Form.Group controlId="formNewUsername">
+                        <Form.Group className="mb-3" controlId="formNewUsername">
                             <Form.Label>New Username</Form.Label>
                             <Form.Control 
                                 name="username"

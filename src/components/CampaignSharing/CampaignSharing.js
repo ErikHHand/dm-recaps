@@ -117,22 +117,33 @@ class CampaignSharing extends Component {
 		// an option for revoking access to campaign
 		if(usersList && usersList.length !== 0) {
 			usersSharedWith = usersList.map((userID) =>
-				<Row key={userID}>
-					<Col xs="6" className={this.props.campaign.sharingIsOn ? "center-vertically" : "center-vertically opacity-20"}>
+				<Row key={userID} className="remove-margin">
+					<Col 
+						xs="6" 
+						className={this.props.campaign.sharingIsOn ? 
+							"center-vertically remove-padding" : 
+							"center-vertically remove-padding opacity-20"
+						}
+					>
 						<Badge 
 							pill 
 							style={{ backgroundColor: coloursList[usersList.indexOf(userID)]}} 
 							className={textColoursList[usersList.indexOf(userID)] + " user-tag"}
+							bg="bullshit"
 						>
 							<FontAwesomeIcon icon={faUser} />
 							&nbsp;
 							{this.props.campaign.usersSharedWith[userID]}
 						</Badge>
 					</Col>
-					<Col xs="4" className={this.props.campaign.sharingIsOn ? "user-access-type" : "user-access-type opacity-20"}>
+					<Col xs="4" className={this.props.campaign.sharingIsOn ? 
+						"user-access-type remove-padding" : 
+						"user-access-type remove-padding opacity-20"
+						}
+					>
 						Write access
 					</Col>
-					<Col xs="2" className="center-vertically">
+					<Col xs="2" className="center-vertically remove-padding">
 						{
 							userIsOwner ?
 							<CloseButton
@@ -147,7 +158,7 @@ class CampaignSharing extends Component {
 		}
 
 		return (
-			<div>
+			<>
                 <div 
                     onClick={() => this.setState({ showCampaignSharing: !this.state.showCampaignSharing })}
                     ref={this.attachRef}
@@ -164,17 +175,14 @@ class CampaignSharing extends Component {
 					rootClose={true}
 					onHide={() => campaignSharing.setState({showCampaignSharing: false})}
 				>
-					{({
-						show: _show,
-						...props
-					}) => (
+					{({ show: _show,...props }) => (
 						<Popover id="popover-basic" {...props} className="campaign-sharing-window">
-							<Popover.Title>
-								<Row>
-									<Col xs="8" className="campaign-sharing-title">
+							<Popover.Header>
+								<Row className="remove-margin">
+									<Col xs="8" className="campaign-sharing-title remove-padding">
                                         Campaign Sharing
 									</Col>
-                                    <Col xs="4" className="right-align">
+                                    <Col xs="4" className="right-align remove-padding">
                                         <BootstrapSwitchButton
 											disabled={!userIsOwner}
                                             checked={this.props.campaign.sharingIsOn}
@@ -185,8 +193,8 @@ class CampaignSharing extends Component {
                                         />
                                     </Col>
 								</Row>
-							</Popover.Title>
-							<Popover.Content>
+							</Popover.Header>
+							<Popover.Body>
 								{
 									userIsOwner ?
 									<UserSearch
@@ -200,36 +208,37 @@ class CampaignSharing extends Component {
 									<></>
 								}
 								<div className="user-list">
-									<Row>
+									<Row className="remove-margin">
 										<Col className="user-maximum-text">
 											Campaigns can be shared between 16 people at most.
 										</Col>
 									</Row>
-									<Row>
-										<Col xs="6" className="center-vertically">
+									<Row className="remove-margin">
+										<Col xs="6" className="center-vertically p-0">
 											<Badge 
 												pill 
 												style={{ backgroundColor: coloursList[15]}} 
 												className={textColoursList[15] + " user-tag"}
+												bg="bullshit"
 											>
 												<FontAwesomeIcon icon={faUser} />
 												&nbsp;
 												{this.props.campaign.ownerUsername}
 											</Badge>
 										</Col>
-										<Col xs="4" className="user-access-type">
+										<Col xs="4" className="user-access-type p-0">
 											Owner
 										</Col>
-										<Col xs="2" className="center-vertically">
+										<Col xs="2" className="center-vertically p-0">
 										</Col>
 									</Row>
 									{usersSharedWith}
 								</div>
-							</Popover.Content>
+							</Popover.Body>
 						</Popover>
 					)}
 				</Overlay>
-			</div>
+			</>
 		)
 	}
 }

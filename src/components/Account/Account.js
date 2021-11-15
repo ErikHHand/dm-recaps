@@ -69,20 +69,20 @@ class Account extends Component {
         let ownedCampaigns = userData ? userData.ownedCampaigns : [];
 
         return (
-            <>
+            <div className="account-page">
                 <Row className="account-page-subtitle border-bottom">
                     <Col>
                         <h5>Account Settings</h5>
                     </Col>
                 </Row>
                 <Row className="account-page-row">
-                    <Col md="9">
+                    <Col xs="9">
                         <h6 className="account-property-text">Password</h6>
                         <p className="account-property-info">
                             Insert password requirements here.
                         </p>
                     </Col>
-                    <Col md="3" className="right-align">
+                    <Col xs="3" className="right-align center-vertically">
                         <Button variant="outline-info" onClick={() => this.setState({showChangePassword: true})}>
                             Change
                         </Button>
@@ -90,13 +90,13 @@ class Account extends Component {
                 </Row>
 
                 <Row className="account-page-row">
-                    <Col md="9">
+                    <Col xs="9">
                         <h6 className="account-property-text">Email address</h6>
                         <p className="account-property-info">
                             {this.props.firebase.auth.currentUser.email}
                         </p>
                     </Col>
-                    <Col md="3" className="right-align">
+                    <Col xs="3" className="right-align center-vertically">
                         <Button variant="outline-info" onClick={() => this.setState({showChangeEmail: true})}>
                             Change
                         </Button>
@@ -104,13 +104,13 @@ class Account extends Component {
                 </Row>
 
                 <Row className="account-page-row">
-                    <Col md="9">
+                    <Col xs="9">
                         <h6 className="account-property-text">Username</h6>
                         <p className="account-property-info">
                             {userData ? userData.username + changeUsernameText : this.props.firebase.auth.currentUser.displayName}
                         </p>
                     </Col>
-                    <Col md="3" className="right-align">
+                    <Col xs="3" className="right-align center-vertically">
                         <Button variant="outline-info" onClick={() => this.setState({showChangeUsername: true})} disabled={!canChangeUsername}>
                             Change
                         </Button>
@@ -124,13 +124,13 @@ class Account extends Component {
                 </Row>
 
                 <Row className="account-page-row">
-                    <Col md="9">
+                    <Col xs="9">
                         <h6 className="account-property-text">Delete Account</h6>
                         <p className="account-property-info">
                             No going back
                         </p>
                     </Col>
-                    <Col md="3" className="right-align">
+                    <Col xs="3" className="right-align center-vertically">
                         <Button variant="outline-danger" onClick={() => this.setState({showDeleteAccount: true})}>
                             Delete
                         </Button>
@@ -157,7 +157,7 @@ class Account extends Component {
                     show = {this.state.showDeleteAccount}
 					onHide = {() => this.setState({ showDeleteAccount: false })}
                 />
-            </>
+            </div>
         );
     }
 }

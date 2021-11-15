@@ -11,7 +11,7 @@ a {
 }
 
 a.active {
-	font-weight: 500;
+	font-weight: 600;
 }
 
 a.nav-link {
@@ -23,6 +23,21 @@ a.nav-link {
     white-space: nowrap;
     vertical-align: baseline;
 	max-width: 20vw;
+	padding-bottom: 2px;
+}
+
+@media only screen and (max-width: 767px) {
+	a.nav-link {
+		text-align: left;
+		max-width: 100vw;
+	}
+}
+
+ul.nav.nav-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 body  {
@@ -54,6 +69,13 @@ button:focus {
 .account-current-password {
 	padding-bottom: 1.5rem;
 	margin-bottom: 1rem;
+}
+
+.account-page {
+	overflow: scroll;
+	max-height: calc(96.5vh - 58px);
+	margin: 1.5vh 0 0 0;
+	padding: 0.5rem 0;
 }
 
 .account-page-row {
@@ -107,6 +129,11 @@ button:focus {
 	border-width: 0 0 1px 0;
 }
 
+.border-left{
+	border: solid rgba(134, 134, 134, 0.1);
+	border-width: 0 0 0 1px;
+}
+
 .border-right{
 	border: solid rgba(134, 134, 134, 0.1);
 	border-width: 0 1px 0 0;
@@ -143,7 +170,7 @@ button:focus {
 
 .campaign-list {
 	overflow: scroll;
-	max-height: calc(96.5vh - 60px);
+	max-height: calc(96.5vh - 58px);
 	margin: 1.5vh 0 0 0;
 	padding: 0.5rem 0;
 }
@@ -165,7 +192,7 @@ button:focus {
 }
 
 .campaign-sharing-window {
-	min-width: 400px;
+	min-width: min(420px, 82vw);
 }
 
 .campaign-title {
@@ -195,6 +222,16 @@ button:focus {
 	background-color:rgb(233, 236, 239)
 }
 
+.container-landing {
+	opacity: 0.97;
+	border-radius: 4px;
+	height: min(98vh, auto);
+	width: min(100vw, 600px);
+	margin: 0 auto 2vh auto !important;
+	padding: 1rem;
+	background-color:rgb(233, 236, 239)
+}
+
 .dark-background {
 	background-color: rgba(17, 15, 15, 0.836);
 }
@@ -209,7 +246,7 @@ button:focus {
 
 .filter-bar {
 	padding: 0.5rem 0 0.5rem 31px;
-	min-height: 8%;
+	height: 52px;
 }
 
 .filter-field {
@@ -233,17 +270,28 @@ button:focus {
 	color: rgb(42, 42, 212);
 }
 
+.form-control-custom {
+	height: auto !important;
+}
+
+@media only screen and (max-width: 767px) {
+	.form-control-margin-bottom {
+		margin-bottom: 1rem;
+	}
+}
+
+
 .height-100 {
 	height: 100%;
 }
 
 .icon {
-	color: rgba(151, 146, 146, 0.424);
+	color: rgba(105, 102, 102, 0.664);
 	cursor: pointer;
 }
 
 .icon:hover {
-	color: rgba(151, 146, 146, 0.835);
+	color: rgba(88, 85, 85, 0.925);
 }
 
 .item-add-button {
@@ -288,8 +336,8 @@ button:focus {
 	text-overflow: ellipsis;
 }
 
-.jumbotron-box {
-	opacity: 0.95;
+.landing-subtitle {
+	margin: 2rem 0 1rem 0 !important;
 }
 
 .loading-spinner {
@@ -303,24 +351,37 @@ button:focus {
 	width: auto!important;
 }
 
-.nav-item {
-	border-bottom: 2px solid rgba(255, 255, 255, 0);
+.nav-air:hover {
+	width: auto!important;
+	border-bottom: 2px solid rgba(255, 255, 255, 0) !important;
 }
 
-.nav-item:hover {
+@media only screen and (max-width: 767px) {
+	.nav-air {
+		display: none;
+	}
+}
+
+.nav-brand {
+	margin-bottom: -1px;
+}
+
+.nav-item-custom {
+	border-bottom: 2px solid rgba(255, 255, 255, 0);
+	margin-bottom: -1px;
+}
+
+.nav-item-custom:hover {
 	border-bottom: 2px solid rgba(151, 146, 146, 0.835);
 }
 
 .nav-item-active {
 	border-bottom: 2px solid black;
+	margin-bottom: -1px;
 }
 
 .nav-item-active:hover {
 	border-bottom: 2px solid black;
-}
-
-.nav-link {
-	cursor: pointer;
 }
 
 .nav-right {
@@ -341,8 +402,21 @@ button:focus {
 	font-weight: bold;
 }
 
+.navbar-toggler-icon {
+	width: 1em !important;
+	height: 1em !important;
+}
+
+.navbar-brand {
+	height: 39px;
+}
+
 .opacity-20 {
 	opacity: 20%;
+}
+
+.react-datepicker-wrapper {
+	display: block !important;
 }
 
 .react-search-field-input {
@@ -371,6 +445,13 @@ button:focus {
 
 .recap-body {
 	padding: 0.6em 1em 0.6em 1em !important;
+}
+
+@media only screen and (max-width: 575px) {
+	.recaps-column {
+		left: 100vw;
+		bottom: calc(96.5vh - 42px - 58px);
+	}
 }
 
 .recap-session-info-text {
@@ -437,21 +518,6 @@ button:focus {
 	text-align: right;
 }
 
-.search-user-no-result {
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
-	text-align: center;
-	font-style: italic;
-}
-
-.search-user-result {
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
-	text-align: center;
-}
-
 .select-badge {
 	font-size: 14px !important;
 	margin: 0.2rem 0.35rem;
@@ -486,12 +552,9 @@ button:focus {
 	cursor: default;
 }
 
-.select-row {
-	margin-bottom: 2rem;
-}
-
 .select-type {
 	font-size: 14px !important;
+	color: rgb(33, 37, 41);
 	border-width: 1px;
 	border: solid rgb(230, 230, 230);
 }
@@ -518,17 +581,111 @@ button:focus {
 	cursor: pointer;
 }
 
+.tab-back-to-list {
+	display: none;
+}
+
+.tab-back-to-list-container {
+	display: none;
+}
+
+@media only screen and (max-width: 575px) {
+	.tab-back-to-list {
+		
+		display: inline-flex;
+		align-items: center;
+		font-size: 18px;
+		font-weight: 500;
+		cursor: pointer;
+	}
+
+	.tab-back-to-list-container {
+		display: flex;
+		position: relative;
+		left: 100vw;
+		bottom: calc(28px + 0.5rem);
+		padding-left: 30px;
+		padding-bottom: 0.5rem;
+	}
+}
+
+@media only screen and (max-width: 575px) {
+	.slide-to-recaps {
+		animation: 0.5s slide-to-recaps;
+	}
+
+	@keyframes slide-to-recaps {
+		from {
+			right: 0vw;
+		}
+	  
+		to {
+			right: 100vw;
+		}
+	}
+
+	.recaps-view {
+		right: 100vw;
+	}
+
+	.slide-from-recaps {
+		animation: 0.5s slide-from-recaps;
+	}
+
+	@keyframes slide-from-recaps {
+		from {
+			right: 100vw;
+		}
+	  
+		to {
+			right: 0vw;
+		}
+	}
+}
+
 .tab-content {
-	height: calc(96.5vh - 42px - 60px);
+	height: calc(96.5vh - 42px - 58px);
 	margin-bottom: 1.5vh;
 }
 
-.tab-nav { /* Do not remove */
+
+@media only screen and (max-width: 575px) {
+	.tab-content {
+		overflow-x: hidden;
+	}
+}
+
+
+.tab-nav {
 	height: 42px;
+	position: relative;
+}
+
+.tab-nav-col {
+	height: 42px;
+}
+
+@media only screen and (max-width: 575px) {
+	.tab-nav {
+		overflow-x: hidden;
+	}
+}
+
+.tab-nav-item {
+	cursor: pointer;
+	color: inherit !important;
+}
+
+.tab-nav-item:hover {
+	border: 1px solid rgb(222, 226, 230) !important;
+    border-top-left-radius: .25rem !important;
+    border-top-right-radius: .25rem !important;
+	background-color: rgba(243, 243, 243, 0.336);
 }
 
 .tab-pane {
 	height: 100%;
+	position: relative;
 }
 
 .tag-add-button {
@@ -540,8 +697,31 @@ button:focus {
 	margin: 0.2rem 0.35rem 0.45rem ;
 }
 
+.tag-description-card-title {
+	margin-bottom: 0 !important;
+}
+
+.tag-description-title {
+	max-width: 85%;
+	margin-right: min(5%, 0.8rem);
+	display: inline-block;
+	float: left;
+}
+
+.tag-description-title-collapsed {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .tag-description {
 	width: 100%;
+}
+
+.tag-description-chevron {
+	display: inline-block;
+	float: left;
+	cursor: pointer;
 }
 
 .tag-item {
@@ -574,9 +754,8 @@ button:focus {
 }
 
 .tag-selector {
-	max-width: 36rem !important;
+	max-width: min(36rem, 78vw) !important;
 	max-height: 90vh;
-	min-width: 24rem;
 }
 
 .tag-selector-tag {
@@ -597,12 +776,12 @@ button:focus {
 
 .tag-selector-tag-field {
 	overflow: scroll;
-	max-height: 50vh;
+	max-height: calc(65vh - 16px - 43px - 16px - 38px);
 }
 
 .tag-selector-text {
 	overflow: scroll;
-	max-height: 20vh;
+	max-height: calc(25vh - 33px);
 	font-style: italic;
 	margin: 0.5rem 0.8rem;
 	text-align: center;
@@ -616,11 +795,12 @@ button:focus {
 	color: #D4E9FB;
 }
 
-/* Total height is 60px */
+/* Total height is 57px */
 .top-bar {
-	height: 42px;
-	padding: 10px 0 0 0;
-	margin-bottom: 18px;
+	padding: 0 16px !important;
+	background-color: rgba(243, 243, 243, 0.767);
+	margin: 0 -0.75rem 18px -0.75rem;
+	border-radius: 4px;
 }
 
 .user-access-type {
@@ -645,19 +825,22 @@ button:focus {
 
 .user-search {
 	padding-bottom: 0.6rem;
+	height: 47px;
+}
+
+.user-search-no-result {
+	font-style: italic;
+}
+
+.user-search-result {
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+	text-align: center;
 }
 
 .user-sharing-remove {
-	font-size: 32px !important;
-	color:rgb(247, 55, 55) !important;
-	cursor: pointer;
-	position: relative;
-	bottom: 4px;
-}
-
-.user-sharing-remove:hover {
-	font-size: 32px;
-	color:rgb(252, 0, 0) !important;
+	font-size: 20px !important;
 }
 
 .user-tag {
@@ -671,6 +854,7 @@ button:focus {
 }
 
 .user-tag-search-result {
+	color: rgb(33, 37, 41);
 	border: 3px solid rgb(230, 230, 230);
 	cursor: pointer;
 	width: 100%;

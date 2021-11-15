@@ -118,6 +118,7 @@ class TagFilter extends Component {
 				<Badge 
 					pill 
 					className = "select-type"
+					bg="bullshit"
 				>
 					<FontAwesomeIcon icon={ICONS[type]} />
 					&nbsp;
@@ -149,6 +150,7 @@ class TagFilter extends Component {
 							<Badge
 								pill 
 								className = "select-type"
+								bg="bullshit"
 							>
 								<FontAwesomeIcon icon={faFilter} />
 								&nbsp;

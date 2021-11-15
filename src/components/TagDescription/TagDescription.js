@@ -9,6 +9,10 @@ import Col from 'react-bootstrap/Col'
 
 import { COLOURSRGB } from '../../constants/colours.js';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+
 import { withFirebase } from '../Firebase/Firebase';
 import * as firebase from 'firebase'; // Do not remove
 
@@ -22,10 +26,12 @@ class TagDescription extends Component {
 
 		this.state = {
 			showTagInfo: false,
+			collapsed: false,
 		};
 
 		// Set the context for "this" for the following function
 		this.deleteTag = this.deleteTag.bind(this);
+		this.handleCollapse = this.handleCollapse.bind(this);
 	}
 
 	// Triggers when deleting a tag
@@ -106,6 +112,10 @@ class TagDescription extends Component {
 		});
 	}
 
+	handleCollapse() {
+		this.setState({collapsed: !this.state.collapsed});
+	}
+
 	render() {
 
 		const deleteText = {
@@ -119,14 +129,37 @@ class TagDescription extends Component {
 		// Create background colour for the description box
 		let background = {backgroundColor: COLOURSRGB[this.props.tag.colour]}
 
+		let chevron = this.state.collapsed ? faChevronDown : faChevronUp;
+		let tagDescriptionCardTitleClass = this.state.collapsed ? "tag-description-card-title" : "";
+		let tagDescriptionTitleClass = this.state.collapsed ? 
+			"tag-description-title-collapsed tag-description-title" : "tag-description-title";
+		let tagDescriptionText = this.state.collapsed ? <></> :
+			<Card.Text className="with-line-breaks regular-text">
+				{this.props.tag.description ? this.props.tag.description : noDescription}
+			</Card.Text>
+		
+
 		return (
 			<>
 				<Card className="tag-description" style={background}>
 					<Card.Body>
-						<Card.Title className="">
+						<Card.Title className={tagDescriptionCardTitleClass}>
 							<Row>
-								<Col lg="11" md="10">{this.props.tag.name}</Col>
-								<Col lg="1" md="2" className="right-align item-menu-pos">
+								<Col md="11" xs="10">
+									<div className={tagDescriptionTitleClass}>
+										{this.props.tag.name}
+									</div>
+									<div className="tag-description-chevron icon">
+										<FontAwesomeIcon 
+											icon={chevron}
+											onClick={() => {
+												this.handleCollapse();
+												this.props.updateDimension();
+											}}
+										/>
+									</div>
+								</Col>
+								<Col md="1" xs="2" className="right-align item-menu-pos">
 									<ItemMenu
 										edit = {() => this.setState({ showTagInfo: true})}
 										delete = {() => this.deleteTag(false)}
@@ -135,9 +168,7 @@ class TagDescription extends Component {
 								</Col>
 							</Row>
 						</Card.Title>
-						<Card.Text className="with-line-breaks regular-text">
-							{this.props.tag.description ? this.props.tag.description : noDescription}
-						</Card.Text>
+						{tagDescriptionText}
 					</Card.Body>
 				</Card>
 				<TagInfo 

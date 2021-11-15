@@ -25,6 +25,7 @@ class TagItem extends Component {
 				className={badgeClasses}
 				style={{ backgroundColor: COLOURS[this.props.tagInfo.colour]}}
 				onClick = {this.props.handleClick}
+				bg="bullshit"
 			>
 				<FontAwesomeIcon icon={ICONS[this.props.tagInfo.type]} />
 				&nbsp;

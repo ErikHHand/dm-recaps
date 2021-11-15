@@ -4,7 +4,6 @@ import FormSelectBadge from '../FormSelectBadge/FormSelectBadge';
 
 import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import { Form, Button } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert'
 
@@ -230,7 +229,7 @@ class TagInfo extends Component {
 						A tag with this name already exists!
 					</Alert>
 					<Form onSubmit={this.onSubmit}>
-						<Form.Group controlId="formName">
+						<Form.Group className="mb-3" controlId="formName">
 							<Form.Label>Name</Form.Label>
 							<Form.Control 
 								name="name"
@@ -245,7 +244,7 @@ class TagInfo extends Component {
 							</Form.Text>
 						</Form.Group>
 
-						<Form.Group controlId="formDescription">
+						<Form.Group className="mb-3" controlId="formDescription">
 							<Form.Label>Description</Form.Label>
 							<Form.Control 
 								name="description"
@@ -260,21 +259,21 @@ class TagInfo extends Component {
 								For example "Misty Mountains".
 							</Form.Text>
 						</Form.Group>
-						<Row className="select-row">
-							<Col>
+						<Row className="mb-3">
+							<Form.Group className="col-md form-control-margin-bottom">
 								<FormSelectBadge
 									name = "type"
 									value = {type}
 									changeValue = {(name, value) => this.changeValue(name, value)}
 								/>
-							</Col>
-							<Col>
+							</Form.Group>
+							<Form.Group className="col-md">
 								<FormSelectBadge
 									name = "colour"
 									value = {colour}
 									changeValue = {(name, value) => this.changeValue(name, value)}
 								/>
-							</Col>
+							</Form.Group>
 						</Row>
 						<div>
 							<Button variant="success" type="submit" disabled={isInvalid} >

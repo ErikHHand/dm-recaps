@@ -117,7 +117,7 @@ class CampaignItem extends Component {
 				>
 					<Card.Header>
 						<Row>
-							<Col md="1">
+							<Col xs="2" sm="1">
 								<CampaignSharing
 									campaignID = {this.props.campaignID}
 									campaign = {this.props.campaign}
@@ -127,10 +127,10 @@ class CampaignItem extends Component {
 									handleError = {this.props.handleError}
 								/>
 							</Col>
-							<Col md="10" className="text-muted">
+							<Col xs="8" sm="10" className="text-muted">
 								{this.props.campaign.world}
 							</Col>
-							<Col md="1" className="center">
+							<Col xs="2" sm="1" className="center">
 								<ItemMenu
 									edit = {() => this.setState({ showCampaignInfo: true})}
 									delete = {this.deleteCampaign}

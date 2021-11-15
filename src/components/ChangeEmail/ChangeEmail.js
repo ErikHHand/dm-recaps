@@ -125,7 +125,7 @@ class ChangeEmail extends Component {
                                 autoComplete="new-password"
                             />
 						</Form.Group>
-                        <Form.Group controlId="formNewEmail">
+                        <Form.Group className="mb-3" controlId="formNewEmail">
                             <Form.Label>New Email</Form.Label>
                             <Form.Control 
                                 name="email"

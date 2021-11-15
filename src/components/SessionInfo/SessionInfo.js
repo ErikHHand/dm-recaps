@@ -239,17 +239,18 @@ class SessionInfo extends Component {
 						A session with this description already exists!
 					</Alert>
 					<Form onSubmit={this.onSubmit}>
-						<Form.Group controlId="formSessionDate">
+						<Form.Group className="mb-3" controlId="formSessionDate">
 							<Form.Label>Date</Form.Label>
 							<DatePicker
 								id="example-datepicker" 
 								dateFormat="yyyy/MM/dd"
 								selected={date} 
 								onChange={this.onChangeDate}
+								className="form-control"
 							/>
 						</Form.Group>
 
-						<Form.Group controlId="formDescription">
+						<Form.Group className="mb-3" controlId="formDescription">
 							<Form.Label>Description</Form.Label>
 							<Form.Control 
 								name="description"

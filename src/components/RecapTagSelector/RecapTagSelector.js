@@ -45,6 +45,7 @@ class RecapTagSelector extends Component {
 			tags: tags, // Holds all tags of this campaign with a T/F value based on selection
 			showTagOverlay: false,
 			showTagInfo: false,
+			windowWidth: 0,
 		}
 
 		// Set the context for "this" for the following functions
@@ -52,6 +53,17 @@ class RecapTagSelector extends Component {
 		this.onClick = this.onClick.bind(this);
 		this.handleFilteredTags = this.handleFilteredTags.bind(this);
 		this.changeWindow = this.changeWindow.bind(this);
+		this.updateDimension = this.updateDimension.bind(this);
+	}
+
+	componentDidMount() {
+		// Add a listener for the window size
+		window.addEventListener('resize', this.updateDimension);
+	}
+
+	componentWillUnmount() {
+		// Remove listener
+		window.removeEventListener('resize', this.updateDimension);
 	}
 
 	// Triggers when an update to component happens
@@ -79,6 +91,10 @@ class RecapTagSelector extends Component {
 				tags: tags,
 			});
 		}		
+	}
+
+	updateDimension() {
+		this.setState({ windowWidth: window.innerWidth });
 	}
 
 	// Triggers when a new filter is entered
@@ -156,18 +172,31 @@ class RecapTagSelector extends Component {
 						/>
 		}
 
-		// Divide all filtered tags into three groups to put in 
-		// different columns in the tag selection pop-up
+
+		// Divide all filtered tags into correct number of groups to
+		// put in different columns in the tag selection pop-up
+		let numberOfColumns = 3;
 		let allTags = [];
 		let cols = [];
-		let col1Length = Math.ceil(this.state.filteredTags.length / 3);
-		let col2Length = this.state.filteredTags.length > 1 ? Math.ceil((this.state.filteredTags.length - col1Length) / 2) : 0
-		cols[0] = this.state.filteredTags.slice(0, col1Length);
-		cols[1] = this.state.filteredTags.slice(col1Length, col1Length + col2Length);
-		cols[2] = this.state.filteredTags.slice(col1Length + col2Length, this.state.filteredTags.length);
+
+		if (window.innerWidth < 576) {
+			numberOfColumns = 2;
+			let col1Length = Math.ceil(this.state.filteredTags.length / 2);
+			cols[0] = this.state.filteredTags.slice(0, col1Length);
+			cols[1] = this.state.filteredTags.slice(col1Length, this.state.filteredTags.length);
+		} else {
+			let col1Length = Math.ceil(this.state.filteredTags.length / 3);
+			let col2Length = this.state.filteredTags.length > 1 ? Math.ceil((this.state.filteredTags.length - col1Length) / 2) : 0
+			cols[0] = this.state.filteredTags.slice(0, col1Length);
+			cols[1] = this.state.filteredTags.slice(col1Length, col1Length + col2Length);
+			cols[2] = this.state.filteredTags.slice(col1Length + col2Length, this.state.filteredTags.length);
+		}
+
+		
+		
 
 		// For each column, create the tag badge and put in the column
-		for(let i = 0; i < 3; i++) {
+		for(let i = 0; i < numberOfColumns; i++) {
 			allTags[i] = cols[i].map((tagID) => {
 				if(this.props.campaign.tags[tagID]) { // Avoid bug when filtered tag doesn't exists for some reason
 					return (
@@ -180,6 +209,7 @@ class RecapTagSelector extends Component {
 									(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
 								}
 								onClick={() => this.onClick(tagID)}
+								bg="bullshit"
 							>
 								<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
 								&nbsp;
@@ -204,6 +234,7 @@ class RecapTagSelector extends Component {
 						key={this.props.recapItem.tags.indexOf(tagID)}
 						className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag"}
 						onClick={() => this.props.handleSelectedTag(tagID)}
+						bg="bullshit"
 					>
 						<FontAwesomeIcon icon={ICONS[this.props.campaign.tags[tagID].type]} />
 						&nbsp;
@@ -222,6 +253,7 @@ class RecapTagSelector extends Component {
 					pill 
 					className="recap-add-tag" 
 					onClick={() => this.setState({ showTagOverlay: !this.state.showTagOverlay })}
+					bg="bullshit"
 					ref={this.attachRef}
 				>
 					<FontAwesomeIcon icon={faPlus} />
@@ -233,20 +265,17 @@ class RecapTagSelector extends Component {
 					rootClose={true}
 					onHide={() => recapTagSelector.setState({showTagOverlay: false})}
 				>
-					{({
-						show: _show,
-						...props
-					}) => (
+					{({ show: _show, ...props }) => (
 						<Popover id="popover-basic" {...props} className="tag-selector">
-							<Popover.Title>
+							<Popover.Header>
 								<Row>
 									<Col className="regular-text tag-selector-text remove-scroll-bar with-line-breaks">
 										{this.props.recapItem.text}
 									</Col>
 								</Row>
 								
-							</Popover.Title>
-							<Popover.Content>
+							</Popover.Header>
+							<Popover.Body>
 								<Row>
 									<Col>
 										<div className="select-filter-bar center">
@@ -257,36 +286,34 @@ class RecapTagSelector extends Component {
 								
 
 								<Row className="tag-selector-tag-field remove-scroll-bar">
-									<Col className="border-right center" sm={4}>
+									<Col className="center" sm={4} xs={6}>
 										{allTags[0]}
 									</Col>
-									<Col className="border-right center" sm={4}>
-										{allTags[1]}
+									<Col className="border-left center" sm={4} xs={6}>
+										{allTags[1] ? allTags[1] : <></>}
 									</Col>
-									<Col className="center" sm={4}>
-										{allTags[2]}
+									<Col className="border-left center" sm={4} xs={0}>
+										{allTags[2] ? allTags[2] : <></>}
 									</Col>
 								</Row>
 								
-								<Row className="button-row" noGutters={true}>
-									<Col md={4}>
-										<Button 
-											variant="success" 
-											onClick={this.changeWindow}
-										>
+								<Row className="button-row">
+									<Col sm={4} xs={5}>
+										<Button variant="success" onClick={this.changeWindow}>
 											New Tag
 										</Button>
 									</Col>
-									<Col md={4}>
+									<Col sm={4} xs={2}>
 									</Col>
-									<Col md={4} className="right-align">
+									<Col sm={4} xs={5} className="right-align">
 										<Button variant="info" onClick={this.onSubmit}>Done</Button>
 									</Col>
 								</Row>
-							</Popover.Content>
+							</Popover.Body>
 						</Popover>
 					)}
 				</Overlay>
+				
 				<TagInfo 
 					show = {this.state.showTagInfo}
 					onHide = {this.changeWindow}
