@@ -263,7 +263,7 @@ class RecapItem extends Component {
 								{this.props.campaign.sessions[this.props.recapItem.session].description}
 							</div>
 						</Col>
-						<Col lg="1" sm="2" xs="2" className="right-align">
+						<Col lg="1" sm="2" xs="2" className="right-align remove-padding">
 							{
 								this.state.showIcons ?
 								<ItemMenu

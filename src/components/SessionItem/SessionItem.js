@@ -136,7 +136,7 @@ class SessionItem extends Component {
 								<Col xs={10} sm={9} className="item-title">
 									{session.description}
 								</Col>
-								<Col xs={2} sm={3} className="center item-menu-pos">
+								<Col xs={2} sm={3} className="center item-menu-pos remove-padding">
 									{
 										this.state.showIcons ?
 										<ItemMenu
