@@ -259,6 +259,7 @@ class TagsPage extends Component {
 									handleCampaign = {this.props.handleCampaign}
 									handleSelectedTag = {this.props.handleSelectedTag}
 									handleFilteredTags = {this.handleFilteredTags}
+									updateDimension = {this.updateDimension}
 									handleError = {this.props.handleError}
 									campaignRef = {this.props.campaignRef}
 									loadCampaign = {this.props.loadCampaign}

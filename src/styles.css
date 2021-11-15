@@ -286,12 +286,12 @@ button:focus {
 }
 
 .icon {
-	color: rgba(151, 146, 146, 0.424);
+	color: rgba(105, 102, 102, 0.664);
 	cursor: pointer;
 }
 
 .icon:hover {
-	color: rgba(151, 146, 146, 0.835);
+	color: rgba(88, 85, 85, 0.925);
 }
 
 .item-add-button {
@@ -697,8 +697,31 @@ button:focus {
 	margin: 0.2rem 0.35rem 0.45rem ;
 }
 
+.tag-description-card-title {
+	margin-bottom: 0 !important;
+}
+
+.tag-description-title {
+	max-width: 85%;
+	margin-right: min(5%, 0.8rem);
+	display: inline-block;
+	float: left;
+}
+
+.tag-description-title-collapsed {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .tag-description {
 	width: 100%;
+}
+
+.tag-description-chevron {
+	display: inline-block;
+	float: left;
+	cursor: pointer;
 }
 
 .tag-item {
