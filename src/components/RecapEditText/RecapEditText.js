@@ -70,7 +70,7 @@ class RecapEditText extends Component {
 
 		return (
 			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
-				<Form.Group controlId="formRecapEdit">
+				<Form.Group controlId="formRecapEdit" className="mb-3">
 					<Form.Control 
 						name="text"
 						value={text}
