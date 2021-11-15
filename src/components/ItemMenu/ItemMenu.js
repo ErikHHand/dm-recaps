@@ -15,10 +15,10 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 */
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 	<button
-		href="#"
 		ref={ref}
 		onClick={(e) => {
 			e.preventDefault();
+			e.stopPropagation();
 			onClick(e);
 		}}
 	>
