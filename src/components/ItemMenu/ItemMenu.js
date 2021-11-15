@@ -67,8 +67,22 @@ class ItemMenu extends Component {
 						<FontAwesomeIcon icon={faEllipsisH} className="item-menu icon"/>	
 					</Dropdown.Toggle>
 					<Dropdown.Menu>
-						<Dropdown.Item onClick={this.props.edit}>Edit</Dropdown.Item>
-						<Dropdown.Item onClick={this.showDeleteWindow}>Delete</Dropdown.Item>
+						<Dropdown.Item 
+							onClick={(e) => {
+								e.stopPropagation();
+								this.props.edit();
+							}}
+						>
+							Edit
+						</Dropdown.Item>
+						<Dropdown.Item 
+							onClick={(e) => {
+								e.stopPropagation();
+								this.showDeleteWindow();
+							}}
+						>
+							Delete
+						</Dropdown.Item>
 					</Dropdown.Menu>
 				</Dropdown>
 				<Modal
