@@ -64,7 +64,7 @@ class ItemMenu extends Component {
 			<>
 				<Dropdown>
 					<Dropdown.Toggle as={CustomToggle}>
-						<FontAwesomeIcon icon={faEllipsisH} className="item-menu icon"/>	
+						<FontAwesomeIcon icon={faEllipsisH} className="icon"/>	
 					</Dropdown.Toggle>
 					<Dropdown.Menu>
 						<Dropdown.Item 
@@ -88,6 +88,10 @@ class ItemMenu extends Component {
 				<Modal
 					show={this.state.showDeleteWindow}
 					onHide={this.hideDeleteWindow}
+					onClick={(event) => {
+						event.stopPropagation();
+						event.preventDefault();
+					}}
 				>
 					<Modal.Header closeButton>
 						<Modal.Title>{this.props.deleteText.title}</Modal.Title>

@@ -159,7 +159,7 @@ class TagDescription extends Component {
 										/>
 									</div>
 								</Col>
-								<Col md="1" xs="2" className="right-align item-menu-pos">
+								<Col md="1" xs="2" className="right-align item-menu">
 									<ItemMenu
 										edit = {() => this.setState({ showTagInfo: true})}
 										delete = {() => this.deleteTag(false)}

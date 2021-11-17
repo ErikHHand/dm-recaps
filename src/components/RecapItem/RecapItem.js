@@ -253,7 +253,7 @@ class RecapItem extends Component {
 								<></>
 							}
 						</Col>
-						<Col lg="10" sm="8" xs="8">
+						<Col lg="10" sm="8" xs="8" className="remove-padding">
 							<div
 								onClick={() => this.props.handleSelectedSession(this.props.recapItem.session)}
 								className="session-info-text recap-session-info-text"
@@ -263,7 +263,7 @@ class RecapItem extends Component {
 								{this.props.campaign.sessions[this.props.recapItem.session].description}
 							</div>
 						</Col>
-						<Col lg="1" sm="2" xs="2" className="right-align remove-padding">
+						<Col lg="1" sm="2" xs="2" className="right-align remove-padding item-menu">
 							{
 								this.state.showIcons ?
 								<ItemMenu
@@ -286,8 +286,8 @@ class RecapItem extends Component {
 							}
 						</Col>
 					</Row>
-					<Row>
-						<Col>
+					<Row className="remove-margin">
+						<Col className="remove-padding">
 							<RecapTagSelector
 								recapItem = {this.props.recapItem}
 								writeRecap = {this.writeRecap}

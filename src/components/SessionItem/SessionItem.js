@@ -132,11 +132,11 @@ class SessionItem extends Component {
 				>
 					<Card.Body >
 						<Card.Title>
-							<Row>
-								<Col xs={10} sm={9} className="item-title">
+							<Row className="remove-margin">
+								<Col xs={10} sm={9} className="remove-padding session-item-title">
 									{session.description}
 								</Col>
-								<Col xs={2} sm={3} className="center item-menu-pos remove-padding">
+								<Col xs={2} sm={3} className="right-align item-menu remove-padding">
 									{
 										this.state.showIcons ?
 										<ItemMenu

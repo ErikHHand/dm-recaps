@@ -158,7 +158,7 @@ class UserSearch extends Component {
                     show={this.state.showAlreadyAddedAlert}
                     onClose={() => this.setState({showAlreadyAddedAlert: false})}
                     variant="info"
-                    className="alert-custom"
+                    className="alert-margin-top"
                 >
                     {this.state.searchResult ? this.state.searchResult.username : ""} already has access to this campaign!
                 </Alert>
@@ -167,7 +167,7 @@ class UserSearch extends Component {
                     show={this.state.showMaxUserAlert}
                     onClose={() => this.setState({showMaxUserAlert: false})}
                     variant="danger"
-                    className="alert-custom"
+                    className="alert-margin-top"
                 >
                     A maximum of {USERSHAREMAX + 1} people already have access to this camapign!
                 </Alert>

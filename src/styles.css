@@ -97,10 +97,6 @@ button:focus {
 	font-weight: 600;
 }
 
-.alert-custom {
-  margin-top: 0.5rem;
-}
-
 .alert-margin-top {
 	margin-top: 1rem;
 }
@@ -119,7 +115,7 @@ button:focus {
 
 .arrow-sort-col {
 	font-size: 18px;
-	padding-top: 0.5rem;
+	padding: 0.5rem 0 0 0.5rem;
 	width: 30px;
     float: left;
 }
@@ -157,7 +153,6 @@ button:focus {
 
 .campaign-add-button {
 	border-radius: 7px;
-	border: 2px dashed rgba(39, 160, 180, 1);
 	height: 185px;
 	font-size: 75px;
 	margin: 0.2rem 0 1rem 0;
@@ -166,6 +161,12 @@ button:focus {
 .campaign-item {
 	margin-bottom: 1rem;
 	border-width: 2px !important;
+	transition: border-color 0.3s;
+}
+
+.campaign-item:hover {
+	border-color: rgba(23, 162, 184, 1);
+	cursor: pointer
 }
 
 .campaign-list {
@@ -177,7 +178,7 @@ button:focus {
 
 .campaign-sharing-icon-on {
 	cursor: pointer;
-	color: rgb(54, 179, 201);
+	color: rgba(39, 160, 180, 1);
 }
 
 .campaign-sharing-icon-on:hover {
@@ -185,7 +186,7 @@ button:focus {
 }
 
 .campaign-sharing-title {
-	font-size: 20px;
+	font-size: 1.25rem;
 	font-weight: 500;
 	height: 38px;
   	line-height: 38px;
@@ -193,14 +194,6 @@ button:focus {
 
 .campaign-sharing-window {
 	min-width: min(420px, 82vw);
-}
-
-.campaign-title {
-	white-space: nowrap;
-  	overflow: hidden;
-	font-size: 24px;
-	font-weight: 500;
-	text-overflow: ellipsis;
 }
 
 .center {
@@ -280,6 +273,9 @@ button:focus {
 	}
 }
 
+.grey-background {
+	background-color: rgba(247, 247, 247, 1);
+}
 
 .height-100 {
 	height: 100%;
@@ -298,8 +294,10 @@ button:focus {
 	display: flex;
     align-items: center;
 	justify-content: center;
-	color: rgba(112, 109, 109, 0.5);
+	border: 2px dashed rgba(39, 160, 180, 1);
+	color: rgba(105, 102, 102, 0.664);
 	background-color: rgba(255, 255, 255, 0.8);
+	transition: background-color 0.3s, color 0.3s, border 0.3s;
 	cursor: pointer;
 }
 
@@ -317,23 +315,11 @@ button:focus {
 }
 
 .item-menu {
-	font-size: 19px;
-}
-
-.item-menu-pos {
+	font-size: 1.25rem !important;
 	max-height: 19px;
 	position: relative;
 	bottom: 0.4rem;
-}
-
-.item-title {
-	font-size: 16px !important;
-	max-height: 2.5rem;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	right: 0.2rem;
 }
 
 .landing-subtitle {
@@ -372,16 +358,16 @@ button:focus {
 }
 
 .nav-item-custom:hover {
-	border-bottom: 2px solid rgba(151, 146, 146, 0.835);
+	border-bottom: 2px solid rgba(88, 85, 85, 0.925);
 }
 
 .nav-item-active {
-	border-bottom: 2px solid black;
+	border-bottom: 2px solid rgba(33, 37, 41, 1);
 	margin-bottom: -1px;
 }
 
 .nav-item-active:hover {
-	border-bottom: 2px solid black;
+	border-bottom: 2px solid rgba(33, 37, 41, 1);
 }
 
 .nav-right {
@@ -436,6 +422,7 @@ button:focus {
 	margin: 0 0.1rem;
 	cursor: pointer;
 	color: rgb(112, 109, 109);
+	transition: background-color 0.3s, color, 0.3s;
 }
 
 .recap-add-tag:hover {
@@ -561,7 +548,6 @@ button:focus {
 
 .session-add-button {
 	border-radius: 7px;
-	border: 2px dashed rgba(39, 160, 180, 1);
 	height: 111px;
 	width: inherit;
 	font-size: 45px;
@@ -579,6 +565,16 @@ button:focus {
 	margin-bottom: 0.3rem;
 	border-width: 2px !important;
 	cursor: pointer;
+}
+
+.session-item-title {
+	font-size: 16px !important;
+	max-height: 2.5rem;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .tab-back-to-list {
@@ -690,7 +686,6 @@ button:focus {
 
 .tag-add-button {
 	border-radius: 10rem;
-	border: 2px dashed rgba(39, 160, 180, 1);
 	height: 33.75px;
 	width: 100%;
 	font-size: 20px;

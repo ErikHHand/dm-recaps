@@ -160,7 +160,11 @@ class CampaignSharing extends Component {
 		return (
 			<>
                 <div 
-                    onClick={() => this.setState({ showCampaignSharing: !this.state.showCampaignSharing })}
+                    onClick={(event) => {
+						event.stopPropagation();
+						event.preventDefault();
+						this.setState({ showCampaignSharing: !this.state.showCampaignSharing });
+					}}
                     ref={this.attachRef}
                 >
                     <FontAwesomeIcon 
@@ -176,7 +180,15 @@ class CampaignSharing extends Component {
 					onHide={() => campaignSharing.setState({showCampaignSharing: false})}
 				>
 					{({ show: _show,...props }) => (
-						<Popover id="popover-basic" {...props} className="campaign-sharing-window">
+						<Popover 
+							id="popover-basic" 
+							{...props} 
+							className="campaign-sharing-window" 
+							onClick={(event) => {
+								event.stopPropagation();
+								event.preventDefault();
+							}}
+						>
 							<Popover.Header>
 								<Row className="remove-margin">
 									<Col xs="8" className="campaign-sharing-title remove-padding">

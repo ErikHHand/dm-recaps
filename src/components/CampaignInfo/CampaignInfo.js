@@ -236,11 +236,10 @@ class CampaignInfo extends Component {
 				aria-labelledby="contained-modal-title-vcenter"
 				centered
 			>
-				<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">{title}</Modal.Title>
+				<Modal.Header className="grey-background" closeButton>
+				<Modal.Title>{title}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<h4>Of to new adventures!</h4>
 					<Form onSubmit={this.onSubmit}>
 						<Form.Group className="mb-3" controlId="formCampaignName">
 							<Form.Label>Campaign Name</Form.Label>
@@ -253,7 +252,7 @@ class CampaignInfo extends Component {
 								maxLength="140" 
 							/>
 							<Form.Text className="text-muted">
-								For example "Glorious Adventures in Middle Earth". Or perhaps just the name of your character?
+								For example "Glorious Adventures in Middle Earth".
 							</Form.Text>
 						</Form.Group>
 

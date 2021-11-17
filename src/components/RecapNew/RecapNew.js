@@ -146,7 +146,7 @@ class RecapNew extends Component {
 				<Alert 
 					show={noSessions || noSessionSelected} 
 					variant="warning"
-					className="alert-custom"
+					className="alert-margin-top"
 				>
 					{noSessions ? "Create" : "Select"} a session before writing a recap!
 				</Alert>

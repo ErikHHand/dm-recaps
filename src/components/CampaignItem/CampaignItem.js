@@ -115,6 +115,14 @@ class CampaignItem extends Component {
 					border={this.state.border} 
 					className="text-center campaign-item"
 				>
+					<Link to={{
+						pathname: "/campaigns/"+ this.props.campaignID,
+						state: {
+							campaign: this.props.campaign,
+							id: this.props.campaignID,
+							activeTab: this.props.campaign.activeTab,
+						}
+					}}>
 					<Card.Header>
 						<Row>
 							<Col xs="2" sm="1">
@@ -130,7 +138,7 @@ class CampaignItem extends Component {
 							<Col xs="8" sm="10" className="text-muted">
 								{this.props.campaign.world}
 							</Col>
-							<Col xs="2" sm="1" className="center">
+							<Col xs="2" sm="1" className="center item-menu">
 								<ItemMenu
 									edit = {() => this.setState({ showCampaignInfo: true})}
 									delete = {this.deleteCampaign}
@@ -139,23 +147,16 @@ class CampaignItem extends Component {
 							</Col>
 						</Row>
 					</Card.Header>
-					<Link to={{
-						pathname: "/campaigns/"+ this.props.campaignID,
-						state: {
-							campaign: this.props.campaign,
-							id: this.props.campaignID,
-							activeTab: this.props.campaign.activeTab,
-						}
-					}}>
+					
 						<Card.Body
-							onMouseOver={() => this.addBorder()} 
-                    		onMouseOut={() => this.removeBorder()}
+							
 						>
 							<Card.Title>{this.props.campaign.name}</Card.Title>
 							<Card.Text className="with-line-breaks regular-text">{description}</Card.Text>
 						</Card.Body>
-					</Link>
+					
 					<Card.Footer className="text-muted">{lastSession}</Card.Footer>
+					</Link>
 				</Card>
 				<CampaignInfo 
 					show = {this.state.showCampaignInfo}
