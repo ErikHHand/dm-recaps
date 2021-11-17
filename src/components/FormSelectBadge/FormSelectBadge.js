@@ -56,7 +56,7 @@ class FormSelectBadge extends Component {
 					pill 
 					style = {{ backgroundColor: COLOURS[colour]}} 
 					key = {colour}
-					className = {TEXTCOLOURS[colour] + " select-badge"}
+					className = {TEXTCOLOURS[colour] + " select-badge transition-border"}
 					onClick={() => this.changeValue(colour)}
 					bg="bullshit"
 				>
@@ -68,7 +68,7 @@ class FormSelectBadge extends Component {
 				<Badge 
 					pill 
 					key = {type}
-					className = "select-type select-badge"
+					className = "select-type select-badge transition-border"
 					onClick={() => this.changeValue(type)}
 					bg="bullshit"
 				>
