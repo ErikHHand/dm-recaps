@@ -113,7 +113,7 @@ class CampaignItem extends Component {
 			<>
 				<Card 
 					border={this.state.border} 
-					className="text-center campaign-item"
+					className="text-center campaign-item transition-border"
 				>
 					<Link to={{
 						pathname: "/campaigns/"+ this.props.campaignID,
@@ -138,7 +138,7 @@ class CampaignItem extends Component {
 							<Col xs="8" sm="10" className="text-muted">
 								{this.props.campaign.world}
 							</Col>
-							<Col xs="2" sm="1" className="center item-menu">
+							<Col xs="2" sm="1" className="center item-menu item-menu-c-item">
 								<ItemMenu
 									edit = {() => this.setState({ showCampaignInfo: true})}
 									delete = {this.deleteCampaign}

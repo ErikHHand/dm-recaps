@@ -161,7 +161,6 @@ button:focus {
 .campaign-item {
 	margin-bottom: 1rem;
 	border-width: 2px !important;
-	transition: border-color 0.3s;
 }
 
 .campaign-item:hover {
@@ -283,6 +282,7 @@ button:focus {
 
 .icon {
 	color: rgba(105, 102, 102, 0.664);
+	transition: color 0.3s;
 	cursor: pointer;
 }
 
@@ -320,6 +320,10 @@ button:focus {
 	position: relative;
 	bottom: 0.4rem;
 	right: 0.2rem;
+}
+
+.item-menu-c-item {
+	bottom: 0.1rem;
 }
 
 .landing-subtitle {
@@ -451,10 +455,11 @@ button:focus {
 	line-height: 1.5rem !important;
 	float: right;
 	cursor: pointer;
+	transition: color 0.3s;
 }
 
 .recap-session-info-text:hover {
-	color: rgb(112, 109, 109);
+	color: rgba(88, 85, 85, 0.925);
 	text-decoration: underline;
 }
 
@@ -556,7 +561,7 @@ button:focus {
 
 .session-info-text {
 	font-size: 14px;
-	color: rgba(151, 146, 146, 0.85);
+	color: rgba(105, 102, 102, 0.664);
 	font-style: italic;
 }
 
@@ -796,6 +801,10 @@ button:focus {
 	background-color: rgba(243, 243, 243, 0.767);
 	margin: 0 -0.75rem 18px -0.75rem;
 	border-radius: 4px;
+}
+
+.transition-border {
+	transition: border 0.3s !important;
 }
 
 .user-access-type {

@@ -124,7 +124,7 @@ class SessionItem extends Component {
 		return (
 			<>
 				<Card 
-					className="session-item item" 
+					className="session-item item transition-border" 
 					border={this.props.isSelectedSession ? "info" : ""} 
 					onClick = {this.props.click}
 					onMouseEnter={() => this.setState({showIcons: true})} 

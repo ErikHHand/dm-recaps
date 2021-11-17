@@ -92,7 +92,7 @@ class NavbarBase extends Component {
         let navbarContainer = <></>;
         const navbar = (
             <Nav justify className="ms-auto w-100" activeKey={activePage}>
-                <Nav.Item className={activePage === "campaignsPage" ? "nav-item-active" : "nav-item-custom"}>
+                <Nav.Item className={activePage === "campaignsPage" ? "nav-item-active" : "nav-item-custom "}>
                     <Nav.Link 
                         eventKey="campaignsPage" 
                         onClick={() => this.props.history.push(ROUTES.HOME)}
@@ -100,7 +100,7 @@ class NavbarBase extends Component {
                         Campaigns
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item className={activePage === "campaignRecaps" ? "nav-item-active" : "nav-item-custom"}>
+                <Nav.Item className={activePage === "campaignRecaps" ? "nav-item-active" : "nav-item-custom "}>
                     <Nav.Link 
                         eventKey="campaignRecaps" 
                         onClick={() => this.props.history.push("/campaigns/" + this.state.lastCampaignID)}
@@ -112,7 +112,7 @@ class NavbarBase extends Component {
                     <Nav.Link >
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item className={activePage === "account" ? "nav-item-active" : "nav-item-custom"}>
+                <Nav.Item className={activePage === "account" ? "nav-item-active" : "nav-item-custom "}>
                     <Nav.Link 
                         eventKey="account" 
                         onClick={() => this.props.history.push(ROUTES.ACCOUNT)}

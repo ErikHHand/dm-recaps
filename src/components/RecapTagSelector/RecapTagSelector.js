@@ -192,9 +192,6 @@ class RecapTagSelector extends Component {
 			cols[2] = this.state.filteredTags.slice(col1Length + col2Length, this.state.filteredTags.length);
 		}
 
-		
-		
-
 		// For each column, create the tag badge and put in the column
 		for(let i = 0; i < numberOfColumns; i++) {
 			allTags[i] = cols[i].map((tagID) => {
@@ -206,7 +203,7 @@ class RecapTagSelector extends Component {
 								style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
 								className={
 									TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
-									(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag" : " tag-selector-tag")
+									(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag transition-border" : " tag-selector-tag transition-border")
 								}
 								onClick={() => this.onClick(tagID)}
 								bg="bullshit"
@@ -232,7 +229,7 @@ class RecapTagSelector extends Component {
 						pill 
 						style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
 						key={this.props.recapItem.tags.indexOf(tagID)}
-						className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag"}
+						className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag transition-border"}
 						onClick={() => this.props.handleSelectedTag(tagID)}
 						bg="bullshit"
 					>
