@@ -22,7 +22,7 @@ a.nav-link {
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: baseline;
-	max-width: 20vw;
+	max-width: 100%;
 	padding-bottom: 2px;
 }
 
@@ -322,32 +322,8 @@ button:focus {
 	margin-top: 4rem;
 }
 
-.nav-air {
-	width: auto!important;
-}
-
-.nav-air:hover {
-	width: auto!important;
-	border-bottom: 2px solid rgba(255, 255, 255, 0) !important;
-}
-
-@media only screen and (max-width: 767px) {
-	.nav-air {
-		display: none;
-	}
-}
-
 .nav-brand {
 	margin-bottom: -1px;
-}
-
-.nav-item-custom {
-	border-bottom: 2px solid rgba(255, 255, 255, 0);
-	margin-bottom: -1px;
-}
-
-.nav-item-custom:hover {
-	border-bottom: 2px solid rgba(88, 85, 85, 0.925);
 }
 
 .nav-item-active {
@@ -357,6 +333,53 @@ button:focus {
 
 .nav-item-active:hover {
 	border-bottom: 2px solid rgba(33, 37, 41, 1);
+}
+
+.nav-item-air {
+	flex-grow: 1 !important;
+	flex-basis: 50px !important;
+}
+
+.nav-item-air:hover {
+	border-bottom: 2px solid rgba(255, 255, 255, 0) !important;
+}
+
+@media only screen and (max-width: 767px) {
+	.nav-item-air {
+		display: none;
+	}
+}
+
+.nav-item-campaign {
+	flex-grow: 1 !important;
+	max-width: calc(100% - 390px);
+}
+
+@media only screen and (max-width: 767px) {
+	.nav-item-campaign {
+		max-width: 100vw;
+	}
+}
+
+.nav-item-inactive {
+	border-bottom: 2px solid rgba(255, 255, 255, 0);
+	margin-bottom: -1px;
+}
+
+.nav-item-inactive:hover {
+	border-bottom: 2px solid rgba(88, 85, 85, 0.925);
+}
+
+.nav-item-static {
+	flex-basis: 130px;
+    flex-grow: 0;
+    text-align: center;
+}
+
+@media only screen and (max-width: 767px) {
+	.nav-item-static {
+		flex-basis: unset;
+	}
 }
 
 .nav-right {
@@ -375,6 +398,10 @@ button:focus {
 
 .nav-text-current {
 	font-weight: bold;
+}
+
+.navbar-collapse {
+	max-width: calc(100% - 124px);
 }
 
 .navbar-toggler-icon {

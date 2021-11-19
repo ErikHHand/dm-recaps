@@ -91,8 +91,8 @@ class NavbarBase extends Component {
         // Hack for what navbar to render
         let navbarContainer = <></>;
         const navbar = (
-            <Nav justify className="ms-auto w-100" activeKey={activePage}>
-                <Nav.Item className={activePage === "campaignsPage" ? "nav-item-active" : "nav-item-custom "}>
+            <Nav className="ms-auto w-100" activeKey={activePage}>
+                <Nav.Item className={"nav-item-static " + (activePage === "campaignsPage" ? "nav-item-active" : "nav-item-inactive ")}>
                     <Nav.Link 
                         eventKey="campaignsPage" 
                         onClick={() => this.props.history.push(ROUTES.HOME)}
@@ -100,7 +100,7 @@ class NavbarBase extends Component {
                         Campaigns
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item className={activePage === "campaignRecaps" ? "nav-item-active" : "nav-item-custom "}>
+                <Nav.Item className={"nav-item-campaign " + (activePage === "campaignRecaps" ? "nav-item-active " : "nav-item-inactive ")}>
                     <Nav.Link 
                         eventKey="campaignRecaps" 
                         onClick={() => this.props.history.push("/campaigns/" + this.state.lastCampaignID)}
@@ -108,11 +108,11 @@ class NavbarBase extends Component {
                         {this.state.lastCampaignName}
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item className="nav-air">
-                    <Nav.Link >
-                    </Nav.Link>
+                <Nav.Item className="nav-item-air">
+                    <div >
+                    </div>
                 </Nav.Item>
-                <Nav.Item className={activePage === "account" ? "nav-item-active" : "nav-item-custom "}>
+                <Nav.Item className={"nav-item-static " + (activePage === "account" ? "nav-item-active" : "nav-item-inactive ")}>
                     <Nav.Link 
                         eventKey="account" 
                         onClick={() => this.props.history.push(ROUTES.ACCOUNT)}
@@ -120,7 +120,7 @@ class NavbarBase extends Component {
                         Account
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item className="nav-item-custom">
+                <Nav.Item className="nav-item-static nav-item-inactive">
                     <Nav.Link onClick={this.props.firebase.doSignOut}>Sign out</Nav.Link>
                 </Nav.Item>
             </Nav>
