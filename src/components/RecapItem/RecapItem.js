@@ -25,7 +25,6 @@ class RecapItem extends Component {
 
 		this.state = {
 			edit: false,
-			showIcons: false,
 		}
 
 		// Set the context for "this" for the following functions
@@ -228,16 +227,11 @@ class RecapItem extends Component {
 		
 		return (
 			<Card>
-				<Card.Body 
-					className="recap-body"
-					onMouseEnter={() => this.setState({showIcons: true})} 
-					onMouseLeave={() => this.setState({showIcons: false})}
-						>
+				<Card.Body className="recap-body">
 					<Row className="remove-margin">
 						<Col lg="1" sm="2" xs="2" className="remove-padding">
 							{
-								(this.state.showIcons &&
-									this.props.campaign.activeTab === "sessions" )?
+								this.props.campaign.activeTab === "sessions" ?
 								<div>
 									<FontAwesomeIcon 
 										icon={faArrowUp} 
@@ -264,15 +258,11 @@ class RecapItem extends Component {
 							</div>
 						</Col>
 						<Col lg="1" sm="2" xs="2" className="right-align remove-padding item-menu">
-							{
-								this.state.showIcons ?
-								<ItemMenu
-									edit = {this.editRecap}
-									delete = {() => this.deleteRecap(false)}
-									deleteText = {deleteText}
-								/> :
-								<></>
-							}
+							<ItemMenu
+								edit = {this.editRecap}
+								delete = {() => this.deleteRecap(false)}
+								deleteText = {deleteText}
+							/>
 						</Col>
 					</Row>
 					<Row>

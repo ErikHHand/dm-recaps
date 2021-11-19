@@ -269,7 +269,7 @@ button:focus {
 }
 
 .icon {
-	color: rgba(105, 102, 102, 0.664);
+	color: rgba(105, 102, 102, 0.39);
 	transition: color 0.3s;
 	cursor: pointer;
 }
