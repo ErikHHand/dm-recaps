@@ -451,7 +451,7 @@ button:focus {
 	margin: 0 0.1rem;
 	border-width: 1px;
 	border: solid rgba(255, 255, 255, 0);
-	max-width: 20rem;
+	max-width: min(20rem, 100%);
 }
 
 .recap-text {

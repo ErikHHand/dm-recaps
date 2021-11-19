@@ -295,14 +295,14 @@ class RecapTagSelector extends Component {
 								</Row>
 								
 								<Row className="button-row">
-									<Col sm={6} xs={6}>
+									<Col xs={6}>
 										<Button variant="success" onClick={this.changeWindow}>
 											New Tag
 										</Button>
 									</Col>
-									<Col sm={1} xs={1} className="remove-padding">
+									<Col xs={1} className="remove-padding">
 									</Col>
-									<Col sm={5} xs={5} className="right-align">
+									<Col xs={5} className="right-align">
 										<Button variant="info" onClick={this.onSubmit}>Done</Button>
 									</Col>
 								</Row>
