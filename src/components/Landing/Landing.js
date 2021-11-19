@@ -33,7 +33,7 @@ class Landing extends Component {
 		let title = "RPG Recaps"
 
 		return (
-			<Container fluid="sm" className="container-landing">
+			<Container fluid="sm" className="container-landing container-all">
 				<h1 className="center border-bottom"> {title} </h1>
 				{this.state.signIn ?
 					<SignIn changeWindow = {this.changeWindow}/> : 

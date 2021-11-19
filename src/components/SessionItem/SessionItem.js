@@ -150,7 +150,7 @@ class SessionItem extends Component {
 							</Row>
 							
 						</Card.Title>
-						<Card.Text className="session-info-text">
+						<Card.Text className="regular-text text-grey-italic">
 							{number + date.toDateString()}
 						</Card.Text>
 					</Card.Body>

@@ -256,7 +256,7 @@ class RecapItem extends Component {
 						<Col lg="10" sm="8" xs="8" className="remove-padding">
 							<div
 								onClick={() => this.props.handleSelectedSession(this.props.recapItem.session)}
-								className="session-info-text recap-session-info-text"
+								className="text-grey-italic recap-session-info-text"
 							>
 								{number + date.toDateString()}
 								&emsp; 

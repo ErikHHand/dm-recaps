@@ -155,11 +155,11 @@ button:focus {
 .campaign-item {
 	margin-bottom: 1rem;
 	border-width: 2px !important;
+	cursor: pointer
 }
 
 .campaign-item:hover {
 	border-color: rgba(23, 162, 184, 1);
-	cursor: pointer
 }
 
 .campaign-list {
@@ -170,7 +170,6 @@ button:focus {
 }
 
 .campaign-sharing-icon-on {
-	cursor: pointer;
 	color: rgba(39, 160, 180, 1);
 }
 
@@ -200,22 +199,21 @@ button:focus {
 	text-align: center;
 }
 
-.container-app {
+.container-all {
 	opacity: 0.97;
 	border-radius: 4px;
-	height: 98vh;
 	margin: 0 auto 2vh auto !important;
 	background-color:rgb(233, 236, 239)
 }
 
+.container-app {
+	height: 98vh;
+}
+
 .container-landing {
-	opacity: 0.97;
-	border-radius: 4px;
 	height: min(98vh, auto);
 	width: min(100vw, 600px);
-	margin: 0 auto 2vh auto !important;
 	padding: 1rem;
-	background-color:rgb(233, 236, 239)
 }
 
 .dark-background {
@@ -224,10 +222,6 @@ button:focus {
 
 .delete-account {
 	background-color: rgba(202, 68, 74, 1);
-}
-
-.custom-password-type {
-	font-family: 'password';
 }
 
 .filter-bar {
@@ -253,7 +247,7 @@ button:focus {
 
 .forgot-password-text:hover {
 	text-decoration: underline;
-	color: rgb(42, 42, 212);
+	color: rgba(42, 42, 212, 1);
 }
 
 .form-control-custom {
@@ -325,9 +319,6 @@ button:focus {
 }
 
 .loading-spinner {
-	display: flex;
-    align-items: center;
-	justify-content: center;
 	margin-top: 4rem;
 }
 
@@ -436,13 +427,14 @@ button:focus {
 	text-overflow: ellipsis;
 	word-break: break-all;
 	line-height: 1.5rem !important;
+	font-size: 14px !important;
 	float: right;
 	cursor: pointer;
 	transition: color 0.3s;
 }
 
 .recap-session-info-text:hover {
-	color: rgba(88, 85, 85, 0.925);
+	color: rgba(88, 85, 85, 1);
 	text-decoration: underline;
 }
 
@@ -513,12 +505,6 @@ button:focus {
 	width: inherit;
 	font-size: 45px;
 	margin: 0 auto 0.3rem auto;
-}
-
-.session-info-text {
-	font-size: 14px;
-	color: rgba(105, 102, 102, 0.664);
-	font-style: italic;
 }
 
 .session-item {
@@ -736,11 +722,10 @@ button:focus {
 }
 
 .tag-selector-text {
+	font-style: italic;
 	overflow: scroll;
 	max-height: calc(25vh - 33px);
-	font-style: italic;
 	margin: 0.5rem 0.8rem;
-	text-align: center;
 }
 
 .tag-white {
@@ -750,7 +735,7 @@ button:focus {
 
 .text-grey-italic {
 	font-style: italic;
-	color: rgb(108, 117, 125);
+	color: rgba(108, 117, 125, 0.95);
 }
 
 .text-on-bright {

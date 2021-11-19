@@ -243,6 +243,8 @@ class RecapTagSelector extends Component {
 			}
 		});
 
+		let textClassNames = "regular-text tag-selector-text center remove-scroll-bar with-line-breaks"
+
 		return (
 			<div className="right-align">
 				{recapTags}
@@ -266,7 +268,7 @@ class RecapTagSelector extends Component {
 						<Popover id="popover-basic" {...props} className="tag-selector">
 							<Popover.Header>
 								<Row>
-									<Col className="regular-text tag-selector-text remove-scroll-bar with-line-breaks">
+									<Col className={textClassNames}>
 										{this.props.recapItem.text}
 									</Col>
 								</Row>

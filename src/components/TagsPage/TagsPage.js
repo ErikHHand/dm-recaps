@@ -111,12 +111,12 @@ class TagsPage extends Component {
 
 		switch (this.props.status) {
 			case "LOADING":
-				tagItems = <div className="loading-spinner">
+				tagItems = <div className="loading-spinner center-vertically">
 					<Spinner animation="grow" variant="info" role="status">
 						<span className="sr-only">Loading...</span>
 					</Spinner>
 				</div>
-				recapItems = <div className="loading-spinner">
+				recapItems = <div className="loading-spinner center-vertically">
 					<Spinner animation="grow" variant="info" role="status">
 						<span className="sr-only">Loading...</span>
 					</Spinner>

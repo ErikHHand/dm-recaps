@@ -36,7 +36,7 @@ class Navigation extends Component {
             <UserDataContext.Consumer>
                 {userDataContext => (
                     <Router>
-                        <Container fluid="lg" className="container-app">
+                        <Container fluid="lg" className="container-app container-all">
                             <Navbar/>
                             <Switch>
                                 <Route

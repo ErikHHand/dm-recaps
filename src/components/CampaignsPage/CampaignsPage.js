@@ -145,7 +145,7 @@ class CampaignsPage extends Component {
 		switch (this.state.status) {
 			case "LOADING":
 				// Create spinner
-				campaigns = <div className="loading-spinner">
+				campaigns = <div className="loading-spinner center-vertically">
 								<Spinner animation="grow" variant="info" role="status">
 									<span className="sr-only">Loading...</span>
 								</Spinner>

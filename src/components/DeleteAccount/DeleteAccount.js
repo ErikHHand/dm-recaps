@@ -91,9 +91,6 @@ class DeleteAccount extends Component {
         const { password, username, error } = this.state;
         const isInvalid = password === "" || username !== currentUsername;
 
-        let passwordClass = password.length > 0 ? "custom-password-type" : "";
-        let passwordPlaceholder = password.length > 0 ? "" : "Current Password";
-
 		return (
 			<Modal
 				show={this.props.show}
@@ -110,6 +107,7 @@ class DeleteAccount extends Component {
 				</Modal.Header>
 				<Modal.Body>
 					<Form onSubmit={this.onSubmit} autoComplete="off">
+                        <input style={{display: "none"}} type="text" name="googlechromeautofillSUCKS" />
 						<Form.Group 
                             controlId="formPasswordForAccountDeletion" 
                             className="account-current-password border-bottom"
@@ -119,10 +117,10 @@ class DeleteAccount extends Component {
                                 name="password"
                                 value={password}
                                 onChange={this.onChange}
-                                type="text"
-                                placeholder={passwordPlaceholder}
+                                type="password"
+                                placeholder="Current Password"
                                 maxLength="100"
-                                className={passwordClass}
+                                autoComplete="new-password"
                             />
 						</Form.Group>
                         <Form.Group className="mb-3" controlId="formNewUsername">

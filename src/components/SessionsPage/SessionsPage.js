@@ -58,14 +58,14 @@ class SessionsPage extends Component {
 		switch (this.props.status) {
 			case "LOADING":
 				sessionItems =
-					<div className="loading-spinner">
+					<div className="loading-spinner center-vertically">
 						<Spinner animation="grow" variant="info" role="status">
 							<span className="sr-only">Loading...</span>
 						</Spinner>
 					</div>
 					
 				recapItems = 	
-					<div className="loading-spinner">
+					<div className="loading-spinner center-vertically">
 						<Spinner animation="grow" variant="info" role="status">
 							<span className="sr-only">Loading...</span>
 						</Spinner>
