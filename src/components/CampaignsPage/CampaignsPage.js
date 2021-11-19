@@ -152,12 +152,36 @@ class CampaignsPage extends Component {
 							</div>
 				break;
 			case "LOADED":
-				// Fill campaign list
-				campaigns = Array.from(Object.keys(this.state.campaigns)).map((campaignID)=>
+				// Sort and fill the campaign list
+				let campaignOrder = [];
+
+				Array.from(Object.keys(this.state.campaigns)).forEach(campaignID => {
+
+					let campaign = this.state.campaigns[campaignID];
+					// Create date for comparision with the latest session date
+					let date = new Date();
+					let dateDifference = -1;
+
+					// Calculate time between latest session and today, if there are any sessions
+					if(campaign.sessionOrder[0]) {
+						let lastSessionDate = {};
+						if(campaign.sessions[campaign.sessionOrder[0]].date instanceof Date) {
+							lastSessionDate = campaign.sessions[campaign.sessionOrder[0]].date;
+						} else {
+							lastSessionDate = campaign.sessions[campaign.sessionOrder[0]].date.toDate();
+						}
+						dateDifference = Math.ceil(Math.abs(date - lastSessionDate) / (1000 * 60 * 60 * 24));
+					}
+					campaignOrder.push({campaignID: campaignID, dateDifference: dateDifference});
+				});
+
+				campaignOrder.sort((a, b) => a.dateDifference - b.dateDifference);
+
+				campaigns = campaignOrder.map((campaign)=>
 					<CampaignItem
-						key={campaignID}
-						campaignID = {campaignID}
-						campaign = {this.state.campaigns[campaignID]}
+						key={campaign.campaignID}
+						campaignID = {campaign.campaignID}
+						campaign = {this.state.campaigns[campaign.campaignID]}
 						campaigns = {this.state.campaigns}
 						handleCampaigns = {this.handleCampaigns}
 						campaignsRef = {campaignsRef}
