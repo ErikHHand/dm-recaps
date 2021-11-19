@@ -78,7 +78,7 @@ class Account extends Component {
                 <Row className="account-page-row">
                     <Col xs="9">
                         <h6 className="account-property-text">Password</h6>
-                        <p className="account-property-info">
+                        <p className="text-grey-italic">
                             Insert password requirements here.
                         </p>
                     </Col>
@@ -92,7 +92,7 @@ class Account extends Component {
                 <Row className="account-page-row">
                     <Col xs="9">
                         <h6 className="account-property-text">Email address</h6>
-                        <p className="account-property-info">
+                        <p className="text-grey-italic">
                             {this.props.firebase.auth.currentUser.email}
                         </p>
                     </Col>
@@ -106,7 +106,7 @@ class Account extends Component {
                 <Row className="account-page-row">
                     <Col xs="9">
                         <h6 className="account-property-text">Username</h6>
-                        <p className="account-property-info">
+                        <p className="text-grey-italic">
                             {userData ? userData.username + changeUsernameText : this.props.firebase.auth.currentUser.displayName}
                         </p>
                     </Col>
@@ -126,7 +126,7 @@ class Account extends Component {
                 <Row className="account-page-row">
                     <Col xs="9">
                         <h6 className="account-property-text">Delete Account</h6>
-                        <p className="account-property-info">
+                        <p className="text-grey-italic">
                             No going back
                         </p>
                     </Col>

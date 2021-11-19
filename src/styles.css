@@ -86,12 +86,6 @@ button:focus {
 	margin: 3rem 1rem 2rem 1rem !important;
 }
 
-.account-property-info {
-	font-weight: 400;
-	font-style: italic;
-	color: rgb(108, 117, 125);
-}
-
 .account-property-text {
 	margin-bottom: 0;
 	font-weight: 600;
@@ -297,13 +291,13 @@ button:focus {
 	border: 2px dashed rgba(39, 160, 180, 1);
 	color: rgba(105, 102, 102, 0.664);
 	background-color: rgba(255, 255, 255, 0.8);
-	transition: background-color 0.3s, color 0.3s, border 0.3s;
+	transition: background-color 0.3s, color 0.3s, border 0.3s !important;
 	cursor: pointer;
 }
 
 .item-add-button:hover {
 	color: rgba(255, 255, 255, 1);
-	border: 2px solid rgba(39, 160, 180, 1);
+	border: 2px solid rgba(39, 160, 180, 0);
 	background-color: rgba(39, 160, 180, 1);
 }
 
@@ -419,19 +413,8 @@ button:focus {
 
 .recap-add-tag {
 	overflow: hidden;
-	border-style: dashed;
-	border-width: 2px;
-	border-color: #30A64A;
 	font-size: 13px !important;
 	margin: 0 0.1rem;
-	cursor: pointer;
-	color: rgb(112, 109, 109);
-	transition: background-color 0.3s, color, 0.3s;
-}
-
-.recap-add-tag:hover {
-	background-color: #30A64A;
-	color: white;
 }
 
 .recap-body {
@@ -466,16 +449,9 @@ button:focus {
 .recap-tag {
 	font-size: 13px !important;
 	margin: 0 0.1rem;
-	cursor: pointer;
 	border-width: 1px;
 	border: solid rgba(255, 255, 255, 0);
 	max-width: 20rem;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.recap-tag:hover {
-	border: solid rgb(94, 94, 94);
 }
 
 .recap-text {
@@ -513,35 +489,15 @@ button:focus {
 .select-badge {
 	font-size: 14px !important;
 	margin: 0.2rem 0.35rem;
-	cursor: pointer;
 	border-width: 1px;
 	border: solid rgb(230, 230, 230, 0);
-}
-
-.select-badge:hover {
-	border: solid rgb(94, 94, 94) !important;
-}
-
-.select-border {
-	border: solid rgb(206, 212, 218);
-	border-width: 1px;
-	border-radius: 4px;
-	width: 100%;
-	height: 35.375px;
+	overflow: visible !important;
 }
 
 .select-filter-bar {
 	margin: auto;
 	max-width: 15rem;
 	margin-bottom: 0.5rem;
-}
-
-.select-label {
-	height: 100%;
-	display: flex;
-	justify-content: center; /* align horizontal */
-	align-items: center;
-	cursor: default;
 }
 
 .select-type {
@@ -592,7 +548,6 @@ button:focus {
 
 @media only screen and (max-width: 575px) {
 	.tab-back-to-list {
-		
 		display: inline-flex;
 		align-items: center;
 		font-size: 18px;
@@ -649,13 +604,11 @@ button:focus {
 	margin-bottom: 1.5vh;
 }
 
-
 @media only screen and (max-width: 575px) {
 	.tab-content {
 		overflow-x: hidden;
 	}
 }
-
 
 .tab-nav {
 	height: 42px;
@@ -689,6 +642,17 @@ button:focus {
 	position: relative;
 }
 
+.tag {
+	cursor: pointer;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.tag:hover {
+	border-color: rgb(94, 94, 94) !important;
+}
+
 .tag-add-button {
 	border-radius: 10rem;
 	height: 33.75px;
@@ -704,7 +668,6 @@ button:focus {
 .tag-description-title {
 	max-width: 85%;
 	margin-right: min(5%, 0.8rem);
-	display: inline-block;
 	float: left;
 }
 
@@ -719,7 +682,6 @@ button:focus {
 }
 
 .tag-description-chevron {
-	display: inline-block;
 	float: left;
 	cursor: pointer;
 }
@@ -728,15 +690,10 @@ button:focus {
 	width: 100%;
 	font-size: 18px !important;
 	margin: 0.2rem 0.35rem;
-	cursor: pointer;
 	border: 5px solid rgba(235, 235, 235, 0);
 	white-space: nowrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
-}
-
-.tag-item:hover {
-	border: 5px solid rgb(94, 94, 94) !important;
 }
 
 .tag-item-selected {
@@ -747,10 +704,17 @@ button:focus {
 	height: calc(100% - 52px);
 }
 
+.tag-not-clickable {
+	cursor: default !important;
+}
+
+.tag-not-clickable:hover {
+	border: 0px solid rgba(94, 94, 94, 0) !important;
+}
+
 .tag-not-selected {
 	opacity: 0.5;
 	border: solid rgba(230, 230, 230, 0) !important;
-	color: black !important;
 }
 
 .tag-selector {
@@ -761,17 +725,9 @@ button:focus {
 .tag-selector-tag {
 	font-size: 13px !important;
 	margin-bottom: 0.1rem;
-	cursor: pointer;
 	border-width: 1px;
 	border: solid rgb(56, 56, 56);
 	max-width: 100%;
-	white-space: nowrap;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-}
-
-.tag-selector-tag:hover {
-	border: solid rgb(94, 94, 94) !important;
 }
 
 .tag-selector-tag-field {
@@ -785,6 +741,16 @@ button:focus {
 	font-style: italic;
 	margin: 0.5rem 0.8rem;
 	text-align: center;
+}
+
+.tag-white {
+	color: rgb(33, 37, 41);
+	border: solid rgb(230, 230, 230);
+}
+
+.text-grey-italic {
+	font-style: italic;
+	color: rgb(108, 117, 125);
 }
 
 .text-on-bright {
@@ -807,23 +773,12 @@ button:focus {
 	transition: border 0.3s !important;
 }
 
-.user-access-type {
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
-	text-align: center;
-	font-style: italic;
-	color: rgb(108, 117, 125);
-}
-
 .user-list {
 	margin-top: 0.5rem;
 }
 
 .user-maximum-text {
 	text-align: center;
-	font-style: italic;
-	color: rgb(108, 117, 125);
 	padding-bottom: 0.5rem;
 }
 
@@ -832,45 +787,15 @@ button:focus {
 	height: 47px;
 }
 
-.user-search-no-result {
-	font-style: italic;
-}
-
-.user-search-result {
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
-	text-align: center;
-}
-
 .user-sharing-remove {
 	font-size: 20px !important;
 }
 
 .user-tag {
-	cursor: default;
-	width: 100%;
-	font-size: 16px !important;
-	margin: 0.4rem 0.1rem;
-	white-space: nowrap;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-}
-
-.user-tag-search-result {
-	color: rgb(33, 37, 41);
-	border: 3px solid rgb(230, 230, 230);
-	cursor: pointer;
+	border-width: 3px;
 	width: 100%;
 	font-size: 16px !important;
 	margin: 0.2rem 0.1rem;
-	white-space: nowrap;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-}
-
-.user-tag-search-result:hover {
-	border: 3px solid rgb(94, 94, 94);
 }
 
 .with-line-breaks {

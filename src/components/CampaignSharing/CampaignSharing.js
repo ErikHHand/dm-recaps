@@ -128,7 +128,7 @@ class CampaignSharing extends Component {
 						<Badge 
 							pill 
 							style={{ backgroundColor: coloursList[usersList.indexOf(userID)]}} 
-							className={textColoursList[usersList.indexOf(userID)] + " user-tag"}
+							className={textColoursList[usersList.indexOf(userID)] + " user-tag tag tag-not-clickable"}
 							bg="bullshit"
 						>
 							<FontAwesomeIcon icon={faUser} />
@@ -137,8 +137,8 @@ class CampaignSharing extends Component {
 						</Badge>
 					</Col>
 					<Col xs="4" className={this.props.campaign.sharingIsOn ? 
-						"user-access-type remove-padding" : 
-						"user-access-type remove-padding opacity-20"
+						"text-grey-italic center-vertically remove-padding" : 
+						"text-grey-italic center-vertically remove-padding opacity-20"
 						}
 					>
 						Write access
@@ -221,7 +221,7 @@ class CampaignSharing extends Component {
 								}
 								<div className="user-list">
 									<Row className="remove-margin">
-										<Col className="user-maximum-text">
+										<Col className="user-maximum-text text-grey-italic">
 											Campaigns can be shared between 16 people at most.
 										</Col>
 									</Row>
@@ -230,7 +230,7 @@ class CampaignSharing extends Component {
 											<Badge 
 												pill 
 												style={{ backgroundColor: coloursList[15]}} 
-												className={textColoursList[15] + " user-tag"}
+												className={textColoursList[15] + " user-tag tag tag-not-clickable"}
 												bg="bullshit"
 											>
 												<FontAwesomeIcon icon={faUser} />
@@ -238,7 +238,7 @@ class CampaignSharing extends Component {
 												{this.props.campaign.ownerUsername}
 											</Badge>
 										</Col>
-										<Col xs="4" className="user-access-type p-0">
+										<Col xs="4" className="text-grey-italic center-vertically p-0">
 											Owner
 										</Col>
 										<Col xs="2" className="center-vertically p-0">

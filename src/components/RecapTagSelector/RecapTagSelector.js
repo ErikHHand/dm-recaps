@@ -203,7 +203,7 @@ class RecapTagSelector extends Component {
 								style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
 								className={
 									TEXTCOLOURS[this.props.campaign.tags[tagID].colour] +
-									(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag transition-border" : " tag-selector-tag transition-border")
+									(!this.state.tags[tagID] ? " tag-not-selected tag-selector-tag tag transition-border" : " tag-selector-tag tag transition-border")
 								}
 								onClick={() => this.onClick(tagID)}
 								bg="bullshit"
@@ -229,7 +229,7 @@ class RecapTagSelector extends Component {
 						pill 
 						style={{ backgroundColor: COLOURS[this.props.campaign.tags[tagID].colour]}} 
 						key={this.props.recapItem.tags.indexOf(tagID)}
-						className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag transition-border"}
+						className={TEXTCOLOURS[this.props.campaign.tags[tagID].colour] + " recap-tag tag transition-border"}
 						onClick={() => this.props.handleSelectedTag(tagID)}
 						bg="bullshit"
 					>
@@ -248,7 +248,7 @@ class RecapTagSelector extends Component {
 				{recapTags}
 				<Badge 
 					pill 
-					className="recap-add-tag" 
+					className="recap-add-tag item-add-button" 
 					onClick={() => this.setState({ showTagOverlay: !this.state.showTagOverlay })}
 					bg="bullshit"
 					ref={this.attachRef}

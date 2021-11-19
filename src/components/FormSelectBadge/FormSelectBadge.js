@@ -56,7 +56,7 @@ class FormSelectBadge extends Component {
 					pill 
 					style = {{ backgroundColor: COLOURS[colour]}} 
 					key = {colour}
-					className = {TEXTCOLOURS[colour] + " select-badge transition-border"}
+					className = {TEXTCOLOURS[colour] + " select-badge transition-border tag"}
 					onClick={() => this.changeValue(colour)}
 					bg="bullshit"
 				>
@@ -68,7 +68,7 @@ class FormSelectBadge extends Component {
 				<Badge 
 					pill 
 					key = {type}
-					className = "select-type select-badge transition-border"
+					className = "tag-white select-badge transition-border tag"
 					onClick={() => this.changeValue(type)}
 					bg="bullshit"
 				>
@@ -93,7 +93,7 @@ class FormSelectBadge extends Component {
 						value = <Badge 
 							pill 
 							style = {{ backgroundColor: COLOURS[this.props.value]}} 
-							className = {TEXTCOLOURS[this.props.value] + " select-badge"}
+							className = {TEXTCOLOURS[this.props.value] + " tag select-badge"}
 							bg="bullshit"
 						>
 							TAG
@@ -101,7 +101,7 @@ class FormSelectBadge extends Component {
 					} else if(this.props.name === "type") {
 						value = <Badge 
 							pill 
-							className = "select-type select-badge"
+							className = "tag-white tag select-badge"
 							bg="bullshit"
 						>
 							<FontAwesomeIcon icon={ICONS[this.props.value]} />
@@ -123,7 +123,7 @@ class FormSelectBadge extends Component {
 					onClick={() => this.setState({ show: !show })}
 					className="form-control remove-padding form-control-custom"
 				>
-					<div ref={this.attachRef} className = "select-tag">
+					<div ref={this.attachRef}>
 						{value}
 					</div>
 				</div>
@@ -147,18 +147,3 @@ class FormSelectBadge extends Component {
 }
 
 export default FormSelectBadge
-
-/*
-<Row onClick={() => this.setState({ show: !show })} xs={12}>
-					<Col xs={2}>			
-						<div className = "select-label right-align">{name}</div>
-					</Col>
-					<Col xs={10} className="remove-padding">
-						<div className = "select-border">
-							<div ref={this.attachRef} className = "select-tag">
-								{value}
-							</div>
-						</div>
-					</Col>
-				</Row>
-*/

@@ -16,7 +16,7 @@ class TagItem extends Component {
 
 	render() {	
 
-		let badgeClasses = TEXTCOLOURS[this.props.tagInfo.colour] + " tag-item transition-border " +
+		let badgeClasses = TEXTCOLOURS[this.props.tagInfo.colour] + " tag-item tag transition-border " +
 							(this.props.isSelected ? "tag-item-selected" : "");
 
 		return (
