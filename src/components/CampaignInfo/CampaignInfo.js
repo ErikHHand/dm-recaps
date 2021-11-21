@@ -22,6 +22,8 @@ class CampaignInfo extends Component {
 			world: "",
 			setting: "",
 			error: null,
+			textAreaStyle: {height: "100%",},
+			textAreaHeight: 50,
 		}
 
 		// Set the context for "this" for the following functions
@@ -51,6 +53,15 @@ class CampaignInfo extends Component {
 				world: this.props.campaign.world,
 				setting: this.props.campaign.setting,
 				description: this.props.campaign.description,
+			});
+		}
+	}
+
+	componentDidUpdate() {
+		if(this.textArea && this.textArea.scrollHeight !== this.state.textAreaHeight) {
+			this.setState({
+				textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",},
+				textAreaHeight: this.textArea.scrollHeight,
 			});
 		}
 	}
@@ -203,6 +214,17 @@ class CampaignInfo extends Component {
 	// Triggers when changing campaing info
 	onChange(event) {
     	this.setState({ [event.target.name]: event.target.value });
+
+		if(event.target.name === "description") {
+			this.setState({ 
+				text: event.target.value,
+				textAreaStyle: {height: "auto",},
+			}, () =>
+				this.setState({
+					textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",}
+				})
+			);
+		}
 	};
 	  
 	// Triggers when adding a file to the upload form
@@ -258,7 +280,8 @@ class CampaignInfo extends Component {
 
 						<Form.Group className="mb-3" controlId="formDescription">
 							<Form.Label>Campaign Description</Form.Label>
-							<Form.Control 
+							<Form.Control
+								ref={textArea => this.textArea = textArea}
 								name="description"
 								value={description}
 								onChange={this.onChange}
@@ -266,6 +289,8 @@ class CampaignInfo extends Component {
 								type="text"
 								placeholder="Campaign description..."
 								maxLength="2000"
+								style={this.state.textAreaStyle}
+								className="form-description-campaign"
 							/>
 							<Form.Text className="text-muted">
 								A short description of the campaign. 

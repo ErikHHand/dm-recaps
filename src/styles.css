@@ -250,6 +250,14 @@ button:focus {
 	color: rgba(42, 42, 212, 1);
 }
 
+.form-description-campaign {
+	max-height: 23vh;
+}
+
+.form-description-tag {
+	max-height: 40vh;
+}
+
 .form-control-custom {
 	height: auto !important;
 }

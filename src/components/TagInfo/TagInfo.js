@@ -25,6 +25,8 @@ class TagInfo extends Component {
 			colour: "red",
 			error: "",
 			showAlert: false,
+			textAreaStyle: {height: "100%",},
+			textAreaHeight: 50,
 		}
 
 		// Set the context for "this" for the following function
@@ -49,7 +51,7 @@ class TagInfo extends Component {
 	// Will be called when an update happens to props. This is used to check
 	// if a new tag is selected
 	componentDidUpdate(prevProps) {
-
+		
 		// Update information in state based on the new tag selected
 		if(this.props.tagID !== prevProps.tagID) {
 			this.setState({
@@ -57,6 +59,12 @@ class TagInfo extends Component {
 				type: this.props.tag.type,
 				colour: this.props.tag.colour,
 				description: this.props.tag.description ? this.props.tag.description : "",
+			});
+		}
+		if(this.textArea && this.textArea.scrollHeight !== this.state.textAreaHeight) {
+			this.setState({
+				textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",},
+				textAreaHeight: this.textArea.scrollHeight,
 			});
 		}
 	}
@@ -91,6 +99,8 @@ class TagInfo extends Component {
 			colour: this.state.colour,
 			description: this.state.description,
 			created: firebase.firestore.Timestamp.fromDate(new Date()),
+			textAreaStyle: {height: "50px",},
+			textAreaHeight: 50,
 		};
 
 		if(this.props.edit) {
@@ -177,10 +187,21 @@ class TagInfo extends Component {
 	
 	// Triggers when changing tag name or tag description
 	onChange(event){
-    	this.setState({ [
-			event.target.name]: event.target.value,
+    	this.setState({
+			[event.target.name]: event.target.value,
 			showAlert: false,
 		});
+
+		if(event.target.name === "description") {
+			this.setState({ 
+				text: event.target.value,
+				textAreaStyle: {height: "auto",},
+			}, () =>
+				this.setState({
+					textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",}
+				})
+			);
+		}
   	};
 
 	  // Triggers when changing tag type or tag colour
@@ -228,7 +249,7 @@ class TagInfo extends Component {
 					>
 						A tag with this name already exists!
 					</Alert>
-					<Form onSubmit={this.onSubmit}>
+					<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
 						<Form.Group className="mb-3" controlId="formName">
 							<Form.Label>Name</Form.Label>
 							<Form.Control 
@@ -246,14 +267,17 @@ class TagInfo extends Component {
 
 						<Form.Group className="mb-3" controlId="formDescription">
 							<Form.Label>Description</Form.Label>
-							<Form.Control 
+							<Form.Control
+								ref={textArea => this.textArea = textArea}
 								name="description"
 								value={description}
 								onChange={this.onChange}
 								type="text"
 								as="textarea"
 								placeholder="Description...."
-								maxLength="1000" 
+								maxLength="1000"
+								style={this.state.textAreaStyle}
+								className="form-description-tag"
 							/>
 							<Form.Text className="text-muted">
 								For example "Misty Mountains".

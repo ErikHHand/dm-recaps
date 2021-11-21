@@ -14,6 +14,7 @@ class RecapEditText extends Component {
 		this.state = {
 			text: this.props.recapItem.text,
 			error: "",
+			textAreaStyle: {height: "100%",}
 		};
 
 		// Set the context for "this" for the following functions
@@ -21,7 +22,13 @@ class RecapEditText extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
   	}
 
+	componentDidMount() {
+		// Automatically update the height of the text area to fit all text in it
+		this.setState({textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",}});
+	}
+
 	componentWillUnmount() {
+		// Save any changes made but not submitted
 		if(this.state.text !== this.props.recapItem.text) {
 
 			let oldRecap = {
@@ -41,7 +48,14 @@ class RecapEditText extends Component {
 	
 	// Saves the recap text to the state while writing
 	onChange(event) {
-		this.setState({ text: event.target.value });
+		this.setState({ 
+			text: event.target.value,
+			textAreaStyle: {height: "auto",},
+		}, () =>
+			this.setState({
+				textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",}
+			})
+		);
 	}
 
 	// Triggers when submitting a recap
@@ -57,6 +71,10 @@ class RecapEditText extends Component {
 		// Save text in recapItem locally
 		let recap = this.props.recapItem;
 		recap.text = this.state.text;
+
+		this.setState({
+			textAreaStyle: {height: "50px",}
+		});
 		
 		// Call function in parent to add changes to Firestore
 		this.props.writeRecap(recap, oldRecap);
@@ -69,18 +87,20 @@ class RecapEditText extends Component {
 		let recapEditText = this;
 
 		return (
-			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
+			<Form onSubmit={this.onSubmit} ref={form => this.form = form}>
 				<Form.Group controlId="formRecapEdit" className="mb-3">
 					<Form.Control 
+						ref={textArea => this.textArea = textArea}
 						name="text"
 						value={text}
-						onKeyDown={(event) => {if(event.keyCode === 13) recapEditText.form.dispatchEvent(new Event('submit'))}}
+						onKeyDown={(event) => {if(event.key === "Enter") recapEditText.form.dispatchEvent(new Event('submit'))}}
 						onChange={this.onChange}
 						type="text"
 						as="textarea"
 						placeholder="Write something that happened..."
 						autoFocus
 						className="regular-text"
+						style={this.state.textAreaStyle}
 						maxLength="4000" 
 					/>
 				</Form.Group>
@@ -91,3 +111,5 @@ class RecapEditText extends Component {
 }
 
 export default withFirebase(RecapEditText)
+
+// 

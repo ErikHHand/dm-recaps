@@ -17,6 +17,7 @@ class RecapNew extends Component {
 		this.state = {
 			text: "",
 			error: "",
+			textAreaStyle: {height: "100%",}
 		};
 
 		// Set the context for "this" for the following functions
@@ -24,9 +25,22 @@ class RecapNew extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
   	}
 
+	componentDidMount() {
+		// Automatically update the height of the text area to fit all text in it
+		this.setState({textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",}});
+	}
+
 	// Saves the recap text to the state while writing
 	onChange(event) {
-		this.setState({ text: event.target.value });
+		console.log(event.target.scrollHeight)
+		this.setState({ 
+			text: event.target.value,
+			textAreaStyle: {height: "auto",},
+		}, () =>
+			this.setState({
+				textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",}
+			})
+		);
 	}
 
 	// Triggers when submitting a recap
@@ -43,6 +57,7 @@ class RecapNew extends Component {
 		// Empty the form field
 		this.setState({
 			text: "",
+			textAreaStyle: {height: "50px",}
 		});
 
 		this.writeToRecaps(false, recap);
@@ -126,7 +141,8 @@ class RecapNew extends Component {
 		return (
 			<Form onSubmit={this.onSubmit} ref={f => this.form = f}>
 				<Form.Group controlId="formRecap" className="remove-margin">
-					<Form.Control 
+					<Form.Control
+						ref={textArea => this.textArea = textArea}
 						name="text"
 						value={text}
 						onKeyDown={(event) => {
@@ -140,6 +156,7 @@ class RecapNew extends Component {
 						as="textarea"
 						placeholder="Write something that happened..."
 						className="regular-text"
+						style={this.state.textAreaStyle}
 						maxLength="4000" 
 					/>
 				</Form.Group>
