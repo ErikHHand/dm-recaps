@@ -287,6 +287,7 @@ class RecapItem extends Component {
 								handleCampaign = {this.props.handleCampaign}
 								handleSelectedTag = {this.props.handleSelectedTag}
 								handleError = {this.props.handleError}
+								loadCampaign = {this.props.loadCampaign}
 								campaignRef = {this.props.campaignRef}
 							/>
 						</Col>

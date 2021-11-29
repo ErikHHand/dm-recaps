@@ -327,6 +327,7 @@ class RecapTagSelector extends Component {
 					selectTag = {false}
 					handleSelectedTag = {this.props.handleSelectedTag}
 					handleError = {this.props.handleError}
+					loadCampaign = {this.props.loadCampaign}
 				/>
 			</div>
 		)
