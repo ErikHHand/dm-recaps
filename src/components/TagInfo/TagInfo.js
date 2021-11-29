@@ -99,8 +99,6 @@ class TagInfo extends Component {
 			colour: this.state.colour,
 			description: this.state.description,
 			created: firebase.firestore.Timestamp.fromDate(new Date()),
-			textAreaStyle: {height: "50px",},
-			textAreaHeight: 50,
 		};
 
 		if(this.props.edit) {
@@ -117,23 +115,14 @@ class TagInfo extends Component {
 
 		let tagID = this.hashCode(tagInfo.name).toString(); 
 
-		// Check if a tag with this name already exists. If so,
-		// Show an alert insetad of creating a new tag
-		if(this.props.tags[tagID]) {
-			this.setState({showAlert: true,})
-			return;
+		// Create unique ID
+		while(this.props.tags[tagID]) {
+			tagID = parseInt(tagID) + 1;
+			tagID = tagID.toString();
 		}
 
 		// Write tag info
 		this.editTagInfo(false, tagID, tagInfo);
-
-		// Reset the state
-		this.setState({
-			name: "",
-			type: "Location",
-			colour: "red",
-			description: "",
-		});
 	};
 
 	// Triggers when editing a tag or just after a new tag has been added.
@@ -162,9 +151,20 @@ class TagInfo extends Component {
 			this.props.handleCampaign(campaign);
 			
 			if(!this.props.edit && !tags[tagID]) {
+				// Reset the state
+				this.setState({
+					name: "",
+					type: "Location",
+					colour: "red",
+					description: "",
+					textAreaStyle: {height: "50px",},
+					textAreaHeight: 50,
+				});
+			
 				// Add tag locally
 				tags[tagID] = { recaps: {}};
 				this.props.handleTags(tags);
+
 				// If this tag is being added from the tag selector pop-up, 
 				// the tag should not be selected
 				if(this.props.selectTag) {

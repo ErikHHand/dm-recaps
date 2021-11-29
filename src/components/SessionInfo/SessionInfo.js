@@ -90,12 +90,12 @@ class SessionInfo extends Component {
 		// Generate sesion ID
 		let sessionID = this.hashCode(sessionInfo.description).toString();
 
-		// Check if session with this description already exists
-		if(this.props.sessions[sessionID]) {
-			this.setState({showAlert: true,})
-			return;
+		// Create unique ID
+		while(this.props.sessions[sessionID]) {
+			sessionID = parseInt(sessionID) + 1;
+			sessionID = sessionID.toString();
 		}
-
+		
 		// Write session info
 		this.editSessionInfo(false, sessionID, sessionInfo);
 
