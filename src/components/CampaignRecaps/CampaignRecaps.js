@@ -115,6 +115,11 @@ class CampaignRecaps extends Component {
 	}
 
 	loadCampaign(retry) {
+		// If retrying, save the durrent tab
+		let activeTab = "";
+		if(retry) {
+			activeTab = this.state.campaign.activeTab;
+		}
 		// The id for this campaign, talen from the pathname
 		let campaignID = this.props.location.pathname.substring(11);
 
@@ -151,13 +156,18 @@ class CampaignRecaps extends Component {
 					recaps[doc.id] = doc.data();
 				});
 
+				let campaign = campaginDoc.data();
+				if(retry) {
+					campaign.activeTab = activeTab;
+				}
+
 				// Save data in the state and set status to "LOADED"
 				this.setState({
 					status: "LOADED",
 					recaps: recaps,
 					sessions: sessions,
 					tags: tags,
-					campaign: campaginDoc.data(),
+					campaign: campaign,
 				}, () => {
 					if(retry) retry();
 				});
