@@ -33,6 +33,7 @@ class CampaignRecaps extends Component {
 			tags: {},
 			updateCampaign: false,
 			showAlert: false,
+			alertHeight: 0,
 			tabClasses: "",
 			error: null,
 			errorMessage: "",
@@ -50,6 +51,7 @@ class CampaignRecaps extends Component {
 		this.handleTransition = this.handleTransition.bind(this);
 		this.loadCampaign = this.loadCampaign.bind(this);
 		this.animationEnd = this.animationEnd.bind(this);
+		this.updateDimension = this.updateDimension.bind(this);
 	}
 
 
@@ -60,12 +62,17 @@ class CampaignRecaps extends Component {
 		this.loadCampaign();
 		this.sessionTab.addEventListener("animationend", this.animationEnd);
 		this.tagTab.addEventListener("animationend", this.animationEnd);
+
+		// Add a listener for the window size for dynamically changing height of recap list
+		window.addEventListener('resize', this.updateDimension);
 	}
 
 	componentWillUnmount() {
 
+		// Remove listeners
 		this.sessionTab.removeEventListener("animationend", this.animationEnd);
 		this.tagTab.removeEventListener("animationend", this.animationEnd);
+		window.removeEventListener('resize', this.updateDimension);
 
 		// Check if user is signed in
 		if(this.props.firebase.auth.currentUser) {
@@ -271,7 +278,7 @@ class CampaignRecaps extends Component {
 			error: error,
 			errorMessage: errorMessage,
 			showAlert: true,
-		});
+		}, this.updateDimension);
 	}
 
 	handleTransition(transition) {
@@ -286,6 +293,14 @@ class CampaignRecaps extends Component {
 		}
 	}
 
+	// Called when the listener detects a change in window height.
+	// Write that height to state and triggers a function update
+	updateDimension() {
+		if(this.state.showAlert) {
+			this.setState({ alertHeight: this.alert.clientHeight });
+		}
+	}
+
 	render() {
 
 		// The id for this campaign
@@ -295,17 +310,11 @@ class CampaignRecaps extends Component {
 		let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
 		let activeTab = this.state.campaign.activeTab ? this.state.campaign.activeTab : "sessions";
-		let backButtonText = "";
-
-		/*
-		if(this.state.campaign.sessions) {
-			backButtonText = activeTab === "sessions" ? " - " + 
-				this.state.campaign.sessions[this.state.campaign.selectedSession].description : "";
-		} */
-
+		
 		return (
 			<>
 				<Alert
+					ref={alert => (this.alert = alert)}
 					dismissible
 					show={this.state.showAlert}
 					onClose={() => this.setState({showAlert: false,})}
@@ -350,13 +359,17 @@ class CampaignRecaps extends Component {
 									onClick={() => this.handleTransition("slide-from-recaps")}
 								>
 									<FontAwesomeIcon icon={faLongArrowAltLeft}/>
-									&nbsp; {activeTab.charAt(0).toUpperCase() + activeTab.slice(1) + backButtonText}
+									&nbsp; {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
 								</div>
 							</div>
 						</Col>
 					</Row>
 					
-					<Tab.Content style={this.state.showAlert ? {maxHeight: "calc(96.5vh - 168px)"} : {}}>
+					<Tab.Content 
+						style={this.state.showAlert ? 
+							{maxHeight: "calc(96.5vh - 116px - " + this.state.alertHeight + "px)"} 
+							: {}}
+					>
 						<Tab.Pane eventKey="sessions" className={this.state.tabClasses} ref={ref => (this.sessionTab = ref)}>
 							<SessionsPage
 								campaign = {this.state.campaign}
@@ -372,6 +385,8 @@ class CampaignRecaps extends Component {
 								handleSelectedTag = {this.handleSelectedTag}
 								handleError = {this.handleError}
 								handleTransition = {this.handleTransition}
+								showAlert = {this.state.showAlert}
+								alertHeight = {this.state.alertHeight}
 								status = {this.state.status}
 								loadCampaign = {this.loadCampaign}
 							/>
@@ -391,6 +406,8 @@ class CampaignRecaps extends Component {
 								handleSelectedTag = {this.handleSelectedTag}
 								handleError = {this.handleError}
 								handleTransition = {this.handleTransition}
+								showAlert = {this.state.showAlert}
+								alertHeight = {this.state.alertHeight}
 								status = {this.state.status}
 								loadCampaign = {this.loadCampaign}
 							/>

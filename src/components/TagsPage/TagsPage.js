@@ -81,7 +81,7 @@ class TagsPage extends Component {
 	// Write that height to state and triggers a function update
 	updateDimension() {
 		this.setState({ windowHeight: window.innerHeight });
-	};
+	}
 
 	// Handles changes to the tags shown based on filtering
 	handleFilteredTags(filteredTags) {
@@ -108,6 +108,8 @@ class TagsPage extends Component {
 		let tagFilter;
 		let tagItems;
 		let recapItems;
+
+		let smallScreen = window.innerWidth < 576;
 
 		switch (this.props.status) {
 			case "LOADING":
@@ -244,7 +246,14 @@ class TagsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col xl={9} md={8} sm={7} xs={12} className="remove-padding height-100 recaps-column" ref={ref => (this.recapItemColumn = ref)}>
+					<Col 
+						xl={9} md={8} sm={7} xs={12} 
+						className="remove-padding height-100 recaps-column" 
+						ref={ref => (this.recapItemColumn = ref)}
+						style={this.props.showAlert && smallScreen ? 
+							{bottom: "calc(96.5vh - 116px - " + this.props.alertHeight + "px)"} 
+							: {}}
+					>
 						<div ref={ref => (this.tagDescription = ref)}>
 							{this.props.selectedTag ? 
 								<TagDescription 

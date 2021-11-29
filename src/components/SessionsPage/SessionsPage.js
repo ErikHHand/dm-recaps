@@ -55,6 +55,8 @@ class SessionsPage extends Component {
 		let recapItems = <></>;
 		let recapNew = <></>;
 
+		let smallScreen = window.innerWidth < 576;
+
 		switch (this.props.status) {
 			case "LOADING":
 				sessionItems =
@@ -180,7 +182,13 @@ class SessionsPage extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col xl={9} md={8} sm={7} xs={12} className="remove-padding height-100 recaps-column">
+					<Col 
+						xl={9} md={8} sm={7} xs={12} 
+						className="remove-padding height-100 recaps-column"
+						style={this.props.showAlert && smallScreen ? 
+							{bottom: "calc(96.5vh - 116px - " + this.props.alertHeight + "px)"} 
+							: {}}
+					>
 						<SortArrowsColumn
 							status = {this.state.recapSortDescending}
 							changeSort = {() => this.changeSort("recapSortDescending")}
