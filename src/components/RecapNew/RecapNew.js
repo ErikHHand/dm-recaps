@@ -32,7 +32,6 @@ class RecapNew extends Component {
 
 	// Saves the recap text to the state while writing
 	onChange(event) {
-		console.log(event.target.scrollHeight)
 		this.setState({ 
 			text: event.target.value,
 			textAreaStyle: {height: "auto",},
@@ -110,6 +109,7 @@ class RecapNew extends Component {
 			// Add locally to recap order array
 			campaign.sessions[sessionID].recapOrder = recapOrder;
 			this.props.handleCampaign(campaign);
+			this.props.scrollToBottomOfRecaps();
 		}).catch((error) => {
 			console.log("Error updating recap order:", error);
 			if(attempted) {

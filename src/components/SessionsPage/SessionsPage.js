@@ -39,6 +39,7 @@ class SessionsPage extends Component {
 
 		// Set the context for "this" for the following functions
 		this.changeSort = this.changeSort.bind(this);
+		this.scrollToBottomOfRecaps = this.scrollToBottomOfRecaps.bind(this);
 	}
 
 	// Change sorting of a list
@@ -46,6 +47,12 @@ class SessionsPage extends Component {
 		this.setState({
 			[list]: !this.state[list],
 		});
+	}
+
+	scrollToBottomOfRecaps() {
+		if(!this.state.recapSortDescending) {
+			this.recapsList.scrollTop = this.recapsList.scrollHeight;
+		}
 	}
 
 	render() {	
@@ -84,6 +91,7 @@ class SessionsPage extends Component {
 						handleError = {this.props.handleError}
 						campaignRef = {this.props.campaignRef}
 						loadCampaign = {this.props.loadCampaign}
+						scrollToBottomOfRecaps = {this.scrollToBottomOfRecaps}
 					/>
 
 				if(!this.props.campaign.sessions) {
@@ -194,7 +202,10 @@ class SessionsPage extends Component {
 							changeSort = {() => this.changeSort("recapSortDescending")}
 							alphabetical = {false}
 						/>
-						<div className="item-list remove-scroll-bar">
+						<div 
+							className="item-list remove-scroll-bar"
+							ref={recapsList => this.recapsList = recapsList}
+						>
 							{this.state.recapSortDescending ? null : recapItems}
 							{recapNew}
 							{this.state.recapSortDescending ? recapItems : null}
