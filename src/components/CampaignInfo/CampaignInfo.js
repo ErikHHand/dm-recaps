@@ -35,11 +35,11 @@ class CampaignInfo extends Component {
 		// Set up a file reader for campaign importing
 		// NOTE: Campaign importing is currently disabled since there are no security
 		// checks in place for the files being imported 
-		this.fileReader = new FileReader();
-		this.fileReader.onload = (event) => {
-			console.log(event.target)
-			this.setState({ file: JSON.parse(event.target.result)});
-		};
+		//this.fileReader = new FileReader();
+		//this.fileReader.onload = (event) => {
+		//	console.log(event.target)
+		//	this.setState({ file: JSON.parse(event.target.result)});
+		//};
 	}
 
 	// Will be called when component mounts, and put necessary information in the state
@@ -58,6 +58,8 @@ class CampaignInfo extends Component {
 	}
 
 	componentDidUpdate() {
+		// Handles automatic sizing of the campaign description text area. It will
+		// always try to adjust to fit all text in the description
 		if(this.textArea && this.textArea.scrollHeight !== this.state.textAreaHeight) {
 			this.setState({
 				textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",},
@@ -215,6 +217,7 @@ class CampaignInfo extends Component {
 	onChange(event) {
     	this.setState({ [event.target.name]: event.target.value });
 
+		// When writing in the description field, also adjust scroll height of the text area
 		if(event.target.name === "description") {
 			this.setState({ 
 				text: event.target.value,
@@ -228,11 +231,10 @@ class CampaignInfo extends Component {
 	};
 	  
 	// Triggers when adding a file to the upload form
-	updateFile(event) {
-		console.log(event.target.files[0]);
-		this.fileReader.readAsText(event.target.files[0]);
-	}
-	
+	//updateFile(event) {
+	//	console.log(event.target.files[0]);
+	//	this.fileReader.readAsText(event.target.files[0]);
+	//}
 
 	render() {
 

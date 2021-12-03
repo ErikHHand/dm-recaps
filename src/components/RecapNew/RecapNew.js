@@ -30,7 +30,7 @@ class RecapNew extends Component {
 		this.setState({textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",}});
 	}
 
-	// Saves the recap text to the state while writing
+	// Saves the recap text to the state while writing, and adjust height of the text area
 	onChange(event) {
 		this.setState({ 
 			text: event.target.value,

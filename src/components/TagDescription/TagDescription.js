@@ -112,6 +112,7 @@ class TagDescription extends Component {
 		});
 	}
 
+	// Function that handles collapsing and expanding the tag description
 	handleCollapse() {
 		this.setState({collapsed: !this.state.collapsed});
 	}
@@ -129,6 +130,8 @@ class TagDescription extends Component {
 		// Create background colour for the description box
 		let background = {backgroundColor: COLOURSRGB[this.props.tag.colour]}
 
+		// Vary chevron, classes and tag description text based on of the tag description
+		// is collapsed or not
 		let chevron = this.state.collapsed ? faChevronDown : faChevronUp;
 		let tagDescriptionCardTitleClass = this.state.collapsed ? "tag-description-card-title" : "";
 		let tagDescriptionTitleClass = this.state.collapsed ? 
@@ -137,7 +140,6 @@ class TagDescription extends Component {
 			<Card.Text className="with-line-breaks regular-text">
 				{this.props.tag.description ? this.props.tag.description : noDescription}
 			</Card.Text>
-		
 
 		return (
 			<>

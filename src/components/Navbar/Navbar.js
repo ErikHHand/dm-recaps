@@ -21,10 +21,12 @@ class NavbarBase extends Component {
             show: false,
 		};
 
+        // Set the context for "this" for the following function
         this.updateDimension = this.updateDimension.bind(this);
 	}
 
     componentDidMount() {
+        // Fetch the user data from backend and put data about last visited campaign in the state
         let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
 
         userRef.get().then((doc) => {
@@ -51,6 +53,7 @@ class NavbarBase extends Component {
     }
 
     componentDidUpdate() {
+        // Update data about last visited campaign
         if(this.props.location.state && this.props.location.state.id !== this.state.lastCampaignID) {
             this.setState({
 				lastCampaignName: this.props.location.state.campaign.name,
@@ -64,6 +67,8 @@ class NavbarBase extends Component {
 		window.removeEventListener('resize', this.updateDimension);
 	}
 
+    // Function called when a change in window width is detected. This is used to dynamically
+    // handle what type of navbar is rendered, depending on screen width.
     updateDimension() {
 		this.setState({ windowWidth: window.innerWidth });
 	}
@@ -73,6 +78,7 @@ class NavbarBase extends Component {
         let pathName = this.props.location.pathname;
         let activePage = "";
 
+        // A switch for manually deciding the active page based on url
         switch(pathName.substring(0,11)) {
             case "/campaigns":
                 activePage = "campaignsPage";
@@ -87,8 +93,8 @@ class NavbarBase extends Component {
                 activePage = "";
         }
 
-
-        // Hack for what navbar to render
+        // Nasty Hack for what navbar to render depending on screen width
+        // The contents of the navbar will always be the same, but the navbar container will vary
         let navbarContainer = <></>;
         const navbar = (
             <Nav className="ms-auto w-100" activeKey={activePage}>
@@ -126,6 +132,7 @@ class NavbarBase extends Component {
             </Nav>
         );
 
+        // Dynamically create the navbar container
         if(window.innerWidth < 768) {
             navbarContainer = (
                 <>

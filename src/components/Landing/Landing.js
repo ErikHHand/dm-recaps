@@ -22,7 +22,7 @@ class Landing extends Component {
 		this.changeWindow = this.changeWindow.bind(this);
 	}
 
-	//This function switches between the sign in and the sign up windows.
+	// This function switches between the sign in and the sign up windows.
 	changeWindow() {
 		this.setState({
 			signIn: !this.state.signIn,

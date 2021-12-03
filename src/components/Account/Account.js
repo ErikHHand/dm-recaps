@@ -33,6 +33,8 @@ class Account extends Component {
     }
 
     componentDidMount() {
+
+        // When component mounts, fetch user data from backend and save in the state 
         let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
 
         userRef.get().then((doc) => {
@@ -46,6 +48,7 @@ class Account extends Component {
         });
     }
 
+    // Function for modifying user data locally
     handleUser(user) {
         this.setState({
             userData: user,
@@ -59,6 +62,8 @@ class Account extends Component {
         let changeUsernameText = "";
         let userData = this.state.userData;
 
+        // Calculate how long until the user can change username, if the username was changed
+        // in the last 60 days
         if (userData && userData.usernameLastChanged) {
             let milliSinceUsernameChange = Date.now() - userData.usernameLastChanged.toDate();
             daysSinceUsernameChange = Math.ceil(Math.abs(milliSinceUsernameChange) / (1000 * 60 * 60 * 24));

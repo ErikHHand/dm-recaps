@@ -121,6 +121,8 @@ class CampaignRecaps extends Component {
 		}
 	}
 
+	// Function for loading a campaign from backend. This is used both for
+	// the initial loading and before retrying a failed write
 	loadCampaign(retry) {
 		// If retrying, save the durrent tab
 		let activeTab = "";
@@ -281,10 +283,13 @@ class CampaignRecaps extends Component {
 		}, this.updateDimension);
 	}
 
+	// Handles transitions between item columns for small screens
 	handleTransition(transition) {
 		this.setState({tabClasses: transition});
 	}
 
+	// Function called at the end of an animation when transitioning between columns
+	// for small screens
 	animationEnd(event) {
 		if(event.animationName === "slide-to-recaps") {
 			this.setState({tabClasses: "recaps-view"})
@@ -293,7 +298,7 @@ class CampaignRecaps extends Component {
 		}
 	}
 
-	// Called when the listener detects a change in window height.
+	// Called when a listener detects a change in window height.
 	// Write that height to state and triggers a function update
 	updateDimension() {
 		if(this.state.showAlert) {

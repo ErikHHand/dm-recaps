@@ -93,6 +93,8 @@ class RecapTagSelector extends Component {
 		}		
 	}
 
+	// Triggers when detecting a change in window width. This is for dynamically
+	// adjusting the number of columns with tags in
 	updateDimension() {
 		this.setState({ windowWidth: window.innerWidth });
 	}
@@ -179,6 +181,7 @@ class RecapTagSelector extends Component {
 		let allTags = [];
 		let cols = [];
 
+		// Divide into two or three columns depending on screen width
 		if (window.innerWidth < 576) {
 			numberOfColumns = 2;
 			let col1Length = Math.ceil(this.state.filteredTags.length / 2);

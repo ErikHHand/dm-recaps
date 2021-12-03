@@ -46,7 +46,7 @@ class RecapEditText extends Component {
 		}
 	}
 	
-	// Saves the recap text to the state while writing
+	// Saves the recap text to the state while writing, and also adjust the text area height
 	onChange(event) {
 		this.setState({ 
 			text: event.target.value,
@@ -72,6 +72,7 @@ class RecapEditText extends Component {
 		let recap = this.props.recapItem;
 		recap.text = this.state.text;
 
+		// Reset height
 		this.setState({
 			textAreaStyle: {height: "50px",}
 		});

@@ -32,21 +32,6 @@ class CampaignItem extends Component {
 		this.deleteCampaign = this.deleteCampaign.bind(this);
 	}
 
-	// Function called when hovering over a campaign item
-	// which will add a visible border to it.
-	addBorder() {
-		this.setState({
-			border: "info"
-		});
-	}
-
-	// Function to remove border when moving cursor away from a campaign item
-	removeBorder() {
-		this.setState({
-			border: ""
-		});
-	}
-
 	// Triggers when deleting a campaign
 	deleteCampaign() {
 

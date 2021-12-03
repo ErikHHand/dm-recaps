@@ -49,6 +49,9 @@ class SessionsPage extends Component {
 		});
 	}
 
+	// Function for automatically scrolling to the bottom of the recaps list
+	// This is called when adding a new recap and will scroll when recaps
+	// are sorted in ascending order
 	scrollToBottomOfRecaps() {
 		if(!this.state.recapSortDescending) {
 			this.recapsList.scrollTop = this.recapsList.scrollHeight;
@@ -128,7 +131,6 @@ class SessionsPage extends Component {
 				}
 		
 				// Render recap items		
-				// TODO: Check if all of these checks really are necessary anymore
 				if(!this.props.selectedSession) {
 					recapItems = <></>;
 				} else if(!this.props.sessions[this.props.selectedSession]) {

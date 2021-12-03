@@ -61,6 +61,8 @@ class TagInfo extends Component {
 				description: this.props.tag.description ? this.props.tag.description : "",
 			});
 		}
+
+		// Change height of the tag description text area to fit all text
 		if(this.textArea && this.textArea.scrollHeight !== this.state.textAreaHeight) {
 			this.setState({
 				textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",},
@@ -192,6 +194,7 @@ class TagInfo extends Component {
 			showAlert: false,
 		});
 
+		// If changing the decription, also adjust height of the text area
 		if(event.target.name === "description") {
 			this.setState({ 
 				text: event.target.value,
