@@ -32,6 +32,12 @@ class Account extends Component {
 		this.handleUserData = this.handleUserData.bind(this);
     }
 
+    componentDidMount() {
+        this.setState({
+            userData: this.props.userDataContext.userData,
+        });
+    }
+
     componentDidUpdate() {
         if(this.props.userDataContext.userData !== this.state.userData) {
             this.setState({
