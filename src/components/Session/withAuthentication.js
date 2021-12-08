@@ -27,8 +27,6 @@ const withAuthentication = Component => {
 			};
 		}
 
-		
-
 		// When mounting, add listener that triggers when user signs in or signs out
 		componentDidMount() {
 			this.listener = this.props.firebase.auth.onAuthStateChanged(

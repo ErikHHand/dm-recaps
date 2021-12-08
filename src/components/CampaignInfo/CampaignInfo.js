@@ -203,6 +203,24 @@ class CampaignInfo extends Component {
 				campaign["world"] = this.state.world;
 				campaign["setting"] = this.state.setting;
 
+				// If this is the last visited campaign, update user data name
+				if(this.props.campaignID === this.props.userDataContext.userData.lastCampaignID) {
+					// Update on Firetore
+					this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid).update({
+						lastCampaignID: this.props.campaignID,
+						lastCampaignName: this.state.name,
+					}).then(() => {
+						console.log("User data successfully updated!");
+						// Update locally
+						this.props.userDataContext.updateUserData({
+							lastCampaignID: this.props.campaignID,
+							lastCampaignName: this.state.name,
+						});
+					}).catch((error) => {
+						console.log("Error updating user data:", error);
+					});
+				}
+
 				let campaigns = this.props.campaigns;
 				campaigns[this.props.campaignID] = campaign;
 				this.props.handleCampaigns(campaigns);

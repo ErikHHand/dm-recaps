@@ -7,6 +7,7 @@ import * as ROUTES from '../../constants/routes';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Offcanvas from 'react-bootstrap/Offcanvas'
+import Spinner from 'react-bootstrap/Spinner'
 
 import { withFirebase } from '../Firebase/Firebase';
 
@@ -16,9 +17,10 @@ class NavbarBase extends Component {
 		super(props);
 
 		this.state = {
-			lastCampaignName: "",
-            lastCampaignID: "",
+			lastCampaignName: null,
+            lastCampaignID: null,
             show: false,
+            status: "LOADING",
 		};
 
         // Set the context for "this" for the following function
@@ -26,39 +28,21 @@ class NavbarBase extends Component {
 	}
 
     componentDidMount() {
-        // Fetch the user data from backend and put data about last visited campaign in the state
-        let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
-
-        userRef.get().then((doc) => {
-
-            let lastCampaignName = "";
-            let lastCampaignID = "";
-
-            if (doc.exists) {
-                lastCampaignName = doc.data().lastCampaignName;
-                lastCampaignID = doc.data().lastCampaignID;
-            }
-
-			this.setState({
-				lastCampaignName: lastCampaignName,
-                lastCampaignID: lastCampaignID,
-			});
-						
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
-
         // Add a listener for the window size
 		window.addEventListener('resize', this.updateDimension);
     }
 
     componentDidUpdate() {
-        // Update data about last visited campaign
-        if(this.props.location.state && this.props.location.state.id !== this.state.lastCampaignID) {
+        // Handles updates to last visited campaign
+        let userData = this.props.userDataContext.userData;
+        if(userData 
+            && (userData.lastCampaignID !== this.state.lastCampaignID 
+            || userData.lastCampaignName !== this.state.lastCampaignName)) {
             this.setState({
-				lastCampaignName: this.props.location.state.campaign.name,
-                lastCampaignID: this.props.location.state.id,
-			});
+                lastCampaignID: userData.lastCampaignID,
+                lastCampaignName: userData.lastCampaignName,
+                status: "LOADED",
+            });
         }
     }
 
@@ -106,14 +90,19 @@ class NavbarBase extends Component {
                         Campaigns
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item className={"nav-item-campaign " + (activePage === "campaignRecaps" ? "nav-item-active " : "nav-item-inactive ")}>
-                    <Nav.Link 
-                        eventKey="campaignRecaps" 
-                        onClick={() => this.props.history.push("/campaigns/" + this.state.lastCampaignID)}
-                        >
-                        {this.state.lastCampaignName}
-                    </Nav.Link>
-                </Nav.Item>
+                {
+                    // Only render nav item for last visited campaign if there is a last visited campaign
+                    this.state.lastCampaignID ?
+                    <Nav.Item className={"nav-item-campaign " + (activePage === "campaignRecaps" ? "nav-item-active " : "nav-item-inactive ")}>
+                        <Nav.Link 
+                            eventKey="campaignRecaps" 
+                            onClick={() => this.props.history.push("/campaigns/" + this.state.lastCampaignID)}
+                            >
+                            {this.state.lastCampaignName}
+                        </Nav.Link>
+                    </Nav.Item> :
+                    <></>
+                }
                 <Nav.Item className="nav-item-air">
                     <div >
                     </div>
@@ -132,37 +121,58 @@ class NavbarBase extends Component {
             </Nav>
         );
 
-        // Dynamically create the navbar container
-        if(window.innerWidth < 768) {
-            navbarContainer = (
-                <>
-                    <Navbar.Brand className="nav-brand">RPG Recaps</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="offcanvasNavbar"/>
-                    <Navbar.Offcanvas
-                        id="offcanvasNavbar"
-                        aria-labelledby="offcanvasNavbarLabel"
-                        placement="end"
-                    >
-                        <Offcanvas.Header closeButton>
-                            <Offcanvas.Title id="offcanvasNavbarLabel">RPG Recaps</Offcanvas.Title>
-                        </Offcanvas.Header>
-                        <Offcanvas.Body>
-                            {navbar}
-                        </Offcanvas.Body>
-                    </Navbar.Offcanvas>
-                </>
-            );
-        } else {
-            navbarContainer = (
-                <>
-                    <Navbar.Brand className="nav-brand">RPG Recaps</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        {navbar}
-                    </Navbar.Collapse>
-                </>
-            )
+        // A switch to create a spinner while user data containing the last visited campaign
+        // is being fetched. When that data is fetched, the navbar is rendered
+        switch (this.state.status) {
+			case "LOADING":
+				// Create spinner
+				navbarContainer =   (
+                    <div className="center-vertically">
+                        <Spinner animation="grow" variant="info" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </Spinner>
+                    </div>
+                );
+				break;
+			case "LOADED":
+				// Dynamically create the navbar container
+                if(window.innerWidth < 768) {
+                    navbarContainer = (
+                        <>
+                            <Navbar.Brand className="nav-brand">RPG Recaps</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="offcanvasNavbar"/>
+                            <Navbar.Offcanvas
+                                id="offcanvasNavbar"
+                                aria-labelledby="offcanvasNavbarLabel"
+                                placement="end"
+                            >
+                                <Offcanvas.Header closeButton>
+                                    <Offcanvas.Title id="offcanvasNavbarLabel">RPG Recaps</Offcanvas.Title>
+                                </Offcanvas.Header>
+                                <Offcanvas.Body>
+                                    {navbar}
+                                </Offcanvas.Body>
+                            </Navbar.Offcanvas>
+                        </>
+                    );
+                } else {
+                    navbarContainer = (
+                        <>
+                            <Navbar.Brand className="nav-brand">RPG Recaps</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                            <Navbar.Collapse id="responsive-navbar-nav">
+                                {navbar}
+                            </Navbar.Collapse>
+                        </>
+                    );
+                }
+				break;
+			default:
+				navbarContainer = <></>;
+				break;
         }
+
+        
         
         return  (
             <Navbar expand="md" variant="light" className="top-bar border-bottom" collapseOnSelect={true}>

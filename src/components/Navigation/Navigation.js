@@ -37,7 +37,7 @@ class Navigation extends Component {
                 {userDataContext => (
                     <Router>
                         <Container fluid="lg" className="container-app container-all">
-                            <Navbar/>
+                            <Navbar userDataContext={userDataContext}/>
                             <Switch>
                                 <Route
                                     exact path="/"
@@ -47,7 +47,7 @@ class Navigation extends Component {
                                 />
                                 <Route
                                     exact path="/campaigns"
-                                    render = { (props) => <CampaignsPage {...props}/> }
+                                    render = { (props) => <CampaignsPage {...props} /> }
                                 />
                                 <Route
                                     path = "/campaigns/:id"

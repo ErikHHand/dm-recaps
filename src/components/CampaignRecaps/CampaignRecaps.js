@@ -82,9 +82,6 @@ class CampaignRecaps extends Component {
 			// The Firestore database reference for this campaign
 			let campaignRef = this.props.firebase.db.collection("campaigns").doc(campaignID);
 
-			let userRef = this.props.firebase.db.collection("users")
-			.doc(this.props.firebase.auth.currentUser.uid);
-
 			// Only update selected session, tag and tab on firestore if changes have been made
 			if(this.state.updateCampaign) {
 				// Update info about active tab and selected session/tag to backend
@@ -93,25 +90,6 @@ class CampaignRecaps extends Component {
 					activeTab: this.state.campaign.activeTab, 
 					selectedSession: this.state.campaign.selectedSession ? this.state.campaign.selectedSession : "",
 					selectedTag: this.state.campaign.selectedTag ? this.state.campaign.selectedTag : "",
-				}).then(() => {
-					console.log("Document successfully updated!");
-				}).catch((error) => {
-					console.log("Error getting document:", error);
-				});
-			}
-
-			// Only update user data if this wasn't the last visited campaign
-			if(this.props.userDataContext.userData.lastCampaignID !== campaignID) {
-				// Update info about last visited campaign locally
-				let userData = this.props.userDataContext.userData;
-				userData.lastCampaignID = campaignID;
-				userData.lastCampaignName = this.state.campaign.name;
-				this.props.userDataContext.updateUserData(userData);
-
-				// Update info about last visited campaign to backend
-				userRef.update({
-					lastCampaignName: this.state.campaign ? this.state.campaign.name : "",
-					lastCampaignID: campaignID,
 				}).then(() => {
 					console.log("Document successfully updated!");
 				}).catch((error) => {

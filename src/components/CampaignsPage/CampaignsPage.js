@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
 import CampaignItem from '../CampaignItem/CampaignItem';
+import { UserDataContext } from '../Session/Session';
 
 import Spinner from 'react-bootstrap/Spinner'
 import Alert from 'react-bootstrap/Alert'
@@ -177,17 +178,21 @@ class CampaignsPage extends Component {
 
 				campaignOrder.sort((a, b) => a.dateDifference - b.dateDifference);
 
-				campaigns = campaignOrder.map((campaign)=>
-					<CampaignItem
-						key={campaign.campaignID}
-						campaignID = {campaign.campaignID}
-						campaign = {this.state.campaigns[campaign.campaignID]}
-						campaigns = {this.state.campaigns}
-						handleCampaigns = {this.handleCampaigns}
-						campaignsRef = {campaignsRef}
-						handleError = {this.handleError}
-					/>
-				);
+				campaigns = campaignOrder.map((campaign)=> (
+					<UserDataContext.Consumer key={campaign.campaignID}>
+						{userDataContext => (
+							<CampaignItem
+								campaignID = {campaign.campaignID}
+								campaign = {this.state.campaigns[campaign.campaignID]}
+								campaigns = {this.state.campaigns}
+								handleCampaigns = {this.handleCampaigns}
+								campaignsRef = {campaignsRef}
+								userDataContext = {userDataContext}
+								handleError = {this.handleError}
+							/>
+						)}
+					</UserDataContext.Consumer>
+				))
 				break;
 			default:
 				campaigns = <></>

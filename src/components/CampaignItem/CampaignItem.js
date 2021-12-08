@@ -4,7 +4,6 @@ import ItemMenu from '../ItemMenu/ItemMenu';
 import CampaignInfo from '../CampaignInfo/CampaignInfo';
 import CampaignSharing from '../CampaignSharing/CampaignSharing';
 
-
 import { Link } from "react-router-dom";
 
 import Card from 'react-bootstrap/Card'
@@ -28,8 +27,9 @@ class CampaignItem extends Component {
 			border: ""
 		};
 
-		// Set the context for "this" for the following function
+		// Set the context for "this" for the following functions
 		this.deleteCampaign = this.deleteCampaign.bind(this);
+		this.updateLastVisitedCampaign = this.updateLastVisitedCampaign.bind(this);
 	}
 
 	// Triggers when deleting a campaign
@@ -49,6 +49,24 @@ class CampaignItem extends Component {
 				console.log("Error deleting campaign from user document:", error);
 			});
 
+			// If this is the last visited campaign, remove from user data
+			if(this.props.campaignID === this.props.userDataContext.userData.lastCampaignID) {
+				// Update on Firetore
+				this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid).update({
+					lastCampaignName: "",
+					lastCampaignID: "",
+				}).then(() => {
+					console.log("User data successfully updated!");
+					// Update locally
+					this.props.userDataContext.updateUserData({
+						lastCampaignID: "",
+						lastCampaignName: "",
+					});
+				}).catch((error) => {
+					console.log("Error updating user data:", error);
+				});
+			}
+
 			// Delete campaign locally
 			let campaigns = this.props.campaigns;
 			delete campaigns[this.props.campaignID];
@@ -57,6 +75,30 @@ class CampaignItem extends Component {
 			console.log("Error deleting campaign:", error);
 			this.props.handleError(error, "Could not delete campaign");
 		});
+	}
+
+	updateLastVisitedCampaign() {
+
+		let userRef = this.props.firebase.db.collection("users")
+			.doc(this.props.firebase.auth.currentUser.uid);
+			
+		// Only update user data if this wasn't the last visited campaign
+		if(this.props.userDataContext.userData.lastCampaignID !== this.props.campaignID) {
+			// Update info about last visited campaign to backend
+			userRef.update({
+				lastCampaignName: this.props.campaign.name,
+				lastCampaignID: this.props.campaignID,
+			}).then(() => {
+				// Update info about last visited campaign locally
+				let userData = this.props.userDataContext.userData;
+				userData.lastCampaignID = this.props.campaignID;
+				userData.lastCampaignName = this.props.campaign.name;
+				this.props.userDataContext.updateUserData(userData);
+				console.log("Last visited campaign successfully updated!");
+			}).catch((error) => {
+				console.log("Error updating last visited campaign:", error);
+			});
+		}
 	}
 
 	render() {
@@ -106,41 +148,38 @@ class CampaignItem extends Component {
 							campaign: this.props.campaign,
 							id: this.props.campaignID,
 							activeTab: this.props.campaign.activeTab,
-						}
-					}}>
-					<Card.Header>
-						<Row>
-							<Col xs="2" sm="1">
-								<CampaignSharing
-									campaignID = {this.props.campaignID}
-									campaign = {this.props.campaign}
-									campaigns = {this.props.campaigns}
-									handleCampaigns = {this.props.handleCampaigns}
-									campaignsRef = {this.props.campaignsRef}
-									handleError = {this.props.handleError}
-								/>
-							</Col>
-							<Col xs="8" sm="10" className="text-muted">
-								{this.props.campaign.world}
-							</Col>
-							<Col xs="2" sm="1" className="center item-menu item-menu-c-item">
-								<ItemMenu
-									edit = {() => this.setState({ showCampaignInfo: true})}
-									delete = {this.deleteCampaign}
-									deleteText = {deleteText}
-								/>
-							</Col>
-						</Row>
-					</Card.Header>
-					
-						<Card.Body
-							
-						>
+						}}}
+						onClick={() => this.updateLastVisitedCampaign()}
+					>
+						<Card.Header>
+							<Row>
+								<Col xs="2" sm="1">
+									<CampaignSharing
+										campaignID = {this.props.campaignID}
+										campaign = {this.props.campaign}
+										campaigns = {this.props.campaigns}
+										handleCampaigns = {this.props.handleCampaigns}
+										campaignsRef = {this.props.campaignsRef}
+										handleError = {this.props.handleError}
+									/>
+								</Col>
+								<Col xs="8" sm="10" className="text-muted">
+									{this.props.campaign.world}
+								</Col>
+								<Col xs="2" sm="1" className="center item-menu item-menu-c-item">
+									<ItemMenu
+										edit = {() => this.setState({ showCampaignInfo: true})}
+										delete = {this.deleteCampaign}
+										deleteText = {deleteText}
+									/>
+								</Col>
+							</Row>
+						</Card.Header>
+						<Card.Body>
 							<Card.Title>{this.props.campaign.name}</Card.Title>
 							<Card.Text className="with-line-breaks regular-text">{description}</Card.Text>
 						</Card.Body>
-					
-					<Card.Footer className="text-muted">{lastSession}</Card.Footer>
+						<Card.Footer className="text-muted">{lastSession}</Card.Footer>
 					</Link>
 				</Card>
 				<CampaignInfo 
@@ -152,6 +191,7 @@ class CampaignItem extends Component {
 					handleCampaigns = {this.props.handleCampaigns}
 					campaignsRef = {this.props.campaignsRef}
 					edit = {true}
+					userDataContext = {this.props.userDataContext}
 					handleError = {this.props.handleError}
 				/>
 			</>
