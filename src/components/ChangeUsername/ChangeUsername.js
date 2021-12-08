@@ -60,7 +60,7 @@ class ChangeUsername extends Component {
                     // Update locally
                     let user = this.props.user;
                     user.username = username;
-                    this.props.handleUser(user);
+                    this.props.handleUserData(user);
 
                     let oldUsername = this.props.firebase.auth.currentUser.displayName;
 

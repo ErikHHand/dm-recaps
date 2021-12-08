@@ -29,30 +29,23 @@ class Account extends Component {
         };
 
         // Set the context for "this" for the following function
-		this.handleUser = this.handleUser.bind(this);
+		this.handleUserData = this.handleUserData.bind(this);
     }
 
-    componentDidMount() {
-
-        // When component mounts, fetch user data from backend and save in the state 
-        let userRef = this.props.firebase.db.collection("users").doc(this.props.firebase.auth.currentUser.uid);
-
-        userRef.get().then((doc) => {
-            if (doc.exists) {
-                this.setState({
-                    userData: doc.data(),
-                });
-            }			
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
+    componentDidUpdate() {
+        if(this.props.userDataContext.userData !== this.state.userData) {
+            this.setState({
+                userData: this.props.userDataContext.userData,
+            });
+        }
     }
 
     // Function for modifying user data locally
-    handleUser(user) {
+    handleUserData(userData) {
         this.setState({
-            userData: user,
+            userData: userData,
         });
+        this.props.userDataContext.updateUserData(userData);
     }
 
     render() {
@@ -149,14 +142,13 @@ class Account extends Component {
                 <ChangeEmail
                     show = {this.state.showChangeEmail}
 					onHide = {() => this.setState({ showChangeEmail: false })}
-                    handleUser = {this.handleUser}
                 />
                 <ChangeUsername
                     show = {this.state.showChangeUsername}
 					onHide = {() => this.setState({ showChangeUsername: false })}
                     ownedCampaigns = {ownedCampaigns}
                     user = {userData}
-                    handleUser = {this.handleUser}
+                    handleUserData = {this.handleUserData}
                 />
                 <DeleteAccount
                     show = {this.state.showDeleteAccount}
