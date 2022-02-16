@@ -476,8 +476,7 @@ button:focus {
 .recap-tag {
 	font-size: 13px !important;
 	margin: 0 0.1rem;
-	border-width: 1px;
-	border: solid rgba(255, 255, 255, 0);
+	border: 2px solid rgba(255, 255, 255, 0);
 	max-width: min(20rem, 100%);
 }
 
@@ -735,7 +734,11 @@ button:focus {
 
 .tag-not-selected {
 	opacity: 0.5;
-	border: solid rgba(230, 230, 230, 0) !important;
+	border-color: rgba(230, 230, 230, 0) !important;
+}
+
+.tag-not-selected:hover {
+	opacity: 0.75;
 }
 
 .tag-selector {
@@ -746,8 +749,7 @@ button:focus {
 .tag-selector-tag {
 	font-size: 13px !important;
 	margin-bottom: 0.1rem;
-	border-width: 1px;
-	border: solid rgb(56, 56, 56);
+	border: 2px solid rgb(56, 56, 56);
 	max-width: 100%;
 }
 

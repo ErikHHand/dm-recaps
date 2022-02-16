@@ -258,7 +258,7 @@ class SessionInfo extends Component {
 								onChange={this.onChangeDescription}
 								type="text"
 								placeholder="Description..."
-								maxLength="80" 
+								maxLength="80"
 							/>
 							<Form.Text className="text-muted">
 								For example "Arrival to Phandalin".
