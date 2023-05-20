@@ -3,15 +3,19 @@ import React, { Component } from 'react';
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Badge from 'react-bootstrap/Badge'
+import Form from 'react-bootstrap/Form';
 
 import { TYPES } from '../../constants/types.js';
 import { ICONS } from '../../constants/types.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-import SearchField from "react-search-field";
-
 import { withFirebase } from '../Firebase/Firebase';
+
+
+const INITIAL_STATE = {
+	searchText: '',
+};
 
 /*
 	This component holds the filter/search bar for tags. It is used both
@@ -20,8 +24,11 @@ import { withFirebase } from '../Firebase/Firebase';
 class TagFilter extends Component {
 	constructor(props) {
 		super(props);
+
+		this.inputReference = React.createRef();
 	  
 		this.state = {
+			...INITIAL_STATE,
 			typeFilter: "All",
 			textFilter: "",
 			numTags: 0,
@@ -39,9 +46,12 @@ class TagFilter extends Component {
 		}
 	}
 
-	// Check if filter should be updated based on changes from other components
 	componentDidUpdate(prevProps) {
 
+		//console.log(this.props.focus);
+		//console.log(prevProps.focus);
+
+		// Check if filter should be updated based on changes from other components
 		if (this.props.tagSort !== prevProps.tagSort) {
 			// Sorting order has changed
 			this.filterKeys();
@@ -49,14 +59,19 @@ class TagFilter extends Component {
 			// The number of tags has changed, from adding or deleting tags
 			this.filterKeys();	
 		}
+
+		if (this.props.focus === true) {
+			this.inputReference.current.focus();
+		}
 	}
 	
 	// Update text filter value and filter tags directly after
-	textFilter(value, event) {
+	textFilter(event) {
 		event.preventDefault();
 		
 		this.setState({
-			textFilter: value.toLowerCase(),
+			searchText: event.target.value,
+			textFilter: event.target.value.toLowerCase(),
 		}, this.filterKeys);
 	}
 
@@ -112,6 +127,10 @@ class TagFilter extends Component {
 
 	render() {
 
+		const {
+			searchText,
+		} = this.state;
+
 		// The dropdown list where a type for the filter is selected
 		let typeFilterItems = Object.keys(TYPES).map((type) => 
 			<Dropdown.Item key={type} onClick = {() => this.typeFilter(type)}>
@@ -138,11 +157,18 @@ class TagFilter extends Component {
 		return (
 			<>
 				<div className="remove-padding filter-field">
-					<SearchField
-						placeholder="Search..."
-						onChange={(value, event) => this.textFilter(value, event)}
-						searchText=""
-					/>
+					<Form onSubmit={e => e.preventDefault()}>
+						<Form.Group controlId="searchInput">
+							<Form.Control
+								ref={this.inputReference}
+								name="tagSearch"
+								value={searchText}
+								type="search"
+								onChange={this.textFilter}
+								placeholder="Search..."
+							/>
+						</Form.Group>
+					</Form>
 				</div>
 				<div className="filter-type-button">
 					<DropdownButton variant="outline-secondary" title={currentTypeFilter} size="my-sm">

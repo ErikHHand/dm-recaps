@@ -26,6 +26,7 @@ class TagsPage extends Component {
 		super(props);
 
 		this.state = {
+			focus: false,
 			recapSortDescending: false,
 			recapListStyle: { height: "100%",},
 			recapListHeight: 0,
@@ -138,7 +139,7 @@ class TagsPage extends Component {
 									filteredTags = {this.state.filteredTags}
 									handleFilteredTags = {this.handleFilteredTags}
 									tagSort = {this.state.tagSort}
-									showTagInfo = {this.state.showTagInfo}
+									focus = {this.state.focus}
 								/>
 
 					let sortedKeys = [...this.state.filteredTags]; // Copy list so it can be sorted
@@ -173,7 +174,7 @@ class TagsPage extends Component {
 					let recapList = this.props.tags[this.props.selectedTag].recaps;
 					let length = this.props.campaign.sessionOrder.length;
 					let recapKeys = {};
-
+					
 					// Order recap items chronologically
 					// First, give each recap item a number for sorting
 					// Multiply session order by a large number to guarantee that is counted higher

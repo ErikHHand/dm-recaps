@@ -40,6 +40,7 @@ class RecapTagSelector extends Component {
 		}
 
 		this.state = {
+			focus: false,
 			filteredTags: [], // Holds tags shown in the selector based on the current filter
 			tag: {name: "", description: "", type: "Location", colour: "red"},
 			tags: tags, // Holds all tags of this campaign with a T/F value based on selection
@@ -161,7 +162,7 @@ class RecapTagSelector extends Component {
 		let recapTagSelector = this;
 		let tagFilter;
 
-		// Only render the tag filter component if there are at least one tag
+		// Only render the tag filter component if there is at least one tag
 		if(!this.props.campaign.tags) {
 			tagFilter = <div></div>; //Render nothing if there are no tags
 		} else {
@@ -170,7 +171,7 @@ class RecapTagSelector extends Component {
 							filteredTags = {this.state.filteredTags}
 							handleFilteredTags = {this.handleFilteredTags}
 							tagSort = "4" // Will sort alphabetical
-							showTagInfo = {this.state.showTagInfo}
+							focus = {this.state.focus}
 						/>
 		}
 
@@ -254,7 +255,11 @@ class RecapTagSelector extends Component {
 				<Badge 
 					pill 
 					className="recap-add-tag item-add-button" 
-					onClick={() => this.setState({ showTagOverlay: !this.state.showTagOverlay })}
+					onClick={() => 
+						this.setState({ 
+							showTagOverlay: !this.state.showTagOverlay,
+							focus: !this.state.focus,
+						})}
 					bg="bullshit"
 					ref={this.attachRef}
 				>
@@ -308,7 +313,9 @@ class RecapTagSelector extends Component {
 									<Col xs={1} className="remove-padding">
 									</Col>
 									<Col xs={5} className="right-align">
-										<Button variant="info" onClick={this.onSubmit}>Done</Button>
+										<Button variant="info" onClick={this.onSubmit}>
+											Done
+										</Button>
 									</Col>
 								</Row>
 							</Popover.Body>
