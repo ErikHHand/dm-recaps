@@ -146,7 +146,7 @@ class RecapNew extends Component {
 						name="text"
 						value={text}
 						onKeyDown={(event) => {
-							if(event.keyCode === 13) {
+							if(event.key === "Enter") {
 								event.preventDefault();
 								recapNew.form.dispatchEvent(new Event('submit'))
 							}}}

@@ -141,6 +141,7 @@ class CampaignRecaps extends Component {
 						tags[doc.data().tags[i]].recaps[doc.id] = doc.data();
 					}
 					recaps[doc.id] = doc.data();
+					
 				});
 
 				let campaign = campaginDoc.data();
