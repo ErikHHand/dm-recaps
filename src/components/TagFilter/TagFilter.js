@@ -29,6 +29,7 @@ class TagFilter extends Component {
 	  
 		this.state = {
 			...INITIAL_STATE,
+			focus: true,
 			typeFilter: "All",
 			textFilter: "",
 			numTags: 0,
@@ -48,7 +49,6 @@ class TagFilter extends Component {
 
 	componentDidUpdate(prevProps) {
 
-		//console.log(this.props.focus);
 		//console.log(prevProps.focus);
 
 		// Check if filter should be updated based on changes from other components
@@ -60,7 +60,7 @@ class TagFilter extends Component {
 			this.filterKeys();	
 		}
 
-		if (this.props.focus === true) {
+		if (this.props.focus && document.activeElement !== this.inputReference.current) {
 			this.inputReference.current.focus();
 		}
 	}

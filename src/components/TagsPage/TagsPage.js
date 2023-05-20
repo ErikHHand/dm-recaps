@@ -76,6 +76,10 @@ class TagsPage extends Component {
 				});
 			}
 		}
+
+		if(this.props.campaign.activeTab === "tags" && !this.state.focus) {
+			this.setState({focus: true});
+		}
 	}
 
 	// Called when the listener detects a change in window height.

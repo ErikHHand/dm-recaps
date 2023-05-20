@@ -40,7 +40,6 @@ class RecapTagSelector extends Component {
 		}
 
 		this.state = {
-			focus: false,
 			filteredTags: [], // Holds tags shown in the selector based on the current filter
 			tag: {name: "", description: "", type: "Location", colour: "red"},
 			tags: tags, // Holds all tags of this campaign with a T/F value based on selection
@@ -153,7 +152,7 @@ class RecapTagSelector extends Component {
 	changeWindow() {
 		this.setState({
 			showTagInfo: !this.state.showTagInfo,
-			showTagOverlay: !this.state.showTagOverlay,
+			showTagOverlay: !this.state.showTagOverlay
 		});
 	}
 
@@ -171,7 +170,7 @@ class RecapTagSelector extends Component {
 							filteredTags = {this.state.filteredTags}
 							handleFilteredTags = {this.handleFilteredTags}
 							tagSort = "4" // Will sort alphabetical
-							focus = {this.state.focus}
+							focus = {this.state.showTagOverlay}
 						/>
 		}
 
@@ -258,7 +257,6 @@ class RecapTagSelector extends Component {
 					onClick={() => 
 						this.setState({ 
 							showTagOverlay: !this.state.showTagOverlay,
-							focus: !this.state.focus,
 						})}
 					bg="bullshit"
 					ref={this.attachRef}
