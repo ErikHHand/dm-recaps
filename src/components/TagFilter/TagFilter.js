@@ -60,7 +60,7 @@ class TagFilter extends Component {
 			this.filterKeys();	
 		}
 
-		if (this.props.focus && document.activeElement !== this.inputReference.current) {
+		if (this.props.focus && window.innerWidth >= 768) {
 			this.inputReference.current.focus();
 		}
 	}
