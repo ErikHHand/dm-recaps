@@ -20,6 +20,8 @@ class SessionInfo extends Component {
 	constructor(props) {
 		super(props);
 
+		this.inputReference = React.createRef();
+
 		this.state = {
 			error: null,
 			description: "",
@@ -43,6 +45,16 @@ class SessionInfo extends Component {
 				description: this.props.session.description,
 				date: new Date(this.props.session.date.seconds * 1000),
 			});
+		}
+
+	}
+
+	componentDidUpdate() {
+		
+		if(this.inputReference.current !== null) {
+			setTimeout(() => {
+				this.inputReference.current.focus();
+			  }, 100);
 		}
 	}
 
@@ -252,7 +264,8 @@ class SessionInfo extends Component {
 
 						<Form.Group className="mb-3" controlId="formDescription">
 							<Form.Label>Description</Form.Label>
-							<Form.Control 
+							<Form.Control
+								ref={this.inputReference}
 								name="description"
 								value={description}
 								onChange={this.onChangeDescription}

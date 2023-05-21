@@ -18,6 +18,8 @@ class TagInfo extends Component {
 	constructor(props) {
 		super(props);
 
+		this.nameField = React.createRef();
+
 		this.state = {
 			name: "",
 			description: "",
@@ -68,6 +70,20 @@ class TagInfo extends Component {
 				textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",},
 				textAreaHeight: this.textArea.scrollHeight,
 			});
+		}
+
+		if(this.nameField.current !== null) {
+			if(this.props.edit) {
+				setTimeout(() => {
+					this.textArea.focus();
+					this.textArea.selectionStart = this.textArea.selectionEnd = this.textArea.value.length;
+				}, 100);
+			} else {
+				setTimeout(() => {
+					this.nameField.current.focus();
+				}, 100);
+			}
+			
 		}
 	}
 
@@ -256,6 +272,7 @@ class TagInfo extends Component {
 						<Form.Group className="mb-3" controlId="formName">
 							<Form.Label>Name</Form.Label>
 							<Form.Control 
+								ref={this.nameField}
 								name="name"
 								value={name}
 								onChange={this.onChange}
