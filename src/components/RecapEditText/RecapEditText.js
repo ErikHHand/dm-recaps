@@ -25,6 +25,10 @@ class RecapEditText extends Component {
 	componentDidMount() {
 		// Automatically update the height of the text area to fit all text in it
 		this.setState({textAreaStyle: {height: "max(" + this.textArea.scrollHeight + "px, 50px",}});
+		setTimeout(() => {
+			this.textArea.focus();
+			this.textArea.selectionStart = this.textArea.selectionEnd = this.textArea.value.length;
+		}, 100);
 	}
 
 	componentWillUnmount() {
