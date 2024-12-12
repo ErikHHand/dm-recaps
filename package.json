@@ -18,7 +18,7 @@
     "react-datepicker": "^2.14.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.4",
+    "react-scripts": "^5.0.1",
     "react-search-field": "^1.0.0",
     "react-select": "^3.1.0",
     "recompose": "^0.30.0"
